@@ -41,6 +41,23 @@ if test "$NIX_ENFORCE_PURITY" = "1" -a -n "$NIX_STORE" \
 fi
 
 
+# Filter out any `-s' flag if we *are* stripping.  This is so that any
+# user-supplied `-s' (i.e., `--strip-all') flag doesn't override the
+# global `--strip-debug' flag.
+if test "$NIX_FILTER_STRIP_FLAG" = "1"; then
+    rest=()
+    n=0
+    while test $n -lt ${#params[*]}; do
+        p=${params[n]}
+        if test "$p" != "-s" -a "$p" != "--strip-all"; then
+            rest=("${rest[@]}" "$p")
+        fi
+        n=$((n + 1))
+    done
+    params=("${rest[@]}")
+fi
+
+
 extra=()
 extraBefore=()
 
