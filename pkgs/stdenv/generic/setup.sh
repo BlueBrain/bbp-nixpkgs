@@ -128,7 +128,6 @@ fi
 if test -z "$NIX_STRIP_DEBUG"; then
     export NIX_STRIP_DEBUG=1
     export NIX_CFLAGS_STRIP="-g0 -Wl,--strip-debug"
-    export NIX_FILTER_STRIP_FLAG=1
 fi
 
 
