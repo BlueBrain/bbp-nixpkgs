@@ -266,6 +266,10 @@
     inherit fetchurl stdenv;
   };
 
+  aterm_2_1 = (import ../development/libraries/aterm/aterm-2.1.nix) {
+    inherit fetchurl stdenv;
+  };
+
   sdf2 = (import ../development/tools/parsing/sdf2) {
     inherit fetchurl stdenv aterm getopt;
   };
