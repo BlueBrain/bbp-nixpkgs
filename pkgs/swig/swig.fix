@@ -8,5 +8,7 @@ Package(
       ]))
 
   , ("stdenv", IncludeFix("stdenv/stdenv.fix"))
+
+  , ("python", "/usr/local")
   ]
 )

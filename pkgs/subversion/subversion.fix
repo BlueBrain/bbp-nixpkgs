@@ -20,6 +20,7 @@ Function(["localServer", "httpsClient", "httpServer", "pythonBindings"],
     , ("stdenv", IncludeFix("stdenv/stdenv.fix"))
     , ("ssl", If(Var("httpsClient"), IncludeFix("openssl/openssl.fix"), ""))
     , ("swig", If(Var("pythonBindings"), IncludeFix("swig/swig.fix"), ""))
+    , ("python", "/usr/local")
     , ("httpd", If(Var("httpServer"), IncludeFix("httpd/httpd.fix"), ""))
     , ("db4", If(Var("localServer"), IncludeFix("db4/db4.fix"), ""))
     , ("libxml", IncludeFix("libxml2/libxml2.fix"))

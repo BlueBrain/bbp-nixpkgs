@@ -1,6 +1,6 @@
 #! /bin/sh
 
-export NIX_LDFLAGS=-Wl,-s
+export NIX_LDFLAGS="-Wl,-s -pthread"
 
 . $stdenv/setup || exit 1
 
@@ -21,6 +21,7 @@ if test $httpServer; then
 fi
 
 if test $pythonBindings; then
+    export PYTHON=$python/bin/python
     extraflags="--with-swig=$swig $extraflags"
 fi
 
