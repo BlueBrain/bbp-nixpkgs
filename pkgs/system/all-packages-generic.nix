@@ -605,7 +605,7 @@ rec {
             libtiff libjpeg libpng;
   };
 
-  gtkLibs22 = import ../development/libraries/gtk-libs-2.4 {
+  gtkLibs24 = import ../development/libraries/gtk-libs-2.4 {
     inherit fetchurl stdenv pkgconfig gettext perl x11
             libtiff libjpeg libpng;
   };
@@ -676,7 +676,6 @@ rec {
   zvbi = (import ../development/libraries/zvbi) {
     inherit fetchurl stdenv libpng x11;
     pngSupport = true;
-    libpng = libpng;
   };
 
   rte = (import ../development/libraries/rte) {
