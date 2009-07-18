@@ -3217,7 +3217,7 @@ let
     inherit fetchurl stdenv m4;
   };
 
-  # `gmpxx' use to mean "GMP with C++ bindings".  Now `gmp' has C++ bindings
+  # `gmpxx' used to mean "GMP with C++ bindings".  Now `gmp' has C++ bindings
   # by default, so that distinction is obsolete.
   gmpxx = gmp;
 
