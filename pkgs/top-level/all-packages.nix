@@ -3215,13 +3215,11 @@ let
 
   gmp = import ../development/libraries/gmp {
     inherit fetchurl stdenv m4;
-    cxx = false;
   };
 
-  gmpxx = import ../development/libraries/gmp {
-    inherit fetchurl stdenv m4;
-    cxx = true;
-  };
+  # `gmpxx' use to mean "GMP with C++ bindings".  Now `gmp' has C++ bindings
+  # by default, so that distinction is obsolete.
+  gmpxx = gmp;
 
   goocanvas = import ../development/libraries/goocanvas {
     inherit fetchurl stdenv pkgconfig cairo;
