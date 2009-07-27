@@ -9,7 +9,9 @@ stdenv.mkDerivation rec {
   };
 
   propagatedBuildInputs = [ncurses];
-  
+
+  patches = [ ./link-against-ncurses.patch ];
+
   meta = {
     description = "GNU Readline, a library for interactive line editing";
 
@@ -31,5 +33,7 @@ stdenv.mkDerivation rec {
     homepage = http://savannah.gnu.org/projects/readline/;
 
     license = "GPLv3+";
+
+    maintainers = [ stdenv.lib.maintainers.ludo ];
   };
 }
