@@ -5,7 +5,7 @@ rec {
   inherit aterm;
 
   
-  sdf = stdenv.mkDerivation rec {
+  sdf = stdenv.mkDerivation ( rec {
     name = "sdf2-bundle-2.4";
 
     src = fetchurl {
@@ -24,7 +24,7 @@ rec {
       homepage = http://www.program-transformation.org/Sdf/SdfBundle;
       meta = "Tools for the SDF2 Syntax Definition Formalism, including the `pgen' parser generator and `sglr' parser";
     };
-  };
+  } // ( if stdenv.system == "i686-cygwin" then { CFLAGS = "-O2 -Wl,--stack=0x2300000"; } else {} ) ) ;
 
   
   strategoxt = stdenv.mkDerivation rec {
@@ -44,12 +44,12 @@ rec {
   };
 
 
-  javafront = stdenv.mkDerivation rec {
-    name = "java-front-0.9pre1823618236";
+  javafront = stdenv.mkDerivation (rec {
+    name = "java-front-0.9";
 
     src = fetchurl {
-      url = "http://releases.strategoxt.org/java-front/${name}-frb8zh7m/java-front-0.9pre18236.tar.gz";
-      sha256 = "93d2919cfbda41a96a944f71ae57704ad1f0efcc0c1084b501a4536f82e25387";
+      url = "ftp://ftp.strategoxt.org/pub/stratego/java-front/java-front-0.9/java-front-0.9.tar.gz";
+      sha256 = "96f40bf31486d3ced3ecebdcc0067e83ce6acbdbe57e3c847136ac3d7b62cc3c";
     };
 
     buildInputs = [pkgconfig aterm sdf strategoxt];
@@ -62,7 +62,7 @@ rec {
       homepage = http://strategoxt.org/Stratego/JavaFront;
       meta = "Tools for generating or transforming Java code";
     };
-  };
+  } // ( if stdenv.system == "i686-cygwin" then { CFLAGS = "-O2"; } else {} ) ) ;
 
 
   dryad = stdenv.mkDerivation rec {

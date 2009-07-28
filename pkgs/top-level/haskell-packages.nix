@@ -38,6 +38,14 @@ rec {
     inherit cabal;
   };
 
+  bytestring = import ../development/libraries/haskell/bytestring {
+    inherit cabal;
+  };
+
+  networkBytestring = import ../development/libraries/haskell/network-bytestring {
+    inherit cabal bytestring network;
+  };
+
   cgi = import ../development/libraries/haskell/cgi {
     inherit cabal mtl network parsec xhtml;
   };
@@ -48,10 +56,22 @@ rec {
   };
 
   Crypto = import ../development/libraries/haskell/Crypto {
-    inherit cabal;
+    inherit cabal HUnit QuickCheck;
   };
 
   dataenc = import ../development/libraries/haskell/dataenc {
+    inherit cabal;
+  };
+
+  dataReify = import ../development/libraries/haskell/data-reify {
+    inherit cabal;
+  };
+
+  datetime = import ../development/libraries/haskell/datetime {
+    inherit cabal QuickCheck time;
+  };
+
+  Diff = import ../development/libraries/haskell/Diff {
     inherit cabal;
   };
 
@@ -69,6 +89,10 @@ rec {
     inherit cabal;
   };
 
+  filepath = import ../development/libraries/haskell/filepath {
+    inherit cabal;
+  };
+
   emgm = import ../development/libraries/haskell/emgm {
     inherit cabal;
   };
@@ -77,12 +101,34 @@ rec {
     inherit cabal;
   };
 
+  filestore = import ../development/libraries/haskell/filestore {
+    inherit cabal datetime parsec regexPosix split time utf8String xml Diff;
+  };
+
   fgl = import ../development/libraries/haskell/fgl {
     inherit cabal mtl;
   };
 
+  getOptions = import ../development/libraries/haskell/get-options {
+    inherit cabal mtl; inherit (pkgs.bleedingEdgeRepos) sourceByName;
+  };
+
+  ghcCore = import ../development/libraries/haskell/ghc-core {
+    inherit cabal pcreLight hscolour;
+  };
+
   ghcPaths = import ../development/libraries/haskell/ghc-paths {
     inherit cabal;
+  };
+
+  ghcSyb = import ../development/libraries/haskell/ghc-syb {
+    inherit cabal syb; inherit (pkgs.bleedingEdgeRepos) sourceByName;
+  };
+
+  gitit = import ../development/libraries/haskell/gitit {
+    inherit cabal HAppSServer HStringTemplate HTTP SHA cgi datetime
+      filestore highlightingKate mtl network pandoc parsec recaptcha
+      utf8String xhtml zlib;
   };
 
   GLUT = import ../development/libraries/haskell/GLUT {
@@ -95,6 +141,26 @@ rec {
   gtk2hs = import ../development/libraries/haskell/gtk2hs {
     inherit ghc mtl;
     inherit (pkgs) stdenv fetchurl pkgconfig gnome cairo;
+  };
+
+  HAppSData = import ../development/libraries/haskell/HAppS/HAppS-Data.nix {
+    inherit cabal mtl sybWithClass HaXml HAppSUtil bytestring binary;
+  };
+
+  HAppSIxSet = import ../development/libraries/haskell/HAppS/HAppS-IxSet.nix {
+    inherit cabal mtl hslogger HAppSUtil HAppSState HAppSData sybWithClass;
+  };
+
+  HAppSUtil = import ../development/libraries/haskell/HAppS/HAppS-Util.nix {
+    inherit cabal mtl hslogger bytestring;
+  };
+
+  HAppSServer = import ../development/libraries/haskell/HAppS/HAppS-Server.nix {
+    inherit cabal HaXml parsec mtl network hslogger HAppSData HAppSUtil HAppSState HAppSIxSet HTTP xhtml html bytestring;
+  };
+
+  HAppSState = import ../development/libraries/haskell/HAppS/HAppS-State.nix {
+    inherit cabal HaXml mtl network stm hslogger HAppSUtil HAppSData bytestring binary hspread;
   };
 
   haskeline = import ../development/libraries/haskell/haskeline {
@@ -151,12 +217,28 @@ rec {
     inherit (pkgs) sqlite;
   };
 
+  highlightingKate = import ../development/libraries/haskell/highlighting-kate {
+    inherit cabal parsec pcreLight xhtml;
+  };
+
   Hipmunk = import ../development/libraries/haskell/Hipmunk {
     inherit cabal;
   };
 
   hscolour = import ../development/libraries/haskell/hscolour {
     inherit cabal;
+  };
+
+  HStringTemplate = import ../development/libraries/haskell/HStringTemplate {
+    inherit cabal parsec time;
+  };
+
+  hspread = import ../development/libraries/haskell/hspread {
+    inherit cabal binary network;
+  };
+
+  hsloggerTemplate = import ../development/libraries/haskell/hslogger-template {
+    inherit cabal hslogger mtl;
   };
 
   html = import ../development/libraries/haskell/html {
@@ -180,7 +262,7 @@ rec {
   };
 
   monadlab = import ../development/libraries/haskell/monadlab {
-    inherit cabal;
+    inherit cabal parsec;
   };
 
   MonadRandom = import ../development/libraries/haskell/MonadRandom {
@@ -193,6 +275,10 @@ rec {
 
   multirec = import ../development/libraries/haskell/multirec {
     inherit cabal;
+  };
+
+  multiset = import ../development/libraries/haskell/multiset {
+    inherit cabal syb;
   };
 
   network = import ../development/libraries/haskell/network {
@@ -230,6 +316,10 @@ rec {
     inherit cabal;
   };
 
+  parsec3 = import ../development/libraries/haskell/parsec/3.nix {
+    inherit cabal mtl;
+  };
+
   pcreLight = import ../development/libraries/haskell/pcre-light {
     inherit cabal;
     inherit (pkgs) pcre;
@@ -252,6 +342,10 @@ rec {
     inherit (pkgs) readline ncurses;
   };
 
+  recaptcha = import ../development/libraries/haskell/recaptcha {
+    inherit cabal HTTP network xhtml;
+  };
+
   regexBase = import ../development/libraries/haskell/regex-base {
     inherit cabal mtl;
   };
@@ -262,6 +356,18 @@ rec {
 
   regexPosix = import ../development/libraries/haskell/regex-posix {
     inherit cabal regexBase;
+  };
+
+  regular = import ../development/libraries/haskell/regular {
+    inherit cabal;
+  };
+
+  syb = import ../development/libraries/haskell/syb {
+    inherit cabal;
+  };
+
+  sybWithClass = import ../development/libraries/haskell/syb/syb-with-class.nix {
+    inherit cabal;
   };
 
   SDLImage = import ../development/libraries/haskell/SDL-image {
@@ -284,6 +390,10 @@ rec {
     inherit (pkgs) SDL;
   };
 
+  SHA = import ../development/libraries/haskell/SHA {
+    inherit cabal binary;
+  };
+
   Shellac = import ../development/libraries/haskell/Shellac/Shellac.nix {
     inherit cabal mtl;
   };
@@ -294,6 +404,10 @@ rec {
 
   ShellacReadline = import ../development/libraries/haskell/Shellac/Shellac-readline.nix {
     inherit cabal Shellac readline;
+  };
+
+  split = import ../development/libraries/haskell/split {
+    inherit cabal;
   };
 
   stm = import ../development/libraries/haskell/stm {
@@ -309,7 +423,7 @@ rec {
   };
 
   terminfo = import ../development/libraries/haskell/terminfo {
-    inherit cabal;
+    inherit cabal extensibleExceptions /* only required for <= ghc6102  ?*/;
     inherit (pkgs) ncurses;
   };
 
@@ -376,6 +490,10 @@ rec {
   };
 
   xhtml = import ../development/libraries/haskell/xhtml {
+    inherit cabal;
+  };
+
+  xml = import ../development/libraries/haskell/xml {
     inherit cabal;
   };
 
@@ -460,6 +578,14 @@ rec {
     inherit cabal haskellSrcExts mtl uniplate hscolour;
   };
 
+  hslogger = import ../development/tools/haskell/hslogger {
+    inherit cabal mtl network time;
+  };
+
+  tar = import ../development/tools/haskell/tar {
+    inherit cabal binary;
+  };
+
   uuagc = import ../development/tools/haskell/uuagc {
     inherit cabal uulib;
   };
@@ -499,6 +625,16 @@ rec {
   lhs2tex = import ../tools/typesetting/lhs2tex {
     inherit cabal regexCompat utf8String;
     inherit (pkgs) tetex polytable;
+  };
+
+  myhasktags = import ../tools/misc/myhasktags {
+    inherit ghcReal;
+    inherit (pkgs) stdenv fetchurl;
+  };
+
+  nixRepositoryManager = import ../tools/package-management/nix-repository-manager {
+    inherit (pkgs) stdenv lib writeText writeScriptBin getConfig bleedingEdgeRepos ;
+    inherit ghcReal;
   };
 
   # Games.

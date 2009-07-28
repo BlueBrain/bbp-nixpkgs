@@ -130,6 +130,14 @@ rec {
     buildInputs = [TestPod];
   };
 
+  CaptureTiny = buildPerlPackage rec {
+    name = "Capture-Tiny-0.06";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/D/DA/DAGOLDEN/${name}.tar.gz";
+      sha256 = "0qg74sfqc3cj8g21nsbif413c8vzvvs49v4vnqbw1410sa4fxsaw";
+    };
+  };
+
   CarpAssert = buildPerlPackage rec {
     name = "Carp-Assert-0.20";
     src = fetchurl {
@@ -895,11 +903,28 @@ rec {
     };
   };
 
-  EmailAddress = buildPerlPackage {
-    name = "Email-Address-1.888";
+  EmailAbstract = buildPerlPackage rec {
+    name = "Email-Abstract-3.001";
     src = fetchurl {
-      url = mirror://cpan/authors/id/R/RJ/RJBS/Email-Address-1.888.tar.gz;
-      sha256 = "0c6b8djnmiy0niskrvywd6867xd1qmn241ffdwj957dkqdakq9yx";
+      url = "mirror://cpan/authors/id/R/RJ/RJBS/${name}.tar.gz";
+      sha256 = "1ziy44ibnwg4wjlm5lqdrys8x8xndxkzycnjwp2s6harjy2fqqxw";
+    };
+    propagatedBuildInputs = [EmailSimple];
+  };
+
+  EmailAddress = buildPerlPackage rec {
+    name = "Email-Address-1.889";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/R/RJ/RJBS/${name}.tar.gz";
+      sha256 = "0icpln4cs058x5lbqsg4wzb8p02qv7bb1z6ljxh70yd3y1mn0nxn";
+    };
+  };
+
+  EmailDateFormat = buildPerlPackage rec {
+    name = "Email-Date-Format-1.002";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/R/RJ/RJBS/${name}.tar.gz";
+      sha256 = "114fqcnmvzi0z100yx89j6rgwbicb0bslswhyr8z2pzsvwv3czqc";
     };
   };
 
@@ -912,12 +937,38 @@ rec {
     propagatedBuildInputs = [EmailSimple EmailAddress ModulePluggable ReturnValue];
   };
 
-  EmailSimple = buildPerlPackage {
-    name = "Email-Simple-2.003";
+  EmailSender = buildPerlPackage rec {
+    name = "Email-Sender-0.091870";
     src = fetchurl {
-      url = mirror://cpan/authors/id/R/RJ/RJBS/Email-Simple-2.003.tar.gz;
-      sha256 = "0h8873pidhkqy7415s5sx8z614d0haxiknbjwrn65icrr2m0b8g6";
+      url = "mirror://cpan/authors/id/R/RJ/RJBS/${name}.tar.gz";
+      sha256 = "1vr1xigx25ikhljhpc5sv75bpczb7ny625ynzbxvic6qm0a3kaqc";
     };
+    propagatedBuildInputs = [
+      CaptureTiny EmailAbstract EmailAddress ListMoreUtils Moose
+      SysHostnameLong
+    ];
+    preConfigure =
+      ''
+        chmod u+x util/sendmail
+        patchShebangs util/sendmail
+      '';
+  };
+
+  EmailSimple = buildPerlPackage rec {
+    name = "Email-Simple-2.005";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/R/RJ/RJBS/${name}.tar.gz";
+      sha256 = "1dh2qgwss1wm6ypvr6m2z01gz19g73kmlk7wa25wxd2gspsq9qck";
+    };
+  };
+
+  EmailSimpleCreator = buildPerlPackage rec {
+    name = "Email-Simple-Creator-1.424";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/R/RJ/RJBS/${name}.tar.gz";
+      sha256 = "16i15sarncacg86wl60dbddlv4p75i8xq6jqp1isj9plp60538ph";
+    };
+    propagatedBuildInputs = [EmailDateFormat EmailSimple];
   };
 
   EmailValid = buildPerlPackage {
@@ -1211,6 +1262,35 @@ rec {
     };
     doCheck = false; /* attempts a network connection to localhost */
   };
+
+  ImageExifTool = buildPerlPackage rec {
+      name = "Image-ExifTool-7.83";
+
+      src = fetchurl {
+        url = "http://www.sno.phy.queensu.ca/~phil/exiftool/${name}.tar.gz";
+        sha256 = "1g3ah646w242649sy77wjff3ykjclihv8zvbs0ch1nwfbqprrbl2";
+      };
+
+      meta = {
+        description = "ExifTool, a tool to read, write and edit EXIF meta information";
+
+        longDescription = ''
+          ExifTool is a platform-independent Perl library plus a command-line
+          application for reading, writing and editing meta information in
+          image, audio and video files.  ExifTool supports many different types
+          of metadata including EXIF, GPS, IPTC, XMP, JFIF, GeoTIFF, ICC
+          Profile, Photoshop IRB, FlashPix, AFCP and ID3, as well as the maker
+          notes of many digital cameras by Canon, Casio, FujiFilm, HP,
+          JVC/Victor, Kodak, Leaf, Minolta/Konica-Minolta, Nikon,
+          Olympus/Epson, Panasonic/Leica, Pentax/Asahi, Ricoh, Sanyo,
+          Sigma/Foveon and Sony.
+        '';
+
+        licenses = [ "GPLv1+" "Artistic" ];
+
+        maintainers = [ stdenv.lib.maintainers.ludo ];
+      };
+    };
 
   JSON = buildPerlPackage rec {
     name = "JSON-2.15";
@@ -1835,6 +1915,15 @@ rec {
       sha256 = "0p7p52ja6sf4j0w3b05i0bbqi5wiambckw2m5dsr63bbmlhv4a71";
     };
     propagatedBuildInputs = [pkgs.subversion];
+  };
+
+  SysHostnameLong = buildPerlPackage rec {
+    name = "Sys-Hostname-Long-1.4";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/S/SC/SCOTT/${name}.tar.gz";
+      sha256 = "0hy1225zg2yg11xhgj0wbiapzjyf6slx17ln36zqvfm07k6widlx";
+    };
+    doCheck = false; # no `hostname' in stdenv
   };
 
   TaskCatalystTutorial = buildPerlPackage rec {

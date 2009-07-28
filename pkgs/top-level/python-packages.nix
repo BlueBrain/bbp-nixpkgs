@@ -54,11 +54,11 @@ rec {
   });
 
   foolscap = buildPythonPackage (rec {
-    name = "foolscap-0.3.2";
+    name = "foolscap-0.4.2";
 
     src = fetchurl {
       url = "http://foolscap.lothar.com/releases/${name}.tar.gz";
-      sha256 = "1wkqgm6anlxvz8dnqx7ki008255nm1mlhak5n9xy6g1yf31fn3l0";
+      sha256 = "14g89kjxxci3ssl9jgvpkyrcq62g361aw8pamlkclk8nnrh4f776";
     };
 
     propagatedBuildInputs = [ twisted pkgs.pyopenssl ];
@@ -77,6 +77,8 @@ rec {
 
       # See http://foolscap.lothar.com/trac/browser/LICENSE.
       license = "MIT";
+
+      maintainers = [ stdenv.lib.maintainers.ludo ];
     };
   });
 
@@ -118,6 +120,39 @@ rec {
     };
   });
 
+  ply = buildPythonPackage (rec {
+    name = "ply-3.2";
+
+    src = fetchurl {
+      url = "http://www.dabeaz.com/ply/${name}.tar.gz";
+      sha256 = "10z4xq8lc8c21v4g7z3zpnvpqbc0vidigrck1kqhwgkqi4gh0kfj";
+    };
+
+    meta = {
+      homepage = http://www.dabeaz.com/ply/;
+
+      description = "PLY (Python Lex-Yacc), an implementation of the lex and yacc parsing tools for Python";
+
+      longDescription = ''
+        PLY is an implementation of lex and yacc parsing tools for Python.
+        In a nutshell, PLY is nothing more than a straightforward lex/yacc
+        implementation.  Here is a list of its essential features: It's
+        implemented entirely in Python; It uses LR-parsing which is
+        reasonably efficient and well suited for larger grammars; PLY
+        provides most of the standard lex/yacc features including support for
+        empty productions, precedence rules, error recovery, and support for
+        ambiguous grammars; PLY is straightforward to use and provides very
+        extensive error checking; PLY doesn't try to do anything more or less
+        than provide the basic lex/yacc functionality.  In other words, it's
+        not a large parsing framework or a component of some larger system.
+      '';
+
+      license = "revised-BSD";
+
+      maintainers = [ stdenv.lib.maintainers.ludo ];
+    };
+  });
+
   pycryptopp = buildPythonPackage (rec {
     name = "pycryptopp-0.5.14";
 
@@ -134,6 +169,59 @@ rec {
       description = "Python wrappers for the Crypto++ library";
 
       license = "GPLv2+";
+    };
+  });
+
+  pysqlite = buildPythonPackage (rec {
+    name = "pysqlite-2.5.5";
+
+    src = fetchurl {
+      url = "http://oss.itsystementwicklung.de/download/pysqlite/2.5/2.5.5/${name}.tar.gz";
+      sha256 = "0kylyjzxc4kd0z3xsvs0i63163kphfh0xcc4f0d0wyck93safz7g";
+    };
+
+    # Since the `.egg' file is zipped, the `NEEDED' of the `.so' files
+    # it contains is not taken into account.  Thus, we must explicitly make
+    # it a propagated input.
+    propagatedBuildInputs = [ pkgs.sqlite ];
+
+    patchPhase = ''
+      substituteInPlace "setup.cfg"                                     \
+              --replace "/usr/local/include" "${pkgs.sqlite}/include"   \
+              --replace "/usr/local/lib" "${pkgs.sqlite}/lib"
+    '';
+
+    # FIXME: How do we run the tests?
+    doCheck = false;
+
+    meta = {
+      homepage = http://pysqlite.org/;
+
+      description = "Python bindings for the SQLite embedded relational database engine";
+
+      longDescription = ''
+        pysqlite is a DB-API 2.0-compliant database interface for SQLite.
+
+        SQLite is a relational database management system contained in
+        a relatively small C library.  It is a public domain project
+        created by D. Richard Hipp.  Unlike the usual client-server
+        paradigm, the SQLite engine is not a standalone process with
+        which the program communicates, but is linked in and thus
+        becomes an integral part of the program.  The library
+        implements most of SQL-92 standard, including transactions,
+        triggers and most of complex queries.
+
+        pysqlite makes this powerful embedded SQL engine available to
+        Python programmers.  It stays compatible with the Python
+        database API specification 2.0 as much as possible, but also
+        exposes most of SQLite's native API, so that it is for example
+        possible to create user-defined SQL functions and aggregates
+        in Python.
+      '';
+
+      license = "revised BSD";
+
+      maintainers = [ stdenv.lib.maintainers.ludo ];
     };
   });
 
@@ -213,11 +301,11 @@ rec {
   });
 
   twisted = buildPythonPackage {
-    name = "twisted-8.1.0";
+    name = "twisted-8.2.0";
 
     src = fetchurl {
-      url = http://tmrc.mit.edu/mirror/twisted/Twisted/8.1/Twisted-8.1.0.tar.bz2;
-      sha256 = "0q25zbr4xzknaghha72mq57kh53qw1bf8csgp63pm9sfi72qhirl";
+      url = http://tmrc.mit.edu/mirror/twisted/Twisted/8.2/Twisted-8.2.0.tar.bz2;
+      sha256 = "1c6zplisjdnjzkfs0ld3a0f7m7xbjgx5rcwsdw5i1xiibsq2nq70";
     };
 
     propagatedBuildInputs = [ pkgs.ZopeInterface ];
@@ -233,6 +321,8 @@ rec {
       '';
 
       license = "MIT";
+
+      maintainers = [ stdenv.lib.maintainers.ludo ];
     };
   };
 

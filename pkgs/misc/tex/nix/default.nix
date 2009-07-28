@@ -10,7 +10,6 @@ rec {
     , extraFiles ? []
     , compressBlanksInIndex ? true
     , packages ? []
-    , searchRelativeTo ? dirOf (toString rootFile) # !!! duplication
     , copySources ? false
     }:
 
@@ -25,31 +24,80 @@ rec {
       inherit rootFile generatePDF generatePS extraFiles
         compressBlanksInIndex copySources;
 
-      includes = import (findLaTeXIncludes {inherit rootFile searchRelativeTo;});
+      includes = map (x: [x.key (baseNameOf (toString x.key))])
+        (findLaTeXIncludes {inherit rootFile;});
       
       buildInputs = [ pkgs.tetex pkgs.perl ] ++ packages;
     };
 
-    
+
+  # Returns the closure of the "dependencies" of a LaTeX source file.
+  # Dependencies are other LaTeX source files (e.g. included using
+  # \input{}), images (e.g. \includegraphics{}), bibliographies, and
+  # so on.
   findLaTeXIncludes =
     { rootFile
-    , searchRelativeTo ? dirOf (toString rootFile)
     }:
 
-    pkgs.stdenv.mkDerivation {
-      name = "latex-includes";
+    builtins.genericClosure {
+      startSet = [{key = rootFile;}];
+      
+      operator =
+        {key, ...}:
 
-      realBuilder = pkgs.perl + "/bin/perl";
-      args = [ ./find-includes.pl ];
+        let
 
-      rootFile = toString rootFile; # !!! hacky
+          trace = x: builtins.trace x x;
 
-      inherit searchRelativeTo;
+          # `find-includes.pl' returns the dependencies of the current
+          # source file (`key') as a list, e.g. [{type = "tex"; name =
+          # "introduction.tex";} {type = "img"; name = "example"}].
+          # The type denotes the kind of dependency, which determines
+          # what extensions we use to look for it.
+          deps = import (pkgs.runCommand "latex-includes"
+            { src = trace key; }
+            "${pkgs.perl}/bin/perl ${./find-includes.pl}");
 
-      # Forces rebuilds.
-      hack = builtins.currentTime;
+          # Look for the dependencies of `key', trying various
+          # extensions determined by the type of each dependency.
+          # TODO: support a search path.
+          foundDeps = dep: xs:
+            let
+              exts =
+                if dep.type == "img" then [".pdf" ".png" ".ps" ".jpg"]
+                else if dep.type == "tex" then [".tex" ""]
+                else [""];
+              fn = pkgs.lib.findFirst (fn: builtins.pathExists fn) null
+                (map (ext: "${dirOf key}/${dep.name}${ext}") exts);
+            in if fn != null then [{key = fn;}] ++ xs
+               else builtins.trace "not found: ${dep.name}" xs;
+
+        in pkgs.lib.fold foundDeps [] deps;
     };
+    
 
+  findLhs2TeXIncludes =
+    { rootFile
+    }:
+
+    builtins.genericClosure {
+      startSet = [{key = rootFile;}];
+      
+      operator =
+        {key, ...}:
+
+        let
+
+          trace = x: builtins.trace x x;
+
+          deps = import (pkgs.runCommand "lhs2tex-includes"
+            { src = trace key; }
+            "${pkgs.stdenv.bash}/bin/bash ${./find-lhs2tex-includes.sh}");
+
+        in pkgs.lib.concatMap (x : if builtins.pathExists x then [{key = x;}]
+                                   else builtins.trace ("not found: ${toString x}") [])
+                              (map (x : trace "${dirOf key}/${x}") deps);
+    };
 
   dot2pdf =
     { dotGraph
@@ -78,6 +126,17 @@ rec {
       ];
     };
 
+  lhs2tex =
+    { source, flags ? null } :
+    pkgs.stdenv.mkDerivation {
+      name = "tex";
+      builder = ./lhs2tex.sh;
+      inherit source flags;
+      buildInputs = [ pkgs.lhs2tex pkgs.perl ];
+      copyIncludes = ./copy-includes.pl;
+      includes = map (x: [x.key (baseNameOf (toString x.key))])
+        (findLhs2TeXIncludes {rootFile = source;});
+    };
   
   animateDot = dotGraph: nrFrames: pkgs.stdenv.mkDerivation {
     name = "dot-frames";
@@ -158,7 +217,6 @@ rec {
         inherit packages;
         generatePDF = false;
         generatePS = true;
-        searchRelativeTo = dirOf (toString body);
       };
     };
 
@@ -176,7 +234,6 @@ rec {
         inherit body preamble;
       };
       inherit packages;
-      searchRelativeTo = dirOf (toString body);
     };
 
 

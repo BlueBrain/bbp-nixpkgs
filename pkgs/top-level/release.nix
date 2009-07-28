@@ -49,7 +49,7 @@ in {
 
   tarball = import ./make-tarball.nix;
 
-} // mapTestOn {
+} // mapTestOn rec {
 
   MPlayer = linux;
   abcde = linux;
@@ -86,7 +86,6 @@ in {
   cabextract = all;
   castleCombat = linux;
   cdrkit = linux;
-  cedet = linux;
   chatzilla = linux;
   cksfv = all;
   clisp = linux;
@@ -117,8 +116,7 @@ in {
   ejabberd = linux;
   elinks = linux;
   emacs22 = all;
-  emacsUnicode = all;
-  emms = linux;
+  emacs23 = all;
   enscript = all;
   eprover = linux;
   evince = linux;
@@ -130,7 +128,7 @@ in {
   findutils = all;
   firefox2 = linux;
   firefox3 = prio 150 linux;
-  firefox3_5 = prio 15 linux;
+  firefox35 = linux;
   flex = all;
   flex2535 = all;
   fontforge = linux;
@@ -142,7 +140,9 @@ in {
   gcc34 = linux;
   gcc42 = linux;
   gcc43_multi = ["x86_64-linux"];
+  gcc44 = linux;
   gcj43 = linux;
+  gcj44 = linux;
   gdb = all;
   ghostscript = linux;
   ghostscriptX = linux;
@@ -182,6 +182,7 @@ in {
   hdparm = linux;
   hello = all;
   host = linux;
+  htmlTidy = all;
   hugin = linux;
   iana_etc = linux;
   icecat3Xul = linux;
@@ -214,6 +215,7 @@ in {
   libsmbios = linux;
   libtool = all;
   libtool_2 = all;
+  libtopology = all;
   libxml2 = all;
   libxslt = all;
   lout = linux;
@@ -254,7 +256,6 @@ in {
   nssmdns = linux;
   ntfs3g = linux;
   ntp = linux;
-  nxml = all;
   ocaml = linux;
   octave = linux;
   openoffice = linux;
@@ -278,11 +279,13 @@ in {
   portmap = linux;
   postgresql = all;
   postfix = linux;
+  ppl = all;
   procps = linux;
   pwdutils = linux;
   pthreadmanpages = all;
   python = allBut "i686-cygwin";
   pythonFull = linux;
+  sbcl = all;
   qt3 = allBut "i686-cygwin";
   qt4 = linux;
   quake3demo = linux;
@@ -325,6 +328,7 @@ in {
   syslinux = ["i686-linux"];
   sysvinit = linux;
   sysvtools = linux;
+  tahoe = linux;
   tangogps = linux;
   tcl = linux;
   tcpdump = linux;
@@ -388,7 +392,20 @@ in {
     nl = all;
     ru = all;
   };
-  
+
+  emacs22Packages = {
+    bbdb = linux;
+    cedet = linux;
+    ecb = linux;
+    emacsw3m = linux;
+    emms = linux;
+    nxml = all;
+  };
+
+  emacs23Packages = emacs22Packages // {
+    jdee = linux;
+  };
+
   gnome = {
     gconfeditor = linux;
     gnomepanel = linux;
@@ -405,11 +422,15 @@ in {
     ghc = ghcSupported;
   };
 
-  haskellPackages_ghc6101 = {
+  haskellPackages_ghc6102 = {
     ghc = ghcSupported;
   };
 
-  haskellPackages_ghc6102 = {
+  haskellPackages_ghc6103 = {
+    ghc = ghcSupported;
+  };
+
+  haskellPackages_ghc6104 = {
     darcs = ghcSupported;
     ghc = ghcSupported;
     gtk2hs = linux;
@@ -417,10 +438,6 @@ in {
     lhs2tex = ghcSupported;
     haskellPlatform = linux; /* OpenGL/mesa seems to fail on darwin */
     xmonad = linux;
-  };
-
-  haskellPackages_ghc6103 = {
-    ghc = ghcSupported;
   };
 
   kde3 = {
@@ -480,6 +497,26 @@ in {
     aufs = linux;
     kernel = linux;
     virtualbox = linux;
+  };
+
+  kernelPackages_2_6_31_rc3 = {
+    aufs = linux;
+    kernel = linux;
+  };
+
+  kernelPackages_2_6_31_rc3_old_i686 = {
+    aufs = ["i686-linux"];
+    kernel = ["i686-linux"];
+  };
+
+  kernelPackages_2_6_31_rc2 = {
+    aufs = linux;
+    kernel = linux;
+  };
+
+  kernelPackages_2_6_31_rc2_old_i686 = {
+    aufs = ["i686-linux"];
+    kernel = ["i686-linux"];
   };
 
   strategoPackages = {
