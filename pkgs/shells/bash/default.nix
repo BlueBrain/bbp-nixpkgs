@@ -19,8 +19,6 @@ stdenv.mkDerivation rec {
     -DSSH_SOURCE_BASHRC
   '';
 
-  postInstall = "ln -s bash $out/bin/sh";
-
   patchFlags = "-p0";
 
   patches =
@@ -58,6 +56,9 @@ stdenv.mkDerivation rec {
   configureFlags = "--with-installed-readline";
 
   postInstall = ''
+    # Add an `sh' -> `bash' symlink.
+    ln -s bash "$out/bin/sh"
+
     # Install the completion examples.
     ensureDir "$out/etc"
     cp -v "examples/complete/bash_completion" "$out/etc"
