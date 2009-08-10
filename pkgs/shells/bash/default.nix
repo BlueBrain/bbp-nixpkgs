@@ -3,7 +3,7 @@
 assert interactive -> readline != null;
 
 stdenv.mkDerivation rec {
-  name = "bash-4.0-p17";
+  name = "bash-4.0-p28";
 
   src = fetchurl {
     url = "mirror://gnu/bash/bash-4.0.tar.gz";
