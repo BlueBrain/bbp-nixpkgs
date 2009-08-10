@@ -57,6 +57,15 @@ stdenv.mkDerivation rec {
 
   configureFlags = "--with-installed-readline";
 
+  postInstall = ''
+    # Install the completion examples.
+    ensureDir "$out/etc"
+    cp -v "examples/complete/bash_completion" "$out/etc"
+
+    ensureDir "$out/etc/bash_completion.d"
+    cp -v "examples/complete/complete.gnu-longopt" "$out/etc/bash_completion.d"
+  '';
+
   meta = {
     homepage = http://www.gnu.org/software/bash/;
     description =
@@ -75,5 +84,7 @@ stdenv.mkDerivation rec {
     '';
 
     license = "GPLv3+";
+
+    maintainers = [ stdenv.lib.maintainers.ludo ];
   };
 }
