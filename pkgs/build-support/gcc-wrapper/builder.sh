@@ -107,7 +107,7 @@ then
     ln -sv gfortran $out/bin/f77
 fi
 
-mkGccWrapper $out/bin/gcj $gccPath/gcj
+mkGccWrapper $out/bin/gcj $gccPath/gcj || true
 
 
 # Create a symlink to as (the assembler).  This is useful when a
