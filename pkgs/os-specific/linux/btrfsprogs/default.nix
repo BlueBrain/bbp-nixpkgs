@@ -4,7 +4,7 @@ let
 
   version = a.lib.attrByPath ["version"] "0.19" a; 
   buildInputs = with a; [
-    zlib e2fsprogs acl 
+    zlib libuuid acl 
   ];
 in
 rec {
@@ -28,5 +28,6 @@ rec {
   name = "btrfs-progs-" + version;
   meta = {
     description = "BTRFS utilities";
+    maintainers = [a.lib.maintainers.raskin];
   };
 }

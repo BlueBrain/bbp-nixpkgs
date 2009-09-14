@@ -31,6 +31,7 @@ in
 stdenv.mkDerivation {
   name = "MPlayer-1.0rc2-r28450";
 
+  # 1.0_rc2 is outdated according to website - use trunk instead
   src = fetchurl {
     url = mirror://gentoo/distfiles/mplayer-1.0_rc2_p28450.tar.bz2;
     sha256 = "0cbils58mq20nablywgjfpfx2pzjgnhin23sb8k1s5h2rxgvi3vf";

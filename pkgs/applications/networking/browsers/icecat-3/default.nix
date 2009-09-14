@@ -4,13 +4,13 @@
 , freetype, fontconfig
 , application ? "browser" }:
 
-let version = "3.5.1"; in
+let version = "3.5.3"; in
 stdenv.mkDerivation {
   name = "icecat-${version}";
 
   src = fetchurl {
     url = "mirror://gnu/gnuzilla/${version}/icecat-${version}.tar.bz2";
-    sha256 = "1g3grlar2i1vn3hnaql2ny210ghjyjp24d9j5jcdfx6nsx761030";
+    sha256 = "0cjf75crk4g84swya57ixm7152v774hsxif3xrws4yz9dasqlz5j";
   };
 
   buildInputs = [
@@ -21,7 +21,7 @@ stdenv.mkDerivation {
   ];
 
   patches = [
-    ./skip-gre-registration.patch ./rpath-link.patch ./pythonpath.patch
+    ./skip-gre-registration.patch ./rpath-link.patch
   ];
 
   configureFlags = [
@@ -101,6 +101,7 @@ stdenv.mkDerivation {
     licenses = [ "GPLv2+" "LGPLv2+" "MPLv1+" ];
 
     maintainers = [ stdenv.lib.maintainers.ludo ];
+    platforms = stdenv.lib.platforms.gnu;
   };
 
   passthru = {

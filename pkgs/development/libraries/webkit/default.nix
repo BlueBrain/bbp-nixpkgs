@@ -1,20 +1,38 @@
 args : with args; 
-let version = lib.attrByPath ["version"] "r45934" args; in
+let 
+  s = import ./src-for-default.nix;
+  version = lib.attrByPath ["version"] s.version args;
+in
 rec {
   src = fetchurl {
-    url = "http://nightly.webkit.org/files/trunk/src/WebKit-${version}.tar.bz2";
-    sha256 = "0cc169ndbxmcdrhrjbll9jnxmfwyrbvwxzf95q1hjcn9v9naq0ck";
+    url = s.url;
+    sha256 = s.hash;
   };
 
   buildInputs = [gtk atk cairo curl fontconfig freetype
     gettext libjpeg libpng libtiff libxml2 libxslt pango
     sqlite icu gperf bison flex autoconf automake libtool 
     perl intltool pkgconfig libsoup gtkdoc libXt libproxy
-    enchant gstreamer gstPluginsBase gstFfmpeg
+    enchant 
+    ];
+
+  propagatedBuildInputs = [
+    gstreamer gstPluginsBase gstFfmpeg gstPluginsGood
     ];
 
   configureCommand = "./autogen.sh ";
-  configureFlags = [];
+  configureFlags = [
+    "--enable-3D-transforms"
+    "--enable-filters"
+    "--enable-web-sockets"
+    # Fails the build..
+    # "--enable-shared-workers"
+    # WML support causes crash on
+    # Slashdot.org. It is fixed upstream,
+    # but the required update is too big
+    # Let us wait for a GTK release..
+    #"--enable-wml"
+    ];
 
   /* doConfigure should be specified separately */
   phaseNames = ["setVars" "paranoidFixComments" "doConfigure" (doPatchShebangs ".") 
@@ -31,8 +49,9 @@ rec {
   '') ["minInit" "doUnpack"];
 
   doAddPrograms = fullDepEntry (''
-    for i in Programs/.libs/*; do 
-        cp $i $out/bin/webkit-program-$(basename $i)
+    ensureDir $out/bin
+    for i in Programs/.libs/* Programs/*; do 
+        cp $i $out/bin/webkit-program-$(basename $i) || true
     done
   '') ["minInit" "doMake" "defEnsureDir"];
       
@@ -43,5 +62,9 @@ rec {
   name = "webkit-" + version;
   meta = {
     description = "WebKit - a fast and correct HTML renderer";
+    maintainers = [stdenv.lib.maintainers.raskin];
+  };
+  passthru = {
+    inherit gstreamer gstPluginsBase gstPluginsGood gstFfmpeg;
   };
 }

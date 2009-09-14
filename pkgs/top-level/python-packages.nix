@@ -82,6 +82,29 @@ rec {
     };
   });
 
+  genshi = buildPythonPackage {
+    name = "genshi-0.5.1";
+    
+    src = fetchurl {
+      url = http://ftp.edgewall.com/pub/genshi/Genshi-0.5.1.tar.bz2;
+      sha256 = "1g2xw3zvgz59ilv7mrdlnvfl6ph8lwflwd4jr6zwrca2zhj7d8rs";
+    };
+    
+    buildInputs = [ pkgs.setuptools ];
+    
+    meta = {
+      description = "Python components for parsing HTML, XML and other textual content";
+      
+      longDescription = ''
+        Python library that provides an integrated set of
+        components for parsing, generating, and processing HTML, XML or other
+        textual content for output generation on the web.
+      '';
+      
+      license = "BSD";
+    };
+  };
+
   nevow = buildPythonPackage (rec {
     name = "nevow-0.9.33";
 
@@ -153,22 +176,46 @@ rec {
     };
   });
 
+  psycopg2 = buildPythonPackage {
+    name = "psycopg2-r407";
+
+    doCheck = false;
+    
+    src = fetchurl {
+      url = http://initd.org/pub/software/psycopg/psycopg2-r407.tar.gz;
+      sha256 = "b80bf2f106fc6dbd3d3c512e61baca0b44fa80b975e554982cc9e793c085cc86";
+    };
+    
+    propagatedBuildInputs = [ pkgs.postgresql ];
+    
+    meta = {
+      description = "PostgreSQL database adapter for the Python programming language.";
+      
+      license = "GPLv2/ZPL";
+    };
+  };
+  
   pycryptopp = buildPythonPackage (rec {
-    name = "pycryptopp-0.5.14";
+    name = "pycryptopp-0.5.15";
 
     src = fetchurl {
       url = "http://pypi.python.org/packages/source/p/pycryptopp/${name}.tar.gz";
-      sha256 = "1xvxyvqdi1223pkx0d6idzzlprmkk3hp9fr5r8jlib73cl0vh7rl";
+      sha256 = "0f8v3cs8vjpj423yx3ikj7qjvljrm86x0qpkckidv69kah8kndxa";
     };
+
+    # Use our own copy of Crypto++.
+    preConfigure = "export PYCRYPTOPP_DISABLE_EMBEDDED_CRYPTOPP=1";
 
     buildInputs = [ setuptoolsDarcs darcsver pkgs.cryptopp ];
 
     meta = {
-      homepage = http://pypi.python.org/pypi/pycryptopp/0.5.14;
+      homepage = http://allmydata.org/trac/pycryptopp;
 
       description = "Python wrappers for the Crypto++ library";
 
       license = "GPLv2+";
+
+      maintainers = [ stdenv.lib.maintainers.ludo ];
     };
   });
 
@@ -299,6 +346,27 @@ rec {
       license = "MIT";
     };
   });
+
+  trac = buildPythonPackage {
+    name = "trac-0.11.5";
+    
+    src = fetchurl {
+      url = http://ftp.edgewall.com/pub/trac/Trac-0.11.5.tar.gz;
+      sha256 = "cc3362ecc533abc1755dd78e2d096d1413bc975abc3185318f4821458cd6a8ac";
+    };
+    
+    doCheck = false;
+    
+    PYTHON_EGG_CACHE = "`pwd`/.egg-cache";
+    
+    propagatedBuildInputs = [ genshi pkgs.setuptools ];
+    
+    meta = {
+      description = "Enhanced wiki and issue tracking system for software development projects";
+      
+      license = "BSD";
+    };
+  };
 
   twisted = buildPythonPackage {
     name = "twisted-8.2.0";

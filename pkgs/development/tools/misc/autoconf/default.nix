@@ -1,18 +1,21 @@
-{stdenv, fetchurl, m4, perl, lzma}:
+{ stdenv, fetchurl, m4, perl }:
 
 stdenv.mkDerivation rec {
-  name = "autoconf-2.63";
-  
+  name = "autoconf-2.64";
+
   src = fetchurl {
-    url = "mirror://gnu/autoconf/${name}.tar.lzma";
-    sha256 = "1k5lyxsq6781c02b4ism4ddpzkywysiv65pxaw61r5qipz2ab196";
+    url = "mirror://gnu/autoconf/${name}.tar.bz2";
+    sha256 = "11damk9x09616cjdfxx9y73igd96zzylgq0l4j57qzify6nlqbw7";
   };
 
-  buildInputs = [m4 perl lzma];
-  
-  unpackCmd = "lzma -d < $src | tar -x ";
+  patches = [ ./test-suite-fix.patch ];
 
-  doCheck = true;
+  buildInputs = [ m4 perl ];
+
+  # Work around a known issue in Cygwin.  See
+  # http://thread.gmane.org/gmane.comp.sysutils.autoconf.bugs/6822 for
+  # details.
+  doCheck = (builtins.currentSystem != "i686-cygwin");
 
   # Don't fixup "#! /bin/sh" in Autoconf, otherwise it will use the
   # "fixed" path in generated files!
@@ -33,5 +36,7 @@ stdenv.mkDerivation rec {
     '';
 
     license = "GPLv2+";
+
+    maintainers = [ stdenv.lib.maintainers.ludo ];
   };
 }

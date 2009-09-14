@@ -2,6 +2,7 @@
   , lib
   , zlib ? null
   , openssl ? null
+  , gdbm ? null
   , makeOverridable
 }:
 
@@ -16,6 +17,7 @@ makeOverridable (stdenv.mkDerivation) rec {
   buildInputs = [ncurses readline]
     ++(lib.optional (zlib != null) zlib)
     ++(lib.optional (openssl != null) openssl)
+    ++(lib.optional (gdbm != null) gdbm)
   ;
   configureFlags = ["--enable-shared" "--enable-pthread"] ;
 
@@ -26,5 +28,10 @@ makeOverridable (stdenv.mkDerivation) rec {
     license = "Ruby";
     homepage = "http://www.ruby-lang.org/en/";
     description = "The Ruby language";
+  };
+
+  passthru = {
+    # install ruby libs into "$out/${ruby.libPath}"
+    libPath = "lib/ruby-1.8";
   };
 }

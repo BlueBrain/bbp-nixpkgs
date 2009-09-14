@@ -17,7 +17,7 @@ args:
           then (getAttr name fetchInfos) { inherit fetchurl; }
           else throw "no bleeding edge source attribute found in bleeding-edge-fetch-infos.nix with name ${name}\n"
                      "run NO_FETCH=1 nix-repository-manager <path to nixpkgs> --update <reponame> to add it automatically";
-        localTarGZ = managedRepoDir+"/dist/${ lib.dropPath (head fetchinfo.urls) }"; # hack, dropPath should be implemented as primop
+        localTarGZ = managedRepoDir+"/dist/${ builtins.baseNameOf (head fetchinfo.urls) }"; # hack, dropPath should be implemented as primop
         fetchInfos = import ../../../misc/bleeding-edge-fetch-infos.nix; in
     if (getConfig ["bleedingEdgeRepos" "useLocalRepos"] false && builtins.pathExists localTarGZ)
         then localTarGZ else fetchinfo;
@@ -33,11 +33,17 @@ args:
     # you can add groups names to update some repositories at once
     # see nix-repository-manager expression in haskellPackages
 
+      unsermake = { type = "svn"; url = "svn://anonsvn.kde.org/home/kde/trunk/kdenonbeta/unsermake"; };
+
       nix_repository_manager = { type = "darcs"; url = "http://mawercer.de/~marc/repos/nix-repository-manager"; };
+
+      pywebcvs = { type = "svn"; url = "https://pywebsvcs.svn.sourceforge.net/svnroot/pywebsvcs/trunk"; };
 
       plugins = { type = "darcs"; url="http://code.haskell.org/~dons/code/hs-plugins/"; groups="haskell"; };
 
       hg2git = { type = "git"; url="git://repo.or.cz/hg2git.git"; };
+
+      MPlayer = { type = "svn"; url="svn://svn.mplayerhq.hu/mplayer/trunk"; };
 
       # darcs repositories haskell 
       http =  { type= "darcs"; url="http://darcs.haskell.org/http/"; groups="happs"; };
@@ -76,5 +82,13 @@ args:
 
       getOptions = { type="darcs"; url="http://repetae.net/john/repos/GetOptions"; groups=""; };
       ghc_syb = { type = "git"; url = "git://github.com/nominolo/ghc-syb.git"; groups="haskell scien"; };
+
+      libCSS = { type = "svn"; url = "svn://svn.netsurf-browser.org/trunk/libcss"; groups = "netsurf_group"; };
+      netsurf = { type = "svn"; url = "svn://svn.netsurf-browser.org/trunk/netsurf"; groups = "netsurf_group"; };
+      libwapcaplet = { type = "svn"; url = "svn://svn.netsurf-browser.org/trunk/libwapcaplet"; groups = "netsurf_group"; };
+      libsvgtiny = { type = "svn"; url = "svn://svn.netsurf-browser.org/trunk/libsvgtiny"; groups = "netsurf_group"; };
+      libdom = { type = "svn"; url = "svn://svn.netsurf-browser.org/trunk/dom"; groups = "netsurf_group"; };
+      netsurf_haru = { type = "svn"; url = "svn://svn.netsurf-browser.org/trunk/libharu"; groups = "netsurf_group"; };
+
     } // kde4support // getConfig [ "bleedingEdgeRepos" "repos" ] {};
 }

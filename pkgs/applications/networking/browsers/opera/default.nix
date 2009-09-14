@@ -1,37 +1,35 @@
-{ stdenv, fetchurl, qt, zlib, libX11, libXext, libSM, libICE, libstdcpp5, glibc
-, motif ? null, libXt ? null
+{ stdenv, fetchurl, qt, zlib, libX11, libXext, libSM, libICE, libXt, glibc
 , makeDesktopItem
 }:
 
-assert motif != null -> libXt != null;
-
-# !!! Add Xinerama and Xrandr dependencies?  Or should those be in Qt?
-
-# Hm, does Opera 9.x still use Motif for anything?
+assert stdenv.isLinux && stdenv.gcc.gcc != null;
 
 stdenv.mkDerivation rec {
-  version = "9.64";
-  name = "opera-${version}";
-
-  inherit libstdcpp5;
+  name = "opera-10.00";
 
   builder = ./builder.sh;
-    src = if (stdenv.system == "i686-linux") then
+  
+  src =
+    if stdenv.system == "i686-linux" then
       fetchurl {
-	url = ftp://mirror.liteserver.nl/pub/opera/linux/964/final/en/i386/static/opera-9.64.gcc295-static-qt3.i386.tar.gz;
-        sha256 = "0ryza8wrqhlcs9hs3vs38ig3pjwifymxi8jsx83kvxg963p2k825";
-      } else if (stdenv.system == "x86_64-linux") then
+        url = "http://mirror.liteserver.nl/pub/opera/linux/1000/final/en/i386/shared/${name}.gcc4-shared-qt3.i386.tar.gz";
+        sha256 = "1l87rxdzq2mb92jbwj4gg79j177yzyfbkqb52gcdwicw8jcmhsad";
+      }
+    else if stdenv.system == "x86_64-linux" then
       fetchurl {
-        url = http://mirror.liteserver.nl/pub/opera/linux/964/final/en/x86_64/opera-9.64.gcc4-shared-qt3.x86_64.tar.gz ;
-        sha256 = "1zmj8lr1mx3d98adyd93kw2ldxxb13wzi6xzlgmb3dr4pn9j85n2";
-      } else throw "unsupported platform ${stdenv.system} (only i686-linux and x86_64 linux supported yet)";
+        url = "http://mirror.liteserver.nl/pub/opera/linux/1000/final/en/x86_64/${name}.gcc4-shared-qt3.x86_64.tar.gz";
+        sha256 = "0w9a56j3jz0bjdj98k6n4xmrjnkvlxm32cfvh2c0f5pvgwcr642i";
+      }
+    else throw "Opera is not supported on ${stdenv.system} (only i686-linux and x86_64 linux are supported)";
 
   dontStrip = 1;
-  # operapluginwrapper seems to require libXt ?
-  # Adding it makes startup faster and omits error messages (on x68)
+  
+  # `operapluginwrapper' requires libXt. Adding it makes startup faster
+  # and omits error messages (on x86).
   libPath =
-    [glibc qt motif zlib libX11 libXt libXext libSM libICE libstdcpp5]
-    ++ (if motif != null then [motif ] else []);
+    let list = [ stdenv.gcc.gcc glibc qt zlib libX11 libXt libXext libSM libICE];
+    in stdenv.lib.makeLibraryPath list
+        + ":" + (if stdenv.system == "x86_64-linux" then stdenv.lib.makeSearchPath "lib64" list else "");
 
   desktopItem = makeDesktopItem {
     name = "Opera";
@@ -43,8 +41,8 @@ stdenv.mkDerivation rec {
     categories = "Application;Network;";
   };
 
-
   meta = {
     homepage = http://www.opera.com;
+    description = "The Opera web browser";
   };
 }

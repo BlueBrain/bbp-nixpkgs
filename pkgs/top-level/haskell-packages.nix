@@ -217,6 +217,10 @@ rec {
     inherit (pkgs) sqlite;
   };
 
+  HGL = import ../development/libraries/haskell/HGL {
+    inherit cabal X11;
+  };
+
   highlightingKate = import ../development/libraries/haskell/highlighting-kate {
     inherit cabal parsec pcreLight xhtml;
   };
@@ -312,6 +316,10 @@ rec {
     inherit cabal;
   };
 
+  parseargs = import ../development/libraries/haskell/parseargs {
+    inherit cabal;
+  };
+
   parsec = import ../development/libraries/haskell/parsec {
     inherit cabal;
   };
@@ -360,6 +368,10 @@ rec {
 
   regular = import ../development/libraries/haskell/regular {
     inherit cabal;
+  };
+
+  scion = import ../development/libraries/haskell/scion {
+    inherit cabal ghcPaths ghcSyb hslogger json multiset time uniplate;
   };
 
   syb = import ../development/libraries/haskell/syb {
@@ -461,7 +473,7 @@ rec {
   };
 
   vacuum = import ../development/libraries/haskell/vacuum {
-    inherit cabal ghcPaths haskellSrcMeta;
+    inherit cabal ghcPaths;
   };
 
   vacuumCairo = import ../development/libraries/haskell/vacuum-cairo {
@@ -575,11 +587,15 @@ rec {
   };
 
   hlint = import ../development/tools/haskell/hlint {
-    inherit cabal haskellSrcExts mtl uniplate hscolour;
+    inherit cabal haskellSrcExts mtl uniplate hscolour parallel;
   };
 
   hslogger = import ../development/tools/haskell/hslogger {
     inherit cabal mtl network time;
+  };
+
+  mkcabal = import ../development/tools/haskell/mkcabal {
+    inherit cabal mtl pcreLight readline;
   };
 
   tar = import ../development/tools/haskell/tar {
@@ -598,7 +614,7 @@ rec {
   };
 
   leksah = import ../applications/editors/leksah {
-    inherit cabal gtk2hs binary parsec regexPosix utf8String;
+    inherit cabal gtk2hs binary parsec regexPosix regexCompat utf8String;
     inherit (pkgs) libedit makeWrapper;
   };
   
@@ -638,6 +654,10 @@ rec {
   };
 
   # Games.
+
+  LambdaHack = import ../games/LambdaHack {
+    inherit cabal binary mtl zlib vty;
+  };
 
   MazesOfMonad = import ../games/MazesOfMonad {
     inherit cabal HUnit mtl regexPosix time;

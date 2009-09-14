@@ -5,11 +5,11 @@ assert !userModeLinux;
 import ./generic.nix (
 
   rec {
-    version = "2.6.27.26";
+    version = "2.6.27.31";
   
     src = fetchurl {
       url = "mirror://kernel/linux/kernel/v2.6/linux-${version}.tar.bz2";
-      sha256 = "0gmj5219yha41kb02yrllc313x21gjir50lw9dlsc174hsj56vpc";
+      sha256 = "0ka4x1r3x4r5mngl3xmmplrddj06lrydglcrj3mdinava5g97h6v";
     };
 
     features = {

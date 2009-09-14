@@ -36,15 +36,22 @@ rec {
   };
   
   GConf = import ./platform/GConf {
-    inherit (pkgs) stdenv fetchurl pkgconfig dbus_glib libxml2 expat policyKit;
+    inherit (pkgs) stdenv fetchurl pkgconfig dbus_glib libxml2 expat;
     inherit (pkgs.gtkLibs) glib gtk;
     inherit intltool ORBit2;
+    policy_kit = pkgs.policy_kit_0_9;
   };
 
   libgnomecanvas = import ./platform/libgnomecanvas {
     inherit (pkgs) stdenv fetchurl pkgconfig cairo;
     inherit (pkgs.gtkLibs) glib gtk pango atk;
     inherit intltool libart_lgpl libglade;
+  };
+
+  # for git-head builds
+  gnome_common = import platform/gnome-common {
+    inherit (pkgs) stdenv fetchgit pkgconfig
+      autoconf automake libtool;
   };
   
   gnome_mime_data = import ./platform/gnome-mime-data {
@@ -127,6 +134,15 @@ rec {
     inherit (pkgs) stdenv fetchurl pkgconfig libxml2 gnutls libproxy sqlite curl;
     inherit (pkgs.gtkLibs) glib;
     inherit GConf;
+  };
+
+  # fails with a mysterious error on linking
+  # symbol not found although it is actually present
+  libsoup_git_head = import ./desktop/libsoup/git-head.nix {
+    inherit (pkgs) stdenv fetchgit pkgconfig libxml2 gnutls libproxy sqlite curl
+      automake autoconf libtool which;
+    glib = pkgs.gtkLibs216.glib_2_21;
+    inherit GConf gnome_common gtk_doc gnome_keyring;
   };
 
   libwnck = import ./desktop/libwnck {

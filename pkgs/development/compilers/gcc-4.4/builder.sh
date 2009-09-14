@@ -42,15 +42,10 @@ if test "$noSysDirs" = "1"; then
 
     # Setting $CPATH makes sure both `gcc' and `xgcc' find the C
     # library headers, regarless of the language being compiled.
-    export CPATH="$NIX_FIXINC_DUMMY:$gmp/include:$mpfr/include"
+    export CPATH="$NIX_FIXINC_DUMMY${CPATH:+:}$CPATH"
 
     # Likewise, to help it find `crti.o' and similar files.
-    export LIBRARY_PATH="$glibc_libdir"
-
-    if test "$langJava" = "1"; then
-	export CPATH="$CPATH:$zlib/include:$boehmgc/include"
-	export LIBRARY_PATH="$LIBRARY_PATH:$zlib/lib:$boehmgc/lib"
-    fi
+    export LIBRARY_PATH="$glibc_libdir${LIBRARY_PATH:+:}$LIBRARY_PATH"
 
     echo "setting \$CPATH to \`$CPATH'"
     echo "setting \$LIBRARY_PATH to \`$LIBRARY_PATH'"

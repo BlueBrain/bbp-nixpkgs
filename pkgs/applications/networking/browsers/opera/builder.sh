@@ -5,38 +5,31 @@ buildPhase() {
 }
 
 installPhase() {
-  set -x
-
-    sed -i 's=/bin/pwd=pwd=' install.sh 
+    substituteInPlace install.sh --replace /bin/pwd pwd
+    
     # Note: the "no" is because the install scripts asks whether we
     # want to install icons in some system-wide directories.
     echo no | ./install.sh --prefix=$out
 
-    rpath=/no-such-path
-    for i in $libPath; do
-        rpath="$rpath:$i/lib"
-    done
-
     [ -z ${system##*64*} ] && suf=64
 
-    # !!! ugh, should fix this eventually; just make a normal gcc dependency
-    gcc=$(cat $NIX_GCC/nix-support/orig-gcc)
-    rpath="$rpath:$libstdcpp5/lib$suf"
-    
-    for i in $out/lib/opera/*/opera $out/lib/opera/*/operaplugincleaner; do
-        [ -h "$i" ] && i=$(readline "$i")
-        echo "$i <<<<<<<<<<<<"
+    find $out -type f | while read f; do
+      echo testing "$f"
+      # patch all executables
+      if readelf -h "$f" | grep 'EXEC (Executable file)' &> /dev/null; then
+        echo "patching $f <<"
         patchelf \
             --set-interpreter "$(cat $NIX_GCC/nix-support/dynamic-linker)" \
-            --set-rpath "$rpath" \
-            "$i"
+            --set-rpath "$libPath" \
+            "$f"
+      fi
     done
-    # substitute pwd as late as possible so that the md5 checkusm check of opera passes
-    sed -i 's=/bin/pwd=pwd=' $out/bin/opera
+    
+    # Substitute pwd as late as possible so that the md5 checksum check of opera passes.
+    substituteInPlace $out/bin/opera --replace /bin/pwd pwd
 
     ensureDir $out/share/applications
     cp $desktopItem/share/applications/* $out/share/applications
-
 }
 
 genericBuild

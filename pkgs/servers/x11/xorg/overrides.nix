@@ -50,6 +50,7 @@
   };
 
   xf86videoopenchrome = attrs: attrs // {
+    name = "xf86-video-openchrome-svn-754";
     src = args.fetchsvn {
       url = http://svn.openchrome.org/svn/trunk;
       md5 = "9a64a317d1f0792c5709e516c14f383b";
@@ -68,12 +69,11 @@
     patches = [./xorgserver-dri-path.patch ./xorgserver-xkbcomp-path.patch];
     buildInputs = attrs.buildInputs ++ [args.zlib xorg.xf86bigfontproto];
     propagatedBuildInputs = [xorg.libpciaccess];
-    /*
-    configureFlags = "--with-xkb-output=/var/tmp";
-    postPatch = ''
-      sed -i -e 's@ -w @ -I${args.xkeyboard_config}/etc/X11/xkb -w @' xkb/ddxLoad.c
-    '';
-    */
+    postInstall =
+      ''
+        rm -rf $out/share/X11/xkb/compiled
+        ln -s /var/tmp $out/share/X11/xkb/compiled
+      '';
   };
   
 }

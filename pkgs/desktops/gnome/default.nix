@@ -255,6 +255,7 @@ rec {
 
   libgweather = stdenv.mkDerivation {
     inherit (desktop.libgweather) name src;
+    configureFlags = "--with-zoneinfo-dir=/etc/localtime"; # is created by nixos. This is the default location of debian/ gentoo as well
     buildInputs = [
       gettext perl perlXMLParser pkgconfig gtk libxml2 gnomevfs
       intltool libsoup
@@ -268,7 +269,7 @@ rec {
       pkgconfig perl perlXMLParser gtk glib ORBit2 libgnome libgnomeui
       gnomedesktop libglade libwnck libjpeg libpng scrollkeeper
       xlibs.libXmu xlibs.libXau dbus_glib gnomemenus gnomedocutils
-      gettext libxslt librsvg libgweather which
+      gettext libxslt librsvg libgweather which intltool
     ];
 
     configureFlags = "--disable-scrollkeeper";
@@ -328,7 +329,7 @@ rec {
     buildInputs = [
       pkgconfig perl perlXMLParser GConf gnomedocutils
       gtk libgnome libgnomeui gettext libxslt intltool
-      policyKit dbus_glib
+      policy_kit dbus_glib
     ];
 
     configureFlags = "--disable-scrollkeeper";
@@ -372,6 +373,7 @@ rec {
       pkgconfig perl perlXMLParser glib gtk libgnome libgnomeui
       libglade libgnomeprintui gnomedesktop gnomepanel libgtop
       scrollkeeper gnomedocutils gettext libxslt xlibs.libXmu intltool
+      which
     ]; 
 
     configureFlags = "--disable-scrollkeeper";

@@ -33,12 +33,27 @@ let
           (pkgs.lib.getAttrFromPath path pkgs);
       in testOn job.systems getPkg);
 
+  selectMaintained = attrSet: 
+    if builtins  ? tryEval then 
+      let pairs = pkgs.lib.concatMap 
+        (x: let val = builtins.tryEval (processPackage (builtins.getAttr x attrSet)); in
+          if val.success && val.value != [] then [{name=x; value=val.value;}] else [])
+        (builtins.attrNames attrSet);
+      in
+        builtins.listToAttrs pairs
+    else {};
+  # May fail as much as it wishes, we will catch the error
+  processPackage = attrSet: 
+    if attrSet ? recurseForDerivations && attrSet.recurseForDerivations then 
+      selectMaintained attrSet
+    else
+      if attrSet.meta.maintainers != [] then 
+        attrSet.meta.platforms
+      else
+        []; 
+
   /* Common platform groups on which to test packages. */
-  linux = ["i686-linux" "x86_64-linux"];
-  darwin = ["i686-darwin"];
-  cygwin = ["i686-cygwin"];
-  all = linux ++ darwin ++ cygwin;
-  allBut = platform: pkgs.lib.filter (x: platform != x) all;
+  inherit (pkgs.lib.platforms) linux darwin cygwin allBut all;
 
   /* Platform groups for specific kinds of applications. */
   x11Supported = linux;
@@ -49,7 +64,7 @@ in {
 
   tarball = import ./make-tarball.nix;
 
-} // mapTestOn rec {
+} // (mapTestOn ((selectMaintained pkgs) // rec {
 
   MPlayer = linux;
   abcde = linux;
@@ -88,9 +103,10 @@ in {
   cdrkit = linux;
   chatzilla = linux;
   cksfv = all;
-  clisp = linux;
+  classpath = linux;
   cmake = all;
   compiz = linux;
+  console_kit = linux;
   coreutils = all;
   cpio = all;
   cron = linux;
@@ -112,6 +128,7 @@ in {
   dovecot = linux;
   doxygen = linux;
   dpkg = linux;
+  drgeo = linux;
   e2fsprogs = linux;
   ejabberd = linux;
   elinks = linux;
@@ -141,7 +158,6 @@ in {
   gcc42 = linux;
   gcc43_multi = ["x86_64-linux"];
   gcc44 = linux;
-  gcj43 = linux;
   gcj44 = linux;
   gdb = all;
   ghostscript = linux;
@@ -158,7 +174,6 @@ in {
   gnupatch = all;
   gnupg2 = linux;
   gnuplot = allBut "i686-cygwin";
-  gnuplotX = linux;
   gnused = all;
   gnutar = all;
   gnutls = linux;
@@ -178,6 +193,7 @@ in {
   gw6c = linux;
   gzip = all;
   hal = linux;
+  hal_info = linux;
   hddtemp = linux;
   hdparm = linux;
   hello = all;
@@ -218,6 +234,7 @@ in {
   libtopology = all;
   libxml2 = all;
   libxslt = all;
+  linuxwacom = linux;
   lout = linux;
   lsh = linux;
   lsof = linux;
@@ -252,6 +269,7 @@ in {
   nfsUtils = linux;
   nix = all;
   nixUnstable = all;
+  nmap = linux;
   nss_ldap = linux;
   nssmdns = linux;
   ntfs3g = linux;
@@ -276,6 +294,7 @@ in {
   pkgconfig = all;
   pltScheme = linux;
   pmccabe = linux;
+  policy_kit = linux;
   portmap = linux;
   postgresql = all;
   postfix = linux;
@@ -283,11 +302,13 @@ in {
   procps = linux;
   pwdutils = linux;
   pthreadmanpages = all;
+  pygtk = linux;
   python = allBut "i686-cygwin";
   pythonFull = linux;
   sbcl = all;
   qt3 = allBut "i686-cygwin";
   qt4 = linux;
+  qt45 = linux;
   quake3demo = linux;
   readline = all;
   reiserfsprogs = linux;
@@ -299,6 +320,7 @@ in {
   rxvt_unicode = all;
   samba = linux;
   screen = linux ++ darwin;
+  scrot = linux;
   sdparm = linux;
   seccure = linux;
   sgtpuzzles = linux;
@@ -350,11 +372,14 @@ in {
   usbutils = linux;
   utillinux = linux;
   utillinuxCurses = linux;
+  uzbl = linux;
   valgrind = linux;
   viking = linux;
+  vice = linux;
   vim = linux;
   vimHugeX = linux;
   vlc = linux;
+  vncrec = linux;
   vorbisTools = linux;
   vpnc = linux;
   vsftpd = linux;
@@ -366,6 +391,7 @@ in {
   wireshark = linux;
   wirelesstools = linux;
   wpa_supplicant = linux;
+  wxGTK = all;
   x11_ssh_askpass = linux;
   xchm = linux;
   xfig = x11Supported;
@@ -391,6 +417,11 @@ in {
     fr = all;
     nl = all;
     ru = all;
+  };
+
+  dbus = {
+    libs = linux;
+    tools = linux;
   };
 
   emacs22Packages = {
@@ -469,6 +500,36 @@ in {
     krusader = linux;
   };
 
+  kde43 = {
+    kdelibs = linux;
+    kdelibs_experimental = linux;
+    kdebase_workspace = linux;
+    kdebase = linux;
+    kdebase_runtime = linux;
+    oxygen_icons = linux;
+    kdepimlibs = linux;
+    kdeadmin = linux;
+    kdeartwork = linux;
+    kdeedu = linux;
+    kdegraphics = linux;
+    kdemultimedia = linux;
+    kdenetwork = linux;
+    kdepim = linux;
+    kdepim_runtime = linux;
+    kdeplasma_addons = linux;
+    kdegames = linux;
+    kdetoys = linux;
+    kdeutils = linux;
+    kdesdk = linux;
+    kdewebdev = linux;
+    krusader = linux;
+    kmplayer = linux;
+    ktorrent = linux;
+    koffice = linux;
+    kdesvn = linux;
+    amarok = linux;
+  };
+
   kernelPackages_2_6_25 = {
     aufs = linux;
     kernel = linux;
@@ -499,12 +560,16 @@ in {
     virtualbox = linux;
   };
 
-  kernelPackages_2_6_31_rc3 = {
+  kernelPackages_2_6_31 = {
+    kernel = linux;
+  };
+
+  kernelPackages_2_6_31_rc4 = {
     aufs = linux;
     kernel = linux;
   };
 
-  kernelPackages_2_6_31_rc3_old_i686 = {
+  kernelPackages_2_6_31_rc4_old_i686 = {
     aufs = ["i686-linux"];
     kernel = ["i686-linux"];
   };
@@ -552,7 +617,10 @@ in {
     xf86inputkeyboard = linux;
     xf86inputmouse = linux;
     xf86inputevdev = linux;
+    xf86inputsynaptics = linux;
+    xf86videoati = linux;
     xf86videointel = linux;
+    xf86videonv = linux;
     xf86videovesa = linux;
     xfs = linux;
     xkbcomp = linux;
@@ -563,4 +631,4 @@ in {
     xset = linux;
   };
 
-}
+} ))

@@ -2,15 +2,15 @@ a :
 let 
   fetchurl = a.fetchurl;
 
-  version = a.lib.attrByPath ["version"] "2009.07.03" a; 
+  version = a.lib.attrByPath ["version"] "2009.08.08" a; 
   buildInputs = with a; [
-    pkgconfig webkit libsoup gtk 
+    libsoup pkgconfig webkit gtk makeWrapper
   ];
 in
 rec {
   src = fetchurl {
     url = "http://github.com/Dieterbe/uzbl/tarball/${version}";
-    sha256 = "18lsrylkgicqrlw03978v71cycyyba1d4lbiszw7dk89hd4ziqv2";
+    sha256 = "06f0ae1e34bc0b0f77feeba5f832cdc2349ac04cbc7a5a5b9e7e5ff086a9c497";
     name = "uzbl-master-${version}.tar.gz";
   };
 
@@ -18,12 +18,24 @@ rec {
   configureFlags = [];
 
   /* doConfigure should be removed if not needed */
-  phaseNames = ["doMakeInstall"];
+  phaseNames = ["addInputs" "setVars" "doMakeInstall" "doWrap"];
+
+  setVars = a.noDepEntry (''
+  '');
+
+  doWrap = a.makeManyWrappers "$out/bin/uzbl" 
+    ''
+      --prefix GST_PLUGIN_PATH : ${a.webkit.gstreamer}/lib/gstreamer-* \
+      --prefix GST_PLUGIN_PATH : ${a.webkit.gstPluginsBase}/lib/gstreamer-* \
+      --prefix GST_PLUGIN_PATH : ${a.webkit.gstPluginsGood}/lib/gstreamer-* \
+      --prefix GST_PLUGIN_PATH : ${a.webkit.gstFfmpeg}/lib/gstreamer-* 
+    '';
 
   installFlags = "PREFIX=$out";
       
   name = "uzbl-" + version;
   meta = {
     description = "Tiny externally controllable webkit browser";
+    maintainers = [a.lib.maintainers.raskin];
   };
 }

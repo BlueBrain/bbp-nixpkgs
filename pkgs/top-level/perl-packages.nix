@@ -80,6 +80,36 @@ rec {
     propagatedBuildInputs = [ScopeGuard];
   };
 
+  Autodia = buildPerlPackage rec {
+    name = "Autodia-2.03";
+    src = fetchurl {
+      url = "http://www.aarontrevena.co.uk/opensource/autodia/download/${name}.tar.gz";
+      sha256 = "1pzp30lnqkip2yrmnyzrf62g08xwn751nf9gmwdxjc09daaihwaz";
+    };
+    propagatedBuildInputs = [ TemplateToolkit Inline InlineJava GraphViz ];
+
+    meta = {
+      description = "AutoDia, create UML diagrams from source code";
+
+      longDescription = ''
+        AutoDia is a modular application that parses source code, XML or data
+        and produces an XML document in Dia format (or images via graphviz
+        and vcg).  Its goal is to be a UML / DB Schema diagram autocreation
+        package.  The diagrams its creates are standard UML diagrams showing
+        dependancies, superclasses, packages, classes and inheritances, as
+        well as the methods, etc of each class.
+
+        AutoDia supports any language that a Handler has been written for,
+        which includes C, C++, Java, Perl, Python, and more.
+      '';
+
+      homepage = http://www.aarontrevena.co.uk/opensource/autodia/;
+      license = "GPLv2+";
+
+      maintainers = [ stdenv.lib.maintainers.ludo ];
+    };
+  };
+
   BerkeleyDB = import ../development/perl-modules/BerkeleyDB {
     inherit buildPerlPackage fetchurl;
     inherit (pkgs) db4;
@@ -1074,6 +1104,24 @@ rec {
     };
   };
 
+  GraphViz = buildPerlPackage rec {
+    name = "GraphViz-2.04";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/L/LB/LBROCARD/${name}.tar.gz";
+      sha256 = "1gxpajd49pb9w9ka7nq5477my8snp3myrgiarnk6hj922jpn62xd";
+    };
+
+    # XXX: It'd be nicer it `GraphViz.pm' could record the path to graphviz.
+    buildInputs = [ pkgs.graphviz ];
+    propagatedBuildInputs = [ IPCRun ];
+
+    meta = {
+      description = "Perl interface to the GraphViz graphing tool";
+      license = [ "Artistic" ];
+      maintainers = [ stdenv.lib.maintainers.ludo ];
+    };
+  };
+
   HTMLFormFu = buildPerlPackage rec {
     name = "HTML-FormFu-0.03007";
     src = fetchurl {
@@ -1291,6 +1339,64 @@ rec {
         maintainers = [ stdenv.lib.maintainers.ludo ];
       };
     };
+
+  Inline = buildPerlPackage rec {
+    name = "Inline-0.45";
+
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/S/SI/SISYPHUS/${name}.tar.gz";
+      sha256 = "1k5nrb3nh2y33bs944ri78m1ni60v4cl67ffhxx88azj542y5c9x";
+    };
+
+    propagatedBuildInputs = [ ParseRecDescent ];
+
+    meta = {
+      description = "Inline -- Write Perl subroutines in other programming languages";
+
+      longDescription = ''
+        The Inline module allows you to put source code from other
+        programming languages directly "inline" in a Perl script or
+        module. The code is automatically compiled as needed, and then loaded
+        for immediate access from Perl.
+      '';
+
+      license = "Artistic";
+
+      maintainers = [ stdenv.lib.maintainers.ludo ];
+    };
+  };
+
+  InlineJava = buildPerlPackage rec {
+    name = "Inline-Java-0.52";
+
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/P/PA/PATL/${name}.tar.gz";
+      sha256 = "0xdx1nnjvsih2njcncmwxwdi3w2zf74vqb9wpn1va8ii93mlakff";
+    };
+
+    propagatedBuildInputs = [ Inline ];
+
+    makeMakerFlags = "J2SDK=${pkgs.jdk}";
+
+    # FIXME: Apparently tests want to access the network.
+    doCheck = false;
+
+    meta = {
+      description = "Inline::Java -- Write Perl classes in Java";
+
+      longDescription = ''
+        The Inline::Java module allows you to put Java source code directly
+        "inline" in a Perl script or module.  A Java compiler is launched and
+        the Java code is compiled.  Then Perl asks the Java classes what
+        public methods have been defined.  These classes and methods are
+        available to the Perl program as if they had been written in Perl.
+      '';
+
+      license = "Artistic";
+
+      maintainers = [ stdenv.lib.maintainers.ludo ];
+    };
+  };
 
   JSON = buildPerlPackage rec {
     name = "JSON-2.15";
@@ -2127,6 +2233,14 @@ rec {
     doCheck = false;
   };
 
+  TextAligner = buildPerlPackage rec {
+    name = "Text-Aligner-0.03";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/A/AN/ANNO/${name}.tar.gz";
+      sha256 = "137m8w13ffdm3fbvy6yw0izrl2p87zawp1840qvsdw1nd0plxyp9";
+    };
+  };
+
   TextCSV = buildPerlPackage rec {
     name = "Text-CSV-1.10";
     src = fetchurl {
@@ -2141,6 +2255,15 @@ rec {
       url = mirror://cpan/authors/id/S/SR/SRI/Text-SimpleTable-0.05.tar.gz;
       sha256 = "028pdfmr2gnaq8w3iar8kqvrpxcghnag8ls7h4227l9zbxd1k9p9";
     };
+  };
+
+  TextTable = buildPerlPackage rec {
+    name = "Text-Table-1.114";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/A/AN/ANNO/${name}.tar.gz";
+      sha256 = "0qnpfyv7l98hyah3bnq19c33m9jh5sg0fmw2xxzaygmnp2pgpmpm";
+    };
+    propagatedBuildInputs = [TextAligner];
   };
 
   TieIxhash = buildPerlPackage rec {
