@@ -13,7 +13,7 @@ export BASH_SHELL=/bin/sh
 
 preConfigure() {
 
-    for i in configure io/ftwtest-sh; do
+    for i in libc/configure libc/io/ftwtest-sh; do
         # Can't use substituteInPlace here because replace hasn't been
         # built yet in the bootstrap.
         sed -i "$i" -e "s^/bin/pwd^$PWD_P^g"
@@ -23,7 +23,8 @@ preConfigure() {
     ensureDir $out/src
     cp -R libc ports $out/src
     ln -s $out/src/ports $out/src/libc/ports
-    export CFLAGS="-pipe -g -O1"
+    # glibc wants -O2 minimum
+    export CFLAGS="-pipe -g -O2"
 
     mkdir $NIX_BUILD_TOP/build
     cd $NIX_BUILD_TOP/build
