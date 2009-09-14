@@ -1,5 +1,12 @@
 {stdenv, fetchurl}:
 
+let
+  preBuildNoNative = ''
+      # Make Cwd work on NixOS (where we don't have a /bin/pwd).
+      substituteInPlace lib/Cwd.pm --replace "'/bin/pwd'" "'$(type -tP pwd)'"
+    '';
+  preBuildNative = "";
+in
 stdenv.mkDerivation {
   name = "perl-5.10.0";
 
@@ -48,11 +55,7 @@ stdenv.mkDerivation {
       ${if stdenv.system == "armv5tel-linux" then "-Dldflags=\"-lm -lrt\"" else ""};
     '';
 
-  preBuild =
-    ''
-      # Make Cwd work on NixOS (where we don't have a /bin/pwd).
-      substituteInPlace lib/Cwd.pm --replace "'/bin/pwd'" "'$(type -tP pwd)'"
-    '';
+  preBuild = if (stdenv.gcc.nativeTools) then preBuildNative else preBuildNoNative;
 
   setupHook = ./setup-hook.sh;
 }

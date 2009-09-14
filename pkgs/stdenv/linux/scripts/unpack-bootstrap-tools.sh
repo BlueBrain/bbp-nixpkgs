@@ -10,7 +10,7 @@ echo Patching the bootstrap tools...
 
 # On x86_64, ld-linux-x86-64.so.2 barfs on patchelf'ed programs.  So
 # use a copy of patchelf.
-LD_LIBRARY_PATH=$out/lib $out/lib/ld-linux*.so.2 $out/bin/cp $out/bin/patchelf .
+LD_LIBRARY_PATH=$out/lib $out/lib/ld-linux*.so.? $out/bin/cp $out/bin/patchelf .
 
 for i in $out/bin/* $out/libexec/gcc/*/*/*; do
     echo patching $i
