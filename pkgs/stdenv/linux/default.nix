@@ -120,7 +120,7 @@ rec {
 
   # A helper function to call gcc-wrapper.
   wrapGCC =
-    {gcc ? bootstrapTools, libc, binutils, shell ? "", name ? "bootstrap-gcc"}:
+    {gcc ? bootstrapTools, libc, binutils, shell ? "", name ? "bootstrap-gcc-wrapper"}:
     
     import ../../build-support/gcc-wrapper {
       nativeTools = false;
