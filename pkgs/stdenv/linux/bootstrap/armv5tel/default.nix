@@ -7,7 +7,7 @@
   curl = ./curl.bz2;
 
   bootstrapTools = {
-    url = "file:///root/bootstrap-tools-nostrip.cpio.bz2";
-    sha256 = "08vbd2b6lajrsp66zfalxzdy4bjrvx46agjhlv7zry0g8i5z6sm8";
+    url = "http://vicerveza.homeunix.net/~viric/tmp/bootstrap-tools-armv5tel-linux.cpio.bz2";
+    sha256 = "0jx17s02gaqk8h561sz95lm9nw6q23i78m5955xnh034la4ds9sj";
   };
 }
