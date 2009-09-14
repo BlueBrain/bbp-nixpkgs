@@ -24,6 +24,7 @@ rec {
     stdenv = useDietLibC stdenv;
   };
 
+  gccNoShared = wrapGCC ( gcc.gcc.override { enableShared = false; } );
 
   build = 
 
@@ -79,21 +80,21 @@ rec {
         cp -d ${gnugrep.pcre}/lib/libpcre*.so* $out/lib # needed by grep
         
         # Copy what we need of GCC.
-        cp -d ${gcc.gcc}/bin/gcc $out/bin
-        cp -d ${gcc.gcc}/bin/cpp $out/bin
-        cp -d ${gcc.gcc}/bin/g++ $out/bin
-        cp -d ${gcc.gcc}/lib*/libgcc_s.so* $out/lib
-        cp -d ${gcc.gcc}/lib*/libstdc++.so* $out/lib
-        cp -rd ${gcc.gcc}/lib/gcc $out/lib
+        cp -d ${gccNoShared.gcc}/bin/gcc $out/bin
+        cp -d ${gccNoShared.gcc}/bin/cpp $out/bin
+        cp -d ${gccNoShared.gcc}/bin/g++ $out/bin
+        cp -d ${gccNoShared.gcc}/lib*/libgcc_s.so* $out/lib
+        cp -d ${gccNoShared.gcc}/lib*/libstdc++.so* $out/lib
+        cp -rd ${gccNoShared.gcc}/lib/gcc $out/lib
         chmod -R u+w $out/lib
         rm -f $out/lib/gcc/*/*/include*/linux
         rm -f $out/lib/gcc/*/*/include*/sound
         rm -rf $out/lib/gcc/*/*/include*/root
         rm -f $out/lib/gcc/*/*/include-fixed/asm
         #rm -f $out/lib/gcc/*/*/*.a
-        cp -rd ${gcc.gcc}/libexec/* $out/libexec
+        cp -rd ${gccNoShared.gcc}/libexec/* $out/libexec
         mkdir $out/include
-        cp -rd ${gcc.gcc}/include/c++ $out/include
+        cp -rd ${gccNoShared.gcc}/include/c++ $out/include
         chmod -R u+w $out/include
         rm -rf $out/include/c++/*/ext/pb_ds
         rm -rf $out/include/c++/*/ext/parallel
