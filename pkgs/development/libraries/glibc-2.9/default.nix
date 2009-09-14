@@ -54,13 +54,14 @@ stdenv.mkDerivation rec {
   ];
 
   configureFlags = [
-    "--with-headers=${kernelHeaders}/include"
-    "--without-fp"
-    (if profilingLibraries then "--enable-profile" else "--disable-profile")
     "--enable-add-ons"
+    "--with-headers=${kernelHeaders}/include"
+    (if profilingLibraries then "--enable-profile" else "--disable-profile")
+  ] ++ (if (stdenv.system == "armv5tel-linux") then [
     "--host=arm-linux-gnueabi"
     "--build=arm-linux-gnueabi"
-  ];
+    "--without-fp"
+  ] else []);
 
   preInstall = ''
     ensureDir $out/lib

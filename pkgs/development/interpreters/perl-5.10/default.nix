@@ -44,7 +44,8 @@ stdenv.mkDerivation {
         GLIBC=$(cat $NIX_GCC/nix-support/orig-libc)
         configureFlags="$configureFlags -Dlocincpth=$GLIBC/include -Dloclibpth=$GLIBC/lib"
       fi
-      ${stdenv.shell} ./Configure $configureFlags -Dldflags="-lm -lrt"
+      ${stdenv.shell} ./Configure $configureFlags \
+      ${if stdenv.system == "armv5tel-linux" then "-Dldflags=\"-lm -lrt\"" else ""};
     '';
 
   preBuild =
