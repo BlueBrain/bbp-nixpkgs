@@ -14,33 +14,16 @@ stdenv.mkDerivation rec {
 
   inherit kernelHeaders installLocales;
 
-  configureFlags = ''
-    --with-headers=${kernelHeaders}/include \
-    --without-fp \
-    --enable-add-ons=libidn,"ports nptl " \
-    --disable-profile \
-    --prefix=$out \
-    --host=arm-linux-gnueabi \
-    --build=arm-linux-gnueabi
-  '';
+  configureFlags = [
+    "--with-headers=${kernelHeaders}/include"
+    "--without-fp"
+    "--enable-add-ons=libidn,ports,nptl"
+    "--disable-profile"
+    "--host=arm-linux-gnueabi"
+    "--build=arm-linux-gnueabi"
+  ];
 
-  configurePhase = ''
-    cd libc
-    ln -s ../ports ports
-    mkdir build
-    cd build
-    set -x
-    ../configure ${configureFlags}
-    set +x
-  '';
-
-#  configureFlags = ''
-#    --enable-add-ons
-#    --with-headers=${kernelHeaders}/include
-#    --without-fp
-#    --disable-libunwind-exceptions
-#    ${if profilingLibraries then "--enable-profile" else "--disable-profile"}
-#  '';
+  builder = ./builder.sh;
 
   meta = {
     homepage = http://www.gnu.org/software/libc/;
