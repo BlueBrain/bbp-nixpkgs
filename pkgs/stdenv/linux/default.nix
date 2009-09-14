@@ -51,7 +51,10 @@ rec {
     
     builder = bootstrapFiles.sh;
     
-    args = [ ./scripts/unpack-bootstrap-tools.sh ];
+    args = if (system == "armv5tel-linux") then
+      ([ ./scripts/unpack-bootstrap-tools-arm.sh ])
+      else 
+      ([ ./scripts/unpack-bootstrap-tools.sh ]);
     
     inherit (bootstrapFiles) bzip2 mkdir curl cpio;
     
