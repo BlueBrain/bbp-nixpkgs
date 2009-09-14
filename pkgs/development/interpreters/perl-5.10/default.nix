@@ -22,16 +22,21 @@ stdenv.mkDerivation {
   # "installstyle" option to ensure that modules are put under
   # $out/lib/perl5 - this is the general default, but because $out
   # contains the string "perl", Configure would select $out/lib.
-  configureFlags = ''
-    -de -Dcc=gcc -Uinstallusrbinperl -Dinstallstyle=lib/perl5 -Duseshrplib
-    ${if stdenv ? glibc then "-Dusethreads" else ""}
-  '';
+  # Miniperl needs -lm. perl needs -lrt.
+  configureFlags = [
+    "-de"
+    "-Dcc=gcc"
+    "-Uinstallusrbinperl"
+    "-Dinstallstyle=lib/perl5"
+    "-Duseshrplib"
+    (if stdenv ? glibc then "-Dusethreads" else "")
+  ];
 
   configureScript = "${stdenv.shell} ./Configure";
 
   dontAddPrefix = true;
 
-  preConfigure =
+  configurePhase =
     ''
       configureFlags="$configureFlags -Dprefix=$out -Dman1dir=$out/share/man/man1 -Dman3dir=$out/share/man/man3"
       
@@ -39,6 +44,7 @@ stdenv.mkDerivation {
         GLIBC=$(cat $NIX_GCC/nix-support/orig-libc)
         configureFlags="$configureFlags -Dlocincpth=$GLIBC/include -Dloclibpth=$GLIBC/lib"
       fi
+      ${stdenv.shell} ./Configure $configureFlags -Dldflags="-lm -lrt"
     '';
 
   preBuild =
