@@ -24,7 +24,7 @@ rec {
     stdenv = useDietLibC stdenv;
   };
 
-  gccNoShared = wrapGCC ( gcc43.gcc.override { enableShared = false; } );
+  gccNoShared = wrapGCC ( gcc.gcc.override { enableShared = false; } );
 
   build = 
 
