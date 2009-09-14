@@ -62,6 +62,15 @@ stdenv.mkDerivation rec {
     "--build=arm-linux-gnueabi"
   ];
 
+  preInstall = ''
+    ensureDir $out/lib
+    ln -s ${stdenv.gcc.gcc}/lib/libgcc_s.so.1 $out/lib/libgcc_s.so.1
+  '';
+
+  postInstall = ''
+    rm $out/lib/libgcc_s.so.1
+  '';
+
   # Workaround for this bug:
   #   http://sourceware.org/bugzilla/show_bug.cgi?id=411
   # I.e. when gcc is compiled with --with-arch=i686, then the
