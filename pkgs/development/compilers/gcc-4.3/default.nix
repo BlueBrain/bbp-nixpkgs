@@ -55,11 +55,9 @@ stdenv.mkDerivation ({
     ++ (optional (boehmgc != null) boehmgc)
     ;
 
-  # I linked the two 'if' together in order not to change the flags
-  # if enableShared is true, compared to what there was before adding the
-  # enableShared flag
   configureFlags = "
-    ${if enableMultilib then "" else "--disable-multilib"}${if enableShared then "" else "--disable-shared"}
+    ${if enableMultilib then "" else "--disable-multilib"}
+    ${if enableShared then "" else "--disable-shared"}
     --disable-libstdcxx-pch
     --with-system-zlib
     --enable-languages=${
