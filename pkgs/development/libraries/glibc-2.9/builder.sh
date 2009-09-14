@@ -42,7 +42,7 @@ preConfigure() {
     cd $NIX_BUILD_TOP/build
     
     configureScript=$out/src/*/configure
-    export CFLAGS="-march=armv5te -g -O1"
+    export CFLAGS="-g -O2"
 }
 
 

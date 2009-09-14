@@ -53,13 +53,14 @@ stdenv.mkDerivation rec {
     ./rpcgen-path.patch
   ];
 
-  configureFlags = ''
-    --enable-add-ons
-    --with-headers=${kernelHeaders}/include
-    --without-fp
-    --disable-libunwind-exceptions
-    ${if profilingLibraries then "--enable-profile" else "--disable-profile"}
-  '';
+  configureFlags = [
+    "--with-headers=${kernelHeaders}/include"
+    "--without-fp"
+    (if profilingLibraries then "--enable-profile" else "--disable-profile")
+    "--enable-add-ons"
+    "--host=arm-linux-gnueabi"
+    "--build=arm-linux-gnueabi"
+  ];
 
   # Workaround for this bug:
   #   http://sourceware.org/bugzilla/show_bug.cgi?id=411
