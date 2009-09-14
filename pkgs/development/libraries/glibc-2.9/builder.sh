@@ -12,6 +12,15 @@ export PWD_P=$(type -tP pwd)
 export BASH_SHELL=/bin/sh
 
 
+unpackPhase()
+{
+    ensureDir $out/src
+    cd $out/src
+
+    tar xvjf "$src"
+    cd *
+}
+
 preConfigure() {
 
     for i in configure io/ftwtest-sh; do
@@ -26,11 +35,14 @@ preConfigure() {
     # don't want as a dependency in the Nixpkgs bootstrap.  So force
     # the output file to be newer.
     touch locale/C-translit.h
+
+    tar xvjf "$srcPorts"
     
-    mkdir ../build
-    cd ../build
+    mkdir $NIX_BUILD_TOP/build
+    cd $NIX_BUILD_TOP/build
     
-    configureScript=../$sourceRoot/configure
+    configureScript=$out/src/*/configure
+    export CFLAGS="-march=armv5te -g -O1"
 }
 
 
@@ -42,6 +54,7 @@ postConfigure() {
     export NIX_LDFLAGS_BEFORE=
 
     export NIX_DONT_SET_RPATH=1
+    unset CFLAGS
 }
 
 
