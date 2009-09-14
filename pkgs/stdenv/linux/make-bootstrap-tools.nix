@@ -11,20 +11,20 @@ rec {
   });
 
 
-  curlDiet = import ../../tools/networking/curl {
-    inherit fetchurl;
-    stdenv = useDietLibC stdenv;
+  curlStatic = import ../../tools/networking/curl {
+    inherit fetchurl stdenv;
     zlibSupport = false;
     sslSupport = false;
+    linkStatic = true;
   };
 
 
-  bzip2Diet = import ../../tools/compression/bzip2 {
-    inherit fetchurl;
-    stdenv = useDietLibC stdenv;
+  bzip2Static = import ../../tools/compression/bzip2 {
+    inherit fetchurl stdenv;
+    linkStatic = true;
   };
 
-  gccNoShared = wrapGCC ( gcc.gcc.override { enableShared = false; } );
+  #gccNoShared = wrapGCC ( gcc.gcc.override { enableShared = false; } );
 
   build = 
 
@@ -34,6 +34,7 @@ rec {
       buildInputs = [nukeReferences cpio];
 
       buildCommand = ''
+	set -x
         ensureDir $out/bin $out/lib $out/libexec
 
         # Copy what we need of Glibc.
@@ -80,21 +81,21 @@ rec {
         cp -d ${gnugrep.pcre}/lib/libpcre*.so* $out/lib # needed by grep
         
         # Copy what we need of GCC.
-        cp -d ${gccNoShared.gcc}/bin/gcc $out/bin
-        cp -d ${gccNoShared.gcc}/bin/cpp $out/bin
-        cp -d ${gccNoShared.gcc}/bin/g++ $out/bin
-        cp -d ${gccNoShared.gcc}/lib*/libgcc_s.so* $out/lib
-        cp -d ${gccNoShared.gcc}/lib*/libstdc++.so* $out/lib
-        cp -rd ${gccNoShared.gcc}/lib/gcc $out/lib
+        cp -d ${gcc.gcc}/bin/gcc $out/bin
+        cp -d ${gcc.gcc}/bin/cpp $out/bin
+        cp -d ${gcc.gcc}/bin/g++ $out/bin
+        cp -d ${gcc.gcc}/lib*/libgcc_s.so* $out/lib
+        cp -d ${gcc.gcc}/lib*/libstdc++.so* $out/lib
+        cp -rd ${gcc.gcc}/lib/gcc $out/lib
         chmod -R u+w $out/lib
         rm -f $out/lib/gcc/*/*/include*/linux
         rm -f $out/lib/gcc/*/*/include*/sound
         rm -rf $out/lib/gcc/*/*/include*/root
         rm -f $out/lib/gcc/*/*/include-fixed/asm
         #rm -f $out/lib/gcc/*/*/*.a
-        cp -rd ${gccNoShared.gcc}/libexec/* $out/libexec
+        cp -rd ${gcc.gcc}/libexec/* $out/libexec
         mkdir $out/include
-        cp -rd ${gccNoShared.gcc}/include/c++ $out/include
+        cp -rd ${gcc.gcc}/include/c++ $out/include
         chmod -R u+w $out/include
         rm -rf $out/include/c++/*/ext/pb_ds
         rm -rf $out/include/c++/*/ext/parallel
@@ -133,8 +134,8 @@ rec {
         cp ${klibc}/lib/klibc/bin.static/cpio $out/in-nixpkgs
         cp ${klibc}/lib/klibc/bin.static/mkdir $out/in-nixpkgs
         cp ${klibc}/lib/klibc/bin.static/ln $out/in-nixpkgs
-        cp ${curlDiet}/bin/curl $out/in-nixpkgs
-        cp ${bzip2Diet}/bin/bzip2 $out/in-nixpkgs
+        cp ${curlStatic}/bin/curl $out/in-nixpkgs
+        cp ${bzip2Static}/bin/bzip2 $out/in-nixpkgs
         chmod u+w $out/in-nixpkgs/*
         strip $out/in-nixpkgs/*
         nuke-refs $out/in-nixpkgs/*
