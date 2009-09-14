@@ -15,9 +15,18 @@ LD_LIBRARY_PATH=$out/lib $out/lib/ld-linux*.so.2 $out/bin/cp $out/bin/patchelf .
 for i in $out/bin/* $out/libexec/gcc/*/*/*; do
     echo patching $i
     if ! test -L $i; then
-         #LD_LIBRARY_PATH=$out/lib $out/lib/ld-linux*.so.? \
+         LD_LIBRARY_PATH=$out/lib $out/lib/ld-linux*.so.? \
              $out/bin/patchelf --set-interpreter $out/lib/ld-linux*.so.? --set-rpath $out/lib --force-rpath $i
-         #LD_LIBRARY_PATH=$out/lib $out/lib/ld-linux*.so.? \
+         LD_LIBRARY_PATH=$out/lib $out/lib/ld-linux*.so.? \
+             $out/bin/patchelf --set-interpreter $out/lib/ld-linux*.so.? --set-rpath $out/lib --force-rpath $i
+    fi
+done
+for i in $out/lib/librt* ; do
+    echo patching $i
+    if ! test -L $i; then
+         LD_LIBRARY_PATH=$out/lib $out/lib/ld-linux*.so.? \
+             $out/bin/patchelf --set-interpreter $out/lib/ld-linux*.so.? --set-rpath $out/lib --force-rpath $i
+         LD_LIBRARY_PATH=$out/lib $out/lib/ld-linux*.so.? \
              $out/bin/patchelf --set-interpreter $out/lib/ld-linux*.so.? --set-rpath $out/lib --force-rpath $i
     fi
 done
@@ -26,6 +35,8 @@ done
 export PATH=$out/bin
 cat $out/lib/libc.so | sed "s|/nix/store/e*-[^/]*/|$out/|g" > $out/lib/libc.so.tmp
 mv $out/lib/libc.so.tmp $out/lib/libc.so
+cat $out/lib/libpthread.so | sed "s|/nix/store/e*-[^/]*/|$out/|g" > $out/lib/libpthread.so.tmp
+mv $out/lib/libpthread.so.tmp $out/lib/libpthread.so
 
 # Provide some additional symlinks.
 ln -s bash $out/bin/sh
