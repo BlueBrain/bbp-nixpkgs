@@ -12,17 +12,16 @@ stdenv.mkDerivation rec {
     sha256 = "029hklrx2rlhsb5r2csd0gapjm0rbr8n28ib6jnnhms12x302viq";
   };
 
-  preConfigure = ''
-    cd libc
-  '';
-
   inherit kernelHeaders installLocales;
 
   configureFlags = ''
-    --with-headers=${kernelHeaders}/include
-    --without-fp
-    --enable-add-ons
-    --disable-profile
+    --with-headers=${kernelHeaders}/include \
+    --without-fp \
+    --enable-add-ons=libidn,"ports nptl " \
+    --disable-profile \
+    --prefix=$out \
+    --host=arm-linux-gnueabi \
+    --build=arm-linux-gnueabi
   '';
 
   configurePhase = ''
@@ -30,7 +29,9 @@ stdenv.mkDerivation rec {
     ln -s ../ports ports
     mkdir build
     cd build
+    set -x
     ../configure ${configureFlags}
+    set +x
   '';
 
 #  configureFlags = ''
