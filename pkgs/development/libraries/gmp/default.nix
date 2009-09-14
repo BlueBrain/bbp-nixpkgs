@@ -16,6 +16,9 @@ stdenv.mkDerivation rec {
 
   doCheck = true;
 
+  # -fno-strict-aliasing is for a gcc 4.3.2 bug (the compiler in this debian)
+  CFLAGS = "-O2 -pedantic -fomit-frame-pointer -fno-strict-aliasing";
+
   meta = {
     description = "A free library for arbitrary precision arithmetic, operating on signed integers, rational numbers, and floating point numbers";
     homepage = http://gmplib.org/;
