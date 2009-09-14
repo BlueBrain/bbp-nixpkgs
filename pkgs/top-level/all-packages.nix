@@ -3193,6 +3193,11 @@ let
     installLocales = getPkgConfig "glibc" "locales" false;
   };
 
+  eglibc = import ../development/libraries/eglibc {
+    inherit fetchsvn stdenv kernelHeaders;
+    installLocales = getPkgConfig "glibc" "locales" false;
+  };
+
   glibcLocales = makeOverridable (import ../development/libraries/glibc-2.9/locales.nix) {
     inherit fetchurl stdenv;
   };
