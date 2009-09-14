@@ -15,8 +15,10 @@ LD_LIBRARY_PATH=$out/lib $out/lib/ld-linux*.so.2 $out/bin/cp $out/bin/patchelf .
 for i in $out/bin/* $out/libexec/gcc/*/*/*; do
     echo patching $i
     if ! test -L $i; then
-         LD_LIBRARY_PATH=$out/lib $out/lib/ld-linux*.so.2 \
-             ./patchelf --set-interpreter $out/lib/ld-linux*.so.2 --set-rpath $out/lib --force-rpath $i
+         #LD_LIBRARY_PATH=$out/lib $out/lib/ld-linux*.so.? \
+             $out/bin/patchelf --set-interpreter $out/lib/ld-linux*.so.? --set-rpath $out/lib --force-rpath $i
+         #LD_LIBRARY_PATH=$out/lib $out/lib/ld-linux*.so.? \
+             $out/bin/patchelf --set-interpreter $out/lib/ld-linux*.so.? --set-rpath $out/lib --force-rpath $i
     fi
 done
 
