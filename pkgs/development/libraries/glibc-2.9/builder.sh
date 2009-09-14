@@ -12,15 +12,6 @@ export PWD_P=$(type -tP pwd)
 export BASH_SHELL=/bin/sh
 
 
-unpackPhase()
-{
-    ensureDir $out/src
-    cd $out/src
-
-    tar xvjf "$src"
-    cd *
-}
-
 preConfigure() {
 
     for i in configure io/ftwtest-sh; do
@@ -38,11 +29,10 @@ preConfigure() {
 
     tar xvjf "$srcPorts"
     
-    mkdir $NIX_BUILD_TOP/build
-    cd $NIX_BUILD_TOP/build
+    mkdir build
+    cd build
     
-    configureScript=$out/src/*/configure
-    export CFLAGS="-g -O2"
+    configureScript=../configure
 }
 
 
