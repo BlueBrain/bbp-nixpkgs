@@ -3188,7 +3188,7 @@ let
     #installLocales = false;
   };
 
-  glibc29 = import ../development/libraries/glibc-2.9 {
+  glibc29 = makeOverridable (import ../development/libraries/glibc-2.9) {
     inherit fetchurl stdenv kernelHeaders;
     installLocales = getPkgConfig "glibc" "locales" false;
   };

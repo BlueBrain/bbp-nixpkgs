@@ -10,9 +10,15 @@ rec {
     aclSupport = false;
   });
 
+  glibcStaticLibNSS = glibc.override {
+    staticLibNSS = true;
+  };
+  gccLinkStaticGlibc = wrapGCCWith (import ../../build-support/gcc-wrapper) glibcStaticLibNSS stdenv.gcc.gcc;
+  stdenvLinkStaticGlibc = overrideGCC stdenv gccLinkStaticGlibc;
 
   curlStatic = import ../../tools/networking/curl {
-    inherit fetchurl stdenv;
+    stdenv = stdenvLinkStaticGlibc;
+    inherit fetchurl;
     zlibSupport = false;
     sslSupport = false;
     linkStatic = true;
@@ -20,7 +26,8 @@ rec {
 
 
   bzip2Static = import ../../tools/compression/bzip2 {
-    inherit fetchurl stdenv;
+    stdenv = stdenvLinkStaticGlibc;
+    inherit fetchurl;
     linkStatic = true;
   };
 
