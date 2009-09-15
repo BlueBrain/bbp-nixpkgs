@@ -66,6 +66,9 @@ stdenv.mkDerivation rec {
     "--enable-static-libnss"
   ] else []);
 
+  # --enable-static-libnss won't work if the setup script adds --disable-static
+  dontDisableStatic = if staticLibNSS then true else false;
+
   preInstall = ''
     ensureDir $out/lib
     ln -s ${stdenv.gcc.gcc}/lib/libgcc_s.so.1 $out/lib/libgcc_s.so.1
