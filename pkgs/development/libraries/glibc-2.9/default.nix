@@ -1,7 +1,6 @@
 { stdenv, fetchurl, kernelHeaders
 , installLocales ? true
 , profilingLibraries ? false
-, staticLibNSS ? false
 }:
 
 stdenv.mkDerivation rec {
@@ -62,12 +61,7 @@ stdenv.mkDerivation rec {
     "--host=arm-linux-gnueabi"
     "--build=arm-linux-gnueabi"
     "--without-fp"
-  ] else []) ++ (if staticLibNSS then [
-    "--enable-static-libnss"
   ] else []);
-
-  # --enable-static-libnss won't work if the setup script adds --disable-static
-  dontDisableStatic = if staticLibNSS then true else false;
 
   preInstall = ''
     ensureDir $out/lib
