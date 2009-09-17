@@ -26,7 +26,7 @@ stdenv.mkDerivation rec {
   dontDisableStatic = if linkStatic then true else false;
   
   CFLAGS = if stdenv ? isDietLibC then "-DHAVE_INET_NTOA_R_2_ARGS=1" else "";
-  LDFLAGS = if linkStatic then "-static -lnss_files -lnss_dns -lresolv" else "";
+  LDFLAGS = if linkStatic then "-static" else "";
   CXX = "g++";
   CXXCPP = "g++ -E";
 
