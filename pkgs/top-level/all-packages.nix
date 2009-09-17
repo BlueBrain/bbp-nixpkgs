@@ -5722,6 +5722,10 @@ let
     inherit (xlibs) libX11 xproto;
   };*/
 
+  uclibc = import ../development/libraries/uclibc {
+    inherit fetchurl stdenv kernelHeaders;
+  };
+
   udev = import ../os-specific/linux/udev {
     inherit fetchurl stdenv gperf pkgconfig acl libusb usbutils pciutils;
     inherit (gtkLibs) glib;
