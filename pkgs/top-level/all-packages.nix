@@ -5722,7 +5722,7 @@ let
     inherit (xlibs) libX11 xproto;
   };*/
 
-  uclibc = import ../development/libraries/uclibc {
+  uclibc = import ../os-specific/linux/uclibc {
     inherit fetchurl stdenv kernelHeaders;
   };
 
