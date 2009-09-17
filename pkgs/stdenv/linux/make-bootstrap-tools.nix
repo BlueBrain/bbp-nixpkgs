@@ -10,7 +10,8 @@ rec {
     aclSupport = false;
   });
 
-  gccLinkStatic = wrapGCCWith (import ../../build-support/gcc-wrapper) uclibc stdenv.gcc;
+  gccLinkStatic = wrapGCCWith (import ../../build-support/gcc-wrapper) uclibc
+    stdenv.gcc.gcc;
   stdenvLinkStatic = overrideGCC stdenv gccLinkStatic;
 
   curlStatic = import ../../tools/networking/curl {
