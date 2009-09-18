@@ -8,6 +8,6 @@
 
   bootstrapTools = {
     url = "http://vicerveza.homeunix.net/~viric/tmp/bootstrap-tools-armv5tel-linux.cpio.bz2";
-    sha256 = "0jx17s02gaqk8h561sz95lm9nw6q23i78m5955xnh034la4ds9sj";
+    sha256 = "0b7mrcl7naj1xpqx1qnlmd825dxzikzhxir3mw4pr3dy28n0b2ka";
   };
 }
