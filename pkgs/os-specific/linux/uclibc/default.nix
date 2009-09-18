@@ -14,7 +14,14 @@ stdenv.mkDerivation {
     sed -e s@/usr/include@${kernelHeaders}@ \
       -e 's@^RUNTIME_PREFIX.*@RUNTIME_PREFIX="/"@' \
       -e 's@^DEVEL_PREFIX.*@DEVEL_PREFIX="/"@' \
+      ${if stdenv.system=="armv5tel-linux" then
+      ''-e 's/.*CONFIG_ARM_OABI.*//' \
+        -e 's/.*CONFIG_ARM_EABI.*/CONFIG_ARM_EABI=y/' \
+        -e 's/.*ARCH_BIG_ENDIAN.*/#ARCH_BIG_ENDIAN=y/' \
+        -e 's/.*ARCH_WANTS_BIG_ENDIAN.*/#ARCH_WANTS_BIG_ENDIAN=y/' \
+        -e 's/.*ARCH_WANTS_LITTLE_ENDIAN.*/ARCH_WANTS_LITTLE_ENDIAN=y/' '' else ""} \
       -i .config
+    make oldconfig
   '';
 
   installPhase = ''
