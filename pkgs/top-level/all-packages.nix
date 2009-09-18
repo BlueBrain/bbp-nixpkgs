@@ -558,14 +558,22 @@ let
     inherit fetchurl stdenv ppl;
   };
 
-  coreutils = useFromStdenv "coreutils"
-    (makeOverridable (if stdenv ? isDietLibC
+  coreutils75_real = makeOverridable (import ../tools/misc/coreutils/7.5.nix) {
+    inherit fetchurl stdenv acl;
+    aclSupport = stdenv.isLinux;
+  };
+
+  coreutils_real = makeOverridable (if stdenv ? isDietLibC
       then import ../tools/misc/coreutils-5
       else import ../tools/misc/coreutils)
     {
       inherit fetchurl stdenv acl;
       aclSupport = stdenv.isLinux;
-    });
+    };
+
+  coreutils = useFromStdenv "coreutils"
+    (if system == "armv5tel-linux" then coreutils75_real
+    else coreutils_real);
 
   cpio = import ../tools/archivers/cpio {
     inherit fetchurl stdenv;
