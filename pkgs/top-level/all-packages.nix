@@ -3196,7 +3196,7 @@ let
   };
 
   gettext = import ../development/libraries/gettext {
-    inherit fetchurl stdenv;
+    inherit fetchurl stdenv libiconv;
   };
 
   gd = import ../development/libraries/gd {
@@ -3643,6 +3643,10 @@ let
     inherit (gnome) glib gnomevfs libbonobo;
   };
 
+  libiconv = import ../development/libraries/libiconv {
+    inherit fetchurl stdenv;
+  };
+
   libid3tag = import ../development/libraries/libid3tag {
     inherit fetchurl stdenv zlib;
   };
@@ -3786,7 +3790,7 @@ let
   };
 
   libunistring = import ../development/libraries/libunistring {
-    inherit fetchurl stdenv;
+    inherit fetchurl stdenv libiconv;
   };
 
   libupnp = import ../development/libraries/pupnp {
@@ -5452,6 +5456,10 @@ let
     };
 
     nvidia_x11 = import ../os-specific/linux/nvidia-x11 {
+      inherit stdenv fetchurl kernel xlibs gtkLibs zlib;
+    };
+
+    nvidia_x11_legacy = import ../os-specific/linux/nvidia-x11/legacy.nix {
       inherit stdenv fetchurl kernel xlibs gtkLibs zlib;
     };
 
@@ -8241,6 +8249,7 @@ let
       aterm = aterm242fixes;
       db4 = db45;
       inherit docbook5_xsl libxslt docbook5 docbook_xml_dtd_43 w3m;
+      libxml2 = libxml2New;
     };
 
   disnix = import ../tools/package-management/disnix {

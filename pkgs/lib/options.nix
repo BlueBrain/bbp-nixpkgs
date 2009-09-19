@@ -46,19 +46,21 @@ rec {
         apply = lib.id;
       };
 
-      mergeFromType = opt:
+      functionsFromType = opt:
         if decl ? type && decl.type ? merge then
-          opt // { merge = decl.type.merge; }
+          opt
+          // optionalAttrs (decl.type ? merge) { inherit (decl.type) merge; }
+          // optionalAttrs (decl.type ? check) { inherit (decl.type) check; }
         else
           opt;
 
       addDeclaration = opt: opt // decl;
 
       ensureMergeInputType = opt:
-        if decl ? type then
+        if opt ? check then
           opt // {
             merge = list:
-              if all decl.type.check list then
+              if all opt.check list then
                 opt.merge list
               else
                 throw "One of the definitions has a bad type.";
@@ -66,18 +68,18 @@ rec {
         else opt;
 
       ensureDefaultType = opt:
-        if decl ? type && decl ? default then
+        if opt ? check && opt ? default then
           opt // {
             default =
-              if decl.type.check decl.default then
-                decl.default
+              if opt.check opt.default then
+                opt.default
               else
                 throw "The default value has a bad type.";
           }
         else opt;
 
       handleOptionSets = opt:
-        if decl ? type && decl.type.hasOptions then
+        if opt ? type && opt.type.hasOptions then
           let
             
             optionConfig = opts: config:
@@ -86,7 +88,7 @@ rec {
           in
             opt // {
               merge = list:
-                decl.type.iter
+                opt.type.iter
                   (path: opts:
                     (lib.fix
                       (fixableMergeFun (recurseInto path) (optionConfig opts))
@@ -95,7 +97,7 @@ rec {
                   opt.name
                   (opt.merge list);
               options =
-                let path = decl.type.docPath opt.name; in
+                let path = opt.type.docPath opt.name; in
                 (lib.fix
                   (fixableMergeFun (recurseInto path) (optionConfig []))
                 ).options;
@@ -105,7 +107,7 @@ rec {
     in
       foldl (opt: f: f opt) init [
         # default settings
-        mergeFromType
+        functionsFromType
 
         # user settings
         addDeclaration
@@ -233,6 +235,12 @@ rec {
   # the set generated with filterOptionSets.
   optionAttrSetToDocList = ignore: newOptionAttrSetToDocList;
   newOptionAttrSetToDocList = attrs:
+    let tryEval = v:
+      let res = builtins.tryEval v; in
+      if builtins ? tryEval then
+        if res.success then res.value else "<error>"
+      else v;
+    in
     let options = collect isOption attrs; in
       fold (opt: rest:
         let
@@ -244,8 +252,8 @@ rec {
             declarations = map (x: toString x.source) opt.declarations;
             definitions = map (x: toString x.source) opt.definitions;
           }
-          // (if opt ? example then {inherit(opt) example;} else {})
-          // (if opt ? default then {inherit(opt) default;} else {});
+          // optionalAttrs (opt ? example) { example = tryEval opt.example; }
+          // optionalAttrs (opt ? default) { default = tryEval opt.default; };
 
           subOptions =
             if opt ? options then
