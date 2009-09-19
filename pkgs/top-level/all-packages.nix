@@ -610,6 +610,10 @@ let
     inherit fetchurl stdenv gettext libjpeg lcms;
   };
 
+  ddclient = import ../tools/networking/ddclient {
+    inherit fetchurl buildPerlPackage perl;
+  };
+
   ddrescue = builderDefsPackage (selectVersion ../tools/system/ddrescue "1.8") {};
 
   desktop_file_utils = import ../tools/misc/desktop-file-utils {
@@ -688,7 +692,7 @@ let
   };
 
   fdisk = import ../tools/system/fdisk {
-    inherit fetchurl stdenv parted e2fsprogs gettext;
+    inherit fetchurl stdenv parted libuuid gettext;
   };
 
   figlet = import ../tools/misc/figlet {
@@ -818,6 +822,10 @@ let
     (import ../tools/archivers/gnutar {
       inherit fetchurl stdenv;
     });
+
+  gnuvd = import ../tools/misc/gnuvd {
+    inherit fetchurl stdenv;
+  };
 
   graphviz = import ../tools/graphics/graphviz {
     inherit fetchurl stdenv pkgconfig libpng libjpeg expat x11 yacc
@@ -1012,9 +1020,10 @@ let
   };
 
   mc = import ../tools/misc/mc {
-    inherit fetchurl stdenv pkgconfig ncurses shebangfix perl zip;
+    inherit fetchurl stdenv lib pkgconfig ncurses shebangfix perl zip unzip slang;
+    inherit gettext e2fsprogs gpm;
     inherit (gtkLibs) glib;
-    inherit (xlibs) libX11;
+    inherit (xlibs) libX11 libXt;
   };
 
   mcabber = import ../applications/networking/instant-messengers/mcabber {
@@ -1105,6 +1114,10 @@ let
 
   ncat = import ../tools/networking/ncat {
     inherit fetchurl stdenv openssl;
+  };
+
+  ncftp = import ../tools/networking/ncftp {
+    inherit fetchurl stdenv ncurses coreutils;
   };
 
   netcat = import ../tools/networking/netcat {
@@ -1549,6 +1562,10 @@ let
     inherit fetchurl stdenv;
   };
 
+  uptimed = import ../tools/system/uptimed {
+    inherit fetchurl stdenv automake autoconf libtool;
+  };
+
   wdfs = import ../tools/networking/wdfs {
     inherit stdenv fetchurl neon fuse pkgconfig;
     inherit (gtkLibs) glib;
@@ -1598,7 +1615,7 @@ let
   xmlto = import ../tools/typesetting/xmlto {
     inherit fetchurl stdenv flex libxml2 libxslt
             docbook_xml_dtd_42 docbook_xsl w3m
-            glibc bash getopt mktemp findutils makeWrapper;
+            bash getopt mktemp findutils makeWrapper;
   };
 
   xmltv = import ../tools/misc/xmltv {
@@ -1818,6 +1835,10 @@ let
       libXrandr xproto renderproto xextproto inputproto randrproto;
   });
 
+  # GHC
+
+  # GHC binaries are around for bootstrapping purposes
+
   #ghc = haskellPackages.ghc;
 
   ghc642Binary = lowPrio (import ../development/compilers/ghc/6.4.2-binary.nix {
@@ -1833,6 +1854,9 @@ let
   ghc6102Binary = lowPrio (import ../development/compilers/ghc/6.10.2-binary.nix {
     inherit fetchurl stdenv perl ncurses gmp libedit;
   });
+
+  # For several compiler versions, we export a large set of Haskell-related
+  # packages.
 
   haskellPackages = haskellPackages_ghc6104;
 
@@ -1906,6 +1930,15 @@ let
       ghc = ghc6101Binary;
     };
   });
+
+  haskellPackages_ghcHEAD = import ./haskell-packages.nix {
+    inherit pkgs;
+    ghc = import ../development/compilers/ghc/6.11.nix {
+      inherit fetchurl stdenv perl ncurses gmp libedit;
+      inherit (haskellPackages) happy alex; # hope these aren't required for the final version
+      ghc = ghc6101Binary;
+    };
+  };
 
   falcon = builderDefsPackage (import ../development/interpreters/falcon) {
     inherit cmake;
@@ -2077,6 +2110,10 @@ let
     inherit fetchurl stdenv pkgconfig aterm getopt jdk;
   };
 
+  strategoPackages018 = import ../development/compilers/strategoxt/0.18.nix {
+    inherit fetchurl stdenv pkgconfig aterm getopt jdk;
+  };
+
   metaBuildEnv = import ../development/compilers/meta-environment/meta-build-env {
     inherit fetchurl stdenv ;
   };
@@ -2157,6 +2194,11 @@ let
 
   guile = import ../development/interpreters/guile {
     inherit fetchurl stdenv readline libtool gmp gawk makeWrapper;
+  };
+
+  guile_1_9 = import ../development/interpreters/guile/1.9.nix {
+    inherit fetchurl stdenv readline libtool gmp gawk makeWrapper
+      libunistring pkgconfig boehmgc;
   };
 
   io = builderDefsPackage (import ../development/interpreters/io) {
@@ -2969,7 +3011,7 @@ let
   };
 
   cryptopp = import ../development/libraries/crypto++ {
-    inherit fetchurl stdenv unzip;
+    inherit fetchurl stdenv unzip libtool;
   };
 
   cyrus_sasl = import ../development/libraries/cyrus-sasl {
@@ -3813,6 +3855,12 @@ let
     pythonSupport = false;
   };
 
+  # !!! Merge later.
+  libxml2New = makeOverridable (import ../development/libraries/libxml2/2.7.4.nix) {
+    inherit fetchurl stdenv zlib python;
+    pythonSupport = false;
+  };
+
   libxml2Python = libxml2.override {
     pythonSupport = true;
   };
@@ -3856,7 +3904,8 @@ let
 
   mesaSupported =
     system == "i686-linux" ||
-    system == "x86_64-linux";
+    system == "x86_64-linux" ||
+    system == "i686-darwin";
 
   mesa = import ../development/libraries/mesa {
     inherit fetchurl stdenv pkgconfig expat x11 xlibs libdrm;
@@ -3911,7 +3960,7 @@ let
   };
 
   nettle = import ../development/libraries/nettle {
-    inherit fetchurl stdenv;
+    inherit fetchurl stdenv gmp gnum4;
   };
 
   nspr = import ../development/libraries/nspr {
@@ -4132,7 +4181,7 @@ let
   };
 
   slang = import ../development/libraries/slang {
-    inherit fetchurl stdenv pcre libpng;
+    inherit fetchurl stdenv ncurses pcre libpng zlib readline;
   };
 
   snack = import ../development/libraries/snack {
@@ -5342,6 +5391,19 @@ let
       lib builderDefs;
   };
 
+  kernel_2_6_31_zen0_bfs = kernel_2_6_31_zen0.override {
+    ckSched = true;
+  };
+
+  kernel_2_6_31_zen2 = makeOverridable (import ../os-specific/linux/zen-kernel/2.6.31-zen2.nix) {
+    inherit fetchurl stdenv perl mktemp module_init_tools 
+      lib builderDefs;
+  };
+
+  kernel_2_6_31_zen2_bfs = kernel_2_6_31_zen2.override {
+    ckSched = true;
+  };
+
   /* Kernel modules are inherently tied to a specific kernel.  So
      rather than provide specific instances of those packages for a
      specific kernel, we have a function that builds those packages
@@ -5363,6 +5425,12 @@ let
     aufs2 = import ../os-specific/linux/aufs2 {
       inherit fetchgit stdenv kernel perl;
     };
+
+    aufs2Utils = if lib.attrByPath ["features" "aufs"] false kernel then
+      builderDefsPackage ../os-specific/linux/aufs2-utils {
+        inherit kernel;
+      } 
+    else null;
 
     exmap = import ../os-specific/linux/exmap {
       inherit fetchurl stdenv kernel boost pcre pkgconfig;
@@ -5463,6 +5531,7 @@ let
   kernelPackages_2_6_31_rc2 = recurseIntoAttrs (kernelPackagesFor kernel_2_6_31_rc2);
   kernelPackages_2_6_31_rc2_old_i686 = recurseIntoAttrs (kernelPackagesFor kernel_2_6_31_rc2_old_i686);
   kernelPackages_2_6_31_zen0 =          recurseIntoAttrs (kernelPackagesFor kernel_2_6_31_zen0);
+  kernelPackages_2_6_31_zen2 =          recurseIntoAttrs (kernelPackagesFor kernel_2_6_31_zen2);
   kernelPackages_2_6_31 =          recurseIntoAttrs (kernelPackagesFor kernel_2_6_31);
 
   # The current default kernel / kernel modules.
@@ -5653,6 +5722,10 @@ let
   radeontools = import ../os-specific/linux/radeontools {
     inherit pciutils;
     inherit fetchurl stdenv;
+  };
+
+  rt73fw = import ../os-specific/linux/firmware/rt73 {
+    inherit fetchurl stdenv unzip;
   };
 
   sdparm = import ../os-specific/linux/sdparm {
@@ -5954,6 +6027,10 @@ let
 
   wqy_zenhei = composedArgsAndFun (selectVersion ../data/fonts/wqy_zenhei "0.4.23-1") {
     inherit builderDefs;
+  };
+
+  xhtml1 = import ../data/sgml+xml/schemas/xml-dtd/xhtml1 {
+    inherit fetchurl stdenv libxml2;
   };
 
   xkeyboard_config = import ../data/misc/xkeyboard-config {
@@ -6863,6 +6940,13 @@ let
     inherit fetchurl stdenv perl arts kdelibs zlib libpng libjpeg expat;
     inherit (xlibs) libX11 libXt libXext libXrender libXft;
     qt = qt3;
+  };
+
+  kphone = import ../applications/networking/kphone {
+    inherit fetchurl lib autoconf automake libtool pkgconfig openssl libpng alsaLib;
+    qt = qt3;
+    inherit (xlibs) libX11 libXext libXt libICE libSM;
+    stdenv = overrideGCC stdenv gcc42; # I'm to lazy to clean up header files
   };
 
   kuickshow = import ../applications/graphics/kuickshow {
