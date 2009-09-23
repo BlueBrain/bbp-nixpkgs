@@ -44,7 +44,7 @@ args.stdenv.mkDerivation {
  
   src = args.fetchurl {
     url = ftp://ftp.vim.org/pub/vim/unix/vim-7.2.tar.bz2;
-    sha256 = "076ydlfcmlnldjzarahg58vflawn083y90is6sz2j4klg9mj2iim";
+    sha256 = "11hxkb6r2550c4n13nwr0d8afvh30qjyr5c2hw16zgay43rb0kci";
   };
  
   inherit (args) ncurses;
