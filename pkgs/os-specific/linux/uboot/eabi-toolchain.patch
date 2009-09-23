@@ -1,0 +1,32 @@
+diff --git a/Makefile b/Makefile
+index a008c96..9d8b7b5 100644
+--- a/Makefile
++++ b/Makefile
+@@ -257,12 +257,12 @@ LIBBOARD := $(addprefix $(obj),$(LIBBOARD))
+ # Add GCC lib
+ ifdef USE_PRIVATE_LIBGCC
+ ifeq ("$(USE_PRIVATE_LIBGCC)", "yes")
+-PLATFORM_LIBGCC = -L $(OBJTREE)/lib_$(ARCH) -lgcc
++PLATFORM_LIBGCC = -L $(OBJTREE)/lib_$(ARCH) -lgcc -lgcc_eh -lc
+ else
+-PLATFORM_LIBGCC = -L $(USE_PRIVATE_LIBGCC) -lgcc
++PLATFORM_LIBGCC = -L $(USE_PRIVATE_LIBGCC) -lgcc -lgcc_eh -lc
+ endif
+ else
+-PLATFORM_LIBGCC = -L $(shell dirname `$(CC) $(CFLAGS) -print-libgcc-file-name`) -lgcc
++PLATFORM_LIBGCC = -L $(shell dirname `$(CC) $(CFLAGS) -print-libgcc-file-name`) -lgcc -lgcc_eh -lc
+ endif
+ PLATFORM_LIBS += $(PLATFORM_LIBGCC)
+ export PLATFORM_LIBS
+diff --git a/cpu/arm926ejs/config.mk b/cpu/arm926ejs/config.mk
+index 885d5c1..0977441 100644
+--- a/cpu/arm926ejs/config.mk
++++ b/cpu/arm926ejs/config.mk
+@@ -30,6 +30,6 @@ PLATFORM_CPPFLAGS += -march=armv5te
+ # Supply options according to compiler version
+ #
+ # =========================================================================
+-PLATFORM_CPPFLAGS +=$(call cc-option,-mapcs-32,-mabi=apcs-gnu)
++PLATFORM_CPPFLAGS +=$(call cc-option,-mapcs-32,-mabi=aapcs-linux)
+ PLATFORM_CPPFLAGS +=$(call cc-option,-mno-thumb-interwork,)
+ PLATFORM_RELFLAGS +=$(call cc-option,-mshort-load-bytes,$(call cc-option,-malignment-traps,))

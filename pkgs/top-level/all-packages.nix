@@ -312,7 +312,7 @@ let
   };
 
   makeInitrd = {contents}: import ../build-support/kernel/make-initrd.nix {
-    inherit stdenv perl cpio contents;
+    inherit stdenv perl cpio contents uboot;
   };
 
   makeSetupHook = script: runCommand "hook" {} ''
@@ -4975,7 +4975,7 @@ let
   hal = import ../os-specific/linux/hal {
     inherit fetchurl stdenv pkgconfig python pciutils usbutils expat
       libusb dbus dbus_glib libuuid perl perlXMLParser
-      gettext zlib eject libsmbios udev gperf dmidecode utillinuxng;
+      gettext zlib eject udev gperf dmidecode utillinuxng;
     inherit (gtkLibs) glib;
   };
 
@@ -5330,7 +5330,7 @@ let
   });
 
   kernel_2_6_31 = makeOverridable (import ../os-specific/linux/kernel/linux-2.6.31.nix) {
-    inherit fetchurl stdenv perl mktemp module_init_tools;
+    inherit fetchurl stdenv perl mktemp module_init_tools uboot;
     kernelPatches = [];
   };
 
@@ -5691,7 +5691,7 @@ let
   };
 
   pam_unix2 = import ../os-specific/linux/pam_unix2 {
-    inherit stdenv fetchurl pam libxcrypt;
+    inherit stdenv fetchurl pam;
   };
 
   pcmciaUtils = composedArgsAndFun (import ../os-specific/linux/pcmciautils) {
@@ -5810,6 +5810,10 @@ let
     inherit mesa tcl freeglut;
     inherit (xlibs) libX11 xproto;
   };*/
+
+  uboot = import ../os-specific/linux/uboot {
+    inherit fetchurl stdenv;
+  };
 
   uclibc = import ../os-specific/linux/uclibc {
     inherit fetchurl stdenv kernelHeaders;
