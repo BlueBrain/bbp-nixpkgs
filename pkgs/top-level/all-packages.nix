@@ -4975,7 +4975,7 @@ let
   hal = import ../os-specific/linux/hal {
     inherit fetchurl stdenv pkgconfig python pciutils usbutils expat
       libusb dbus dbus_glib libuuid perl perlXMLParser
-      gettext zlib eject udev gperf dmidecode utillinuxng;
+      gettext zlib eject libsmbios udev gperf dmidecode utillinuxng;
     inherit (gtkLibs) glib;
   };
 
@@ -5812,7 +5812,7 @@ let
   };*/
 
   uboot = import ../os-specific/linux/uboot {
-    inherit fetchurl stdenv;
+    inherit fetchgit stdenv;
   };
 
   uclibc = import ../os-specific/linux/uclibc {
