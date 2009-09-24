@@ -538,7 +538,7 @@ CONFIG_MTD_NAND_ORION=y
 #
 # UBI - Unsorted block images
 #
-# CONFIG_MTD_UBI is not set
+CONFIG_MTD_UBI=y
 # CONFIG_PARPORT is not set
 CONFIG_BLK_DEV=y
 # CONFIG_BLK_CPQ_DA is not set
