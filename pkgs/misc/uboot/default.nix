@@ -1,59 +1,51 @@
-{stdenv, fetchgit}:
+{stdenv, fetchurl, unzip}:
 
 assert stdenv.system == "armv5tel-linux";
 
 # All this file is made for the Marvell Sheevaplug
    
 stdenv.mkDerivation {
-  name = "uboot-kw-git-snapshot";
+  name = "uboot-sheevaplug-3.4.19";
    
-  src = fetchgit {
-    url = "git://git.marvell.com/u-boot-kw.git";
-    rev = "b30fcb020c1465a7f12a2fdb411885965ab90616";
-    sha256 = "6593951d5ff9a897bac9d4fd2ade5b283acc540ac96e0015bf0101846df0e251";
+  src = fetchurl {
+    url = "ftp://ftp.denx.de/pub/u-boot/u-boot-1.1.4.tar.bz2";
+    sha256 = "19vp4rlikz7h72pqsjhgz7nmgjy4c6vabvxkw67wni70vy5ddy8s";
   };
- 
-  patches = [ ./eabi-toolchain.patch ];
+
+  srcAddon = fetchurl {
+    url = "http://www.plugcomputer.org/data/uboot/u-boot-3.4.19.zip";
+    sha256 = "1wag1l6agr8dbnnfaw6bgcrwynwwgry4ihb3gp438699wmkmy91k";
+  };
+
+  postUnpack = ''
+    mv u-boot-1.1.4 u-boot-3.4.19
+    unzip -o $srcAddon
+    sourceRoot=u-boot-3.4.19
+  '';
+
+  # Remove the cross compiler prefix, and add reiserfs support
+  configurePhase = ''
+    make mrproper
+    make rd88f6281Sheevaplug_config NBOOT=1 LE=1
+    sed -i /CROSS_COMPILE/d include/config.mk
+  '';
 
   buildPhase = ''
-    make mrproper
-    make sheevaplug_config
-    cat >> config.h << EOF
-    #define CONFIG_CMD_REISER
-    #define CONFIG_CMD_EXT2
-    #define CONFIG_CMD_JFFS2
-    #define CONFIG_CMD_SOURCE
-    #define CONFIG_CMD_IMI
-    #define CONFIG_CMD_RUN
-    #define CONFIG_CMD_MMC
-    #define CONFIG_AUTO_COMPLETE
-    #define CONFIG_CMDLINE_EDITING
-    #define CONFIG_SYS_LONGHELP
-    EOF
-    cat >> config.mk << EOF
-    CONFIG_CMD_REISER=y
-    CONFIG_CMD_SOURCE=y
-    CONFIG_CMD_EXT2=y
-    CONFIG_CMD_JFFS2=y
-    CONFIG_CMD_IMI=y
-    CONFIG_CMD_RUN=y
-    CONFIG_CMD_MMC=y
-    CONFIG_AUTO_COMPLETE=y
-    CONFIG_CMDLINE_EDITING=y
-    CONFIG_SYS_LONGHELP=y
-    EOF
-
-    make u-boot.kwb
+    unset src
+    make clean all
   '';
+
+  buildInputs = [ unzip ];
 
   dontStrip = true;
   NIX_STRIP_DEBUG = false;
 
   installPhase = ''
     ensureDir $out
-    cp u-boot u-boot.bin u-boot.kwb u-boot.map $out
+    cp u-boot-rd88f6281Sheevaplug_400db_nand.bin $out
+    cp u-boot u-boot.map $out
 
     ensureDir $out/bin
-    cp tools/{envcrc,jtagconsole,mkimage,ncb,netconsole} $out/bin
+    cp tools/{envcrc,mkimage} $out/bin
   '';
 }

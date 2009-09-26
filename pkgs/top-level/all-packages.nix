@@ -5812,7 +5812,7 @@ let
   };*/
 
   uboot = import ../misc/uboot {
-    inherit fetchgit stdenv;
+    inherit fetchurl stdenv unzip;
   };
 
   uclibc = import ../os-specific/linux/uclibc {
