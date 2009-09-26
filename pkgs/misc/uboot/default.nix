@@ -18,6 +18,31 @@ stdenv.mkDerivation {
   buildPhase = ''
     make mrproper
     make sheevaplug_config
+    cat >> config.h << EOF
+    #define CONFIG_CMD_REISER
+    #define CONFIG_CMD_EXT2
+    #define CONFIG_CMD_JFFS2
+    #define CONFIG_CMD_SOURCE
+    #define CONFIG_CMD_IMI
+    #define CONFIG_CMD_RUN
+    #define CONFIG_CMD_MMC
+    #define CONFIG_AUTO_COMPLETE
+    #define CONFIG_CMDLINE_EDITING
+    #define CONFIG_SYS_LONGHELP
+    EOF
+    cat >> config.mk << EOF
+    CONFIG_CMD_REISER=y
+    CONFIG_CMD_SOURCE=y
+    CONFIG_CMD_EXT2=y
+    CONFIG_CMD_JFFS2=y
+    CONFIG_CMD_IMI=y
+    CONFIG_CMD_RUN=y
+    CONFIG_CMD_MMC=y
+    CONFIG_AUTO_COMPLETE=y
+    CONFIG_CMDLINE_EDITING=y
+    CONFIG_SYS_LONGHELP=y
+    EOF
+
     make u-boot.kwb
   '';
 
