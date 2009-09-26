@@ -5811,7 +5811,7 @@ let
     inherit (xlibs) libX11 xproto;
   };*/
 
-  uboot = import ../os-specific/linux/uboot {
+  uboot = import ../misc/uboot {
     inherit fetchgit stdenv;
   };
 
