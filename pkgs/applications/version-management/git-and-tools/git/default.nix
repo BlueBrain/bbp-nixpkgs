@@ -3,6 +3,7 @@
 , libxslt, tcl, tk, makeWrapper
 , svnSupport, subversion, perlLibs
 , guiSupport
+, gitkGlobSupport
 }:
 
 # `git-svn' support requires Subversion and various Perl libraries.
@@ -16,7 +17,12 @@ stdenv.mkDerivation rec {
     sha256 = "fc7e4d6c4172c62c93d5e974019f7193b03c8bc0a1c6f3a9fcc1d0928b808d7a";
   };
 
-  patches = [ ./docbook2texi.patch ];
+  patches = [ ./docbook2texi.patch ]
+      ++ # adds possibility to highlight all changes to files matching a glob pattern
+          stdenv.lib.optional (guiSupport && gitkGlobSupport) (fetchurl {
+          url = "http://mawercer.de/~marc/git-jrnieder.patch";
+          sha256 = "187wf8chdjifwh3rrdc80nkak08jk7n74xq1bfzr2bhx2wicrv0x";
+          });
 
   buildInputs = [curl openssl zlib expat gettext cpio makeWrapper]
     ++ # documentation tools
@@ -81,6 +87,23 @@ stdenv.mkDerivation rec {
    + ''# install bash completion script
       d="$out/etc/bash_completion.d"
       ensureDir $d; cp contrib/completion/git-completion.bash "$d"
+     ''
+   # Don't know why hardlinks aren't created. git installs the same executable multiple times into $out
+   # so replace duplicates by symlinks because I haven't tested whether the nix
+   # distribution system can handle hardlinks. This reduces the size of $out from 115MB down to 13MB on x86_64-linux!
+   + ''#
+      set -x
+      declare -A seen
+      find $out -type f | while read f; do
+        sum=$(md5sum "$f");
+        sum=''\${sum/ */}
+        if [ -z "''\${seen["$sum"]}" ]; then
+          seen["$sum"]="$f"
+        else
+          rm "$f"; ln -s "''\${seen["$sum"]}" "$f"
+        fi
+      done
+
      '';
 
   meta = {

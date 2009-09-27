@@ -5,9 +5,11 @@ with pkgs;
 rec {
 
 
-  inherit (kernelPackages_2_6_27) kernel;
+  inherit (kernelPackages_2_6_29) kernel;
 
   klibcShrunk = pkgs.klibcShrunk.override { klibc = klibc_15; };
+
+  kvm = pkgs.kvm76;
 
 
   modulesClosure = makeModulesClosure {
@@ -100,7 +102,18 @@ rec {
     mkdir -p /fs/dev
     mount -o bind /dev /fs/dev
 
-    mount.cifs //10.0.2.4/qemu /fs/hostfs -o guest,username=nobody
+    n=.
+    echo "mounting host filesystem..."
+    while true; do
+      if mount.cifs //10.0.2.4/qemu /fs/hostfs -o guest,username=nobody; then
+        break
+      else
+        n=".$n"
+        test ''${#n} -le 10 || exit 1
+        sleep 1
+        echo "retrying..."
+      fi
+    done
 
     mkdir -p /fs/nix/store
     mount -o bind /fs/hostfs/nix/store /fs/nix/store
@@ -184,7 +197,7 @@ rec {
   vmRunCommand = qemuCommand: writeText "vm-run" ''
     export > saved-env
 
-    PATH=${coreutils}/bin:${qemu_kvm}/bin:${samba}/sbin
+    PATH=${coreutils}/bin:${kvm}/bin:${samba}/sbin
 
     diskImage=''${diskImage:-/dev/null}
 
@@ -798,6 +811,28 @@ rec {
       archs = ["noarch" "x86_64"];
     } // args);
 
+    opensuse111i386 = args: makeImageFromRPMDist ({
+      name = "opensuse-11.1-i586";
+      fullName = "openSUSE 11.1 (i586)";
+      packagesList = fetchurl {
+        url = mirror://opensuse/distribution/11.1/repo/oss/suse/repodata/primary.xml.gz;
+        sha256 = "1mfmp9afikj0hci1s8cpwjdr0ycbpfym9gdhci590r9fa75w221j";
+      };
+      urlPrefix = mirror://opensuse/distribution/11.1/repo/oss/suse/;
+      archs = ["noarch" "i586"];
+    } // args);
+
+    opensuse111x86_64 = args: makeImageFromRPMDist ({
+      name = "opensuse-11.1-x86_64";
+      fullName = "openSUSE 11.1 (x86_64)";
+      packagesList = fetchurl {
+        url = mirror://opensuse/distribution/11.1/repo/oss/suse/repodata/primary.xml.gz;
+        sha256 = "1mfmp9afikj0hci1s8cpwjdr0ycbpfym9gdhci590r9fa75w221j";
+      };
+      urlPrefix = mirror://opensuse/distribution/11.1/repo/oss/suse/;
+      archs = ["noarch" "x86_64"];
+    } // args);
+
     # Interestingly, the SHA-256 hashes provided by Ubuntu in
     # http://nl.archive.ubuntu.com/ubuntu/dists/{gutsy,hardy}/Release are
     # wrong, but the SHA-1 and MD5 hashes are correct.  Intrepid is fine.
@@ -867,7 +902,7 @@ rec {
       fullName = "Ubuntu 9.04 Jaunty (amd64)";
       packagesList = fetchurl {
         url = mirror://ubuntu/dists/jaunty/main/binary-amd64/Packages.bz2;
-        sha256 = "adc46fec04a5d87571c60fa1a29dfb73ca69ad6eb0276615b28595a3f06988e1";
+        sha256 = "af760ce04e43f066b8938b1abdeff979a642f940515659ede44f7877ca358ca8";
       };
       urlPrefix = mirror://ubuntu;
     } // args);
@@ -1039,6 +1074,8 @@ rec {
     opensuse103i386 = diskImageFuns.opensuse103i386 { packages = commonOpenSUSEPackages ++ ["devs"]; };
     opensuse110i386 = diskImageFuns.opensuse110i386 { packages = commonOpenSUSEPackages; };
     opensuse110x86_64 = diskImageFuns.opensuse110x86_64 { packages = commonOpenSUSEPackages; };
+    opensuse111i386 = diskImageFuns.opensuse111i386 { packages = commonOpenSUSEPackages; };
+    opensuse111x86_64 = diskImageFuns.opensuse111x86_64 { packages = commonOpenSUSEPackages; };
     
     ubuntu710i386 = diskImageFuns.ubuntu710i386 { packages = commonDebianPackages; };
     ubuntu804i386 = diskImageFuns.ubuntu804i386 { packages = commonDebianPackages; };

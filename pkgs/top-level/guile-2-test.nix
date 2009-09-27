@@ -6,11 +6,15 @@
 let
   allPackages = import ./all-packages.nix;
 
-  pkgs = allPackages {
-    config = {
-      packageOverrides = (p: p // { guile = p.guile_1_9; });
+  pkgsFun = { system ? builtins.currentSystem }:
+    allPackages {
+      inherit system;
+      config.packageOverrides = pkgs: {
+        guile = pkgs.guile_1_9;
+      };
     };
-  };
+
+  pkgs = pkgsFun {};
 
   toJob = x: if builtins.isAttrs x then x else
     { type = "job"; systems = x; schedulingPriority = 10; };
@@ -21,7 +25,7 @@ let
      for the platform in question. */
   testOn = systems: f: {system ? builtins.currentSystem}:
     if pkgs.lib.elem system systems
-    then f (allPackages {inherit system;})
+    then f (pkgsFun {inherit system;})
     else {};
 
   /* Map an attribute of the form `foo = [platforms...]'  to `testOn
@@ -57,6 +61,7 @@ in (mapTestOn {
   guileLib = linux;
   guileLint = linux;
   gwrap = linux;
+  swig = linux;
   gnutls = linux;
   dico = linux;
   trackballs = linux;
