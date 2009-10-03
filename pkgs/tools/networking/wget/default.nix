@@ -11,8 +11,10 @@ stdenv.mkDerivation rec {
   patches = [ ./gnutls-support.patch ];
 
   preConfigure =
-    '' sed -i "tests/run-px" \
-           -e 's|/usr/bin.*perl|${perl}/bin/perl|g'
+    '' for i in "doc/texi2pod.pl" "tests/run-px" "util/rmold.pl"
+       do
+         sed -i "$i" -e 's|/usr/bin.*perl|${perl}/bin/perl|g'
+       done
     '';
 
   buildInputs = [ gettext perl ]
