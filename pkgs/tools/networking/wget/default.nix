@@ -8,6 +8,8 @@ stdenv.mkDerivation rec {
     sha256 = "16msgly5xn0qj6ngsw34q9j7ag8jkci6020w21d30jgqw8wdj8y8";
   };
 
+  patches = [ ./gnutls-support.patch ];
+
   buildInputs = [ gettext ]
     ++ stdenv.lib.optional (gnutls != null) gnutls;
 
