@@ -1560,7 +1560,7 @@ let
   };
 
   wget = import ../tools/networking/wget {
-    inherit fetchurl stdenv gettext gnutls;
+    inherit fetchurl stdenv gettext gnutls perl;
   };
 
   which = import ../tools/system/which {

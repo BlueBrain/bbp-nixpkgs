@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, gettext, gnutls ? null }:
+{ stdenv, fetchurl, gettext, perl, gnutls ? null }:
 
 stdenv.mkDerivation rec {
   name = "wget-1.12";
@@ -10,7 +10,12 @@ stdenv.mkDerivation rec {
 
   patches = [ ./gnutls-support.patch ];
 
-  buildInputs = [ gettext ]
+  preConfigure =
+    '' sed -i "tests/run-px" \
+           -e 's|/usr/bin.*perl|${perl}/bin/perl|g'
+    '';
+
+  buildInputs = [ gettext perl ]
     ++ stdenv.lib.optional (gnutls != null) gnutls;
 
   configureFlags =
