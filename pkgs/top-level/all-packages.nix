@@ -1560,7 +1560,7 @@ let
   };
 
   wget = import ../tools/networking/wget {
-    inherit fetchurl stdenv gettext openssl;
+    inherit fetchurl stdenv gettext gnutls;
   };
 
   which = import ../tools/system/which {

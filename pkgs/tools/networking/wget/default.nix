@@ -1,4 +1,4 @@
-{stdenv, fetchurl, gettext, openssl ? null}:
+{ stdenv, fetchurl, gettext, gnutls ? null }:
 
 stdenv.mkDerivation rec {
   name = "wget-1.12";
@@ -8,7 +8,13 @@ stdenv.mkDerivation rec {
     sha256 = "16msgly5xn0qj6ngsw34q9j7ag8jkci6020w21d30jgqw8wdj8y8";
   };
 
-  buildInputs = [gettext openssl];
+  buildInputs = [ gettext ]
+    ++ stdenv.lib.optional (gnutls != null) gnutls;
+
+  configureFlags =
+    if gnutls != null
+    then "--with-ssl=gnutls"
+    else "";
 
   doCheck = true;
 
