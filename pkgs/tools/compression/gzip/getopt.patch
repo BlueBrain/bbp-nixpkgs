@@ -20,21 +20,6 @@ Signed-off-by: Eric Blake <ebb9@byu.net>
  lib/unistd.in.h |    2 +-
  3 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/ChangeLog b/ChangeLog
-index 19d34df..f330309 100644
---- a/ChangeLog
-+++ b/ChangeLog
-@@ -1,5 +1,10 @@
- 2009-10-06  Eric Blake  <ebb9@byu.net>
-
-+	getopt: fix compilation on darwin
-+	* lib/getopt.in.h (includes): Leave breadcrumbs during system
-+	include.
-+	* lib/unistd.in.h (getopt): Use them to avoid recursive include.
-+
- 	utimens: minor optimization
- 	* lib/utimens.c (gl_futimens): Use one less system call.
- 	* modules/utimens (Depends-on): Add dup2.
 diff --git a/lib/getopt.in.h b/lib/getopt.in.h
 index 9de467a..7377f3c 100644
 --- a/lib/getopt.in.h
