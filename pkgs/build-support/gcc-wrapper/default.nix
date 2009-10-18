@@ -6,11 +6,11 @@
 # variables so that the compiler and the linker just "work".
 
 { name ? "", stdenv, nativeTools, nativeLibc, nativePrefix ? ""
-, gcc ? null, libc ? null, binutils ? null, shell ? ""
+, gcc ? null, libc ? null, binutils ? null, coreutils ? null, shell ? ""
 }:
 
 assert nativeTools -> nativePrefix != "";
-assert !nativeTools -> gcc != null && binutils != null;
+assert !nativeTools -> gcc != null && binutils != null && coreutils != null;
 assert !nativeLibc -> libc != null;
 
 let
@@ -35,6 +35,8 @@ stdenv.mkDerivation {
   inherit nativeTools nativeLibc nativePrefix gcc;
   libc = if nativeLibc then null else libc;
   binutils = if nativeTools then null else binutils;
+  # The wrapper scripts use 'cat', so we may need coreutils
+  coreutils = if nativeTools then null else coreutils;
   
   langC = if nativeTools then true else gcc.langC;
   langCC = if nativeTools then true else gcc.langCC;

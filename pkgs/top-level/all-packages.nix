@@ -2107,7 +2107,7 @@ let
     nativePrefix = if stdenv ? gcc then stdenv.gcc.nativePrefix else "";
     gcc = baseGCC;
     libc = glibc;
-    inherit stdenv binutils;
+    inherit stdenv binutils coreutils;
   };
 
   wrapGCC = wrapGCCWith (import ../build-support/gcc-wrapper) glibc;
