@@ -10,7 +10,17 @@ stdenv.mkDerivation rec {
 
   propagatedBuildInputs = [ncurses];
 
-  patches = [ ./link-against-ncurses.patch ];
+  patches =
+    [ ./link-against-ncurses.patch ]
+    ++
+    (let
+       patch = nr: sha256:
+         fetchurl {
+           url = "mirror://gnu/bash/readline-6.0-patches/readline60-${nr}";
+           inherit sha256;
+         };
+     in
+       import ./readline-patches.nix patch);
 
   meta = {
     description = "GNU Readline, a library for interactive line editing";
