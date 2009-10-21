@@ -5,8 +5,8 @@ Failing to do that, applications linking against Readline are
 forced to explicitly link against libncurses as well; in addition,
 this trick doesn't work when using GNU ld's `--as-needed'.
 
---- readline-6.0/shlib/Makefile.in	2009-01-06 18:03:22.000000000 +0100
-+++ readline-6.0/shlib/Makefile.in	2009-07-27 14:43:25.000000000 +0200
+--- shlib/Makefile.in	2009-01-06 18:03:22.000000000 +0100
++++ shlib/Makefile.in	2009-07-27 14:43:25.000000000 +0200
 @@ -84,7 +84,7 @@ SHOBJ_LDFLAGS = @SHOBJ_LDFLAGS@
  SHOBJ_XLDFLAGS = @SHOBJ_XLDFLAGS@
  SHOBJ_LIBS = @SHOBJ_LIBS@
