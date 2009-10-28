@@ -33,8 +33,6 @@ preConfigure() {
     cd build
     
     configureScript=../configure
-    export CFLAGS="-g -O2"
-    export NIX_STRIP_DEBUG=0
 }
 
 

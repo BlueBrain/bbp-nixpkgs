@@ -64,7 +64,6 @@ stdenv.mkDerivation rec {
   ] else []);
 
   preInstall = ''
-    exit -1;
     ensureDir $out/lib
     ln -s ${stdenv.gcc.gcc}/lib/libgcc_s.so.1 $out/lib/libgcc_s.so.1
   '';
