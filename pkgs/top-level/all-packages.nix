@@ -2056,7 +2056,7 @@ let
   ocaml = getVersion  "ocaml" ocaml_alts;
 
   ocaml_alts = import ../development/compilers/ocaml {
-    inherit fetchurl stdenv x11 ncurses;
+    inherit fetchurl stdenv fetchcvs x11 ncurses;
   };
 
   /*
