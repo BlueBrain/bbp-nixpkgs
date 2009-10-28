@@ -312,7 +312,7 @@ let
   };
 
   makeInitrd = {contents}: import ../build-support/kernel/make-initrd.nix {
-    inherit stdenv perl cpio contents;
+    inherit stdenv perl cpio contents uboot;
   };
 
   makeSetupHook = script: runCommand "hook" {} ''
@@ -1042,7 +1042,7 @@ let
   };
 
   mldonkey = import ../applications/networking/p2p/mldonkey {
-    inherit fetchurl stdenv ocaml zlib ncurses;
+    inherit fetchurl stdenv ocaml zlib ncurses gd libpng;
   };
 
   monit = builderDefsPackage ../tools/system/monit {
@@ -2013,7 +2013,7 @@ let
   ocaml = getVersion  "ocaml" ocaml_alts;
 
   ocaml_alts = import ../development/compilers/ocaml {
-    inherit fetchurl stdenv x11 ncurses;
+    inherit fetchurl stdenv fetchcvs x11 ncurses;
   };
 
   /*
@@ -5277,7 +5277,7 @@ let
   });
 
   kernel_2_6_31 = makeOverridable (import ../os-specific/linux/kernel/linux-2.6.31.nix) {
-    inherit fetchurl stdenv perl mktemp module_init_tools;
+    inherit fetchurl stdenv perl mktemp module_init_tools uboot;
     kernelPatches = [];
   };
 
@@ -5614,7 +5614,7 @@ let
   };
 
   pam_unix2 = import ../os-specific/linux/pam_unix2 {
-    inherit stdenv fetchurl pam libxcrypt;
+    inherit stdenv fetchurl pam;
   };
 
   pcmciaUtils = composedArgsAndFun (import ../os-specific/linux/pcmciautils) {
@@ -5729,6 +5729,10 @@ let
     inherit mesa tcl freeglut;
     inherit (xlibs) libX11 xproto;
   };*/
+
+  uboot = import ../misc/uboot {
+    inherit fetchurl stdenv unzip;
+  };
 
   uclibc = import ../os-specific/linux/uclibc {
     inherit fetchurl stdenv kernelHeaders;

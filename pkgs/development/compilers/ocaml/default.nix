@@ -5,5 +5,6 @@ builtins.listToAttrs [
   { name = "3.09.1"; value = import ./3.09.1.nix args; }
   { name = "3.10.0"; value = import ./3.10.0.nix args; }
   { name = "3.11.1"; value = import ./3.11.1.nix args; }
+  { name = "cvs";    value = import ./cvs.nix args; }
   { name = "default"; value = import ./3.11.1.nix args; }
 ]

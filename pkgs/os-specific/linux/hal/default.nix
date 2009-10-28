@@ -27,7 +27,8 @@ stdenv.mkDerivation rec {
     --disable-policy-kit
   '';
 
-  propagatedBuildInputs = [libusb libsmbios];
+  propagatedBuildInputs = [ libusb ]
+    ++ stdenv.lib.optional (stdenv.system != "armv5tel-linux") [ libsmbios ];
 
   preConfigure = ''
     for i in hald/linux/probing/probe-smbios.c hald/linux/osspec.c \
