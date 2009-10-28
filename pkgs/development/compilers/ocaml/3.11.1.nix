@@ -10,9 +10,9 @@ stdenv.mkDerivation (rec {
   };
 
   prefixKey = "-prefix ";
-  configureFlags = ["-no-tk" "-x11lib" x11];
+  configureFlags = ["-no-tk"];
   buildFlags = "world bootstrap world.opt";
-  buildInputs = [x11 ncurses];
+  buildInputs = [ncurses];
   installTargets = "install installopt"; 
   patchPhase = ''
     CAT=$(type -tp cat)
