@@ -14,5 +14,15 @@ stdenv.mkDerivation {
   };
 
   buildInputs = [ ocaml zlib ncurses ];
-  configureFlags = "--disable-gd --disable-gui";
+  configureFlags = [ "--disable-gd" "--disable-gui" "--enable-ocamlver=3.11.1" ];
+
+  # Byte code compilation (the ocaml opt compiler is not supported in many platforms)
+  buildPhase = "make mlnet.byte";
+  installPhase = ''
+    ensureDir $out/bin
+    cp mlnet.byte $out/bin/mlnet
+  '';
+
+  # ocaml bytecode selfcontained binaries loose the bytecode if stripped
+  dontStrip = true;
 }
