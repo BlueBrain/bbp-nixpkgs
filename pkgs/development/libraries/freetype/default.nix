@@ -1,6 +1,6 @@
 {stdenv, fetchurl}:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (rec {
   name = "freetype-2.3.9";
   
   src = fetchurl {
@@ -14,4 +14,7 @@ stdenv.mkDerivation rec {
     description = "A font rendering engine";
     homepage = http://www.freetype.org/;
   };
-}
+} //
+# The asm for armel is written with the 'asm' keyword.
+(if (stdenv.system == "armv5tel-linux") then 
+    {CFLAGS = "-std=gnu99";} else {}))
