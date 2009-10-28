@@ -1,5 +1,10 @@
 args: with args;
 
+let
+   useX11 = (stdenv.system != "armv5tel-linux");
+   useNativeCompilers = (stdenv.system != "armv5tel-linux");
+   inherit (stdenv.lib) optionals optionalString;
+in
 stdenv.mkDerivation (rec {
   
   name = "ocaml-3.11.1";
@@ -10,11 +15,10 @@ stdenv.mkDerivation (rec {
   };
 
   prefixKey = "-prefix ";
-  configureFlags = ["-no-tk"];
-  buildFlags = "world"
-    + (if (stdenv.system != "armv5tel-linux") then "bootstrap world.opt" else "");
-  buildInputs = [ncurses];
-  installTargets = "install" + (if (stdenv.system != "armv5tel-linux") then "installopt" else ""); 
+  configureFlags = ["-no-tk"] ++ optionals useX11 [ "-x11lib" x11 ];
+  buildFlags = "world" + optionalString useNativeCompilers " bootstrap world.opt";
+  buildInputs = [ncurses] ++ optionals useX11 [ x11 ];
+  installTargets = "install" + optionalString useNativeCompilers " installopt";
   patchPhase = ''
     CAT=$(type -tp cat)
     sed -e "s@/bin/cat@$CAT@" -i config/auto-aux/sharpbang
