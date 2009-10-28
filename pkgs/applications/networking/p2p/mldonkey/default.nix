@@ -1,4 +1,4 @@
-{stdenv, fetchurl, ocaml, zlib, ncurses}:
+{stdenv, fetchurl, ocaml, zlib, ncurses, gd, libpng}:
 
 stdenv.mkDerivation {
   name = "mldonkey-3.0.0";
@@ -13,8 +13,8 @@ stdenv.mkDerivation {
     homepage = http://mldonkey.sourceforge.net/;
   };
 
-  buildInputs = [ ocaml zlib ncurses ];
-  configureFlags = [ "--disable-gd" "--disable-gui" "--enable-ocamlver=3.11.1" ];
+  buildInputs = [ ocaml zlib ncurses gd libpng ];
+  configureFlags = [ "--disable-gui" "--enable-ocamlver=3.11.1" ];
 
   # Byte code compilation (the ocaml opt compiler is not supported in many platforms)
   buildPhase = "make mlnet.byte";
