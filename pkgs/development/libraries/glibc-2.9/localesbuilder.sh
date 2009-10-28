@@ -33,8 +33,6 @@ preConfigure() {
     cd build
     
     configureScript=../configure
-    export CFLAGS="-g -O2"
-    export NIX_STRIP_DEBUG=0
 }
 
 
@@ -48,21 +46,5 @@ postConfigure() {
     export NIX_DONT_SET_RPATH=1
     unset CFLAGS
 }
-
-
-postInstall() {
-    if test -n "$installLocales"; then
-        make localedata/install-locales
-    fi
-    rm $out/etc/ld.so.cache
-    (cd $out/include && ln -s $kernelHeaders/include/* .) || exit 1
-
-    # Fix for NIXOS-54 (ldd not working on x86_64).  Make a symlink
-    # "lib64" to "lib".
-    if test -n "$is64bit"; then
-        ln -s lib $out/lib64
-    fi
-}
-
 
 genericBuild
