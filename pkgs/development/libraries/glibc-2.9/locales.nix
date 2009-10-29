@@ -35,6 +35,11 @@ stdenv.mkDerivation rec {
     "--without-fp"
   ] else []);
 
+  patches = [
+    /* Support GNU Binutils 2.20 and above.  */
+    ./binutils-2.20.patch
+  ];
+
   # Awful hack: `localedef' doesn't allow the path to `locale-archive'
   # to be overriden, but you *can* specify a prefix, i.e. it will use
   # <prefix>/<path-to-glibc>/lib/locale/locale-archive.  So we use
