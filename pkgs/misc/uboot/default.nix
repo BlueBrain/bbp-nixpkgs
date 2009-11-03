@@ -23,6 +23,8 @@ stdenv.mkDerivation {
     sourceRoot=u-boot-3.4.19
   '';
 
+  patches = [ ./gas220.patch ];
+
   # Remove the cross compiler prefix, and add reiserfs support
   configurePhase = ''
     make mrproper
