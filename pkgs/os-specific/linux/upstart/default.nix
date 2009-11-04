@@ -1,8 +1,5 @@
 {stdenv, fetchurl}:
 
-let bashCompletion = ./upstart-bash-completion;
-in
-
 stdenv.mkDerivation {
   name = "upstart-0.3.0";
   
@@ -17,7 +14,10 @@ stdenv.mkDerivation {
   
   patches = [./cfgdir.patch];
   
-  preBuild = "export NIX_CFLAGS_COMPILE=\"$NIX_CFLAGS_COMPILE -DSHELL=\\\"$SHELL\\\"\"";
+  preBuild =
+    ''
+      export NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -DSHELL=\"$SHELL\""
+    '';
 
   # The interface version prevents NixOS from switching to an
   # incompatible Upstart at runtime.  (Switching across reboots is
@@ -29,10 +29,12 @@ stdenv.mkDerivation {
     interfaceVersion = 1;
   };
 
-  postInstall = ''
-    t=$out/etc/bash_completion.d
-    ensureDir $t; cp ${bashCompletion} $t/upstart
-  '';
+  postInstall =
+    ''
+      t=$out/etc/bash_completion.d
+      ensureDir $t
+      cp ${./upstart-bash-completion} $t/upstart
+    '';
 
   meta = {
     homepage = "http://upstart.ubuntu.com/";

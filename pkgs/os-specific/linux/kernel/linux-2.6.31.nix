@@ -19,7 +19,7 @@ import ./generic.nix (
     features = {
       iwlwifi = true;
     };
- 
+
     preConfigure = if (stdenv.system != "armv5tel-linux") then ''
         killOption () {
           sed -re 's/^('"$1"')=[ym]/# \1 is not set/' -i .config
