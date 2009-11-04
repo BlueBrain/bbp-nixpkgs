@@ -30,6 +30,14 @@ rec {
     QuickCheck = QuickCheck2101;
   };
 
+  ansiTerminal = import ../development/libraries/haskell/ansi-terminal {
+    inherit cabal;
+  };
+
+  ansiWLPprint = import ../development/libraries/haskell/ansi-wl-pprint {
+    inherit cabal ansiTerminal;
+  };
+
   benchpress = import ../development/libraries/haskell/benchpress {
     inherit cabal;
   };
@@ -48,6 +56,10 @@ rec {
 
   cgi = import ../development/libraries/haskell/cgi {
     inherit cabal mtl network parsec xhtml;
+  };
+
+  colorizeHaskell = import ../development/libraries/haskell/colorize-haskell {
+    inherit cabal ansiTerminal haskellLexer;
   };
 
   convertible = import ../development/libraries/haskell/convertible {
@@ -114,7 +126,7 @@ rec {
   };
 
   ghcCore = import ../development/libraries/haskell/ghc-core {
-    inherit cabal pcreLight hscolour;
+    inherit cabal pcreLight colorizeHaskell;
   };
 
   ghcPaths = import ../development/libraries/haskell/ghc-paths {
@@ -163,8 +175,16 @@ rec {
     inherit cabal HaXml mtl network stm hslogger HAppSUtil HAppSData bytestring binary hspread;
   };
 
+  hashedStorage = import ../development/libraries/haskell/hashed-storage {
+    inherit cabal mtl zlib mmap;
+  };
+
   haskeline = import ../development/libraries/haskell/haskeline {
     inherit cabal extensibleExceptions mtl utf8String;
+  };
+
+  haskellLexer = import ../development/libraries/haskell/haskell-lexer {
+    inherit cabal;
   };
 
   haskellSrc = import ../development/libraries/haskell/haskell-src {
@@ -229,6 +249,10 @@ rec {
     inherit cabal;
   };
 
+  HList = import ../development/libraries/haskell/HList {
+    inherit cabal ;
+  };
+
   hscolour = import ../development/libraries/haskell/hscolour {
     inherit cabal;
   };
@@ -263,6 +287,10 @@ rec {
 
   maybench = import ../development/libraries/haskell/maybench {
     inherit cabal benchpress;
+  };
+
+  mmap = import ../development/libraries/haskell/mmap {
+    inherit cabal;
   };
 
   monadlab = import ../development/libraries/haskell/monadlab {
@@ -328,9 +356,17 @@ rec {
     inherit cabal mtl;
   };
 
+  parsimony = import ../development/libraries/haskell/parsimony {
+    inherit cabal utf8String;
+  };
+
   pcreLight = import ../development/libraries/haskell/pcre-light {
     inherit cabal;
     inherit (pkgs) pcre;
+  };
+
+  polyparse = import ../development/libraries/haskell/polyparse {
+    inherit cabal;
   };
 
   QuickCheck  = QuickCheck1;
@@ -452,8 +488,16 @@ rec {
     inherit cabal;
   };
 
+  transformers = import ../development/libraries/haskell/transformers {
+    inherit cabal;
+  };
+
   uniplate = import ../development/libraries/haskell/uniplate {
     inherit cabal mtl;
+  };
+
+  uniqueid = import ../development/libraries/haskell/uniqueid {
+    inherit cabal;
   };
 
   utf8String = import ../development/libraries/haskell/utf8-string {
@@ -609,8 +653,8 @@ rec {
   # Applications.
 
   darcs = import ../applications/version-management/darcs/darcs-2.nix {
-    inherit cabal html mtl parsec regexCompat;
-    inherit (pkgs) zlib curl;
+    inherit cabal html mtl parsec regexCompat haskeline hashedStorage;
+    inherit (pkgs) curl;
   };
 
   leksah = import ../applications/editors/leksah {

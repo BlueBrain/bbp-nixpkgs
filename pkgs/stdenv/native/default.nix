@@ -4,8 +4,9 @@ rec {
 
   shell = "/bin/bash";
 
-  path = ["/" "/usr" "/usr/local"];
-
+  path = (if system == "i386-sunos" then [ "/usr/gnu" ] else []) ++
+    (if system == "i686-netbsd" then [ "/usr/pkg" ] else []) ++
+    ["/" "/usr" "/usr/local"];
 
   prehookBase = builtins.toFile "prehook-base.sh" ''
     # Disable purity tests; it's allowed (even needed) to link to
@@ -26,9 +27,41 @@ rec {
     source ${prehookBase}
     
     alias make=gmake
+    alias tar=gtar
+    alias sed=gsed
     export MAKE=gmake
     shopt -s expand_aliases
 
+    # Filter out stupid GCC warnings (in gcc-wrapper).
+    export NIX_GCC_NEEDS_GREP=1
+  '';
+
+  prehookOpenBSD = builtins.toFile "prehook-openbsd.sh" ''
+    source ${prehookBase}
+    
+    alias make=gmake
+    alias grep=ggrep
+    alias mv=gmv
+    alias ln=gln
+    alias sed=gsed
+    alias tar=gtar
+    
+    export MAKE=gmake
+    shopt -s expand_aliases
+
+    # Filter out stupid GCC warnings (in gcc-wrapper).
+    export NIX_GCC_NEEDS_GREP=1
+  '';
+
+  prehookNetBSD = builtins.toFile "prehook-netbsd.sh" ''
+    source ${prehookBase}
+    
+    alias make=gmake
+    alias sed=gsed
+    alias tar=gtar
+    export MAKE=gmake
+    shopt -s expand_aliases
+    
     # Filter out stupid GCC warnings (in gcc-wrapper).
     export NIX_GCC_NEEDS_GREP=1
   '';
@@ -55,6 +88,8 @@ rec {
       preHook =
         if system == "i686-darwin" || system == "powerpc-darwin" then prehookDarwin else
         if system == "i686-freebsd" then prehookFreeBSD else
+        if system == "i686-openbsd" then prehookOpenBSD else
+	if system == "i686-netbsd" then prehookNetBSD else
         prehookBase;
 
       initialPath = extraPath ++ path;
@@ -75,7 +110,7 @@ rec {
     name = "gcc-native";
     nativeTools = true;
     nativeLibc = true;
-    nativePrefix = "/usr";
+    nativePrefix = if system == "i386-sunos" then "/usr/gnu" else "/usr";
     stdenv = stdenvBoot0;
   };
 

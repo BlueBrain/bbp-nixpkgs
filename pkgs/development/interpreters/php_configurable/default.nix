@@ -96,7 +96,10 @@ composableDerivation {} ( fixed : {
       };
 
       /*
-         Building xdebug withing php to be able to add the parameters to the ini file.. Ther should be a better way
+         php is build within this derivation in order to add the xdebug lines to the php.ini.
+         So both Apache and command line php both use xdebug without having to configure anything.
+         Xdebug could be put in its own derivation.
+      * /
         meta = {
                 description = "debugging support for PHP";
                 homepage = http://xdebug.org;
@@ -106,31 +109,30 @@ composableDerivation {} ( fixed : {
       xdebug = {
         buildInputs = [ automake autoconf ];
         xdebug_src = args.fetchurl {
-          name = "xdebug-2.0.2.tar.gz";
-          url = "http://xdebug.org/link.php?url=xdebug202";
-          sha256 = "1h0bxvf8krr203fmk1k7izrrr81gz537xmd3pqh4vslwdlbhrvic";
+          url = "http://xdebug.org/files/xdebug-2.0.5.tgz";
+          sha256 = "1cmq7c36gj8n41mfq1wba5rij8j77yqhydpcsbcysk1zchg68f26";
         };
       };
     };
 
   cfg = {
-    mysqlSupport = true;
-    mysqliSupport = true;
-    pdo_mysqlSupport = true;
-    libxml2Support = true;
-    apxs2Support = true;
-    bcmathSupport = true;
-    socketsSupport = true;
-    curlSupport = true;
-    gettextSupport = true;
-    postgresqlSupport = true;
-    sqliteSupport = true;
-    soapSupport = true;
-    zlibSupport = true;
-    opensslSupport = true;
-    xdebugSupport = true;
-    mbstringSupport = true;
-    gdSupport = true;
+    mysqlSupport = getConfig ["php" "mysql"] true;
+    mysqliSupport = getConfig ["php" "mysqli"] true;
+    pdo_mysqlSupport = getConfig ["php" "pdo_mysql"] true;
+    libxml2Support = getConfig ["php" "libxml2"] true;
+    apxs2Support = getConfig ["php" "apxs2"] true;
+    bcmathSupport = getConfig ["php" "bcmath"] true;
+    socketsSupport = getConfig ["php" "sockets"] true;
+    curlSupport = getConfig ["php" "curl"] true;
+    gettextSupport = getConfig ["php" "gettext"] true;
+    postgresqlSupport = getConfig ["php" "postgresql"] true;
+    sqliteSupport = getConfig ["php" "sqlite"] true;
+    soapSupport = getConfig ["php" "soap"] true;
+    zlibSupport = getConfig ["php" "zlib"] true;
+    opensslSupport = getConfig ["php" "openssl"] true;
+    xdebugSupport = getConfig ["php" "xdebug"] false;
+    mbstringSupport = getConfig ["php" "mbstring"] true;
+    gdSupport = getConfig ["php" "gd"] true;
   };
 
   # only -O1
@@ -148,7 +150,7 @@ composableDerivation {} ( fixed : {
 
     # Now Let's build xdebug if flag has been given
     # TODO I think there are better paths than the given below
-    if [ -n $flag_set_xdebug ]; then
+    if [ -n "$xdebug_src" ]; then
       PATH=$PATH:$out/bin
       tar xfz $xdebug_src;
       cd xdebug*

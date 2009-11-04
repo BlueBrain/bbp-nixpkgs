@@ -22,6 +22,7 @@ let inherit (builtins) head tail trace; in
 			(hasSuffixHack ".tbz" s) then "tbz2"
                 else if (hasSuffixHack ".tar.Z" s) then "tZ" 
                 else if (hasSuffixHack ".tar.lzma" s) then "tar.lzma"
+                else if (hasSuffixHack ".tar.xz" s) then "tar.xz"
                 else if (hasSuffixHack ".zip" s) || (hasSuffixHack ".ZIP" s) then "zip"
                 else if (hasSuffixHack "-cvs-export" s) then "cvs-dir"
                 else if (hasSuffixHack ".nar.bz2" s) then "narbz2"
@@ -212,6 +213,9 @@ let inherit (builtins) head tail trace; in
         " else if (archiveType s) == "tar.lzma" then "
                 unlzma -d -c <'${s}' | tar xv
                 cd \"\$(unlzma -d -c <'${s}' | tar t | head -1 | sed -e 's@/.*@@' )\"
+        " else if (archiveType s) == "tar.xz" then "
+                xz -d -c <'${s}' | tar xv
+                cd \"\$(xz -d -c <'${s}' | tar t | head -1 | sed -e 's@/.*@@' )\"
         " else if (archiveType s) == "zip" then "
                 unzip '${s}'
                 cd \"$( unzip -lqq '${s}' | tail -1 | 
@@ -542,11 +546,11 @@ let inherit (builtins) head tail trace; in
      sha256 = srcInfo.hash;
    };
 
-   fetchGitFromSrcInfo = srcInfo: fetchgit {
+   fetchGitFromSrcInfo = srcInfo: fetchgit ({
      url = srcInfo.url;
      rev = srcInfo.rev;
      sha256 = srcInfo.hash;
-   };
+   } // (if srcInfo ? depth then {inherit (srcInfo) depth;} else {}));
 }) // args
 
 # [1]: rewrite using '' instead of " so that indentation gets stripped. It's

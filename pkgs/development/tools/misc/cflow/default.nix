@@ -14,7 +14,13 @@ stdenv.mkDerivation rec {
                 "$(cat ${stdenv.gcc}/nix-support/orig-gcc)/bin/cpp"
   '';
 
-  buildInputs = [ gettext emacs ];
+  buildInputs = [ gettext ] ++
+
+    # We don't have Emacs/GTK/etc. on {Dar,Cyg}win.
+    stdenv.lib.optional
+      (! (stdenv.lib.lists.any (x: stdenv.system == x)
+              [ "i686-darwin" "i686-cygwin" ]))
+      emacs;
 
   doCheck = true;
 
@@ -39,5 +45,14 @@ stdenv.mkDerivation rec {
     homepage = http://www.gnu.org/software/cflow/;
 
     maintainers = [ stdenv.lib.maintainers.ludo ];
+
+    /* On Darwin, build fails with:
+
+       Undefined symbols:
+         "_argp_program_version", referenced from:
+             _argp_program_version$non_lazy_ptr in libcflow.a(argp-parse.o)
+       ld: symbol(s) not found
+     */
+    platforms = stdenv.lib.platforms.allBut "i686-darwin";
   };
 }

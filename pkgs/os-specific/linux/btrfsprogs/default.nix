@@ -7,6 +7,9 @@ let
     zlib libuuid acl 
   ];
 in
+
+assert a.libuuid != null;
+
 rec {
   src = fetchurl {
     url = "http://www.kernel.org/pub/linux/kernel/people/mason/btrfs/btrfs-progs-${version}.tar.bz2";

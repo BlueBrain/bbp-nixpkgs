@@ -3,7 +3,7 @@
 */
 args: with args; with pkgs;
 let
-  inherit (pkgs) stdenv fetchurl getConfig;
+  inherit (pkgs) stdenv fetchurl getConfig subversion;
   inherit (pkgs.bleedingEdgeRepos) sourceByName;
 in
 rec {
@@ -48,7 +48,7 @@ rec {
   };
 
   topGit = stdenv.mkDerivation {
-    name = "TopGit-git-patched";
+    name = "TopGit-git"; # official release 0.8
     src = sourceByName "topGit"; # destination directory is patched
     phases="unpackPhase patchPhase installPhase";
     installPhase = ''
@@ -59,10 +59,10 @@ rec {
     '';
     meta = {
       description = "TopGit aims to make handling of large amount of interdependent topic branches easier";
+      maintainers = [lib.maintainers.marcweber];
       homepage = http://repo.or.cz/w/topgit.git; # maybe there is also another one, I haven't checked
       license = "GPLv2";
     };
-    patches = [ ./print-update-ranges.patch ./tg-push.patch ];
   };
 
   tig = stdenv.mkDerivation {
@@ -83,8 +83,8 @@ rec {
     };
   };
 
-  hg2git = import ./hg2git {
-    inherit fetchurl stdenv mercurial coreutils git makeWrapper;
+  gitFastExport = import ./fast-export {
+    inherit fetchurl stdenv mercurial coreutils git makeWrapper subversion;
     inherit (bleedingEdgeRepos) sourceByName;
   };
 

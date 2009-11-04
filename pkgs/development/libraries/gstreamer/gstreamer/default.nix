@@ -1,11 +1,14 @@
 { fetchurl, stdenv, perl, bison, flex, pkgconfig, python
-, which, gtkdoc, glib, libxml2 }:
+, which, gtkdoc, glib, libxml2, ... }:
 
 stdenv.mkDerivation rec {
   name = "gstreamer-0.10.22";
 
   src = fetchurl {
-    url = "${meta.homepage}/src/gstreamer/${name}.tar.bz2";
+    urls = [
+      "${meta.homepage}/src/gstreamer/${name}.tar.bz2"
+      "mirror://gentoo/distfiles/${name}.tar.bz2"
+      ];
     sha256 = "17iqgsnh1v43ai9m9iyqv6dds7iwqw2445b0qxnjwdmij80rwj31";
   };
 

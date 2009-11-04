@@ -46,12 +46,10 @@ rec {
             '' ["defEnsureDir"];
 
   preBuild = fullDepEntry (''
-		cp config.log /tmp/snd-config.log
 		export NIX_LDFLAGS="$NIX_LDFLAGS -L${args.libX11}/lib -lX11"
-                
             '') ["minInit" "doUnpack" "makeDocsWork"];
 
-  name = "Snd-" + version;
+  name = "snd-" + version;
   meta = {
     description = "Snd sound editor.";
     homepage = http://ccrma.stanford.edu/software/snd;

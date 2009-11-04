@@ -17,12 +17,9 @@ preConfigure() {
     SRCDIR=
 
     sed -e '/CURL_NO_OLDIES/d' -i ucb/source/ucp/ftp/makefile.mk
-
-    cd config_office/
 }
 
 postConfigure() {
-    cd ..
     for i in LinuxX86*Env.Set; do
 	substituteInPlace $i --replace /usr /no-such-path
     done
@@ -79,7 +76,23 @@ installPhase() {
     # the application menu in KDE and GNOME
     ensureDir $out/share
     ln -s $out/lib/openoffice/openoffice.org3/share/xdg $out/share/applications
+
+    # Apply a minor correction to the *.desktop files in order to correctly address the icons
+    # The openoffice- prefix should be removed from the icon identifiers
+    for appl in $out/share/applications/*.desktop
+    do
+        chmod 644 $appl # What's wrong with the file permissions?
+        sed -i '/Icon/d' $appl
+        echo "Icon=$(echo $(basename $appl) | sed 's/.desktop//')" >> $appl    
+    done
     
+    # Copy icons so that the menu items in KDE and GNOME will look much nicer
+    (cd $SRC_ROOT/sysui/desktop/icons
+     install -v -d $out/share/icons/{hicolor,locolor} -m 755
+     cp -rv hicolor/*x* $out/share/icons/hicolor
+     cp -rv locolor/*x* $out/share/icons/locolor
+    )
+        
     # The desktop files expect a openoffice.org3 executable in the PATH, which is a symlink to soffice
     ln -s $out/bin/soffice $out/bin/openoffice.org3
 }

@@ -79,6 +79,7 @@ rec {
       license = "MIT";
 
       maintainers = [ stdenv.lib.maintainers.ludo ];
+      platforms = python.meta.platforms;
     };
   });
 
@@ -104,6 +105,23 @@ rec {
       license = "BSD";
     };
   };
+
+  lxml = buildPythonPackage ( rec {
+    name = "lxml-2.2.2";
+
+    src = fetchurl {
+      url = http://pypi.python.org/packages/source/l/lxml/lxml-2.2.2.tar.gz;
+      sha256 = "0zjpsy67wcs69qhb06ficl3a5z229hmczpr8h84rkk05vaagj8qv";
+    };
+
+    buildInputs = [ pkgs.libxml2 pkgs.libxslt ];
+
+    meta = { 
+      description = "Pythonic binding for the libxml2 and libxslt libraries";
+      homepage = http://codespeak.net/lxml/index.html;
+      license = "BSD";
+    };
+  });
 
   nevow = buildPythonPackage (rec {
     name = "nevow-0.9.33";
@@ -173,6 +191,7 @@ rec {
       license = "revised-BSD";
 
       maintainers = [ stdenv.lib.maintainers.ludo ];
+      platforms = python.meta.platforms;
     };
   });
 
@@ -216,6 +235,7 @@ rec {
       license = "GPLv2+";
 
       maintainers = [ stdenv.lib.maintainers.ludo ];
+      platforms = python.meta.platforms;
     };
   });
 
@@ -269,6 +289,7 @@ rec {
       license = "revised BSD";
 
       maintainers = [ stdenv.lib.maintainers.ludo ];
+      platforms = python.meta.platforms;
     };
   });
 
@@ -391,6 +412,7 @@ rec {
       license = "MIT";
 
       maintainers = [ stdenv.lib.maintainers.ludo ];
+      platforms = python.meta.platforms;
     };
   };
 

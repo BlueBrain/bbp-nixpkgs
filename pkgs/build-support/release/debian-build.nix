@@ -4,12 +4,13 @@
 { name ? "debian-build"
 , diskImage
 , src, stdenv, vmTools, checkinstall
+, fsTranslation ? false
 , ... } @ args:
 
 vmTools.runInLinuxImage (stdenv.mkDerivation (
 
   {
-    doCheck = true;
+    #doCheck = true;
 
     prefix = "/usr";
 
@@ -37,7 +38,7 @@ vmTools.runInLinuxImage (stdenv.mkDerivation (
 
     installExtraDebsPhase = ''
       for i in $extraDebs; do
-        dpkg --install $i    
+        dpkg --install $(ls $i/debs/*.deb | sort | head -1)
       done
     '';
 
@@ -53,7 +54,9 @@ vmTools.runInLinuxImage (stdenv.mkDerivation (
       eval "$preInstall" 
       export LOGNAME=root
 
-      ${checkinstall}/sbin/checkinstall --nodoc -y -D --fstrans=no make install
+      ${checkinstall}/sbin/checkinstall --nodoc -y -D \
+        --fstrans=${if fsTranslation then "yes" else "no"} \
+        make install
 
       ensureDir $out/debs
       find . -name "*.deb" -exec cp {} $out/debs \;
@@ -66,7 +69,11 @@ vmTools.runInLinuxImage (stdenv.mkDerivation (
         echo "file deb $i" >> $out/nix-support/hydra-build-products
         stopNest
       done
- 
+
+      for i in $extraDebs; do
+        echo "file deb-extra $(ls $i/debs/*.deb | sort | head -1)" >> $out/nix-support/hydra-build-products
+      done
+
       eval "$postInstall" 
     ''; # */
 

@@ -5,9 +5,11 @@ with pkgs;
 rec {
 
 
-  inherit (kernelPackages_2_6_26) kernel;
+  inherit (kernelPackages_2_6_29) kernel;
 
   klibcShrunk = pkgs.klibcShrunk.override { klibc = klibc_15; };
+
+  kvm = pkgs.kvm76;
 
 
   modulesClosure = makeModulesClosure {
@@ -100,7 +102,18 @@ rec {
     mkdir -p /fs/dev
     mount -o bind /dev /fs/dev
 
-    mount.cifs //10.0.2.4/qemu /fs/hostfs -o guest,username=nobody
+    n=.
+    echo "mounting host filesystem..."
+    while true; do
+      if mount.cifs //10.0.2.4/qemu /fs/hostfs -o guest,username=nobody; then
+        break
+      else
+        n=".$n"
+        test ''${#n} -le 10 || exit 1
+        sleep 1
+        echo "retrying..."
+      fi
+    done
 
     mkdir -p /fs/nix/store
     mount -o bind /fs/hostfs/nix/store /fs/nix/store
@@ -445,7 +458,9 @@ rec {
 
     prepareImagePhase = ''
       if test -n "$extraRPMs"; then
-        rpm -iv $extraRPMs
+        for rpmdir in $extraRPMs ; do
+          rpm -iv $(ls $rpmdir/rpms/*/*.rpm | grep -v 'src\.rpm' | sort | head -1)
+        done
       fi
     '';
   
@@ -515,7 +530,7 @@ rec {
       buildCommand = ''
         ${createRootFS}
 
-        PATH=$PATH:${dpkg}/bin:${dpkg}/sbin:${glibc}/sbin
+        PATH=$PATH:${dpkg}/bin:${dpkg}/sbin:${glibc}/sbin:${lzma}/bin
 
         # Unpack the .debs.  We do this to prevent pre-install scripts
         # (which have lots of circular dependencies) from barfing.
@@ -531,7 +546,7 @@ rec {
         # Make the Nix store available in /mnt, because that's where the .debs live.
         mkdir -p /mnt/inst/nix/store
         ${klibcShrunk}/bin/mount -o bind /nix/store /mnt/inst/nix/store
-
+        ${klibcShrunk}/bin/mount -o bind /proc /mnt/proc
         ${klibcShrunk}/bin/mount -o bind /dev /mnt/dev
         
         # Misc. files/directories assumed by various packages.
@@ -565,10 +580,12 @@ rec {
         
         echo "running post-install script..."
         eval "$postInstall"
-        
+        ln -sf dash /mnt/bin/sh
+
         rm /mnt/.debug
         
         ${klibcShrunk}/bin/umount /mnt/inst/nix/store
+        ${klibcShrunk}/bin/umount /mnt/proc
         ${klibcShrunk}/bin/umount /mnt/dev
         ${klibcShrunk}/bin/umount /mnt
       '';
@@ -798,6 +815,28 @@ rec {
       archs = ["noarch" "x86_64"];
     } // args);
 
+    opensuse111i386 = args: makeImageFromRPMDist ({
+      name = "opensuse-11.1-i586";
+      fullName = "openSUSE 11.1 (i586)";
+      packagesList = fetchurl {
+        url = mirror://opensuse/distribution/11.1/repo/oss/suse/repodata/primary.xml.gz;
+        sha256 = "1mfmp9afikj0hci1s8cpwjdr0ycbpfym9gdhci590r9fa75w221j";
+      };
+      urlPrefix = mirror://opensuse/distribution/11.1/repo/oss/suse/;
+      archs = ["noarch" "i586"];
+    } // args);
+
+    opensuse111x86_64 = args: makeImageFromRPMDist ({
+      name = "opensuse-11.1-x86_64";
+      fullName = "openSUSE 11.1 (x86_64)";
+      packagesList = fetchurl {
+        url = mirror://opensuse/distribution/11.1/repo/oss/suse/repodata/primary.xml.gz;
+        sha256 = "1mfmp9afikj0hci1s8cpwjdr0ycbpfym9gdhci590r9fa75w221j";
+      };
+      urlPrefix = mirror://opensuse/distribution/11.1/repo/oss/suse/;
+      archs = ["noarch" "x86_64"];
+    } // args);
+
     # Interestingly, the SHA-256 hashes provided by Ubuntu in
     # http://nl.archive.ubuntu.com/ubuntu/dists/{gutsy,hardy}/Release are
     # wrong, but the SHA-1 and MD5 hashes are correct.  Intrepid is fine.
@@ -867,7 +906,7 @@ rec {
       fullName = "Ubuntu 9.04 Jaunty (amd64)";
       packagesList = fetchurl {
         url = mirror://ubuntu/dists/jaunty/main/binary-amd64/Packages.bz2;
-        sha256 = "adc46fec04a5d87571c60fa1a29dfb73ca69ad6eb0276615b28595a3f06988e1";
+        sha256 = "af760ce04e43f066b8938b1abdeff979a642f940515659ede44f7877ca358ca8";
       };
       urlPrefix = mirror://ubuntu;
     } // args);
@@ -893,21 +932,21 @@ rec {
     } // args);
 
     debian50i386 = args: makeImageFromDebDist ({
-      name = "debian-5.0.1-lenny-i386";
-      fullName = "Debian 5.0.1 Lenny (i386)";
+      name = "debian-5.0.3-lenny-i386";
+      fullName = "Debian 5.0.3 Lenny (i386)";
       packagesList = fetchurl {
         url = mirror://debian/dists/lenny/main/binary-i386/Packages.bz2;
-        sha256 = "a8257890a83302ebe8e4413cbec83bea1ac6b7345646465566d625d70558aeb6";
+        sha256 = "87886ed314c53a57c6689022c0043c25c3c96c643e3034fc51acae0572b5ff1f";
       };
       urlPrefix = mirror://debian;
     } // args);
         
     debian50x86_64 = args: makeImageFromDebDist ({
-      name = "debian-5.0.1-lenny-amd64";
-      fullName = "Debian 5.0.1 Lenny (amd64)";
+      name = "debian-5.0.3-lenny-amd64";
+      fullName = "Debian 5.0.3 Lenny (amd64)";
       packagesList = fetchurl {
         url = mirror://debian/dists/lenny/main/binary-amd64/Packages.bz2;
-        sha256 = "6812c7462f4b2b767c157d01139e0fc9e17f99c492dcc59361dbd48ed8ec0e63";
+        sha256 = "c51dc5b87d7cd12bd3537bb905428a49869a0f4e0e7cb3546dd8a00fb32db380";
       };
       urlPrefix = mirror://debian;
     } // args);
@@ -970,6 +1009,7 @@ rec {
     "perl"
     "sysvinit"
     "bash"
+    "dash"
     "gzip"
     "bzip2"
     "tar"
@@ -1025,34 +1065,65 @@ rec {
       '';
     };
     
-    fedora2i386 = diskImageFuns.fedora2i386 { packages = commonFedoraPackages; };
-    fedora3i386 = diskImageFuns.fedora3i386 { packages = commonFedoraPackages; };
-    fedora5i386 = diskImageFuns.fedora5i386 { packages = commonFedoraPackages ++ ["util-linux"]; };
-    fedora7i386 = diskImageFuns.fedora7i386 { packages = commonFedoraPackages; };
-    fedora8i386 = diskImageFuns.fedora8i386 { packages = commonFedoraPackages; };
-    fedora9i386 = diskImageFuns.fedora9i386 { packages = commonFedoraPackages       ++ [ "cronie" "util-linux-ng" ]; };
-    fedora9x86_64 = diskImageFuns.fedora9x86_64 { packages = commonFedoraPackages   ++ [ "cronie" "util-linux-ng" ]; };
-    fedora10i386 = diskImageFuns.fedora10i386 { packages = commonFedoraPackages     ++ [ "cronie" "util-linux-ng" ]; };
-    fedora10x86_64 = diskImageFuns.fedora10x86_64 { packages = commonFedoraPackages ++ [ "cronie" "util-linux-ng" ]; };
-    fedora11i386 = diskImageFuns.fedora11i386 { packages = commonFedoraPackages     ++ [ "cronie" "util-linux-ng" ]; };
-    fedora11x86_64 = diskImageFuns.fedora11x86_64 { packages = commonFedoraPackages ++ [ "cronie" "util-linux-ng" ]; };
-    opensuse103i386 = diskImageFuns.opensuse103i386 { packages = commonOpenSUSEPackages ++ ["devs"]; };
-    opensuse110i386 = diskImageFuns.opensuse110i386 { packages = commonOpenSUSEPackages; };
-    opensuse110x86_64 = diskImageFuns.opensuse110x86_64 { packages = commonOpenSUSEPackages; };
+    fedora2i386 = diskImageExtraFuns.fedora2i386 [];
+    fedora3i386 = diskImageExtraFuns.fedora3i386 [];
+    fedora5i386 = diskImageExtraFuns.fedora5i386 [];
+    fedora7i386 = diskImageExtraFuns.fedora7i386 [];
+    fedora8i386 = diskImageExtraFuns.fedora8i386 [];
+    fedora9i386 = diskImageExtraFuns.fedora9i386 [];
+    fedora9x86_64 = diskImageExtraFuns.fedora9x86_64 [];
+    fedora10i386 = diskImageExtraFuns.fedora10i386 [];
+    fedora10x86_64 = diskImageExtraFuns.fedora10x86_64 [];
+    fedora11i386 = diskImageExtraFuns.fedora11i386 [];
+    fedora11x86_64 = diskImageExtraFuns.fedora11x86_64 [];
+    opensuse103i386 = diskImageExtraFuns.opensuse103i386 [];
+    opensuse110i386 = diskImageExtraFuns.opensuse110i386 [];
+    opensuse110x86_64 = diskImageExtraFuns.opensuse110x86_64 [];
+    opensuse111i386 = diskImageExtraFuns.opensuse111i386 [];
+    opensuse111x86_64 = diskImageExtraFuns.opensuse111x86_64 [];
     
-    ubuntu710i386 = diskImageFuns.ubuntu710i386 { packages = commonDebianPackages; };
-    ubuntu804i386 = diskImageFuns.ubuntu804i386 { packages = commonDebianPackages; };
-    ubuntu804x86_64 = diskImageFuns.ubuntu804x86_64 { packages = commonDebianPackages; };
-    ubuntu810i386 = diskImageFuns.ubuntu810i386 { packages = commonDebianPackages; };
-    ubuntu810x86_64 = diskImageFuns.ubuntu810x86_64 { packages = commonDebianPackages; };
-    ubuntu904i386 = diskImageFuns.ubuntu904i386 { packages = commonDebianPackages; };
-    ubuntu904x86_64 = diskImageFuns.ubuntu904x86_64 { packages = commonDebianPackages; };
-    debian40i386 = diskImageFuns.debian40i386 { packages = commonDebianPackages; };
-    debian40x86_64 = diskImageFuns.debian40x86_64 { packages = commonDebianPackages; };
-    debian50i386 = diskImageFuns.debian50i386 { packages = commonDebianPackages; };
-    debian50x86_64 = diskImageFuns.debian50x86_64 { packages = commonDebianPackages; };
-
+    ubuntu710i386 = diskImageExtraFuns.ubuntu710i386 [];
+    ubuntu804i386 = diskImageExtraFuns.ubuntu804i386 [];
+    ubuntu804x86_64 = diskImageExtraFuns.ubuntu804x86_64 [];
+    ubuntu810i386 = diskImageExtraFuns.ubuntu810i386 [];
+    ubuntu810x86_64 = diskImageExtraFuns.ubuntu810x86_64 [];
+    ubuntu904i386 = diskImageExtraFuns.ubuntu904i386 [];
+    ubuntu904x86_64 = diskImageExtraFuns.ubuntu904x86_64 [];
+    debian40i386 = diskImageExtraFuns.debian40i386 [];
+    debian40x86_64 = diskImageExtraFuns.debian40x86_64 [];
+    debian50i386 = diskImageExtraFuns.debian50i386 [];
+    debian50x86_64 = diskImageExtraFuns.debian50x86_64 [];
   };
 
+  diskImageExtraFuns = {
+    fedora2i386 = extraVirtualPackages : diskImageFuns.fedora2i386 { packages = commonFedoraPackages ++ extraVirtualPackages; };
+    fedora3i386 = extraVirtualPackages : diskImageFuns.fedora3i386 { packages = commonFedoraPackages ++ extraVirtualPackages; };
+    fedora5i386 = extraVirtualPackages : diskImageFuns.fedora5i386 { packages = commonFedoraPackages ++ ["util-linux"] ++ extraVirtualPackages; };
+    fedora7i386 = extraVirtualPackages : diskImageFuns.fedora7i386 { packages = commonFedoraPackages ++ extraVirtualPackages; };
+    fedora8i386 = extraVirtualPackages : diskImageFuns.fedora8i386 { packages = commonFedoraPackages ++ extraVirtualPackages; };
+    fedora9i386 = extraVirtualPackages : diskImageFuns.fedora9i386 { packages = commonFedoraPackages       ++ [ "cronie" "util-linux-ng" ] ++ extraVirtualPackages; };
+    fedora9x86_64 = extraVirtualPackages : diskImageFuns.fedora9x86_64 { packages = commonFedoraPackages   ++ [ "cronie" "util-linux-ng" ] ++ extraVirtualPackages; };
+    fedora10i386 = extraVirtualPackages : diskImageFuns.fedora10i386 { packages = commonFedoraPackages     ++ [ "cronie" "util-linux-ng" ] ++ extraVirtualPackages; };
+    fedora10x86_64 = extraVirtualPackages : diskImageFuns.fedora10x86_64 { packages = commonFedoraPackages ++ [ "cronie" "util-linux-ng" ] ++ extraVirtualPackages; };
+    fedora11i386 = extraVirtualPackages : diskImageFuns.fedora11i386 { packages = commonFedoraPackages     ++ [ "cronie" "util-linux-ng" ] ++ extraVirtualPackages; };
+    fedora11x86_64 = extraVirtualPackages : diskImageFuns.fedora11x86_64 { packages = commonFedoraPackages ++ [ "cronie" "util-linux-ng" ] ++ extraVirtualPackages; };
+    opensuse103i386 = extraVirtualPackages : diskImageFuns.opensuse103i386 { packages = commonOpenSUSEPackages ++ ["devs"] ++ extraVirtualPackages; };
+    opensuse110i386 = extraVirtualPackages : diskImageFuns.opensuse110i386 { packages = commonOpenSUSEPackages ++ extraVirtualPackages; };
+    opensuse110x86_64 = extraVirtualPackages : diskImageFuns.opensuse110x86_64 { packages = commonOpenSUSEPackages ++ extraVirtualPackages; };
+    opensuse111i386 = extraVirtualPackages : diskImageFuns.opensuse111i386 { packages = commonOpenSUSEPackages ++ extraVirtualPackages; };
+    opensuse111x86_64 = extraVirtualPackages : diskImageFuns.opensuse111x86_64 { packages = commonOpenSUSEPackages ++ extraVirtualPackages; };
+
+    ubuntu710i386 = extraVirtualPackages : diskImageFuns.ubuntu710i386 { packages = commonDebianPackages ++ extraVirtualPackages; };
+    ubuntu804i386 = extraVirtualPackages : diskImageFuns.ubuntu804i386 { packages = commonDebianPackages ++ extraVirtualPackages; };
+    ubuntu804x86_64 = extraVirtualPackages : diskImageFuns.ubuntu804x86_64 { packages = commonDebianPackages ++ extraVirtualPackages; };
+    ubuntu810i386 = extraVirtualPackages : diskImageFuns.ubuntu810i386 { packages = commonDebianPackages ++ extraVirtualPackages; };
+    ubuntu810x86_64 = extraVirtualPackages : diskImageFuns.ubuntu810x86_64 { packages = commonDebianPackages ++ extraVirtualPackages; };
+    ubuntu904i386 = extraVirtualPackages : diskImageFuns.ubuntu904i386 { packages = commonDebianPackages ++ extraVirtualPackages; };
+    ubuntu904x86_64 = extraVirtualPackages : diskImageFuns.ubuntu904x86_64 { packages = commonDebianPackages ++ extraVirtualPackages; };
+    debian40i386 = extraVirtualPackages : diskImageFuns.debian40i386 { packages = commonDebianPackages ++ extraVirtualPackages; };
+    debian40x86_64 = extraVirtualPackages : diskImageFuns.debian40x86_64 { packages = commonDebianPackages ++ extraVirtualPackages; };
+    debian50i386 = extraVirtualPackages : diskImageFuns.debian50i386 { packages = commonDebianPackages ++ extraVirtualPackages; };
+    debian50x86_64 = extraVirtualPackages : diskImageFuns.debian50x86_64 { packages = commonDebianPackages ++ extraVirtualPackages; };
+  };
 
 }

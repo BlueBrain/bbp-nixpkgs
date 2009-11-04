@@ -127,5 +127,19 @@ rec {
       else { right = t.right; wrong = [h] ++ t.wrong; }
     ) { right = []; wrong = []; };
 
-    
+
+  zipListsWith = f: fst: snd:
+    if fst != [] && snd != [] then
+      [ (f (head fst) (head snd)) ]
+      ++ zipLists (tail fst) (tail snd)
+    else [];
+
+  zipLists = zipListsWith (fst: snd: { inherit fst snd; });
+
+  # invert the order of the elements of a list.
+  reverseList = l:
+    let reverse_ = accu: l:
+      if l == [] then accu
+      else reverse_ ([(head l)] ++ accu) (tail l);
+    in reverse_ [] l;
 }

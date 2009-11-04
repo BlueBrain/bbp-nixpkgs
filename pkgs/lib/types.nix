@@ -19,7 +19,8 @@ rec {
   # iter (iterate on all elements contained in this type)
   # fold (fold all elements contained in this type)
   # hasOptions (boolean: whatever this option contains an option set)
-  # path (path contatenated to the option name contained contained in the option set)
+  # delayOnGlobalEval (boolean: should properties go through the evaluation of this option)
+  # docPath (path concatenated to the option name contained in the option set)
   isOptionType = attrs: typeOf attrs == "option-type";
   mkOptionType =
     { name
@@ -31,10 +32,11 @@ rec {
     , docPath ? lib.id
     # If the type can contains option sets.
     , hasOptions ? false
+    , delayOnGlobalEval ? false
     }:
 
     { _type = "option-type";
-      inherit name check merge iter fold docPath hasOptions;
+      inherit name check merge iter fold docPath hasOptions delayOnGlobalEval;
     };
 
     
@@ -73,6 +75,7 @@ rec {
       check = lib.traceValIfNot isDerivation;
     };
 
+    listOf = types.list;
     list = elemType: mkOptionType {
       name = "list of ${elemType.name}s";
       check = value: lib.traceValIfNot isList value && all elemType.check value;
@@ -81,17 +84,21 @@ rec {
       fold = op: nul: list: lib.fold (e: l: elemType.fold op l e) nul list;
       docPath = path: elemType.docPath (path + ".*");
       inherit (elemType) hasOptions;
+
+      # You cannot define multiple configurations of one entity, therefore
+      # no reason justify to delay properties inside list elements.
+      delayOnGlobalEval = false;
     };
 
     attrsOf = elemType: mkOptionType {
       name = "attribute set of ${elemType}s";
       check = x: lib.traceValIfNot builtins.isAttrs x
         && fold (e: v: v && elemType.check e) true (lib.attrValues x);
-      merge = fold lib.mergeAttrs {};
+      merge = lib.zip (name: elemType.merge);
       iter = f: path: set: lib.mapAttrs (name: elemType.iter f (path + "." + name)) set;
       fold = op: nul: set: fold (e: l: elemType.fold op l e) nul (lib.attrValues set);
       docPath = path: elemType.docPath (path + ".<name>");
-      inherit (elemType) hasOptions;
+      inherit (elemType) hasOptions delayOnGlobalEval;
     };
 
     uniq = elemType: mkOptionType {
@@ -114,8 +121,11 @@ rec {
     # an argument.
     optionSet = mkOptionType {
       name = "option set";
+      # merge is done in "options.nix > addOptionMakeUp > handleOptionSets"
+      merge = lib.id;
       check = x: lib.traceValIfNot builtins.isAttrs x;
       hasOptions = true;
+      delayOnGlobalEval = true;
     };
 
   };

@@ -1,20 +1,21 @@
 { fetchurl, stdenv, ncurses, readline, gmp, mpfr, texinfo }:
 
 stdenv.mkDerivation rec {
-  name = "gdb-6.8";
+  name = "gdb-7.0";
 
   src = fetchurl {
     url = "mirror://gnu/gdb/${name}.tar.bz2";
-    sha256 = "067qpnpgmz9jffi208q5c981xsyn8naq3rkp5ypg477lddcgvpzf";
+    sha256 = "1k9y271gnnvi0fny8ycydcd79snigwh88rgwi03ad782r2awcl67";
   };
 
+  # TODO: Add optional support for Python scripting.
   buildInputs = [ ncurses readline gmp mpfr texinfo ];
 
   configureFlags = "--with-gmp=${gmp} --with-mpfr=${mpfr} --with-system-readline";
 
   postInstall = ''
     # Remove Info files already provided by Binutils and other packages.
-    rm $out/info/{standards,configure,bfd}.info
+    rm -v $out/share/info/{standards,configure,bfd}.info
   '';
 
   meta = {
@@ -29,5 +30,8 @@ stdenv.mkDerivation rec {
     homepage = http://www.gnu.org/software/gdb/;
 
     license = "GPLv3+";
+
+    platforms = stdenv.lib.platforms.linux ++ stdenv.lib.platforms.cygwin;
+    maintainers = stdenv.lib.maintainers.ludo;
   };
 }

@@ -102,6 +102,7 @@ rec {
   gentoo = [
     http://ftp.snt.utwente.nl/pub/os/linux/gentoo/
     http://distfiles.gentoo.org/
+    ftp://mirrors.kernel.org/gentoo/
   ];
 
   savannah = [
@@ -214,6 +215,18 @@ rec {
   gnome = [
     # This one redirects to some mirror closeby, so it should be all you need.
     http://download.gnome.org/
+
+    http://ftp.unina.it/pub/linux/GNOME/
+    http://fr2.rpmfind.net/linux/gnome.org/
+    ftp://ftp.dit.upm.es/pub/GNOME/
+    ftp://ftp.no.gnome.org/pub/GNOME/
+    http://ftp.acc.umu.se/pub/GNOME/
+    http://ftp.belnet.be/mirror/ftp.gnome.org/
+    http://ftp.df.lth.se/pub/gnome/
+    http://linorg.usp.br/gnome/
+    http://mirror.aarnet.edu.au/pub/GNOME/
+    ftp://ftp.cse.buffalo.edu/pub/Gnome/
+    ftp://ftp.nara.wide.ad.jp/pub/X11/GNOME/
   ];
 
   # Tcpdump (see http://www.tcpdump.org/mirrors.html).
@@ -231,12 +244,23 @@ rec {
     http://ftp.x.org/pub/ # often incomplete (e.g. files missing from X.org 7.4)
   ];
 
-  # Apache mirrors.
+  # Apache mirrors (see http://www.apache.org/mirrors/).
   apache = [
     http://apache.cs.uu.nl/dist/
     http://www.eu.apache.org/dist/
+    ftp://ftp.inria.fr/pub/Apache/
+    http://apache.cict.fr/
+    ftp://ftp.fu-berlin.de/unix/www/apache/
+    ftp://crysys.hit.bme.hu/pub/apache/dist/
+    http://mirror.cc.columbia.edu/pub/software/apache/
     http://www.apache.org/dist/
     http://archive.apache.org/dist/ # fallback for old releases
+  ];
+
+  postgresql = [
+    http://ftp2.nl.postgresql.org/
+    ftp://ftp.nl.postgresql.org/pub/mirror/postgresql/
+    ftp://ftp.postgresql.org/pub/
   ];
 
 }

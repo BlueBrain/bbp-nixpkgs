@@ -9,11 +9,11 @@
 assert svnSupport -> (subversion != null && perlLibs != [] && subversion.perlBindings);
 
 stdenv.mkDerivation rec {
-  name = "git-1.6.4.2";
+  name = "git-1.6.5.1";
 
   src = fetchurl {
     url = "mirror://kernel/software/scm/git/${name}.tar.bz2";
-    sha256 = "ad8f8fcff37db52031ab9b190fab6a910c59d83ca7322d3f92a8aeabf6029135";
+    sha256 = "1zfrg8ifwfqgwp0x52rkpg4j9p0lvxlsb8k0fsszhl52amm2r3np";
   };
 
   patches = [ ./docbook2texi.patch ];
@@ -81,6 +81,23 @@ stdenv.mkDerivation rec {
    + ''# install bash completion script
       d="$out/etc/bash_completion.d"
       ensureDir $d; cp contrib/completion/git-completion.bash "$d"
+     ''
+   # Don't know why hardlinks aren't created. git installs the same executable
+   # multiple times into $out so replace duplicates by symlinks because I
+   # haven't tested whether the nix distribution system can handle hardlinks.
+   # This reduces the size of $out from 115MB down to 13MB on x86_64-linux!
+   + ''#
+      declare -A seen
+      find $out -type f | while read f; do
+        sum=$(md5sum "$f");
+        sum=''\${sum/ */}
+        if [ -z "''\${seen["$sum"]}" ]; then
+          seen["$sum"]="$f"
+        else
+          rm "$f"; ln -s "''\${seen["$sum"]}" "$f"
+        fi
+      done
+
      '';
 
   meta = {

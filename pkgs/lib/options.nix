@@ -8,7 +8,6 @@ with import ./lists.nix;
 with import ./misc.nix;
 with import ./attrsets.nix;
 with import ./properties.nix;
-with import ./modules.nix;
 
 rec {
 
@@ -26,7 +25,16 @@ rec {
     # merge (function used to merge definitions into one definition: [ /type/ ] -> /type/)
     # apply (convert the option value to ease the manipulation of the option result)
     # options (set of sub-options declarations & definitions)
+    # extraConfigs (list of possible configurations)
   };
+
+  mapSubOptions = f: opt:
+    if opt ? options then
+      opt // {
+        options = map f (toList opt.options);
+      }
+    else
+      opt;
 
   # Make the option declaration more user-friendly by adding default
   # settings and some verifications based on the declaration content (like
@@ -39,19 +47,21 @@ rec {
         apply = lib.id;
       };
 
-      mergeFromType = opt:
+      functionsFromType = opt:
         if decl ? type && decl.type ? merge then
-          opt // { merge = decl.type.merge; }
+          opt
+          // optionalAttrs (decl.type ? merge) { inherit (decl.type) merge; }
+          // optionalAttrs (decl.type ? check) { inherit (decl.type) check; }
         else
           opt;
 
       addDeclaration = opt: opt // decl;
 
       ensureMergeInputType = opt:
-        if decl ? type then
+        if opt ? check then
           opt // {
             merge = list:
-              if all decl.type.check list then
+              if all opt.check list then
                 opt.merge list
               else
                 throw "One of the definitions has a bad type.";
@@ -59,39 +69,47 @@ rec {
         else opt;
 
       ensureDefaultType = opt:
-        if decl ? type && decl ? default then
+        if opt ? check && opt ? default then
           opt // {
             default =
-              if decl.type.check decl.default then
-                decl.default
+              if opt.check opt.default then
+                opt.default
               else
                 throw "The default value has a bad type.";
           }
         else opt;
 
       handleOptionSets = opt:
-        if decl ? type && decl.type.hasOptions then
+        if opt ? type && opt.type.hasOptions then
           let
-            optionConfig = opts: config:
-               map (f: applyIfFunction f config)
-                 (decl.options ++ [opts]);
+            
+            optionConfig = vals: path: config:
+              let name = lib.removePrefix (opt.name + ".") path; in
+              map (f: lib.applyIfFunction f ({inherit name;} // config))
+                (opt.options ++ toList vals);
           in
             opt // {
               merge = list:
-                decl.type.iter
-                  (path: opts:
-                     lib.fix (fixableMergeFun (recurseInto path) (optionConfig opts))
+                opt.type.iter
+                  (path: vals:
+                    (lib.fix
+                      (fixableMergeFun (recurseInto path) (optionConfig vals path))
+                    ).config
                   )
                   opt.name
                   (opt.merge list);
-              options = recurseInto (decl.type.docPath opt.name) decl.options;
+              options =
+                let path = opt.type.docPath opt.name; in
+                (lib.fix
+                  (fixableMergeFun (recurseInto path) (optionConfig [] path))
+                ).options;
             }
         else
           opt;
     in
       foldl (opt: f: f opt) init [
         # default settings
-        mergeFromType
+        functionsFromType
 
         # user settings
         addDeclaration
@@ -122,14 +140,17 @@ rec {
         assert opt1 ? merge -> ! opt2 ? merge;
         assert opt1 ? apply -> ! opt2 ? apply;
         assert opt1 ? type -> ! opt2 ? type;
-        if opt1 ? options || opt2 ? options then
-          opt1 // opt2 // {
+        opt1 // opt2
+        // optionalAttrs (opt1 ? options || opt2 ? options) {
             options =
                (toList (attrByPath ["options"] [] opt1))
             ++ (toList (attrByPath ["options"] [] opt2));
           }
-        else
-          opt1 // opt2
+        // optionalAttrs (opt1 ? extraConfigs || opt2 ? extraConfigs) {
+            extraConfigs =
+               (attrByPath ["extraConfigs"] [] opt1)
+            ++ (attrByPath ["extraConfigs"] [] opt2);
+          }
       )) {} opts;
 
   
@@ -186,127 +207,45 @@ rec {
     else head list;
 
 
-  # Handle the traversal of option sets.  All sets inside 'opts' are zipped
-  # and options declaration and definition are separated.  If no option are
-  # declared at a specific depth, then the function recurse into the values.
-  # Other cases are handled by the optionHandler which contains two
-  # functions that are used to defined your goal.
-  # - export is a function which takes two arguments which are the option
-  # and the list of values.
-  # - notHandle is a function which takes the list of values are not handle
-  # by this function.
-  handleOptionSets = optionHandler@{export, notHandle, ...}: path: opts:
-    if all isAttrs opts then
-      lib.zip (attr: opts:
-        let
-          recurseInto = name: attrs:
-            handleOptionSets optionHandler name attrs;
-
-          # Compute the path to reach the attribute.
-          name = if path == "" then attr else path + "." + attr;
-
-          # Divide the definitions of the attribute "attr" between
-          # declaration (isOption) and definitions (!isOption).
-          test = partition (x: isOption (rmProperties x)) opts;
-          decls = map rmProperties test.right; defs = test.wrong;
-
-          # Make the option declaration more user-friendly by adding default
-          # settings and some verifications based on the declaration content
-          # (like type correctness).
-          opt = addOptionMakeUp
-            { inherit name recurseInto; }
-            (mergeOptionDecls decls);
-
-          # Return the list of option sets.
-          optAttrs = map delayProperties defs;
-
-          # return the list of option values.
-          # Remove undefined values that are coming from evalIf.
-          optValues = evalProperties defs;
-        in
-          if decls == [] then recurseInto name optAttrs
-          else lib.addErrorContext "while evaluating the option ${name}:" (
-            export opt optValues
-          )
-      ) opts
-   else lib.addErrorContext "while evaluating ${path}:" (notHandle opts);
-
-  # Merge option sets and produce a set of values which is the merging of
-  # all options declare and defined.  If no values are defined for an
-  # option, then the default value is used otherwise it use the merge
-  # function of each option to get the result.
-  mergeOptionSets =
-    handleOptionSets {
-      export = opt: values:
-        opt.apply (
-          if values == [] then
-            if opt ? default then opt.default
-            else throw "Not defined."
-          else opt.merge values
-        );
-      notHandle = opts: throw "Used without option declaration.";
-    };
-
-  # Keep all option declarations.
-  filterOptionSets =
-    handleOptionSets {
-      export = opt: values: opt;
-      notHandle = opts: {};
-    };
-
-
   fixableMergeFun = merge: f: config:
     merge (
-      # remove require because this is not an option.
-      map (m: removeAttrs m ["require"]) (
-        # Delay top-level properties like mkIf
-        map delayProperties (
-          # generate the list of option sets.
-          f config
-        )
-      )
+      # generate the list of option sets.
+      f config
     );
 
   fixableMergeModules = merge: initModules: {...}@args: config:
     fixableMergeFun merge (config:
-      # filter the list of option sets.
-      selectDeclsAndDefs (
-        # generate the list of modules from a closure of imports/require
-        # attribtues.
-        moduleClosure initModules (args // { inherit config; })
-      )
+      lib.moduleClosure initModules (args // { inherit config; })
     ) config;
 
 
   fixableDefinitionsOf = initModules: {...}@args:
-    fixableMergeModules (mergeOptionSets "") initModules args;
+    fixableMergeModules (modules: (lib.moduleMerge "" modules).config) initModules args;
 
   fixableDeclarationsOf = initModules: {...}@args:
-    fixableMergeModules (filterOptionSets "") initModules args;
+    fixableMergeModules (modules: (lib.moduleMerge "" modules).options) initModules args;
 
   definitionsOf = initModules: {...}@args:
-    lib.fix (fixableDefinitionsOf initModules args);
+    (lib.fix (module:
+      fixableMergeModules (lib.moduleMerge "") initModules args module.config
+    )).config;
 
   declarationsOf = initModules: {...}@args:
-    lib.fix (fixableDeclarationsOf initModules args);
-
-
-  fixMergeModules = merge: initModules: {...}@args:
-    lib.fix (fixableMergeModules merge initModules args);
-
-
-  # old interface.
-  fixOptionSetsFun = merge: {...}@args: initModules: config:
-    fixableMergeModules (merge "") initModules args config;
-
-  fixOptionSets = merge: args: initModules:
-    fixMergeModules (merge "") initModules args;
+    (lib.fix (module:
+      fixableMergeModules (lib.moduleMerge "") initModules args module.config
+    )).options;
 
 
   # Generate documentation template from the list of option declaration like
   # the set generated with filterOptionSets.
   optionAttrSetToDocList = ignore: newOptionAttrSetToDocList;
   newOptionAttrSetToDocList = attrs:
+    let tryEval = v:
+      let res = builtins.tryEval v; in
+      if builtins ? tryEval then
+        if res.success then res.value else "<error>"
+      else v;
+    in
     let options = collect isOption attrs; in
       fold (opt: rest:
         let
@@ -314,9 +253,12 @@ rec {
             inherit (opt) name;
             description = if opt ? description then opt.description else
               throw "Option ${opt.name}: No description.";
+
+            declarations = map (x: toString x.source) opt.declarations;
+            definitions = map (x: toString x.source) opt.definitions;
           }
-          // (if opt ? example then {inherit(opt) example;} else {})
-          // (if opt ? default then {inherit(opt) default;} else {});
+          // optionalAttrs (opt ? example) { example = tryEval opt.example; }
+          // optionalAttrs (opt ? default) { default = tryEval opt.default; };
 
           subOptions =
             if opt ? options then

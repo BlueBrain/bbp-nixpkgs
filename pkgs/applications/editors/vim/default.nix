@@ -24,9 +24,9 @@ let
 	"ximSupport" "-xim"
 	];
 	configFlags = [
-	"true" " "
+	"true" " --enable-multibyte "
 	"x11Support" " --enable-gui=auto "
-	"hugeFeatures" "--with-features=huge --enable-cscope --enable-multibyte --enable-xsmp "
+	"hugeFeatures" "--with-features=huge --enable-cscope --enable-xsmp "
 	"pythonSupport" " --enable-pythoninterp "
 	"perlSupport" " --enable-perlinterp "
 	"tclSupport" " --enable-tclinterp "

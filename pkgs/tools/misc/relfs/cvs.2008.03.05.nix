@@ -39,6 +39,9 @@ args : with args;
 		") ["minInit" "doUnpack" "addInputs"];
 	};
 	in with localDefs;
+
+assert args.libuuid != null;
+        
 stdenv.mkDerivation rec {
 	name = "relfs-"+version;
 	builder = writeScript (name + "-builder")
@@ -46,6 +49,7 @@ stdenv.mkDerivation rec {
 	meta = {
 		description = "A relational filesystem on top of FUSE";
 		inherit src;
-    		maintainers = [args.lib.maintainers.raskin];
+    		maintainers = [args.stdenv.lib.maintainers.raskin];
+		platforms = args.stdenv.lib.platforms.linux;
 	};
 }

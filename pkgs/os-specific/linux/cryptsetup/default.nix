@@ -1,4 +1,4 @@
-{stdenv, fetchurl, e2fsprogs, popt, devicemapper, udev }:
+{stdenv, fetchurl, libuuid, popt, devicemapper, udev }:
 
 stdenv.mkDerivation {
   name = "cryptsetup-1.0.6";
@@ -13,11 +13,13 @@ stdenv.mkDerivation {
     sed -i -e 's@/sbin/udevsettle@${udev}/sbin/udevsettle@' lib/libdevmapper.c
   '';
 
-  buildInputs = [ e2fsprogs popt devicemapper ];
+  buildInputs = [ libuuid popt devicemapper ];
 
   meta = {
     homepage = http://code.google.com/p/cryptsetup/;
     description = "LUKS for dm-crypt";
     license = "GPLv2";
+    maintainers = with stdenv.lib.maintainers; [viric];
+    platforms = with stdenv.lib.platforms; linux;
   };
 }

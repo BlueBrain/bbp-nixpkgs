@@ -15,6 +15,7 @@ assert dbusSupport -> dbus != null;
 assert xaw3dSupport -> Xaw3d != null;
 assert gtkGUI -> pkgconfig != null && gtk != null;
 assert xftSupport -> libXft != null && libpng != null; # libpng = probably a bug
+assert stdenv.system == "i686-darwin" -> xawSupport; # fails to link otherwise
 
 stdenv.mkDerivation rec {
   name = "emacs-23.1";
@@ -67,5 +68,6 @@ stdenv.mkDerivation rec {
     license = "GPLv3+";
 
     maintainers = [ stdenv.lib.maintainers.ludo ];
+    platforms = stdenv.lib.platforms.linux;  # GTK & co. are needed.
   };
 }

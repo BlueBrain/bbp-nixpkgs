@@ -33,8 +33,10 @@ let
           (pkgs.lib.getAttrFromPath path pkgs);
       in testOn job.systems getPkg);
 
-  selectMaintained = attrSet: 
-    if builtins  ? tryEval then 
+  /* Find all packages that have a meta.platforms field listing the
+     supported platforms. */
+  packagesWithMetaPlatform = attrSet: 
+    if builtins ? tryEval then 
       let pairs = pkgs.lib.concatMap 
         (x: let val = builtins.tryEval (processPackage (builtins.getAttr x attrSet)); in
           if val.success && val.value != [] then [{name=x; value=val.value;}] else [])
@@ -42,15 +44,15 @@ let
       in
         builtins.listToAttrs pairs
     else {};
-  # May fail as much as it wishes, we will catch the error
+    
+  # May fail as much as it wishes, we will catch the error.
   processPackage = attrSet: 
     if attrSet ? recurseForDerivations && attrSet.recurseForDerivations then 
-      selectMaintained attrSet
+      packagesWithMetaPlatform attrSet
     else
-      if attrSet.meta.maintainers != [] then 
-        attrSet.meta.platforms
-      else
-        []; 
+      if builtins.hasAttr "platforms" attrSet.meta
+      then builtins.getAttr "platforms" attrSet.meta
+      else [];
 
   /* Common platform groups on which to test packages. */
   inherit (pkgs.lib.platforms) linux darwin cygwin allBut all;
@@ -64,7 +66,7 @@ in {
 
   tarball = import ./make-tarball.nix;
 
-} // (mapTestOn ((selectMaintained pkgs) // rec {
+} // (mapTestOn ((packagesWithMetaPlatform pkgs) // rec {
 
   MPlayer = linux;
   abcde = linux;
@@ -106,7 +108,7 @@ in {
   classpath = linux;
   cmake = all;
   compiz = linux;
-  console_kit = linux;
+  consolekit = linux;
   coreutils = all;
   cpio = all;
   cron = linux;
@@ -159,7 +161,6 @@ in {
   gcc43_multi = ["x86_64-linux"];
   gcc44 = linux;
   gcj44 = linux;
-  gdb = all;
   ghostscript = linux;
   ghostscriptX = linux;
   gimp = linux;
@@ -211,7 +212,7 @@ in {
   iputils = linux;
   iproute = linux;
   irssi = linux;
-  jfsUtils = linux;
+  jfsutils = linux;
   jfsrec = linux;
   jnettop = linux;
   jwhois = linux;
@@ -233,6 +234,7 @@ in {
   libtool_2 = all;
   libtopology = all;
   libxml2 = all;
+  libxml2New = all;
   libxslt = all;
   linuxwacom = linux;
   lout = linux;
@@ -294,7 +296,7 @@ in {
   pkgconfig = all;
   pltScheme = linux;
   pmccabe = linux;
-  policy_kit = linux;
+  policykit = linux;
   portmap = linux;
   postgresql = all;
   postfix = linux;
@@ -303,6 +305,7 @@ in {
   pwdutils = linux;
   pthreadmanpages = all;
   pygtk = linux;
+  pyqt4 = linux;
   python = allBut "i686-cygwin";
   pythonFull = linux;
   sbcl = all;
@@ -340,8 +343,6 @@ in {
   stlport = linux;
   strace = linux;
   su = linux;
-  subversion = all;
-  subversion16 = all;
   sudo = linux;
   superTuxKart = linux;
   swig = linux;
@@ -373,7 +374,6 @@ in {
   utillinux = linux;
   utillinuxCurses = linux;
   uzbl = linux;
-  valgrind = linux;
   viking = linux;
   vice = linux;
   vim = linux;
@@ -395,7 +395,7 @@ in {
   x11_ssh_askpass = linux;
   xchm = linux;
   xfig = x11Supported;
-  xfsProgs = linux;
+  xfsprogs = linux;
   xineUI = linux;
   xkeyboard_config = linux;
   xlockmore = linux;
@@ -510,6 +510,7 @@ in {
     kdepimlibs = linux;
     kdeadmin = linux;
     kdeartwork = linux;
+    kdeaccessibility = linux;
     kdeedu = linux;
     kdegraphics = linux;
     kdemultimedia = linux;
@@ -526,38 +527,45 @@ in {
     kmplayer = linux;
     ktorrent = linux;
     koffice = linux;
+    konversation = linux;
     kdesvn = linux;
     amarok = linux;
+    l10n.ca = linux;
+    l10n.de = linux;
+    l10n.fr = linux;
+    l10n.nl = linux;
+    l10n.ru = linux;
   };
 
   kernelPackages_2_6_25 = {
     aufs = linux;
     kernel = linux;
-    virtualbox = linux;
   };
 
   kernelPackages_2_6_26 = {
     aufs = linux;
     kernel = linux;
-    virtualbox = linux;
   };
   
   kernelPackages_2_6_27 = {
     aufs = linux;
     kernel = linux;
     virtualbox = linux;
+    virtualboxGuestAdditions = linux;
   };
   
   kernelPackages_2_6_28 = {
     aufs = linux;
     kernel = linux;
     virtualbox = linux;
+    virtualboxGuestAdditions = linux;
   };
 
   kernelPackages_2_6_29 = {
     aufs = linux;
     kernel = linux;
     virtualbox = linux;
+    virtualboxGuestAdditions = linux;
   };
 
   kernelPackages_2_6_31 = {

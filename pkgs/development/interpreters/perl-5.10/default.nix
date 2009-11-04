@@ -1,4 +1,6 @@
-{stdenv, fetchurl}:
+{ stdenv, fetchurl
+, impureLibcPath ? null
+}:
 
 let
   preBuildNoNative = ''
@@ -46,9 +48,9 @@ stdenv.mkDerivation {
   configurePhase =
     ''
       configureFlags="$configureFlags -Dprefix=$out -Dman1dir=$out/share/man/man1 -Dman3dir=$out/share/man/man3"
-      
-      if test "$NIX_ENFORCE_PURITY" = "1"; then
-        GLIBC=$(cat $NIX_GCC/nix-support/orig-libc)
+
+      if test "${if impureLibcPath == null then "$NIX_ENFORCE_PURITY" else "1"}" = "1"; then
+        GLIBC=${if impureLibcPath == null then "$(cat $NIX_GCC/nix-support/orig-libc)" else impureLibcPath}
         configureFlags="$configureFlags -Dlocincpth=$GLIBC/include -Dloclibpth=$GLIBC/lib"
       fi
       ${stdenv.shell} ./Configure $configureFlags \

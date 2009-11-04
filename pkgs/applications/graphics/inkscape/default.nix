@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = [
     # Python is used at run-time to execute scripts, e.g., those from
     # the "Effects" menu.
-    python pyxml
+    python pyxml lxml
   ];
 
   buildInputs = [
@@ -41,7 +41,7 @@ stdenv.mkDerivation rec {
     for i in "$out/bin/"*
     do
       wrapProgram "$i" --prefix PYTHONPATH :      \
-       "$(toPythonPath ${pyxml})" ||  \
+       "$(toPythonPath ${pyxml}):$(toPythonPath ${lxml})" ||  \
         exit 2
     done
   '';
@@ -52,6 +52,9 @@ stdenv.mkDerivation rec {
     longDescription = ''
       Inkscape is a feature-rich vector graphics editor that edits
       files in the W3C SVG (Scalable Vector Graphics) file format.
+
+      If you want to import .eps files install ps2edit
     '';
+
   };
 }

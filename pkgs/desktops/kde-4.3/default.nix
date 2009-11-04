@@ -1,6 +1,6 @@
 pkgs:
 
-rec {
+pkgs.recurseIntoAttrs (rec {
   inherit (pkgs) qt4;
 
 ### SUPPORT
@@ -23,7 +23,8 @@ rec {
   
   soprano = import ./support/soprano {
     inherit (pkgs) stdenv fetchurl lib cmake;
-    inherit (pkgs) qt4 cluceneCore redland;
+    inherit (pkgs) qt4 cluceneCore;
+    redland = pkgs.redland_1_0_8;
   };
   
   qimageblitz = import ./support/qimageblitz {
@@ -47,6 +48,11 @@ rec {
     inherit (pkgs) stdenv fetchurl lib cmake;
   };
   
+  polkit_qt = import ./support/polkit-qt {
+    inherit (pkgs) stdenv fetchurl lib cmake qt4 policykit;
+    inherit automoc4;
+  };
+  
 ### LIBS
   kdelibs = import ./libs {
     inherit (pkgs) stdenv fetchurl lib cmake qt4 perl bzip2 pcre fam libxml2 libxslt;
@@ -65,7 +71,7 @@ rec {
     inherit (pkgs) lm_sensors libxklavier libusb pthread_stubs boost ConsoleKit;
     inherit (pkgs.xlibs) libXi libXau libXdmcp libXtst libXcomposite libXdamage libXScrnSaver;
     inherit kdelibs kdelibs_experimental kdepimlibs kdebindings;
-    inherit automoc4 phonon strigi soprano qimageblitz akonadi;
+    inherit automoc4 phonon strigi soprano qimageblitz akonadi polkit_qt;
   };
   
   kdebase = import ./base {
@@ -104,6 +110,13 @@ rec {
     inherit (pkgs) stdenv fetchurl lib cmake qt4 perl xscreensaver;
     inherit kdelibs kdebase_workspace;
     inherit automoc4 phonon strigi eigen;
+  };
+  
+  kdeaccessibility = import ./accessibility {
+    inherit (pkgs) stdenv fetchurl lib cmake qt4 perl alsaLib;
+    inherit (pkgs.xlibs) libXtst;
+    inherit kdelibs;
+    inherit automoc4 phonon;
   };
   
   kdeedu = import ./edu {
@@ -146,9 +159,10 @@ rec {
   };
   
   kdepim_runtime = import ./pim-runtime {
-    inherit (pkgs) stdenv fetchurl lib cmake qt4 perl;
+    inherit (pkgs) stdenv fetchurl lib cmake qt4 perl libxml2 libxslt boost;
+    inherit (pkgs) shared_mime_info;
     inherit kdelibs kdelibs_experimental kdepimlibs;
-    inherit automoc4 phonon;
+    inherit automoc4 phonon akonadi soprano strigi;
   };
   
   kdeplasma_addons = import ./plasma-addons {
@@ -203,7 +217,7 @@ rec {
     inherit kdelibs;
     inherit automoc4 phonon strigi soprano;
   };
-  
+
   kdesvn = import ./extragear/kdesvn {
     inherit (pkgs) stdenv fetchurl lib cmake qt4 perl gettext apr aprutil subversion db4;
     inherit kdelibs;
@@ -237,6 +251,13 @@ rec {
     inherit automoc4 phonon qca2;
   };
   
+  konversation = import ./extragear/konversation {
+    inherit (pkgs) stdenv fetchurl lib cmake qt4 perl gettext;
+    inherit (pkgs.xlibs) libXScrnSaver;
+    inherit kdelibs kdepimlibs;
+    inherit automoc4 phonon qca2;
+  };
+  
   gtk_qt_engine = import ./extragear/gtk-qt-engine {
     inherit (pkgs) stdenv fetchurl cmake qt4 perl gettext;
     inherit (pkgs.xlibs) libX11;
@@ -245,4 +266,12 @@ rec {
     inherit kdelibs;
     inherit automoc4 phonon;
   };
-}
+
+### LOCALIZATION
+
+  l10n = pkgs.recurseIntoAttrs (import ./l10n {
+    inherit (pkgs) stdenv fetchurl lib cmake qt4 perl gettext;
+    inherit kdelibs;
+    inherit automoc4 phonon;
+  });
+})

@@ -197,18 +197,6 @@ rec {
 	else condConcat
 		name (tail (tail list)) checker;
 
-  # Merge sets of attributes and use the function f to merge
-  # attributes values.
-  zip = f: sets:
-    builtins.listToAttrs (map (name: {
-      inherit name;
-      value =
-        f name
-          (map (__getAttr name)
-            (filter (__hasAttr name) sets));
-    }) (concatMap builtins.attrNames sets));
-
-
   lazyGenericClosure = {startSet, operator}:
     let
       work = list: doneKeys: result:
@@ -241,8 +229,8 @@ rec {
   closePropagation = list: (uniqList {inputList = (innerClosePropagation [] list);});
 
   # calls a function (f attr value ) for each record item. returns a list
-  # should be renamed to mapAttrsFlatten
-  mapRecordFlatten = f : r : map (attr: f attr (builtins.getAttr attr r) ) (attrNames r);
+  mapAttrsFlatten = f : r : map (attr: f attr (builtins.getAttr attr r) ) (attrNames r);
+  mapRecordFlatten = builtins.trace "deprecated usage of mapRecordFlatten, use mapAttrsFlatten instead" mapAttrsFlatten;
 
   # attribute set containing one attribute
   nvs = name : value : listToAttrs [ (nameValuePair name value) ];
@@ -262,7 +250,7 @@ rec {
     fold (n: set : if (__hasAttr n set) 
                         then setAttr set n (f (__getAttr n set) (__getAttr n set2))
                         else set )
-           set1 (__attrNames set2);
+           (set2 // set1) (__attrNames set2);
 
   # merging two attribute set concatenating the values of same attribute names
   # eg { a = 7; } {  a = [ 2 3 ]; } becomes { a = [ 7 2 3 ]; }
@@ -274,7 +262,7 @@ rec {
   # { buildInputs = [a b]; }
   # merging buildPhase does'nt really make sense. The cases will be rare where appending /prefixing will fit your needs?
   # in these cases the first buildPhase will override the second one
-  # ! depreceated, use mergeAttrByFunc instead
+  # ! deprecated, use mergeAttrByFunc instead
   mergeAttrsNoOverride = { mergeLists ? ["buildInputs" "propagatedBuildInputs"],
                            overrideSnd ? [ "buildPhase" ]
                          } : attrs1 : attrs2 :

@@ -1,4 +1,4 @@
-{ fetchurl, stdenv }:
+{ fetchurl, stdenv, gmp, gnum4 }:
 
 stdenv.mkDerivation rec {
   name = "nettle-2.0";
@@ -9,7 +9,12 @@ stdenv.mkDerivation rec {
     sha256 = "1mnb2zx6yxfzkkv8hnrjzhjviybd45z92wq4y5sv1gskp4qf5fb5";
   };
 
-  doCheck = true;
+  buildInputs = [ gmp gnum4 ];
+
+  doCheck = (stdenv.system != "i686-cygwin");
+
+  patches = stdenv.lib.optional (stdenv.system == "i686-cygwin")
+              ./cygwin.patch;
 
   meta = {
     description = "GNU Nettle, a cryptographic library";
