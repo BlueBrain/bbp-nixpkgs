@@ -37,14 +37,12 @@
 
 , preConfigure ? ""
 , extraMeta ? {}
-, uboot ? null
+, platform ? { uboot = null; }
 , ...
 }:
 
 assert stdenv.system == "i686-linux" || stdenv.system == "x86_64-linux"
   || stdenv.system == "armv5tel-linux";
-
-assert stdenv.system == "armv5tel-linux" -> uboot != null;
 
 let
 
@@ -76,7 +74,7 @@ stdenv.mkDerivation {
     in lib.concatStrings (addNewlines (configFromPatches ++ extraConfig));
 
   buildInputs = [perl mktemp]
-    ++ lib.optional (stdenv.system == "armv5tel-linux") [uboot];
+    ++ lib.optional (platform.uboot != null) [platform.uboot];
   
   arch =
     if xen then "xen" else
@@ -93,7 +91,7 @@ stdenv.mkDerivation {
   allowLocalVersion = false; # don't allow patches to set a suffix
   inherit localVersion; # but do allow the user to set one.
 
-  makeUImage = if (stdenv.system == "armv5tel-linux") then true else false;
+  makeUImage = if (platform.uboot != null) then true else false;
 
   meta = {
     description =

@@ -424,6 +424,8 @@ let
     uboot = null;
   };
 
+  platform = platformPC;
+
   ### TOOLS
 
   darwinArchUtility = import ../os-specific/darwin/arch {
@@ -5576,14 +5578,14 @@ let
   };
 
   kernel_2_6_31 = makeOverridable (import ../os-specific/linux/kernel/linux-2.6.31.nix) {
-    inherit fetchurl stdenv perl mktemp module_init_tools uboot;
+    inherit fetchurl stdenv perl mktemp module_init_tools platform;
     kernelPatches = [];
   };
 
   kernel_2_6_31_zen5 = makeOverridable (import ../os-specific/linux/zen-kernel/2.6.31-zen5.nix) {
     inherit fetchurl stdenv perl mktemp module_init_tools
       lib builderDefs;
-    platform = getConfig [ "platform" ] platformPC;
+    inherit platform;
   };
 
   kernel_2_6_31_zen5_bfs = kernel_2_6_31_zen5.override {
