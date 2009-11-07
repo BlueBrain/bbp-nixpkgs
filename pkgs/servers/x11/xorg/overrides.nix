@@ -5,7 +5,9 @@
   fontmiscmisc = attrs: attrs // {
     postInstall =
       ''
-        ln -s ${xorg.fontalias}/lib/X11/fonts/misc/fonts.alias $out/lib/X11/fonts/misc/fonts.alias
+        ALIASFILE=${xorg.fontalias}/share/fonts/X11/misc/fonts.alias
+        test -f $ALIASFILE
+        ln -s $ALIASFILE $out/lib/X11/fonts/misc/fonts.alias
       '';
   };
 
@@ -17,6 +19,10 @@
 
   mkfontdir = attrs: attrs // {
     preBuild = "substituteInPlace mkfontdir.cpp --replace BINDIR ${xorg.mkfontscale}/bin";
+  };
+
+  libXext = attrs: attrs // {
+    buildInputs = attrs.buildInputs ++ [xorg.libXau];
   };
 
   libXpm = attrs: attrs // {
@@ -52,6 +58,10 @@
     buildInputs = attrs.buildInputs ++ [xorg.kbproto xorg.libxkbfile xorg.randrproto];
   };
 
+  xf86inputsynaptics = attrs: attrs // {
+    makeFlags = "sdkdir=\${out}/include/xorg";
+  };
+
   xf86videointel = attrs: attrs // {
     buildInputs = attrs.buildInputs ++ [xorg.glproto args.mesa];
   };
@@ -68,8 +78,8 @@
     name = "xf86-video-openchrome-svn-798";
     src = args.fetchsvn {
       url = http://svn.openchrome.org/svn/trunk;
-      sha256 = "00kz5775090nwlsxyqrp1wsmislszj58fv3kvq612xgql4vgx4ab";
-      rev = 798;
+      sha256 = "1mhfh1n1x7fnxdbbkbz13lzd57m6xi3n9cblzgm43mz5bamacr02";
+      rev = 816;
       };
     buildInputs = attrs.buildInputs ++ [xorg.glproto args.mesa args.automake args.autoconf args.libtool xorg.libXext];
     preConfigure = "chmod +x autogen.sh";
@@ -82,8 +92,14 @@
 
   xorgserver = attrs: attrs // {
     patches = [./xorgserver-dri-path.patch ./xorgserver-xkbcomp-path.patch];
-    buildInputs = attrs.buildInputs ++ [args.zlib xorg.xf86bigfontproto];
-    propagatedBuildInputs = [xorg.libpciaccess];
+    buildInputs = attrs.buildInputs ++
+      [ args.zlib xorg.xf86bigfontproto xorg.glproto args.mesa xorg.xf86driproto
+        xorg.compositeproto xorg.scrnsaverproto xorg.resourceproto
+        xorg.xineramaproto xorg.dri2proto xorg.xf86dgaproto xorg.dmxproto
+        xorg.libdmx xorg.xf86vidmodeproto
+      ];
+    propagatedBuildInputs =
+      [ xorg.libpciaccess xorg.inputproto xorg.xextproto xorg.randrproto ];
     postInstall =
       ''
         rm -rf $out/share/X11/xkb/compiled

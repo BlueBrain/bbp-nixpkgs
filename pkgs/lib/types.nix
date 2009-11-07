@@ -40,7 +40,7 @@ rec {
     };
 
     
-  types = {
+  types = rec {
 
     inferred = mkOptionType {
       name = "inferred type";
@@ -61,6 +61,12 @@ rec {
       name = "string";
       check = lib.traceValIfNot (x: builtins ? isString -> builtins.isString x);
       merge = lib.concatStrings;
+    };
+
+    envVar = mkOptionType {
+      name = "environment variable";
+      inherit (string) check;
+      merge = lib.concatStringsSep ":";
     };
 
     attrs = mkOptionType {
@@ -110,6 +116,12 @@ rec {
           throw "Multiple definitions. Only one is allowed for this option.";
     };
 
+    none = elemType: mkOptionType {
+      inherit (elemType) name check iter fold docPath hasOptions;
+      merge = list:
+        throw "No definitions are allowed for this option.";
+    };
+
     nullOr = elemType: mkOptionType {
       inherit (elemType) name merge docPath hasOptions;
       check = x: builtins.isNull x || elemType.check x;
@@ -123,7 +135,7 @@ rec {
       name = "option set";
       # merge is done in "options.nix > addOptionMakeUp > handleOptionSets"
       merge = lib.id;
-      check = x: lib.traceValIfNot builtins.isAttrs x;
+      check = x: isAttrs x || builtins.isFunction x;
       hasOptions = true;
       delayOnGlobalEval = true;
     };

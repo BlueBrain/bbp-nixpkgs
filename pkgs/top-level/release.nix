@@ -38,8 +38,20 @@ let
   packagesWithMetaPlatform = attrSet: 
     if builtins ? tryEval then 
       let pairs = pkgs.lib.concatMap 
-        (x: let val = builtins.tryEval (processPackage (builtins.getAttr x attrSet)); in
-          if val.success && val.value != [] then [{name=x; value=val.value;}] else [])
+        (x:
+	  let pair = builtins.tryEval
+	        (let 
+		   attrVal = (builtins.getAttr x attrSet);
+		 in
+		   {val=(processPackage attrVal); 
+		    attrVal = attrVal;
+		    attrValIsAttrs = builtins.isAttrs attrVal;
+		    });
+	      success = (builtins.tryEval pair.value.attrVal).success;
+	  in
+          if success && pair.value.attrValIsAttrs && 
+	      pair.value.val != [] then 
+	    [{name= x; value=pair.value.val;}] else [])
         (builtins.attrNames attrSet);
       in
         builtins.listToAttrs pairs
@@ -50,9 +62,9 @@ let
     if attrSet ? recurseForDerivations && attrSet.recurseForDerivations then 
       packagesWithMetaPlatform attrSet
     else
-      if builtins.hasAttr "platforms" attrSet.meta
-      then builtins.getAttr "platforms" attrSet.meta
-      else [];
+      if attrSet ? meta && attrSet.meta ? platforms
+        then attrSet.meta.platforms
+        else [];
 
   /* Common platform groups on which to test packages. */
   inherit (pkgs.lib.platforms) linux darwin cygwin allBut all;
@@ -134,8 +146,8 @@ in {
   e2fsprogs = linux;
   ejabberd = linux;
   elinks = linux;
-  emacs22 = all;
-  emacs23 = all;
+  emacs22 = gtkSupported;
+  emacs23 = gtkSupported;
   enscript = all;
   eprover = linux;
   evince = linux;
@@ -233,9 +245,7 @@ in {
   libsmbios = linux;
   libtool = all;
   libtool_2 = all;
-  libtopology = all;
   libxml2 = all;
-  libxml2New = all;
   libxslt = all;
   linuxwacom = linux;
   lout = linux;
@@ -371,6 +381,7 @@ in {
   unrar = linux;
   unzip = all;
   upstart = linux;
+  upstart06 = linux;
   usbutils = linux;
   utillinux = linux;
   utillinuxCurses = linux;
@@ -439,11 +450,9 @@ in {
   };
 
   gnome = {
-    gconfeditor = linux;
-    gnomepanel = linux;
-    gnometerminal = linux;
-    gnomeutils = linux;
+    gnome_panel = linux;
     metacity = linux;
+    gnome_vfs = linux;
   };
 
   gtkLibs = {
@@ -475,30 +484,6 @@ in {
   kde3 = {
     kdebase = linux;
     kdelibs = linux;
-  };
-
-  kde42 = {
-    amarok = linux;
-    kdeadmin = linux;
-    kdeartwork = linux;
-    kdebase = linux;
-    kdebase_runtime = linux;
-    kdebase_workspace = linux;
-    kdeedu = linux;
-    kdegames = linux;
-    kdegraphics = linux;
-    kdelibs = linux;
-    kdemultimedia = linux;
-    kdenetwork = linux;
-    kdepim = linux;
-    kdeplasma_addons = linux;
-    kdesdk = linux;
-    kdetoys = linux;
-    kdeutils = linux;
-    kdewebdev = linux;
-    ktorrent = linux;
-    kdesvn = linux;
-    krusader = linux;
   };
 
   kde43 = {
@@ -570,6 +555,14 @@ in {
   };
 
   kernelPackages_2_6_31 = {
+    kernel = linux;
+  };
+
+  kernelPackages_2_6_31_zen = {
+    kernel = linux;
+  };
+
+  kernelPackages_2_6_31_zen_bfs = {
     kernel = linux;
   };
 

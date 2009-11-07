@@ -79,12 +79,14 @@ installPhase() {
     else
        if [ -n "$makeUImage" ]; then
            image=arch/$archDir/boot/uImage
-	   cp arch/$archDir/boot/uImage $out
+           cp arch/$archDir/boot/uImage $out
        else
-	   cp arch/$archDir/boot/bzImage $out/vmlinuz
+           cp arch/$archDir/boot/bzImage $out/vmlinuz
        fi
 
     fi
+
+    cp vmlinux $out
 
     # Install the modules in $out/lib/modules with matching paths
     # in modules.dep (i.e., refererring to $out/lib/modules, not

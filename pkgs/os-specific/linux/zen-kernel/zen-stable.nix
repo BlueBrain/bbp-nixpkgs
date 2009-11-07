@@ -6,7 +6,7 @@ in
   inherit (a) stdenv fetchurl perl mktemp module_init_tools;
 
   src = a.builderDefs.fetchGitFromSrcInfo s;
-  version = "2.6.31-zen5";
+  version = "2.6.31-zen7";
   config = "./kernel-config";
   features = {
     iwlwifi = true;

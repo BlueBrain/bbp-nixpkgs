@@ -71,6 +71,13 @@ rec {
     inherit cabal HUnit QuickCheck;
   };
 
+  CS173Tourney = import ../development/libraries/haskell/CS173Tourney {
+    inherit cabal ;
+    inherit (pkgs) fetchgit ;
+    inherit time hslogger Crypto base64string CouchDB WebServer WebServerExtras;
+    json = json_036;
+  };
+
   dataenc = import ../development/libraries/haskell/dataenc {
     inherit cabal;
   };
@@ -215,6 +222,10 @@ rec {
     inherit cabal mtl network parsec;
   };
 
+  HTTP_3001 = import ../development/libraries/haskell/HTTP/3001.nix {
+    inherit cabal mtl network parsec;
+  };
+
   haxr = import ../development/libraries/haskell/haxr {
     inherit cabal HaXml HTTP dataenc time;
   };
@@ -289,6 +300,10 @@ rec {
     inherit cabal mtl;
   };
 
+  json_036 = import ../development/libraries/haskell/json/0.3.6.nix {
+    inherit cabal mtl;
+  };
+
   maybench = import ../development/libraries/haskell/maybench {
     inherit cabal benchpress;
   };
@@ -303,6 +318,10 @@ rec {
 
   MonadRandom = import ../development/libraries/haskell/MonadRandom {
     inherit cabal mtl;
+  };
+
+  mpppc = import ../development/libraries/haskell/mpppc {
+    inherit cabal ansiTerminal split text;
   };
 
   mtl = import ../development/libraries/haskell/mtl {
@@ -536,6 +555,27 @@ rec {
     inherit cabal utf8String terminfo;
   };
 
+  WebServer = import ../development/libraries/haskell/WebServer {
+    inherit cabal network mtl parsec;
+    inherit (pkgs) fetchgit;
+  };
+
+  WebServerExtras = import ../development/libraries/haskell/WebServer-Extras {
+    inherit cabal Crypto WebServer base64string hslogger mtl;
+    json = json_036;
+    inherit (pkgs) fetchgit;
+  };
+
+  CouchDB = import ../development/libraries/haskell/CouchDB {
+    inherit cabal network mtl ;
+    HTTP = HTTP_3001;
+    json = json_036;
+  };
+
+  base64string = import ../development/libraries/haskell/base64-string {
+    inherit cabal;
+  };
+
   wx = import ../development/libraries/haskell/wxHaskell/wx.nix {
     inherit cabal stm wxcore;
   };
@@ -680,7 +720,7 @@ rec {
   };
 
   xmonadContrib = import ../applications/window-managers/xmonad/xmonad-contrib.nix {
-    inherit cabal xmonad X11;
+    inherit cabal xmonad X11 utf8String;
   };
 
 
