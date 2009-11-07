@@ -3,10 +3,10 @@ let
   s = import ./src-for-2.6.31-zen5.nix;
   in 
 (import ../kernel/generic.nix) (rec {
-  inherit (a) stdenv fetchurl perl mktemp module_init_tools;
+  inherit (a) stdenv fetchurl perl mktemp module_init_tools platform;
 
-  uboot = if (stdenv.system == "armv5tel-linux") then
-    a.uboot else null;
+  uboot = if (platform.name == "sheevaplug") then
+    platform.uboot else null;
 
   src = a.builderDefs.fetchGitFromSrcInfo s;
   version = "2.6.31-zen5";
@@ -14,7 +14,7 @@ let
   features = {
     iwlwifi = true;
     zen = true;
-    fbConDecor = true;
+    fbConDecor = if (platform.name == "pc") then true else false;
     aufs = true;
   };
 
@@ -44,7 +44,7 @@ let
   '';
 
 
-  preConfigurePC = ''
+  configurePC = ''
     make allmodconfig
 
     killOption CONFIG_CMDLINE_OVERRIDE
@@ -106,9 +106,15 @@ let
     cp .config ${config}
   '';
 
-  preConfigureSheevaplug = '' 
+  configureBaseSheevaplug = '' 
     make kirkwood_defconfig
+  '';
 
+  configureBaseVersatileARM = '' 
+    make versatile_defconfig
+  '';
+
+  configureARM = '' 
     killOption CONFIG_CMDLINE_OVERRIDE
 
     killOption 'CONFIG_.*_DEBUG.*'
@@ -175,6 +181,13 @@ let
   '';
 
 
-  preConfigure = configFunctions + (if (stdenv.system == "armv5tel-linux") then
-    preConfigureSheevaplug else preConfigurePC);
+  preConfigure = configFunctions +
+    (if (platform.name == "pc") then
+       (configureBaseSheevaplug + configureARM)
+    else if (platform.name == "sheevaplug") then
+       (configureBaseSheevaplug + configureARM)
+    else if (platform.name == "versatileARM") then
+       (configureBaseVersatileARM + configureARM)
+    else throw "platform not supported"
+    );
 })

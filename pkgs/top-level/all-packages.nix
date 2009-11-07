@@ -409,6 +409,21 @@ let
     '';
 
 
+  platformPC = assert system == "i686-linux" || system == "x86_64-linux"; {
+    name = "pc";
+    uboot = null;
+  };
+
+  platformSheevaplug = assert system == "armv5tel-linux"; {
+    name = "sheevaplug";
+    inherit uboot;
+  };
+
+  platformVersatileARM = assert system == "armv5tel-linux"; {
+    name = "versatileARM";
+    uboot = null;
+  };
+
   ### TOOLS
 
   darwinArchUtility = import ../os-specific/darwin/arch {
@@ -5566,8 +5581,9 @@ let
   };
 
   kernel_2_6_31_zen5 = makeOverridable (import ../os-specific/linux/zen-kernel/2.6.31-zen5.nix) {
-    inherit fetchurl stdenv perl mktemp module_init_tools uboot
+    inherit fetchurl stdenv perl mktemp module_init_tools
       lib builderDefs;
+    platform = getConfig [ "platform" ] platformPC;
   };
 
   kernel_2_6_31_zen5_bfs = kernel_2_6_31_zen5.override {
