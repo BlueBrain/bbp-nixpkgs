@@ -107,11 +107,11 @@ let
   '';
 
   configureBaseSheevaplug = '' 
-    make kirkwood_defconfig
+    ARCH=arm make kirkwood_defconfig
   '';
 
   configureBaseVersatileARM = '' 
-    make versatile_defconfig
+    ARCH=arm make versatile_defconfig
   '';
 
   configureARM = '' 
