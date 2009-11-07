@@ -5566,7 +5566,7 @@ let
   };
 
   kernel_2_6_31_zen5 = makeOverridable (import ../os-specific/linux/zen-kernel/2.6.31-zen5.nix) {
-    inherit fetchurl stdenv perl mktemp module_init_tools
+    inherit fetchurl stdenv perl mktemp module_init_tools uboot
       lib builderDefs;
   };
 
