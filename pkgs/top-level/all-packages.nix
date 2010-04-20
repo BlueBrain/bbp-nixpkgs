@@ -802,17 +802,15 @@ let
     inherit fetchurl stdenv ed;
   });
 
-  gnupg = import ../tools/security/gnupg {
+  # You shouldn't use gnupg 1.x unless you have a good reason for this
+  gnupg1 = import ../tools/security/gnupg {
     inherit fetchurl stdenv readline bzip2;
     ideaSupport = getPkgConfig "gnupg" "idea" false; # enable for IDEA crypto support
   };
 
-  gnupg2 = import ../tools/security/gnupg2 {
+  gnupg = makeOverridable (import ../tools/security/gnupg) {
     inherit fetchurl stdenv readline libgpgerror libgcrypt libassuan pth libksba zlib;
-    openldap = if getPkgConfig "gnupg" "ldap" true then openldap else null;
-    bzip2 = if getPkgConfig "gnupg" "bzip2" true then bzip2 else null;
-    libusb = if getPkgConfig "gnupg" "usb" true then libusb else null;
-    curl = if getPkgConfig "gnupg" "curl" true then curl else null;
+    inherit openldap bzip2 libusb curl;
   };
 
   gnuplot = import ../tools/graphics/gnuplot {
@@ -3882,7 +3880,7 @@ let
   };
 
   gpgme = import ../development/libraries/gpgme {
-    inherit fetchurl stdenv libgpgerror pkgconfig pth gnupg gnupg2 glib;
+    inherit fetchurl stdenv libgpgerror pkgconfig pth gnupg glib;
   };
 
   gsl = import ../development/libraries/gsl {
