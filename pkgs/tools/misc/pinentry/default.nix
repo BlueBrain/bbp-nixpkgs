@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
     sha256 = "06phs3gbs6gf0z9g28z3jgsw312dhhpdgzrx4hhps53xrbwpyv22";
   };
 
-  buildInputs = [ glib pkgconfig gtk ncurses ];
+  buildInputs = [ glib pkgconfig gtk ncurses ] ++ stdenv.lib.optional useQt4 qt4;
 
   meta = { 
     description = "GnuPG's interface to passphrase input";
