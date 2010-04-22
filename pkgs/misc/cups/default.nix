@@ -1,27 +1,27 @@
-{ stdenv, fetchurl, pkgconfig, zlib, libjpeg, libpng, libtiff, pam, openssl, dbus }:
+{ stdenv, fetchurl, pkgconfig, zlib, libjpeg, libpng, libtiff, pam, openssl
+, dbus, poppler }:
 
-let version = "1.4.1"; in
+let version = "1.4.3"; in
 
 stdenv.mkDerivation {
   name = "cups-${version}";
 
   src = fetchurl {
     url = "http://ftp.easysw.com/pub/cups/${version}/cups-${version}-source.tar.bz2";
-    sha256 = "1fnkq993hr8l87x6f7a7wik2spac3f7nn4wksrvwk690r8a6zxng";
+    sha256 = "15yvch6dz9ph3i896jax0hkqf0505q9snzdfg52bk4h1qnqmk9a7";
   };
-
-  patches =
-    [ (fetchurl {
-        url = http://www.cups.org/strfiles/3332/0001-Fixed-side_cb-function-declaration-in-usb-unix.c.patch;
-        sha256 = "0h8fhhpzp7xngnc428040jv09yvpz5dxb9hw6sv67lnvb03fncnw";
-      })
-    ];
 
   buildInputs = [ pkgconfig zlib libjpeg libpng libtiff pam dbus ];
 
   propagatedBuildInputs = [ openssl ];
 
-  configureFlags = "--localstatedir=/var --enable-dbus"; # --with-dbusdir
+  patchPhase = "sed -e '/INSTALL/s@ -g $(CUPS_GROUP)@@' -i */Makefile";
+  configureFlags = "--localstatedir=/var --enable-dbus
+    --with-pdftops=${poppler}/bin/pdftops"; # --with-dbusdir
+  postInstall = ''
+    ln -sv ipp $out/lib/cups/backend/https
+    chmod -R u+w $out
+  '';
 
   installFlags =
     [ # Don't try to write in /var at build time.

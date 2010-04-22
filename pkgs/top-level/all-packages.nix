@@ -4820,15 +4820,12 @@ let
   };
 
   poppler = makeOverridable (import ../development/libraries/poppler) {
-    inherit fetchurl stdenv cairo freetype fontconfig zlib libjpeg pkgconfig;
+    inherit fetchurl stdenv cairo freetype fontconfig libjpeg pkgconfig;
+    inherit libpng libxml2 qt4 cmake;
     inherit (gtkLibs) glib gtk;
-    qt4Support = false;
   };
 
-  popplerQt4 = poppler.override {
-    inherit qt4;
-    qt4Support = true;
-  };
+  popplerQt4 = poppler.override { useQt4 = true; };
 
   popt = import ../development/libraries/popt {
     inherit fetchurl stdenv;
@@ -8858,6 +8855,10 @@ let
 
   cups = import ../misc/cups {
     inherit fetchurl stdenv pkgconfig zlib libjpeg libpng libtiff pam openssl dbus;
+    poppler = poppler.override {
+      useQt4 = false;
+      useGlib = false;
+    };
   };
 
   gutenprint = import ../misc/drivers/gutenprint {
