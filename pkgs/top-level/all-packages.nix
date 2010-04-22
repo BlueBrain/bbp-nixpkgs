@@ -803,14 +803,14 @@ let
   });
 
   # You shouldn't use gnupg 1.x unless you have a good reason for this
-  gnupg1 = import ../tools/security/gnupg {
+  gnupg1 = import ../tools/security/gnupg1 {
     inherit fetchurl stdenv readline bzip2;
     ideaSupport = getPkgConfig "gnupg" "idea" false; # enable for IDEA crypto support
   };
 
   gnupg = makeOverridable (import ../tools/security/gnupg) {
-    inherit fetchurl stdenv readline libgpgerror libgcrypt libassuan pth libksba zlib;
-    inherit openldap bzip2 libusb curl;
+    inherit fetchurl stdenv readline libgpgerror libgcrypt libassuan pth libksba
+      zlib openldap bzip2 libusb curl;
   };
 
   gnuplot = import ../tools/graphics/gnuplot {
