@@ -5,11 +5,11 @@ if ! stdenv.lib.lists.elem stdenv.system stdenv.lib.platforms.mesaPlatforms then
 else
 
 stdenv.mkDerivation {
-  name = "mesa-7.6.1";
+  name = "mesa-7.8.1";
   
   src = fetchurl {
-    url = ftp://ftp.freedesktop.org/pub/mesa/7.6.1/MesaLib-7.6.1.tar.bz2;
-    md5 = "7db4617e9e10ad3aca1b64339fd71b7d";
+    url = ftp://ftp.freedesktop.org/pub/mesa/7.8.1/MesaLib-7.8.1.tar.bz2;
+    sha256 = "1yh717x4qxmild1s15qyv68irkrbm5gi4273052v8pfppxd6xd5h";
   };
 
   configureFlags = "--disable-gallium";
