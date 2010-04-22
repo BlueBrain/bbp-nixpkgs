@@ -1,7 +1,7 @@
 { stdenv, fetchurl, automake, autoconf, subversion, fuse, apr, perl }: 
 
 stdenv.mkDerivation {
-  name = "svnfs";
+  name = "svnfs-0.4";
 
   src = fetchurl {
     url = http://www.jmadden.eu/wp-content/uploads/svnfs/svnfs-0.4.tgz;
@@ -14,7 +14,6 @@ stdenv.mkDerivation {
   preConfigure=''
     export LD_LIBRARY_PATH=${subversion}/lib
   '';
-
 
   NIX_CFLAGS_COMPILE="-I ${subversion}/include/subversion-1";
   NIX_LDFLAGS="-lsvn_client-1";
