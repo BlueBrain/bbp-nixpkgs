@@ -3899,7 +3899,7 @@ let
   };
 
   gpgme = import ../development/libraries/gpgme {
-    inherit fetchurl stdenv libgpgerror pkgconfig pth gnupg glib;
+    inherit fetchurl stdenv libgpgerror pkgconfig pth gnupg glib libassuan;
   };
 
   gsl = import ../development/libraries/gsl {
