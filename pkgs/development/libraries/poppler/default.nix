@@ -30,7 +30,7 @@ stdenv.mkDerivation rec {
 
   # XXX: The Poppler/Qt4 test suite refers to non-existent PDF files
   # such as `../../../test/unittestcases/UseNone.pdf'.
-  doCheck = true;
+  doCheck = !useQt4;
   checkTarget = "test";
 
   meta = {
