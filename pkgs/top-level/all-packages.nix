@@ -2687,7 +2687,7 @@ let
     inherit fetchurl stdenv zlib bzip2 gdbm;
   };
 
-  python25Full = python25Base.passthru.function {
+  python25Full = lowPrio (python25Base.passthru.function {
     # FIXME: We lack ncurses support, needed, e.g., for `gpsd'.
     db4 = if getConfig ["python" "db4Support"] true then db4 else null;
     sqlite = if getConfig ["python" "sqliteSupport"] true then sqlite else null;
@@ -2697,7 +2697,7 @@ let
     tcl = if getConfig ["python" "tkSupport"] true then tcl else null;
     libX11 = if getConfig ["python" "tkSupport"] true then xlibs.libX11 else null;
     xproto = if getConfig ["python" "tkSupport"] true then xlibs.xproto else null;
-  };
+  });
 
   python26Base = composedArgsAndFun (import ../development/interpreters/python/2.6) {
     inherit fetchurl stdenv zlib bzip2 gdbm;
@@ -2705,7 +2705,7 @@ let
     sw_vers = if stdenv.isDarwin then darwinSwVersUtility else null;
   };
 
-  python26Full = python26Base.passthru.function {
+  python26Full = lowPrio (python26Base.passthru.function {
     # FIXME: We lack ncurses support, needed, e.g., for `gpsd'.
     db4 = if getConfig ["python" "db4Support"] true then db4 else null;
     sqlite = if getConfig ["python" "sqliteSupport"] true then sqlite else null;
@@ -2715,13 +2715,13 @@ let
     tcl = if getConfig ["python" "tkSupport"] true then tcl else null;
     libX11 = if getConfig ["python" "tkSupport"] true then xlibs.libX11 else null;
     xproto = if getConfig ["python" "tkSupport"] true then xlibs.xproto else null;
-  };
+  });
 
-  python31Base = composedArgsAndFun (import ../development/interpreters/python/3.1) {
+  python31Base = lowPrio (composedArgsAndFun (import ../development/interpreters/python/3.1) {
     inherit fetchurl stdenv zlib bzip2 gdbm;
     arch = if stdenv.isDarwin then darwinArchUtility else null;
     sw_vers = if stdenv.isDarwin then darwinSwVersUtility else null;
-  };
+  });
   
   pyrex = pyrex095;
 
