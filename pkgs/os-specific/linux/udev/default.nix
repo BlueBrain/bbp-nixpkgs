@@ -4,18 +4,18 @@
 assert stdenv ? glibc;
 
 stdenv.mkDerivation rec {
-  name = "udev-152";
+  name = "udev-153";
 
   src = fetchurl {
     url = "mirror://kernel/linux/utils/kernel/hotplug/${name}.tar.bz2";
-    sha256 = "1y9riv5jkpfvnxakh94js0jabaik9zf8cw4lzw38cihcaaxppg2n";
+    sha256 = "0i3ns4qhfbnci284k8zri0rfxw88ccajdynb5djh6k182a6nn3la";
   };
 
   buildInputs = [gperf pkgconfig glib acl libusb usbutils];
 
   configureFlags = "--with-pci-ids-path=${pciutils}/share/pci.ids
     --disable-introspection
-    --with-firmware-path=/var/lib/firmware:/root/test-firmware";
+    --with-firmware-path=/etc/firmware:/root/test-firmware";
 
   postInstall =
     ''
