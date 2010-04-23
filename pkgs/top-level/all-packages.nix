@@ -1265,7 +1265,7 @@ let
 
   opensc_0_11_7 = import ../tools/security/opensc/0.11.7.nix {
     inherit fetchurl stdenv libtool readline zlib openssl libiconv pcsclite
-      libassuan pkgconfig pinentry;
+      libassuan1 pkgconfig pinentry;
     inherit (xlibs) libXt;
   };
 
@@ -4154,6 +4154,10 @@ let
   libarchive = import ../development/libraries/libarchive {
     inherit fetchurl stdenv acl zlib bzip2 e2fsprogs xz sharutils libxml2
       openssl attr;
+  };
+
+  libassuan1 = import ../development/libraries/libassuan1 {
+    inherit fetchurl stdenv pth;
   };
 
   libassuan = import ../development/libraries/libassuan {
