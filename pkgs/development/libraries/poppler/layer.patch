@@ -1,0 +1,39 @@
+Source: upstream commit eb082274694aadb80dd16caea65d7f0a1adf8b46
+diff --git a/glib/CMakeLists.txt b/glib/CMakeLists.txt
+index 28cc1ab..206610b 100644
+--- a/glib/CMakeLists.txt
++++ b/glib/CMakeLists.txt
+@@ -18,9 +18,9 @@ endif (GDK_FOUND)
+
+ configure_file(poppler-features.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/poppler-features.h @ONLY)
+
+-if (GTK_FOUND)
++if (GTK_FOUND AND BUILD_GTK_TESTS)
+   add_subdirectory(demo)
+-endif (GTK_FOUND)
++endif (GTK_FOUND AND BUILD_GTK_TESTS)
+
+ set(poppler_glib_public_headers
+   poppler-action.h
+@@ -30,6 +30,7 @@ set(poppler_glib_public_headers
+   poppler-attachment.h
+   poppler-form-field.h
+   poppler-annot.h
++  poppler-layer.h
+   poppler.h
+ )
+
+@@ -107,11 +108,11 @@ install(FILES
+   DESTINATION include/poppler/glib)
+
+
+-if (GDK_FOUND)
++if (GDK_FOUND AND BUILD_GTK_TESTS)
+   set(test_poppler_glib_SRCS
+     test-poppler-glib.cc
+   )
+   poppler_add_test(test-poppler-glib BUILD_GTK_TESTS ${test_poppler_glib_SRCS})
+   target_link_libraries(test-poppler-glib poppler-glib ${GDK2_LIBRARIES})
+-endif (GDK_FOUND)
++endif (GDK_FOUND AND BUILD_GTK_TESTS)
+

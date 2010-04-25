@@ -26,7 +26,7 @@ stdenv.mkDerivation rec {
     + (if useGlib then " -DWITH_GLIB=ON -DBUILD_GTK_TESTS=ON " else " -DWITH_GLIB=OFF ")
     + (if useQt4 then " -DWITH_Qt4=ON -DBUILD_QT4_TESTS=ON " else " -DWITH_Qt4=OFF ");
 
-  patches = [ ./GDir-const.patch ];
+  patches = [ ./GDir-const.patch ] ++ stdenv.lib.optional useGlib ./layer.patch;
 
   # XXX: The Poppler/Qt4 test suite refers to non-existent PDF files
   # such as `../../../test/unittestcases/UseNone.pdf'.

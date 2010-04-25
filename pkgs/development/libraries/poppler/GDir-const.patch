@@ -4,7 +4,7 @@ diff -ur poppler-0.6.1/goo/gfile.cc poppler-0.6.1-patched/goo/gfile.cc
 @@ -634,7 +634,7 @@
    delete name;
  }
- 
+
 -GDir::GDir(char *name, GBool doStatA) {
 +GDir::GDir(const char *name, GBool doStatA) {
    path = new GooString(name);
@@ -16,7 +16,7 @@ diff -ur poppler-0.6.1/goo/gfile.h poppler-0.6.1-patched/goo/gfile.h
 @@ -117,7 +117,7 @@
  class GDir {
  public:
- 
+
 -  GDir(char *name, GBool doStatA = gTrue);
 +  GDir(const char *name, GBool doStatA = gTrue);
    ~GDir();
