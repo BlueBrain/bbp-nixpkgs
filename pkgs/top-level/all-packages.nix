@@ -8994,6 +8994,7 @@ let
   cups = import ../misc/cups {
     inherit fetchurl stdenv pkgconfig zlib libjpeg libpng libtiff pam openssl dbus;
     poppler = poppler.override {
+      useLibxml = false;
       useQt4 = false;
       useGlib = false;
     };

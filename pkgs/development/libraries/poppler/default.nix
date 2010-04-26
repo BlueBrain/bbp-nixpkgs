@@ -16,7 +16,8 @@ stdenv.mkDerivation rec {
     sha256 = "0yl55410xbgwlpbbjg9v9909mlwmzb54pdl25zlhkjscpma2myia";
   };
 
-  buildInputs = [pkgconfig freetype fontconfig libjpeg libpng cmake]
+  buildInputs = [pkgconfig cmake];
+  propagatedBuildInputs = [freetype fontconfig libjpeg libpng]
     ++ stdenv.lib.optional useGlib [glib gtk cairo]
     ++ stdenv.lib.optional useLibxml libxml2
     ++ stdenv.lib.optional useQt4 qt4;
