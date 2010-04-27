@@ -7043,7 +7043,7 @@ let
   conkeror = xulrunnerWrapper {
     launcher = "conkeror";
     application = import ../applications/networking/browsers/conkeror {
-      inherit stdenv fetchurl;
+      inherit stdenv fetchurl unzip;
     };
   };
 
