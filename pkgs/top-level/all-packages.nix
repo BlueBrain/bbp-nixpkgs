@@ -2753,7 +2753,7 @@ let
     arch = if stdenv.isDarwin then darwinArchUtility else null;
     sw_vers = if stdenv.isDarwin then darwinSwVersUtility else null;
   });
-  
+
   pyrex = pyrex095;
 
   pyrex095 = import ../development/interpreters/pyrex/0.9.5.nix {
@@ -4824,7 +4824,7 @@ let
           pkgconfig xineLib;
       inherit (gtkLibs) gtk glib;
       inherit (gst_all) gstreamer;
-      stdenv = stdenv2; 
+      stdenv = stdenv2;
   };
 
   # this ctl version is needed by openexr_viewers
@@ -5544,11 +5544,11 @@ let
     inherit fetchurl stdenv erlang spidermonkey icu getopt
       curl;
   };
-  
+
   felix = import ../servers/felix {
     inherit stdenv fetchurl;
   };
-  
+
   felix_remoteshell = import ../servers/felix/remoteshell.nix {
     inherit stdenv fetchurl;
   };
@@ -7365,7 +7365,7 @@ let
     inherit fetchurl stdenv perl pkgconfig libpcap flex bison;
     inherit (gtkLibs) gtk;
   };
-  
+
   wvdial = import ../os-specific/linux/wvdial {
     inherit stdenv fetchurl wvstreams pkgconfig;
   };
