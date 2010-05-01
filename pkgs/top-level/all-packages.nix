@@ -3679,7 +3679,7 @@ let
   };
 
   ffmpeg = import ../development/libraries/ffmpeg {
-    inherit fetchurl stdenv faad2 libvorbis speex libtheora x264 pkgconfig;
+    inherit fetchurl stdenv faad2 libvorbis speex libtheora x264 pkgconfig xvidcore;
   };
 
   fftw = import ../development/libraries/fftw {
@@ -5256,6 +5256,10 @@ let
       xlibs.libXft xlibs.libXext xlibs.libSM xlibs.libICE
       xlibs.xextproto
     ];
+  };
+
+  xvidcore = import ../development/libraries/xvidcore {
+    inherit fetchurl stdenv;
   };
 
   zangband = builderDefsPackage (import ../games/zangband) {
@@ -7925,7 +7929,7 @@ let
 
   MPlayer = import ../applications/video/MPlayer {
     inherit fetchurl stdenv freetype fontconfig x11 zlib libtheora libcaca libdvdnav
-      cdparanoia mesa pkgconfig unzip amrnb amrwb jackaudio x264;
+      cdparanoia mesa pkgconfig unzip amrnb amrwb jackaudio x264 xvidcore;
     inherit (xlibs) libX11 libXv libXinerama libXrandr;
     alsaSupport = true;
     alsa = alsaLib;
@@ -7936,6 +7940,7 @@ let
     cddaSupport = true;
     amrSupport = getConfig [ "MPlayer" "amr" ] false;
     x264Support = true;
+    xvidSupport = true;
   };
 
   MPlayerPlugin = browser:
