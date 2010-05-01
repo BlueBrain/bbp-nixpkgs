@@ -1,5 +1,6 @@
-{ stdenv, fetchurl, readline, pam, openldap, kerberos, popt
-, iniparser, libunwind, fam, acl
+{ stdenv, fetchurl, readline, pam, openldap, popt, iniparser, libunwind, fam
+, acl
+, useKerberos ? false, kerberos ? null
 
 # Eg. smbclient and smbspool require a smb.conf file.
 # If you set configDir to "" an empty configuration file
@@ -20,7 +21,8 @@ stdenv.mkDerivation rec {
     sha256 = "0pi946lyn57larvada77pkal48hc0rn07bjxpg2ahz0c389cknl2";
   };
 
-  buildInputs = [readline pam openldap kerberos popt iniparser libunwind fam acl];
+  buildInputs = [readline pam openldap popt iniparser libunwind fam acl]
+    ++ stdenv.lib.optional useKerberos kerberos;
 
   preConfigure = "cd source3";
 

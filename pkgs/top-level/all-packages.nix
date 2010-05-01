@@ -5659,7 +5659,7 @@ let
 
   samba = makeOverridable (import ../servers/samba) {
     inherit stdenv fetchurl readline openldap pam kerberos popt iniparser
-  libunwind acl fam;
+      libunwind acl fam;
   };
 
   shishi = import ../servers/shishi {
