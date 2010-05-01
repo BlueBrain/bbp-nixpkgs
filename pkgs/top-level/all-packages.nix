@@ -1603,6 +1603,10 @@ let
     inherit fetchurl stdenv openssl;
   };
 
+  sourceHighlight = import ../tools/text/source-highlight {
+    inherit fetchurl stdenv boost;
+  };
+
   socat2pre = builderDefsPackage ../tools/networking/socat/2.0.0-b3.nix {
     inherit fetchurl stdenv openssl;
   };
