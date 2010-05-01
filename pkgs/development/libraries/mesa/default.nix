@@ -12,7 +12,8 @@ stdenv.mkDerivation {
     sha256 = "1yh717x4qxmild1s15qyv68irkrbm5gi4273052v8pfppxd6xd5h";
   };
 
-  configureFlags = "--disable-gallium";
+  configureFlags = "--disable-gallium"
+                 + (if stdenv.isDarwin then " --disable-egl" else "");
 
   buildInputs =
     [ pkgconfig expat x11 libdrm xlibs.glproto
