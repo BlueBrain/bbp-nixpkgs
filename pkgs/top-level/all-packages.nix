@@ -3654,7 +3654,7 @@ let
   };
 
   ffmpeg = import ../development/libraries/ffmpeg {
-    inherit fetchurl stdenv faad2 libvorbis speex libtheora;
+    inherit fetchurl stdenv faad2 libvorbis speex libtheora x264 pkgconfig;
   };
 
   fftw = import ../development/libraries/fftw {
@@ -7888,7 +7888,7 @@ let
 
   MPlayer = import ../applications/video/MPlayer {
     inherit fetchurl stdenv freetype fontconfig x11 zlib libtheora libcaca libdvdnav
-      cdparanoia mesa pkgconfig unzip amrnb amrwb jackaudio;
+      cdparanoia mesa pkgconfig unzip amrnb amrwb jackaudio x264;
     inherit (xlibs) libX11 libXv libXinerama libXrandr;
     alsaSupport = true;
     alsa = alsaLib;
@@ -7898,6 +7898,7 @@ let
     randrSupport = true;
     cddaSupport = true;
     amrSupport = getConfig [ "MPlayer" "amr" ] false;
+    x264Support = true;
   };
 
   MPlayerPlugin = browser:
