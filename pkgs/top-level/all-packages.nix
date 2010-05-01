@@ -5769,7 +5769,7 @@ let
   };
 
   virtuoso = makeOverridable (import ../servers/sql/virtuoso) {
-    inherit stdenv fetchurl libxml2 openssl readline;
+    inherit stdenv fetchurl libxml2 openssl readline gawk;
   };
 
   vsftpd = import ../servers/ftp/vsftpd {
