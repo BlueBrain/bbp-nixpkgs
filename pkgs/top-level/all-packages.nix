@@ -5837,6 +5837,10 @@ let
     inherit stdenv;
   };
 
+  darwinLipoUtility = import ../os-specific/darwin/lipo {
+    inherit stdenv;
+  };
+
   devicemapper = lvm2;
 
   dmidecode = import ../os-specific/linux/dmidecode {
