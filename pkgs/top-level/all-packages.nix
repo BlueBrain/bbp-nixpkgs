@@ -4274,6 +4274,10 @@ let
     inherit fetchurl stdenv ncurses;
   };
 
+  libelf = import ../development/libraries/libelf {
+    inherit fetchurl stdenv;
+  };
+
   liblo = import ../development/libraries/liblo {
     inherit fetchurl stdenv;
   };
