@@ -1016,6 +1016,10 @@ let
     inherit fetchurl stdenv ncurses;
   };
 
+  most = import ../tools/misc/most {
+    inherit fetchurl stdenv slang;
+  };
+
   lftp = import ../tools/networking/lftp {
     inherit fetchurl stdenv readline;
   };
