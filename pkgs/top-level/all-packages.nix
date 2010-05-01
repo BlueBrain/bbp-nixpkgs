@@ -2613,6 +2613,9 @@ let
     inherit fetchurl stdenv;
   };
 
+  yasm = import ../development/compilers/yasm {
+    inherit fetchurl stdenv;
+  };
 
   ### DEVELOPMENT / INTERPRETERS
 
@@ -5213,7 +5216,7 @@ let
     };
 
   x264 = import ../development/libraries/x264 {
-    inherit fetchurl stdenv;
+    inherit fetchurl stdenv yasm;
   };
 
   xapian = makeOverridable (import ../development/libraries/xapian) {
@@ -5259,7 +5262,7 @@ let
   };
 
   xvidcore = import ../development/libraries/xvidcore {
-    inherit fetchurl stdenv;
+    inherit fetchurl stdenv nasm;
   };
 
   zangband = builderDefsPackage (import ../games/zangband) {
