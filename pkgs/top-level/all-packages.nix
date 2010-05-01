@@ -1024,6 +1024,10 @@ let
     inherit fetchurl stdenv pkgconfig openssl libsigcxx;
   };
 
+  logrotate = import ../tools/system/logrotate {
+    inherit fetchurl stdenv gzip popt;
+  };
+
   lout = import ../tools/typesetting/lout {
     inherit fetchurl stdenv ghostscript;
   };
