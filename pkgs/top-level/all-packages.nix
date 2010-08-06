@@ -488,11 +488,12 @@ let
   cron = callPackage ../tools/system/cron {  # see also fcron
   };
 
-  curl = makeOverridable (import ../tools/networking/curl) {
+  curl = makeOverridable (import ../tools/networking/curl) rec {
     fetchurl = fetchurlBoot;
-    inherit stdenv zlib openssl;
+    inherit stdenv zlib openssl libssh2;
     zlibSupport = ! ((stdenv ? isDietLibC) || (stdenv ? isStatic));
-    sslSupport = ! ((stdenv ? isDietLibC) || (stdenv ? isStatic));
+    sslSupport = zlibSupport;
+    scpSupport = zlibSupport;
   };
 
   curlftpfs = callPackage ../tools/filesystems/curlftpfs { };
@@ -3377,6 +3378,8 @@ let
 
   libssh = callPackage ../development/libraries/libssh { };
 
+  libssh2 = callPackage ../development/libraries/libssh2 { };
+
   libstartup_notification = callPackage ../development/libraries/startup-notification { };
 
   libtasn1 = callPackage ../development/libraries/libtasn1 { };
@@ -3730,6 +3733,11 @@ let
   speex = callPackage ../development/libraries/speex { };
 
   sqlite = callPackage ../development/libraries/sqlite {
+    readline = null;
+    ncurses = null;
+  };
+
+  sqlite36 = callPackage ../development/libraries/sqlite/3.6.x.nix {
     readline = null;
     ncurses = null;
   };
@@ -4724,12 +4732,18 @@ let
 
   # pam_bioapi ( see http://www.thinkwiki.org/wiki/How_to_enable_the_fingerprint_reader )
 
+  pam_ccreds = callPackage ../os-specific/linux/pam_ccreds {
+    db = db4;
+  };
+
   pam_console = callPackage ../os-specific/linux/pam_console {
     libtool = libtool_1_5;
     flex = if stdenv.system == "i686-linux" then flex else flex2533;
   };
 
   pam_devperm = callPackage ../os-specific/linux/pam_devperm { };
+
+  pam_krb5 = callPackage ../os-specific/linux/pam_krb5 { };
 
   pam_ldap = callPackage ../os-specific/linux/pam_ldap { };
 
