@@ -18,7 +18,7 @@ stdenv.mkDerivation ({
     }) ++
     stdenv.lib.optional langCC (fetchurl {
       url = http://www.opensource.apple.com/tarballs/libstdcxx/libstdcxx-39.tar.gz ;
-      sha256 = "1fy6j41rhxdsm19sib9wygjl5l54g8pm13c6y5x13f40mavw1mma";
+      sha256 = "ccf4cf432c142778c766affbbf66b61001b6c4f1107bc2b2c77ce45598786b6d";
     }) ;
 
   enableParallelBuilding = true;
