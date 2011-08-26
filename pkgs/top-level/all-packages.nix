@@ -7814,7 +7814,6 @@ let
     bangarang = callPackage ../applications/video/bangarang { };
     bluedevil = callPackage ../tools/bluetooth/bluedevil { };
     digikam = callPackage ../applications/graphics/digikam { };
-    filelight = callPackage ../applications/misc/filelight { };
     k3b = callPackage ../applications/misc/k3b { };
     kadu = callPackage ../applications/networking/instant-messengers/kadu { };
     kbluetooth = callPackage ../tools/bluetooth/kbluetooth { };
