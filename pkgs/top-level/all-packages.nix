@@ -7792,9 +7792,8 @@ let
 
   };
 
-  kde4 = recurseIntoAttrs pkgs.kde45;
+  kde4 = recurseIntoAttrs pkgs.kde47;
 
-  kde45 = kdePackagesFor pkgs.kde45 "4.5";
   kde47 = kdePackagesFor pkgs.kde47 "4.7";
 
   kdePackagesFor = self: version:
