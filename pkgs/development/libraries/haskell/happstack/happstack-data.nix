@@ -1,17 +1,24 @@
-{cabal, mtl, syb, sybWithClass, sybWithClassInstancesText, HaXml,
- happstackUtil, binary, text}:
+{ cabal, binary, mtl, syb, sybWithClass, sybWithClassInstancesText
+, text, time
+}:
 
-cabal.mkDerivation (self : {
-    pname = "happstack-data";
-    version = "0.5.0.3";
-    sha256 = "0zjsb9n1iawg2jv6i5q52awifly7yi6w0ilndivwp168qvi25awn";
-    propagatedBuildInputs = [
-        mtl syb sybWithClass sybWithClassInstancesText HaXml
-        happstackUtil binary text
+cabal.mkDerivation (self: {
+  pname = "happstack-data";
+  version = "6.0.0";
+  sha256 = "1wdvylqgy3iw41ksw2ys4f0vyak8sbk6gginljvz07rrh04klyhl";
+  isLibrary = true;
+  isExecutable = true;
+  buildDepends = [
+    binary mtl syb sybWithClass sybWithClassInstancesText text time
+  ];
+  meta = {
+    homepage = "http://happstack.com";
+    description = "Happstack data manipulation libraries";
+    license = self.stdenv.lib.licenses.bsd3;
+    platforms = self.ghc.meta.platforms;
+    maintainers = [
+      self.stdenv.lib.maintainers.andres
+      self.stdenv.lib.maintainers.simons
     ];
-    meta = {
-        description = "Happstack data manipulation libraries";
-        license = "BSD";
-        maintainers = [self.stdenv.lib.maintainers.andres];
-    };
+  };
 })

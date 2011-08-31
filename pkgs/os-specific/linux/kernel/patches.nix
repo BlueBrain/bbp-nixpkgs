@@ -164,22 +164,22 @@ rec {
     };
 
   tracehook_2_6_32 =
-    { # From <http://people.redhat.com/roland/utrace/>.
+    { # From <http://userweb.kernel.org/~frob/utrace/>.
       name = "tracehook";
       patch = fetchurl {
-        url = http://people.redhat.com/roland/utrace/2.6.32/tracehook.patch;
+        url = http://userweb.kernel.org/~frob/utrace/2.6.32/tracehook.patch;
         sha256 = "1y009p8dyqknbjm8ryb495jqmvl372gfhswdn167xh2g1f24xqv8";
       };
     };
 
   utrace_2_6_32 =
-    { # From <http://people.redhat.com/roland/utrace/>, depends on the
+    { # From <http://userweb.kernel.org/~frob/utrace/>, depends on the
       # `tracehook' patch above.
       # See also <http://sourceware.org/systemtap/wiki/utrace>.
       name = "utrace";
       patch = fetchurl {
-        url = http://people.redhat.com/roland/utrace/2.6.32/utrace.patch;
-        sha256 = "1951mwc8jfiwrl0d2bb1zk9yrl7n7kadc00ymjsxrg2irda1b89r";
+        url = http://userweb.kernel.org/~frob/utrace/2.6.32/utrace.patch;
+        sha256 = "0argf19k9f0asiv4l4cnsxm5hw2xx8d794npaln88vwz87sj5nnq";
       };
       extraConfig =
         '' UTRACE y
@@ -192,6 +192,15 @@ rec {
       # standalone package.
       name = "aufs2";
       patch = ./aufs2.patch;
+      features.aufsBase = true;
+    };
+
+  aufs2_2_6_33 =
+    { # From http://git.c3sl.ufpr.br/gitweb?p=aufs/aufs2-standalone.git;a=tree;h=refs/heads/aufs2-33;hb=aufs2-33
+      # Note that this merely the patch needed to build AUFS2 as a
+      # standalone package.
+      name = "aufs2";
+      patch = ./aufs2-33.patch;
       features.aufsBase = true;
     };
 
@@ -213,6 +222,16 @@ rec {
       features.aufsBase = true;
     };
 
+  aufs2_2_6_36 =
+    { # From http://git.c3sl.ufpr.br/gitweb?p=aufs/aufs2-standalone.git;a=tree;h=refs/heads/aufs2.1-36;hb=aufs2.1-36
+      # Note that this merely the patch needed to build AUFS2 as a
+      # standalone package.
+      name = "aufs2";
+      patch = ./aufs2.1-36.patch;
+      features.aufsBase = true;
+      features.aufs2_1 = true;
+    };
+
   aufs2_1_2_6_37 =
     { # From http://git.c3sl.ufpr.br/gitweb?p=aufs/aufs2-standalone.git;a=tree;h=refs/heads/aufs2.1-37;hb=refs/heads/aufs2.1-37
       # Note that this merely the patch needed to build AUFS2.1 as a
@@ -229,6 +248,26 @@ rec {
       # standalone package.
       name = "aufs2.1";
       patch = ./aufs2.1-38.patch;
+      features.aufsBase = true;
+      features.aufs2_1 = true;
+    };
+
+  aufs2_1_2_6_39 =
+    { # From http://aufs.git.sourceforge.net/git/gitweb.cgi?p=aufs/aufs2-standalone.git;a=tree;h=refs/heads/aufs2.1-39;hb=refs/heads/aufs2.1-39
+      # Note that this merely the patch needed to build AUFS2.1 as a
+      # standalone package.
+      name = "aufs2.1";
+      patch = ./aufs2.1-39.patch;
+      features.aufsBase = true;
+      features.aufs2_1 = true;
+    };
+
+  aufs2_1_3_0 =
+    { # From http://aufs.git.sourceforge.net/git/gitweb.cgi?p=aufs/aufs2-standalone.git;a=tree;h=ac52a37b0debba539bdfabba101f82b99136b380;hb=ac52a37b0debba539bdfabba101f82b99136b380
+      # Note that this merely the patch needed to build AUFS2.1 as a
+      # standalone package.
+      name = "aufs2.1";
+      patch = ./aufs2.1-3.0.patch;
       features.aufsBase = true;
       features.aufs2_1 = true;
     };

@@ -1,14 +1,18 @@
-{cabal, QuickCheck, vector}:
+{ cabal, QuickCheck, vector }:
 
-cabal.mkDerivation (self : {
+cabal.mkDerivation (self: {
   pname = "repa";
-  version = "2.0.0.4";
-  sha256 = "11cjh4bdwb1kwb6ikig4i6vr3kqs840wdpl22biws16lg74mfxxn";
-  propagatedBuildInputs = [QuickCheck vector];
+  version = "2.1.1.5";
+  sha256 = "14lq6nsifxsap98c1hpxsyv4g973vyzjn2s94b3vfzkbq8vd7695";
+  buildDepends = [ QuickCheck vector ];
   meta = {
+    homepage = "http://repa.ouroborus.net";
     description = "High performance, regular, shape polymorphic parallel arrays";
-    license = "BSD";
-    maintainers = [self.stdenv.lib.maintainers.andres];
+    license = self.stdenv.lib.licenses.bsd3;
+    platforms = self.ghc.meta.platforms;
+    maintainers = [
+      self.stdenv.lib.maintainers.andres
+      self.stdenv.lib.maintainers.simons
+    ];
   };
 })
-

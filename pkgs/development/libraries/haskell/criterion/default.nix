@@ -1,19 +1,23 @@
-{cabal, deepseq, mtl, parallel, parsec, vector, vectorAlgorithms,
- mwcRandom, statistics}:
+{ cabal, deepseq, mtl, mwcRandom, parsec, statistics, time, vector
+, vectorAlgorithms
+}:
 
-cabal.mkDerivation (self : {
+cabal.mkDerivation (self: {
   pname = "criterion";
-  version = "0.5.0.7";
-  sha256 = "1f1vpc3cwvc6wjy7fras5kp1iap8abh6ap3w6pf75qpkbdrcd3dq";
-
-  propagatedBuildInputs = [
-    deepseq mtl parallel parsec vector vectorAlgorithms mwcRandom statistics
+  version = "0.5.0.10";
+  sha256 = "0sd289s7wnyg0p37j327hv55aw4a18bdv56z26v4qi3j8p2fbpbj";
+  buildDepends = [
+    deepseq mtl mwcRandom parsec statistics time vector
+    vectorAlgorithms
   ];
-
   meta = {
     homepage = "http://bitbucket.org/bos/criterion";
     description = "Robust, reliable performance measurement and analysis";
-    license = "BSD";
-    maintainers = [self.stdenv.lib.maintainers.andres];
+    license = self.stdenv.lib.licenses.bsd3;
+    platforms = self.ghc.meta.platforms;
+    maintainers = [
+      self.stdenv.lib.maintainers.andres
+      self.stdenv.lib.maintainers.simons
+    ];
   };
 })

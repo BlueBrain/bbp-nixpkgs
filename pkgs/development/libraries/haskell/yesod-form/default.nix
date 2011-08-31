@@ -1,21 +1,25 @@
-{cabal, blazeBuilder, blazeHtml, dataDefault, emailValidate, hamlet,
- network, persistent, text, transformers, wai, webRoutesQuasi,
- xssSanitize, yesodCore, yesodPersistent}:
+{ cabal, blazeBuilder, blazeHtml, dataDefault, emailValidate
+, hamlet, network, persistent, shakespeareCss, shakespeareJs, text
+, time, transformers, wai, xssSanitize, yesodCore, yesodPersistent
+}:
 
-cabal.mkDerivation (self : {
+cabal.mkDerivation (self: {
   pname = "yesod-form";
-  version = "0.2.0";
-  sha256 = "1dwwndrb09bqfzrarxpiw29xqvxk70iy8b2vcy0rl6g2wvrcm8an";
-  propagatedBuildInputs = [
-    blazeBuilder blazeHtml dataDefault emailValidate hamlet
-    network persistent text transformers wai webRoutesQuasi
+  version = "0.3.1";
+  sha256 = "0xa9950michbwlp90xcr8ybpig7f026zwq28lg03zavnaqisqkfj";
+  buildDepends = [
+    blazeBuilder blazeHtml dataDefault emailValidate hamlet network
+    persistent shakespeareCss shakespeareJs text time transformers wai
     xssSanitize yesodCore yesodPersistent
   ];
-  noHaddock = true;
   meta = {
+    homepage = "http://www.yesodweb.com/";
     description = "Form handling support for Yesod Web Framework";
-    license = "BSD3";
-    maintainers = [self.stdenv.lib.maintainers.andres];
+    license = self.stdenv.lib.licenses.bsd3;
+    platforms = self.ghc.meta.platforms;
+    maintainers = [
+      self.stdenv.lib.maintainers.andres
+      self.stdenv.lib.maintainers.simons
+    ];
   };
 })
-

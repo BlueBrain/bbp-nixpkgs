@@ -1,17 +1,27 @@
-{cabal, attoparsec, attoparsecEnumerator, MonadCatchIOTransformers, blazeBuilder
-, bytestringNums, caseInsensitive, dlist, mtl, unixCompat, vector, zlib}:
+{ cabal, attoparsec, attoparsecEnumerator, blazeBuilder
+, bytestringMmap, bytestringNums, caseInsensitive, deepseq, dlist
+, enumerator, MonadCatchIOTransformers, mtl, text, time
+, transformers, unixCompat, vector, zlib
+}:
 
-cabal.mkDerivation (self : {
+cabal.mkDerivation (self: {
   pname = "snap-core";
-  version = "0.5.1.4";
-  sha256 = "0fvff7hjyfwnii057vpg8m75qaipsklk6v6cbvms4p6wp14zqaj1";
-  propagatedBuildInputs =
-    [ attoparsec attoparsecEnumerator MonadCatchIOTransformers blazeBuilder
-     bytestringNums caseInsensitive dlist mtl unixCompat vector zlib
-    ];
+  version = "0.5.3.1";
+  sha256 = "0qwlcak1hi4cqyhnks7qqf4zq0rw2486paf0mlasyzb6ba0pwl6m";
+  buildDepends = [
+    attoparsec attoparsecEnumerator blazeBuilder bytestringMmap
+    bytestringNums caseInsensitive deepseq dlist enumerator
+    MonadCatchIOTransformers mtl text time transformers unixCompat
+    vector zlib
+  ];
   meta = {
+    homepage = "http://snapframework.com/";
     description = "Snap: A Haskell Web Framework (Core)";
-    license = "BSD3";
+    license = self.stdenv.lib.licenses.bsd3;
+    platforms = self.ghc.meta.platforms;
+    maintainers = [
+      self.stdenv.lib.maintainers.andres
+      self.stdenv.lib.maintainers.simons
+    ];
   };
 })
-

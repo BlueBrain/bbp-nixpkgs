@@ -36,8 +36,9 @@ stdenv.mkDerivation rec {
     maintainers = [
       stdenv.lib.maintainers.marcweber
       stdenv.lib.maintainers.andres
+      stdenv.lib.maintainers.simons
     ];
-    platforms = stdenv.lib.platforms.haskellPlatforms;
+    platforms = ["x86_64-linux" "i686-linux" "i686-darwin" "x86_64-darwin"];
   };
 
 }

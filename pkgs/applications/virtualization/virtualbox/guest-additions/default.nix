@@ -1,13 +1,13 @@
 { stdenv, fetchurl, lib, patchelf, cdrkit, kernel, which, makeWrapper
 , libX11, libXt, libXext, libXmu, libXcomposite, libXfixes, libXrandr, libXcursor}:
 
-let version = "4.0.4"; in
+let version = "4.1.0"; in
 
 stdenv.mkDerivation {
   name = "VirtualBox-GuestAdditions-${version}";
   src = fetchurl {
     url = "http://download.virtualbox.org/virtualbox/${version}/VBoxGuestAdditions_${version}.iso";
-    sha256 = "0f3phmy75cfyhvfsyljs85rgra13kiy2zans6bhc7sqji30kkk48";
+    sha256 = "0azj08l0457cjl5v2ddgb5kz8gblsi7cgjgdmyiszvlqpyfbh98w";
   };
   KERN_DIR = "${kernel}/lib/modules/*/build";
   buildInputs = [ patchelf cdrkit makeWrapper ];
@@ -45,8 +45,7 @@ stdenv.mkDerivation {
     for i in *
     do
 	cd $i
-	sed -i -e "s/depmod/echo/g" Makefile
-	sed -i -e "s/depmod/echo/g" */Makefile
+	find . -type f | xargs sed 's/depmod -a/true/' -i
 	make
 	cd ..
     done
@@ -106,8 +105,8 @@ stdenv.mkDerivation {
     
     # Install Xorg drivers
     ensureDir $out/lib/xorg/modules/{drivers,input}
-    install -m 644 lib/VBoxGuestAdditions/vboxvideo_drv_18.so $out/lib/xorg/modules/drivers/vboxvideo_drv.so
-    install -m 644 lib/VBoxGuestAdditions/vboxmouse_drv_18.so $out/lib/xorg/modules/input/vboxmouse_drv.so
+    install -m 644 lib/VBoxGuestAdditions/vboxvideo_drv_19.so $out/lib/xorg/modules/drivers/vboxvideo_drv.so
+    install -m 644 lib/VBoxGuestAdditions/vboxmouse_drv_19.so $out/lib/xorg/modules/input/vboxmouse_drv.so
     
     # Install kernel modules
     cd src
@@ -117,8 +116,8 @@ stdenv.mkDerivation {
         cd $i
 	kernelVersion=$(cd ${kernel}/lib/modules; ls)
 	export MODULE_DIR=$out/lib/modules/$kernelVersion/misc
-	sed -i -e "s|-o root||g" \
-	       -e "s|-g root||g" Makefile
+	find . -type f | xargs sed -i -e "s|-o root||g" \
+	                              -e "s|-g root||g"
 	make install
 	cd ..
     done    

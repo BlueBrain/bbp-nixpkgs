@@ -1,12 +1,12 @@
 { stdenv, fetchurl, openssl, python }:
 
 stdenv.mkDerivation rec {
-  version = "0.4.7";
+  version = "0.5.4";
   name = "nodejs-${version}";
 
   src = fetchurl {
-    url = "http://nodejs.org/dist/node-v${version}.tar.gz";
-    sha256 = "1vixb54an9zp2zvc0z8pn6r6bv823wwy9m06xr4zzss9apw5yh2w";
+    url = "http://nodejs.org/dist/v${version}/node-v${version}.tar.gz";
+    sha256 = "d32d3af4e3286b383640df857d76c2fcca1a2e2cb85abb484483a0a49d09ae71";
   };
 
   patchPhase = ''
@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ python openssl ];
 
-  meta = with stdenv.lib; { 
+  meta = with stdenv.lib; {
     description = "Event-driven I/O framework for the V8 JavaScript engine";
     homepage = http://nodejs.org;
     license = licenses.mit;

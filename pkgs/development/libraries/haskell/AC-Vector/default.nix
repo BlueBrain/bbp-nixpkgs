@@ -1,13 +1,16 @@
-{cabal}:
+{ cabal }:
 
-cabal.mkDerivation (self : {
+cabal.mkDerivation (self: {
   pname = "AC-Vector";
-  version = "2.3.1";
-  sha256 = "0nmj57czqcik23j9iqxbdwqg73n5n1kc9akhp0wywrbkklgf79a0";
+  version = "2.3.2";
+  sha256 = "04ahf6ldfhvzbml9xd6yplygn8ih7b8zz7cw03hkr053g5kzylay";
   meta = {
     description = "Efficient geometric vectors and transformations";
-    license = "BSD";
-    maintainers = [self.stdenv.lib.maintainers.andres];
+    license = self.stdenv.lib.licenses.bsd3;
+    platforms = self.ghc.meta.platforms;
+    maintainers = [
+      self.stdenv.lib.maintainers.andres
+      self.stdenv.lib.maintainers.simons
+    ];
   };
 })
-

@@ -1,12 +1,15 @@
-{stdenv, fetchurl, cmake}:
+{ stdenv, fetchurl, cmake }:
 
 stdenv.mkDerivation rec {
-  name = "shared-desktop-ontologies-0.5";
+  name = "shared-desktop-ontologies-0.8.0";
+  
   src = fetchurl {
-    url = "mirror://sf/oscaf/${name}.tar.bz2";
-    sha256 = "1a1gs2b314133rg7vzwvnqbxchf7xgs0jpkydid5l2wz98m7j17r";
+    url = "mirror://sourceforge/oscaf/${name}.tar.bz2";
+    sha256 = "0wf4gli2akkqbl944lqjjy2hvcfagq6zzmdg7fkzr61p6vw7nk82";
   };
+  
   buildInputs = [ cmake ];
+  
   meta = with stdenv.lib; {
     description = "Ontologies necessary for the Nepomuk semantic desktop";
     longDescription = ''

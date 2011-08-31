@@ -1,12 +1,28 @@
-{cabal, HTTP, citeprocHs, dlist, tagsoup, texmath, xhtml, zipArchive}:
+{ cabal, base64Bytestring, citeprocHs, dlist, extensibleExceptions
+, highlightingKate, HTTP, json, mtl, network, pandocTypes, parsec
+, random, syb, tagsoup, texmath, utf8String, xhtml, xml, zipArchive
+}:
 
-cabal.mkDerivation (self : {
+cabal.mkDerivation (self: {
   pname = "pandoc";
-  version = "1.8.1.1";
-  sha256 = "0g680j8x3v19wcb9k2dxgrdrjr48w0vhvlspfzgw0sgzrgfmaqsj";
-  propagatedBuildInputs =
-    [HTTP citeprocHs dlist tagsoup texmath xhtml zipArchive];
+  version = "1.8.2.1";
+  sha256 = "0cwly0j2rj46h654iwl04l6jkhk6rrhynqvrdnq47067n9vm60pi";
+  isLibrary = true;
+  isExecutable = true;
+  buildDepends = [
+    base64Bytestring citeprocHs dlist extensibleExceptions
+    highlightingKate HTTP json mtl network pandocTypes parsec random
+    syb tagsoup texmath utf8String xhtml xml zipArchive
+  ];
+  configureFlags = "-fhighlighting -fthreaded";
   meta = {
+    homepage = "http://johnmacfarlane.net/pandoc";
     description = "Conversion between markup formats";
+    license = "GPL";
+    platforms = self.ghc.meta.platforms;
+    maintainers = [
+      self.stdenv.lib.maintainers.andres
+      self.stdenv.lib.maintainers.simons
+    ];
   };
 })

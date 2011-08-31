@@ -1,18 +1,24 @@
-{cabal, blazeBuilder, blazeBuilderEnumerator, caseInsensitive, enumerator,
- httpTypes, network, simpleSendfile, transformers, unixCompat, wai}:
+{ cabal, blazeBuilder, blazeBuilderEnumerator, caseInsensitive
+, enumerator, httpTypes, network, simpleSendfile, transformers
+, unixCompat, wai
+}:
 
-cabal.mkDerivation (self : {
+cabal.mkDerivation (self: {
   pname = "warp";
-  version = "0.4.1.1";
-  sha256 = "0qck4mpg4p6v2yx2r6qchqd3lvsn8n5ys6xsm11hhznc2r50aayh";
-  propagatedBuildInputs = [
+  version = "0.4.4";
+  sha256 = "1mlwny6pfgngpqb4lh6v373m98agf275mbl2p6mxxfh1581fz863";
+  buildDepends = [
     blazeBuilder blazeBuilderEnumerator caseInsensitive enumerator
     httpTypes network simpleSendfile transformers unixCompat wai
   ];
   meta = {
+    homepage = "http://github.com/snoyberg/warp";
     description = "A fast, light-weight web server for WAI applications";
-    license = "BSD3";
-    maintainers = [self.stdenv.lib.maintainers.andres];
+    license = self.stdenv.lib.licenses.bsd3;
+    platforms = self.ghc.meta.platforms;
+    maintainers = [
+      self.stdenv.lib.maintainers.andres
+      self.stdenv.lib.maintainers.simons
+    ];
   };
 })
-

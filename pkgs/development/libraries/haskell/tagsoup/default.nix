@@ -1,13 +1,20 @@
-{cabal}:
+{ cabal, text }:
 
-cabal.mkDerivation (self : {
+cabal.mkDerivation (self: {
   pname = "tagsoup";
-  version = "0.12";
-  sha256 = "0jaqr6q8asn7gd336xsblcc55lzm8glzlhvs61mhzjvk4hg9pmg7";
+  version = "0.12.3";
+  sha256 = "0f41kc6kdzslyhskyql431nq0kkdzf13vn9saqi48ycajnrm1vcb";
+  isLibrary = true;
+  isExecutable = true;
+  buildDepends = [ text ];
   meta = {
+    homepage = "http://community.haskell.org/~ndm/tagsoup/";
     description = "Parsing and extracting information from (possibly malformed) HTML/XML documents";
-    license = "BSD";
-    maintainers = [self.stdenv.lib.maintainers.andres];
+    license = self.stdenv.lib.licenses.bsd3;
+    platforms = self.ghc.meta.platforms;
+    maintainers = [
+      self.stdenv.lib.maintainers.andres
+      self.stdenv.lib.maintainers.simons
+    ];
   };
 })
-

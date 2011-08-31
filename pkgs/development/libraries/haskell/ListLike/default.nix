@@ -1,12 +1,19 @@
-{cabal}:
+{ cabal }:
 
-cabal.mkDerivation (self : {
+cabal.mkDerivation (self: {
   pname = "ListLike";
-  version = "3.0.1";
-  sha256 = "1366ipy33fphjjk583c62rsyfwh36i5lbnip1v8r089c9glvwkxf";
+  version = "3.1.2";
+  sha256 = "1fa2y8yc0ppmh37alc20a75gpb90i8s3pgnh3kg8n0577gvhjhzz";
+  isLibrary = true;
+  isExecutable = true;
   meta = {
+    homepage = "http://software.complete.org/listlike";
     description = "Generic support for list-like structures";
-    license = "BSD";
-    maintainers = [self.stdenv.lib.maintainers.andres];
+    license = self.stdenv.lib.licenses.bsd3;
+    platforms = self.ghc.meta.platforms;
+    maintainers = [
+      self.stdenv.lib.maintainers.andres
+      self.stdenv.lib.maintainers.simons
+    ];
   };
 })
