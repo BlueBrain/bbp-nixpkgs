@@ -149,6 +149,7 @@ let
       BT_HCIUART_H4 y # UART (H4) protocol support
       BT_HCIUART_LL y
       BT_L2CAP y
+      BT_SCO y # audio support
       BT_RFCOMM m
       BT_RFCOMM_TTY y # RFCOMM TTY support
       CRASH_DUMP n
@@ -199,19 +200,22 @@ in
 import ./generic.nix (
 
   rec {
-    version = "3.1-rc3";
+    version = "3.1-rc8";
 
-    modDirVersion = "3.1.0-rc3";
+    modDirVersion = "3.1.0-rc8";
+
+    preConfigure = ''
+      substituteInPlace scripts/depmod.sh --replace '-b "$INSTALL_MOD_PATH"' ""
+    '';
   
     src = fetchurl {
-      url = "mirror://kernel/linux/kernel/v3.x/testing/linux-${version}.tar.bz2";
-      sha256 = "0ky6pawracgc27m0d4mq71f87yiwbp90k5aqn8qh5bdfq3ml84i6";
+      url = "https://github.com/torvalds/linux/tarball/v${version}";
+      sha256 = "1sz6snv2wavzasrswaprkjpzpll4247v4br0x2i6sndl2nqa6jz7";
+      name = "v${version}.tar.gz";
     };
 
     config = configWithPlatform stdenv.platform;
     configCross = configWithPlatform stdenv.cross.platform;
-
-    setModuleDir = false;
 
     features.iwlwifi = true;
   }

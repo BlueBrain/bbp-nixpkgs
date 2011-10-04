@@ -2,8 +2,10 @@
 , pdfSupport ? true
 , pngSupport ? true
 , xcbSupport ? false
+, gobjectSupport ? true, glib
 , stdenv, fetchurl, pkgconfig, x11, fontconfig, freetype, xlibs
 , zlib, libpng, pixman, libxcb ? null, xcbutil ? null
+, gettext
 }:
 
 assert postscriptSupport -> zlib != null;
@@ -19,8 +21,12 @@ stdenv.mkDerivation rec {
   };
 
   buildInputs =
-    [ pkgconfig x11 fontconfig pixman xlibs.libXrender ] ++ 
-    stdenv.lib.optionals xcbSupport [ libxcb xcbutil ];
+    [ pkgconfig x11 fontconfig pixman xlibs.libXrender ]
+    ++ stdenv.lib.optionals xcbSupport [ libxcb xcbutil ]
+    ++ stdenv.lib.optional gobjectSupport glib
+
+    # On non-GNU systems we need GNU Gettext for libintl.
+    ++ stdenv.lib.optional (!stdenv.isLinux) gettext;
 
   propagatedBuildInputs =
     [ freetype ] ++
@@ -60,5 +66,7 @@ stdenv.mkDerivation rec {
     homepage = http://cairographics.org/;
 
     licenses = [ "LGPLv2+" "MPLv1" ];
+
+    platforms = stdenv.lib.platforms.all;
   };
 }

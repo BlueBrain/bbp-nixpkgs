@@ -1,15 +1,15 @@
-{ cabal, hledger, hledgerLib, safe, vty }:
+{ cabal, cmdargs, hledger, hledgerLib, HUnit, safe, time, vty }:
 
 cabal.mkDerivation (self: {
   pname = "hledger-vty";
-  version = "0.14";
-  sha256 = "3d9972430053548a65bfe5fb39ba374d1c930c6e0cfc704be5c59de742a4287e";
+  version = "0.16";
+  sha256 = "161ziq4vwg6wsxijq065g1dpfnvcpxzzbarsj7znbqq4gs02mxx2";
   isLibrary = false;
   isExecutable = true;
-  buildDepends = [ hledger hledgerLib safe vty ];
+  buildDepends = [ cmdargs hledger hledgerLib HUnit safe time vty ];
   meta = {
     homepage = "http://hledger.org";
-    description = "A curses-style interface for the hledger accounting tool";
+    description = "A curses-style console interface for the hledger accounting tool";
     license = "GPL";
     platforms = self.ghc.meta.platforms;
     maintainers = [

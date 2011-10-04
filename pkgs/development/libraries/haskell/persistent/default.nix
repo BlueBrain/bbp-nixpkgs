@@ -1,20 +1,18 @@
-{ cabal, blazeHtml, enumerator, monadControl, parsec, pool, sqlite
-, text, time, transformers
+{ cabal, blazeHtml, dataObject, enumerator, monadControl, mtl
+, pathPieces, pool, sqlite, text, time, transformers
 }:
 
 cabal.mkDerivation (self: {
   pname = "persistent";
-  version = "0.5.1";
-  sha256 = "1m0558vi99z15q0w62a9rkz25n8djswggbad9m0il359jb3mrzsd";
-  isLibrary = true;
-  isExecutable = true;
+  version = "0.6.3";
+  sha256 = "0m50z9k941bhh05jjz1268sn1bi7w8i6jzccldgnbjjvsw2xaisx";
   buildDepends = [
-    blazeHtml enumerator monadControl parsec pool text time
-    transformers
+    blazeHtml dataObject enumerator monadControl mtl pathPieces pool
+    text time transformers
   ];
   extraLibraries = [ sqlite ];
   meta = {
-    homepage = "http://docs.yesodweb.com/book/persistent";
+    homepage = "http://www.yesodweb.com/book/persistent";
     description = "Type-safe, non-relational, multi-backend persistence";
     license = self.stdenv.lib.licenses.bsd3;
     platforms = self.ghc.meta.platforms;

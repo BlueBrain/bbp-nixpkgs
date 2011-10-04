@@ -448,6 +448,15 @@ rec {
     propagatedBuildInputs = [CatalystRuntime DataVisitor ConfigAny MROCompat];
   };
 
+  CatalystPluginUnicodeEncoding = buildPerlPackage rec {
+    name = "Catalyst-Plugin-Unicode-Encoding-1.2";
+    src = fetchurl {
+      url = "mirror://cpan/modules/by-module/Catalyst/${name}.tar.gz";
+      sha256 = "0bz33xnh0wa6py6jz31wr38krad9hcv4gxdsy0lyhqn0k4v6b6dx";
+    };
+    propagatedBuildInputs = [ CatalystRuntime LWP ];
+  };
+
   CatalystPluginHTMLWidget = buildPerlPackage {
     name = "Catalyst-Plugin-HTML-Widget-1.1";
     src = fetchurl {
@@ -762,16 +771,7 @@ rec {
     inherit (pkgs) zlib;
   };
 
-  CompressZlib = buildPerlPackage rec {
-    name = "Compress-Zlib-2.015";
-    src = fetchurl {
-      url = "mirror://cpan/authors/id/P/PM/PMQS/${name}.tar.gz";
-      sha256 = "1k1i539fszhxay8yllh687sw06i68g8ikw51pvy1c84p3kg6yk4v";
-    };
-    propagatedBuildInputs = [
-      CompressRawZlib IOCompressBase IOCompressGzip
-    ];
-  };
+  CompressZlib = IOCompress;
 
   CompressUnLZMA = buildPerlPackage rec {
     name = "Compress-unLZMA-0.04";
@@ -779,9 +779,7 @@ rec {
       url = "mirror://cpan/authors/id/F/FE/FERREIRA/${name}.tar.gz";
       sha256 = "0sg9gj3rhif6hgmhwpz6w0g52l65vj5hx9818v5cdhvcif0jhg0b";
     };
-    propagatedBuildInputs = [
-      IOCompressBase
-    ];
+    propagatedBuildInputs = [ IOCompress ];
   };
 
   ConfigAny = buildPerlPackage rec {
@@ -1313,12 +1311,16 @@ rec {
     };
   };
 
-  ExtUtilsMakeMaker = buildPerlPackage {
-    name = "ExtUtils-MakeMaker-6.56";
+  ExtUtilsMakeMaker = buildPerlPackage rec{
+    name = "ExtUtils-MakeMaker-6.59";
     src = fetchurl {
-      url = mirror://cpan/authors/id/M/MS/MSCHWERN/ExtUtils-MakeMaker-6.56.tar.gz;
-      sha256 = "1i24ljkwv4b2nr18a8rr82250wgr3c95pxalzgvfa132w08skd4b";
+      url = "mirror://cpan/modules/by-module/ExtUtils/${name}.tar.gz";
+      sha256 = "0fwhb2cf5x7y87xwml66p624iynf0mzvhy1q4aq5yv7l3lhwhaby";
     };
+    propagatedBuildInputs = 
+      [ ParseCPANMeta version JSONPP CPANMetaYAML CPANMeta
+        FileCopyRecursive VersionRequirements ExtUtilsManifest 
+      ]; 
   };
 
   ExtUtilsManifest = buildPerlPackage rec {
@@ -1358,11 +1360,11 @@ rec {
     };
   };
 
-  FileCopyRecursive = buildPerlPackage {
-    name = "File-Copy-Recursive-0.37";
+  FileCopyRecursive = buildPerlPackage rec {
+    name = "File-Copy-Recursive-0.38";
     src = fetchurl {
-      url = mirror://cpan/authors/id/D/DM/DMUEY/File-Copy-Recursive-0.37.tar.gz;
-      sha256 = "12j0s01zwm67g4bcgbs0k61jwz59q1lndrnxyywxsz3xd30ki8rr";
+      url = "mirror://cpan/authors/id/D/DM/DMUEY/${name}.tar.gz";
+      sha256 = "1syyyvylr51iicialdmv0dw06q49xzv8zrkb5cn8ma4l73gvvk44";
     };
   };
 
@@ -1694,30 +1696,15 @@ rec {
     };
   };
 
-  IOCompressBase = buildPerlPackage rec {
-    name = "IO-Compress-Base-2.015";
+  IOCompress = buildPerlPackage rec {
+    name = "IO-Compress-2.037";
     src = fetchurl {
-      url = "mirror://cpan/authors/id/P/PM/PMQS/${name}.tar.gz";
-      sha256 = "10njlwa50mhs5nqws5yidfmmb7hwmwc6x06gk2vnpyn82g3szgqd";
+      url = "mirror://cpan/modules/by-module/IO/${name}.tar.gz";
+      sha256 = "07hs3afzg9ry6ir2f9rf3fg8b129cihs989mr0nh9wdvxgxqmr1q";
     };
-  };
-
-  IOCompressBzip2 = buildPerlPackage rec {
-    name = "IO-Compress-Bzip2-2.015";
-    src = fetchurl {
-      url = "mirror://cpan/authors/id/P/PM/PMQS/${name}.tar.gz";
-      sha256 = "1kfksf2bslfkviry228p07m1ksnf06mh8gkmdpbrmlmxlbs2idnc";
-    };
-    propagatedBuildInputs = [IOCompressBase CompressRawBzip2];
-  };
-
-  IOCompressGzip = buildPerlPackage rec {
-    name = "IO-Compress-Zlib-2.015";
-    src = fetchurl {
-      url = "mirror://cpan/authors/id/P/PM/PMQS/${name}.tar.gz";
-      sha256 = "0sbnx6xdryaajwpssrfgm5b2zasa4ri8pihqwsx3rm5kmkgzy9cx";
-    };
-    propagatedBuildInputs = [IOCompressBase CompressRawZlib];
+    propagatedBuildInputs = [ CompressRawBzip2 CompressRawZlib ];
+    # Work around a self-referencing Makefile variable.
+    makeFlags = "INSTALLARCHLIB=$(INSTALLSITEARCH)";
   };
 
   IODigest = buildPerlPackage {
@@ -2326,7 +2313,7 @@ rec {
     patches =
       [ ../development/perl-modules/net-amazon-mechanicalturk.patch ];
     propagatedBuildInputs =
-      [ DigestHMAC LWP URI XMLParser IOString ];
+      [ DigestHMAC LWP URI XMLParser IOString CryptSSLeay ];
     buildInputs = [ DBI DBDSQLite ];
   };
 
@@ -2401,13 +2388,13 @@ rec {
   };
 
   nixPerl = buildPerlPackage {
-    name = "Nix-1.0pre26388";
+    name = "Nix-1.0pre29083";
     src = fetchsvn {
       url = https://svn.nixos.org/repos/nix/nix-perl/trunk;
-      rev = 26388;
-      sha256 = "0780q2hgklv841za0w2swkxbyks2h6693ab2vd617s38bjm7bppa";
+      rev = 29083;
+      sha256 = "02wfy4l355s57w7lrynbwx97nlxvasx3xfsn72gla0i8mg6pdgaw";
     };
-    NIX_PREFIX = pkgs.nixSqlite;
+    NIX_PREFIX = pkgs.nixUnstable;
     doCheck = false; # tests currently don't work
   };
 
@@ -2820,6 +2807,31 @@ rec {
       TemplateToolkit GraphViz XMLLibXML TestPod TextRecordParser HTMLParser
       SpreadsheetParseExcel Graph GD
     ];
+  };
+
+  StatisticsDescriptive = buildPerlPackage rec {
+    name = "Statistics-Descriptive-3.0202";
+    src = fetchurl {
+      url = "mirror://cpan/modules/by-module/Statistics/${name}.tar.gz";
+      sha256 = "0y8l3dkhfc2gqwfigrg363ac7pxcyshdna66afpdvs8r1gd53a1i";
+    };
+  };
+
+  StatisticsDistributions = buildPerlPackage rec {
+    name = "Statistics-Distributions-1.02";
+    src = fetchurl {
+      url = "mirror://cpan/modules/by-module/Statistics/${name}.tar.gz";
+      sha256 = "1j1kswl98f4i9dn176f9aa3y9bissx2sscga5jm3gjl4pxm3k7zr";
+    };
+  };
+
+  StatisticsTTest = buildPerlPackage rec {
+    name = "Statistics-TTest-1.1.0";
+    src = fetchurl {
+      url = "mirror://cpan/modules/by-module/Statistics/${name}.tar.gz";
+      sha256 = "0rkifgzm4rappiy669dyi6lyxn2sdqaf0bl6gndlfa67b395kndj";
+    };
+    propagatedBuildInputs = [ StatisticsDescriptive StatisticsDistributions ];
   };
 
   StringFormat = buildPerlPackage rec {

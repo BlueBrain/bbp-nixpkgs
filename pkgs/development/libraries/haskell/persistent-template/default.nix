@@ -1,12 +1,12 @@
-{ cabal, monadControl, persistent, text, webRoutesQuasi }:
+{ cabal, monadControl, persistent, text }:
 
 cabal.mkDerivation (self: {
   pname = "persistent-template";
-  version = "0.5.1";
-  sha256 = "163j36pm6fl64m4h8kgj9h19snh026ia1166p3c6rjw86qi9fk0r";
-  buildDepends = [ monadControl persistent text webRoutesQuasi ];
+  version = "0.6.3";
+  sha256 = "1vcjvfjxmv9c0wg7pbx0lw73128f5y0r4sfdsyq3jrkkiq1bgsxa";
+  buildDepends = [ monadControl persistent text ];
   meta = {
-    homepage = "http://www.yesodweb.com/";
+    homepage = "http://www.yesodweb.com/book/persistent";
     description = "Type-safe, non-relational, multi-backend persistence";
     license = self.stdenv.lib.licenses.bsd3;
     platforms = self.ghc.meta.platforms;
