@@ -1,6 +1,6 @@
 {stdenv, fetchurl, pkgconfig, perl, perlXMLParser, gettext}:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   name = "intltool-0.40.6";
 
   src = fetchurl {
