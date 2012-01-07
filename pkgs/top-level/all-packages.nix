@@ -3627,9 +3627,9 @@ let
 
   gtkLibs224 = recurseIntoAttrs (let callPackage = pkgs.newScope pkgs.gtkLibs224; in {
 
-    glib = callPackage ../development/libraries/glib/2.28.x.nix { };
+    glib = callPackage ../development/libraries/glib/2.30.x.nix { };
 
-    glibmm = callPackage ../development/libraries/glibmm/2.28.x.nix { };
+    glibmm = callPackage ../development/libraries/glibmm/2.30.x.nix { };
 
     atk = callPackage ../development/libraries/atk/2.2.x.nix { };
 
