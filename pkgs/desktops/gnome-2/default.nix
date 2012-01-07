@@ -15,8 +15,6 @@
 
   esound = callPackage ./platform/esound { };
 
-  gsettings_desktop_schemas = callPackage ./platform/gsettings-desktop-schemas { };
-
   libIDL = callPackage ./platform/libIDL {
     gettext = if stdenv.isDarwin then gettext else null;
   };

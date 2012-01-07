@@ -6250,6 +6250,8 @@ let
 
   gentium = callPackage ../data/fonts/gentium {};
 
+  gsettings_desktop_schemas = callPackage ../data/misc/gsettings-desktop-schemas { };
+
   hicolor_icon_theme = callPackage ../data/misc/hicolor-icon-theme { };
 
   inconsolata = callPackage ../data/fonts/inconsolata {};
