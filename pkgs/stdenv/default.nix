@@ -39,6 +39,11 @@ rec {
     pkgs = stdenvNativePkgs;
   };
 
+  # Darwin standard environment.
+  stdenvDarwin = import ./darwin {
+    stdenv = stdenvNative;
+    pkgs = stdenvNativePkgs;
+  };
 
   # Linux standard environment.
   stdenvLinux = (import ./linux {inherit system allPackages platform;}).stdenvLinux;
@@ -58,7 +63,7 @@ rec {
     if stdenvType == "mips64-linux" then stdenvLinux else
     if stdenvType == "powerpc-linux" then /* stdenvLinux */ stdenvNative else
     if stdenvType == "i686-mingw" then stdenvMinGW else
-    if stdenvType == "i686-darwin" then stdenvNix else
-    if stdenvType == "x86_64-darwin" then stdenvNix else
+    if stdenvType == "i686-darwin" then stdenvDarwin else
+    if stdenvType == "x86_64-darwin" then stdenvDarwin else
     stdenvNative;
 }

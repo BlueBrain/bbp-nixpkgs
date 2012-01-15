@@ -1,7 +1,7 @@
 {stdenv, pkgs}:
 
 import ../generic {
-  name = "stdenv-nix";
+  name = "stdenv-darwin";
   preHook = ./prehook.sh;
   initialPath = (import ../common-path.nix) {pkgs = pkgs;};
 
@@ -11,8 +11,8 @@ import ../generic {
     nativeTools = false;
     nativeLibc = true;
     inherit stdenv;
-    binutils = pkgs.binutils;
-    gcc = pkgs.gcc.gcc;
+    binutils = import ../../build-support/native-darwin-cctools-wrapper {inherit stdenv;};
+    gcc = pkgs.gccApple.gcc;
     coreutils = pkgs.coreutils;
     shell = pkgs.bash + "/bin/sh";
   };
