@@ -20,10 +20,10 @@ stdenv.mkDerivation rec {
   };
 
   # configure script looks for d-bus but it is only needed for tests
-  buildInputs = stdenv.lib.optional (!stdenv.isLinux) libiconv;
   buildNativeInputs = [ perl pkgconfig gettext xz python ];
 
-  propagatedBuildInputs = [ zlib libffi ];
+  propagatedBuildInputs = [ zlib libffi ]
+    ++ stdenv.lib.optional (!stdenv.isLinux) [ libiconv gettext ];
 
   passthru.gioModuleDir = "lib/gio/modules";
 

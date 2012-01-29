@@ -4,14 +4,14 @@
 }:
 
 let
-  version = "3.20111231";
+  version = "3.20120123";
 in
 stdenv.mkDerivation {
   name = "git-annex-${version}";
 
   src = fetchurl {
     url = "http://ftp.de.debian.org/debian/pool/main/g/git-annex/git-annex_${version}.tar.gz";
-    sha256 = "4f53e7fc9560838be7efd0c90543c93ce1c7d2ba36b7754200586d845ec114f5";
+    sha256 = "dad93dad08ddfd0d239ee57bbf61dd2ee3755d9a94e2946ac5d7bb4cfa565488";
   };
 
   buildInputs = [
@@ -32,7 +32,7 @@ stdenv.mkDerivation {
   meta = {
     homepage = "http://git-annex.branchable.com/";
     description = "Manage files with git without checking them into git";
-    license = "GPLv3+";
+    license = stdenv.lib.licenses.gpl3Plus;
 
     longDescription = ''
       Git-annex allows managing files with git, without checking the

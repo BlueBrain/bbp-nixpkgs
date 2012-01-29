@@ -1,7 +1,7 @@
 { callPackage, callPackageOrig, stdenv, qt48 }:
 
 let
-  release = "4.7.97";
+  release = "4.8.0";
 
   # Need callPackageOrig to avoid infinite cycle
   kde = callPackageOrig ./kde-package {
@@ -52,5 +52,8 @@ kde.modules // kde.individual //
 
   full = stdenv.lib.attrValues kde.modules;
 
-  l10n = callPackage ./l10n { inherit release; };
+  l10n = callPackage ./l10n {
+    inherit release;
+    inherit (kde.manifest) stable;
+  };
 }

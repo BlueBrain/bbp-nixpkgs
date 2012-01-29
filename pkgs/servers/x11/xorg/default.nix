@@ -68,11 +68,11 @@ let
   })) // {inherit ;};
     
   dri2proto = (stdenv.mkDerivation ((if overrides ? dri2proto then overrides.dri2proto else x: x) {
-    name = "dri2proto-2.3";
+    name = "dri2proto-2.6";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/X11R7.6/src/everything/dri2proto-2.3.tar.bz2;
-      sha256 = "0xz6nf5rrn1fvply5mq7dd1w89r73mggylp9lpzzwdfvl291h55j";
+      url = mirror://xorg/individual/proto/dri2proto-2.6.tar.bz2;
+      sha256 = "02drlfqvjm2q7dvkkwli3fs2crb6rdb3kyd13vwx7z0rijrc10md";
     };
     buildInputs = [pkgconfig ];
   })) // {inherit ;};
@@ -1468,11 +1468,11 @@ let
   })) // {inherit fontsproto libpciaccess randrproto renderproto videoproto xextproto xorgserver xproto ;};
     
   xf86videoati = (stdenv.mkDerivation ((if overrides ? xf86videoati then overrides.xf86videoati else x: x) {
-    name = "xf86-video-ati-6.14.2";
+    name = "xf86-video-ati-6.14.3";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/driver/xf86-video-ati-6.14.2.tar.bz2;
-      sha256 = "1p18lfw7ii8k1vam75wv9a2piwf6n2988dh56i4b98zf4av78y81";
+      url = mirror://xorg/individual/driver/xf86-video-ati-6.14.3.tar.bz2;
+      sha256 = "1d1ph7xvgcr7rdf5sgibhas625aghvm3f61yzwmfk8znxx4jcjl4";
     };
     buildInputs = [pkgconfig fontsproto libdrm udev libpciaccess randrproto renderproto videoproto xextproto xf86driproto xorgserver xproto ];
   })) // {inherit fontsproto libdrm udev libpciaccess randrproto renderproto videoproto xextproto xf86driproto xorgserver xproto ;};
@@ -1568,11 +1568,11 @@ let
   })) // {inherit fontsproto libpciaccess randrproto renderproto videoproto xextproto xorgserver xproto ;};
     
   xf86videointel = (stdenv.mkDerivation ((if overrides ? xf86videointel then overrides.xf86videointel else x: x) {
-    name = "xf86-video-intel-2.14.0";
+    name = "xf86-video-intel-2.15.0";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/driver/xf86-video-intel-2.14.0.tar.bz2;
-      sha256 = "1pq7nm6whc2nmrizf774q042580cfms6yp6yd5p52q59g6jkg371";
+      url = mirror://xorg/individual/driver/xf86-video-intel-2.15.0.tar.bz2;
+      sha256 = "080pkhjp910wy36crpgi0dmcwpcx8w2r3k4s0dz6v14bmgly2xy3";
     };
     buildInputs = [pkgconfig dri2proto fontsproto libdrm udev libpciaccess randrproto renderproto libX11 xcbutil libxcb libXext xextproto xf86driproto libXfixes xorgserver xproto libXvMC ];
   })) // {inherit dri2proto fontsproto libdrm udev libpciaccess randrproto renderproto libX11 xcbutil libxcb libXext xextproto xf86driproto libXfixes xorgserver xproto libXvMC ;};

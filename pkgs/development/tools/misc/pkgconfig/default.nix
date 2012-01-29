@@ -1,6 +1,6 @@
-{stdenv, fetchurl}:
+{stdenv, fetchurl, automake}:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (rec {
   name = "pkg-config-0.23";
   
   setupHook = ./setup-hook.sh;
@@ -19,7 +19,12 @@ stdenv.mkDerivation rec {
   meta = {
     description = "A tool that allows packages to find out information about other packages";
     homepage = http://pkg-config.freedesktop.org/wiki/;
+    platforms = stdenv.lib.platforms.all;
   };
 
-}
-
+} // (if stdenv.system == "mips64el-linux" then
+  {
+    preConfigure = ''
+      cp -v ${automake}/share/automake*/config.{sub,guess} .
+    '';
+  } else {}))
