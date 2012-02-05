@@ -1,12 +1,12 @@
-{ cabal, zlib }:
+{ cabal }:
 
 cabal.mkDerivation (self: {
-  pname = "zlib";
-  version = "0.5.3.2";
-  sha256 = "1a5xr59bw7hpgd7fwkpgkrpib7i46dsip7285pccvi2934k0628q";
-  extraLibraries = [ zlib ];
+  pname = "xhtml";
+  version = "3000.2.0.5";
+  sha256 = "1gqq910pncqppb2dscxnfxvm1ly4qpb5mwmady2i4irar3gngh9v";
   meta = {
-    description = "Compression and decompression in the gzip and zlib formats";
+    homepage = "https://github.com/haskell/xhtml";
+    description = "An XHTML combinator library";
     license = self.stdenv.lib.licenses.bsd3;
     platforms = self.ghc.meta.platforms;
     maintainers = [
