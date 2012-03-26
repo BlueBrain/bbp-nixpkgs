@@ -70,14 +70,8 @@ installPhase() {
     cp vmlinux $out
 
     if grep -q "CONFIG_MODULES=y" .config; then
-        # Install the modules in $out/lib/modules with matching paths
-        # in modules.dep (i.e., refererring to $out/lib/modules, not
-        # /lib/modules).  The depmod_opts= is to prevent the kernel
-        # from passing `-b PATH' to depmod.
-        export MODULE_DIR=$out/lib/modules/
-        substituteInPlace Makefile --replace '-b $(INSTALL_MOD_PATH)' ''
         make modules_install \
-            DEPMOD=$module_init_tools/sbin/depmod depmod_opts= \
+            DEPMOD=$module_init_tools/sbin/depmod \
             $makeFlags "${makeFlagsArray[@]}" \
             $installFlags "${installFlagsArray[@]}"
 

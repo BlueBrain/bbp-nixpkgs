@@ -114,12 +114,11 @@ stdenv.mkDerivation {
     for i in *
     do
         cd $i
-	kernelVersion=$(cd ${kernel}/lib/modules; ls)
-	export MODULE_DIR=$out/lib/modules/$kernelVersion/misc
-	find . -type f | xargs sed -i -e "s|-o root||g" \
-	                              -e "s|-g root||g"
-	make install
-	cd ..
+        export MODULE_DIR=$out/lib/modules/${kernel.modDirVersion}/misc
+        find . -type f | xargs sed -i -e "s|-o root||g" \
+                                      -e "s|-g root||g"
+        make install
+        cd ..
     done    
   '';
   

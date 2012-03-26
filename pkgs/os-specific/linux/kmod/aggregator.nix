@@ -1,4 +1,4 @@
-{stdenv, module_init_tools, modules, buildEnv}:
+{stdenv, kmod, modules, buildEnv}:
 
 buildEnv {
   name = "kernel-modules";
@@ -21,7 +21,8 @@ buildEnv {
       # kernel version number, otherwise depmod will use `uname -r'.
       if test -w $out/lib/modules/$kernelVersion; then
           rm -f $out/lib/modules/$kernelVersion/modules.*
-          MODULE_DIR=$out/lib/modules/ ${module_init_tools}/sbin/depmod -a $kernelVersion
+          echo ${kmod}/sbin/depmod -b $out -a $kernelVersion
+          ${kmod}/sbin/depmod -b $out -a $kernelVersion
       fi
     '';
 }

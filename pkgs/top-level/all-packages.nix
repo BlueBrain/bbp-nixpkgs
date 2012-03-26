@@ -325,10 +325,9 @@ let
 
   makeWrapper = makeSetupHook {} ../build-support/make-wrapper/make-wrapper.sh;
 
-  makeModulesClosure = {kernel, rootModules, allowMissing ? false}:
+  makeModulesClosure = {modulesTree, rootModules, allowMissing ? false}:
     import ../build-support/kernel/modules-closure.nix {
-      inherit stdenv module_init_tools kernel nukeReferences
-        rootModules allowMissing;
+      inherit stdenv kmod modulesTree nukeReferences rootModules allowMissing;
     };
 
   pathsFromGraph = ../build-support/kernel/paths-from-graph.pl;
@@ -5832,15 +5831,15 @@ let
 
   mingetty = callPackage ../os-specific/linux/mingetty { };
 
-  module_init_tools = callPackage ../os-specific/linux/module-init-tools { };
+  module_init_tools = pkgs.kmod;
 
   mountall = callPackage ../os-specific/linux/mountall {
     automake = automake111x;
   };
 
   aggregateModules = modules:
-    import ../os-specific/linux/module-init-tools/aggregator.nix {
-      inherit stdenv module_init_tools modules buildEnv;
+    import ../os-specific/linux/kmod/aggregator.nix {
+      inherit stdenv kmod modules buildEnv;
     };
 
   modutils = callPackage ../os-specific/linux/modutils {

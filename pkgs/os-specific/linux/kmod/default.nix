@@ -8,9 +8,17 @@ stdenv.mkDerivation {
     sha256 = "1xvsy2zcfdimj4j5b5yyxaqx2byabmwq8qlzjm0hqzpyxxgfw1lq";
   };
 
-  buildInputs = [ pkgconfig xz zlib ];
+  buildInputs = [ xz zlib ];
+  buildNativeInputs = [ pkgconfig ];
 
   configureFlags = [ "--with-xz" "--with-zlib" ];
+
+  postInstall = ''
+    mkdir -p $out/sbin
+    for i in depmod insmod lsmod modinfo modprobe rmmod; do
+      ln -sv ../bin/kmod $out/sbin/$i
+    done
+    '';
 
   meta = {
     homepage = http://www.kernel.org/pub/linux/utils/kernel/kmod/;

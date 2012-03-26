@@ -231,10 +231,6 @@ import ./generic.nix (
 
     modDirVersion = version;
 
-    preConfigure = ''
-      substituteInPlace scripts/depmod.sh --replace '-b "$INSTALL_MOD_PATH"' ""
-    '';
-
     src = fetchurl {
       url = "mirror://kernel/linux/kernel/v3.0/${if testing then "testing/" else ""}linux-${version}.tar.bz2";
       sha256 = "1hacfmf08ydzf4xlg6wkkckl5icj7w9h3nh17myz1s67bp7q61qs";

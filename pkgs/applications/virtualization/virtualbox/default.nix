@@ -82,8 +82,7 @@ stdenv.mkDerivation {
     
     # Install kernel module
     cd src
-    kernelVersion=$(cd ${kernel}/lib/modules; ls)
-    export MODULE_DIR=$out/lib/modules/$kernelVersion/misc
+    export MODULE_DIR=$out/lib/modules/${kernel.modDirVersion}/misc
     
     # Remove root ownership stuff, since this does not work in a chroot environment
     for i in `find . -name Makefile`; do
