@@ -5887,7 +5887,7 @@ let
 
   mingetty = callPackage ../os-specific/linux/mingetty { };
 
-  module_init_tools = callPackage ../os-specific/linux/module-init-tools { };
+  module_init_tools = kmod;
 
   mountall = callPackage ../os-specific/linux/mountall {
     automake = automake111x;
