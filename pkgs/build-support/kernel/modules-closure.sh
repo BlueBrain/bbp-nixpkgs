@@ -14,7 +14,7 @@ export MODULE_DIR=$(readlink -f $kernel/lib/modules/)
 closure=
 for module in $rootModules; do
     echo "root module: $module"
-    deps=$(modprobe --config /dev/null --set-version "$version" --show-depends "$module" \
+    deps=$(modprobe --config /var/empty --set-version "$version" --show-depends "$module" \
         | sed 's/^insmod //') \
         || if test -z "$allowMissing"; then exit 1; fi
     #for i in $deps; do echo $i; done
