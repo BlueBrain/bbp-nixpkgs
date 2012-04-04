@@ -1,6 +1,6 @@
 diff -Naur kmod-7-orig/libkmod/libkmod.c kmod-7/libkmod/libkmod.c
 --- kmod-7-orig/libkmod/libkmod.c	2012-03-15 08:19:16.750010226 -0400
-+++ kmod-7/libkmod/libkmod.c	2012-04-04 15:21:29.532074313 -0400
++++ kmod-7/libkmod/libkmod.c	2012-04-04 16:28:37.442130553 -0400
 @@ -200,7 +200,7 @@
  static char *get_kernel_release(const char *dirname)
  {
@@ -22,3 +22,33 @@ diff -Naur kmod-7-orig/libkmod/libkmod.c kmod-7/libkmod/libkmod.c
  		return NULL;
  
  	return p;
+diff -Naur kmod-7-orig/tools/kmod-depmod.c kmod-7/tools/kmod-depmod.c
+--- kmod-7-orig/tools/kmod-depmod.c	2012-03-09 09:31:04.086042138 -0500
++++ kmod-7/tools/kmod-depmod.c	2012-04-04 16:34:53.525968272 -0400
+@@ -2523,7 +2523,7 @@
+ {
+ 	FILE *out = NULL;
+ 	int err = 0, all = 0, maybe_all = 0, n_config_paths = 0;
+-	char *root = NULL;
++	char *root = NULL, *dirname;
+ 	const char **config_paths = NULL;
+ 	const char *system_map = NULL;
+ 	const char *module_symvers = NULL;
+@@ -2632,8 +2632,16 @@
+ 		cfg.kversion = un.release;
+ 	}
+ 
++	if ((dirname = getenv("MODULE_DIR")) == NULL) {
++		dirname = "%s" ROOTPREFIX "/lib/modules/%s";
++	} else {
++		char *full_dirname = malloc(strlen(dirname) + sizeof "%%s%%s");
++		sprintf(full_dirname, "%%s%s%%s", dirname);
++		dirname = full_dirname;
++	}
++
+ 	cfg.dirnamelen = snprintf(cfg.dirname, PATH_MAX,
+-				  "%s" ROOTPREFIX "/lib/modules/%s",
++				  dirname,
+ 				  root == NULL ? "" : root, cfg.kversion);
+ 
+ 	if (optind == argc)
