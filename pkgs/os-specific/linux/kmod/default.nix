@@ -19,6 +19,8 @@ stdenv.mkDerivation {
     do
       ln -sv kmod $out/bin/$prog
     done
+
+    ln -sv bin $out/sbin
   '';
 
   meta = {
