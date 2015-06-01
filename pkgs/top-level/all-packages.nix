@@ -5534,6 +5534,8 @@ let
 
   valgrind = callPackage ../development/tools/analysis/valgrind { };
 
+  scorep = callPackage ../development/libraries/scorep { };
+
   valkyrie = callPackage ../development/tools/analysis/valkyrie { };
 
   xc3sprog = callPackage ../development/tools/misc/xc3sprog { };
