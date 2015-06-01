@@ -14595,6 +14595,11 @@ let
 
   mg = callPackage ../applications/editors/mg { };
 
+  # BBP software section
+  hpctools = callPackage ../bbp/hpc/hpctools { python = python27; };
+  
+  functionalizer = callPackage ../bbp/hpc/functionalizer { python = python27; };  
+
   # Proprietary software  section
   scalasca = callPackage ../proprietary/tools/scalasca { };
 
