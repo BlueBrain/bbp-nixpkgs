@@ -14602,6 +14602,8 @@ let
   
   touchdetector = callPackage ../bbp/hpc/touchdetector {  };   
 
+  flatindexer = callPackage ../bbp/hpc/FLATIndexer {  };
+
   # Proprietary software  section
   scalasca = callPackage ../proprietary/tools/scalasca { };
 
