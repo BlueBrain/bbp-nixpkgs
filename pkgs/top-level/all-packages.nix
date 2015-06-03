@@ -14595,6 +14595,8 @@ let
 
   mg = callPackage ../applications/editors/mg { };
 
+  vmmlib = callPackage ../development/libraries/vmmlib {  };
+
   # BBP software section
   hpctools = callPackage ../bbp/hpc/hpctools { python = python27; };
   
