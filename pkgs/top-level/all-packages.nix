@@ -14594,17 +14594,31 @@ let
   httrack = callPackage ../tools/backup/httrack { };
 
   mg = callPackage ../applications/editors/mg { };
+  
+  # BBP Open source softwares
+  
+  brion = callPackage ../development/libraries/brion { hdf5 = pkgs.hdf5.override{ cxx= true; enableShared = true;}; };
+  
+  lunchbox = callPackage ../development/libraries/lunchbox { };  
+  
+  servus = callPackage ../development/libraries/servus { };    
 
-  vmmlib = callPackage ../development/libraries/vmmlib {  };
+  vmmlib = callPackage ../development/libraries/vmmlib { python = python27; };
 
   # BBP software section
   hpctools = callPackage ../bbp/hpc/hpctools { python = python27; };
+  
+  bbpsdk = callPackage ../bbp/hpc/bbpsdk { hdf5 = pkgs.hdf5.override{ cxx= true; enableShared = true;}; }; 
   
   functionalizer = callPackage ../bbp/hpc/functionalizer { python = python27; };  
   
   touchdetector = callPackage ../bbp/hpc/touchdetector {  };   
 
-  flatindexer = callPackage ../bbp/hpc/FLATIndexer {  };
+  flatindexer = callPackage ../bbp/hpc/FLATIndexer { hdf5 = pkgs.hdf5.override{ cxx= true; enableShared = true;}; 
+													 python = python27;
+													 numpy = pkgs.pythonPackages.numpy; };
+  
+  bbp-cmake = callPackage ../bbp/config/bbp-cmake { };   
 
   # Proprietary software  section
   scalasca = callPackage ../proprietary/tools/scalasca { };

@@ -1,7 +1,7 @@
 { stdenv, fetchurl, boost, libxml2, cmake, mpich2, pkgconfig, python, hdf5, doxygen }:
 
 stdenv.mkDerivation rec {
-  name = "hpctools-3.2.0.0.TRUNK";
+  name = "hpctools-3.2.0.0DEV";
   buildInputs = [ stdenv pkgconfig boost cmake mpich2 libxml2 python hdf5 doxygen];
 
   src = fetchurl {
