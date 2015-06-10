@@ -14604,6 +14604,8 @@ let
   servus = callPackage ../development/libraries/servus { };    
 
   vmmlib = callPackage ../development/libraries/vmmlib { python = python27; };
+  
+  bbp-cmake = callPackage ../bbp/config/bbp-cmake { };     
 
   # BBP software section
   hpctools = callPackage ../bbp/hpc/hpctools { python = python27; };
@@ -14617,8 +14619,8 @@ let
   flatindexer = callPackage ../bbp/hpc/FLATIndexer { hdf5 = pkgs.hdf5.override{ cxx= true; enableShared = true;}; 
 													 python = python27;
 													 numpy = pkgs.pythonPackages.numpy; };
-  
-  bbp-cmake = callPackage ../bbp/config/bbp-cmake { };   
+													 
+  mod2c = 	callPackage ../bbp/hpc/mod2c { };												 
 
   # Proprietary software  section
   scalasca = callPackage ../proprietary/tools/scalasca { };
