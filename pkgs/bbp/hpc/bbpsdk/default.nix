@@ -1,14 +1,13 @@
-{ stdenv, fetchurl, boost, lunchbox, brion, vmmlib, servus, cmake, bbp-cmake, mpich2, pkgconfig, python, hdf5, doxygen }:
+{ stdenv, fetchgitPrivate, boost, lunchbox, brion, vmmlib, servus, cmake, bbp-cmake, mpich2, pkgconfig, python, hdf5, doxygen }:
 
 stdenv.mkDerivation rec {
   name = "bbpsdk-0.22.0.0DEV";
   buildInputs = [ stdenv pkgconfig boost brion vmmlib servus cmake bbp-cmake mpich2 lunchbox python hdf5 doxygen];
 
-  src = fetchurl {
-    url = "https://owncloud.adev.name/public.php?service=files&t=bf58a72f503d6637b165466de93c93ef&download";
-    name = "bbpsdk-0.22.0.tar.gz";
-    curlOpts = "-k";
-    sha256 = "fd5d9cf27fde01b836e961246a491699fa8e33eb2e6a2292d818fb0dbec3333d";
+  src = fetchgitPrivate {
+    url = "ssh://bbpcode.epfl.ch/common/BBPSDK";
+    rev= "dbba3f6f1cc175b5d8da0376a97199e01e805573";
+    sha256 = "1218ymr4iylnipgqpdi4w1dwssrlfgyb4pn9c1anbc4gg33i468a";
   };
 
 # disable Java bindings

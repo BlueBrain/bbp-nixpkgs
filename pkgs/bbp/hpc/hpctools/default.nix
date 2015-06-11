@@ -1,16 +1,19 @@
-{ stdenv, fetchurl, boost, libxml2, cmake, mpich2, pkgconfig, python, hdf5, doxygen }:
+{ stdenv, fetchgitPrivate, boost, libxml2, cmake, bbp-cmake, mpich2, pkgconfig, python, hdf5, doxygen }:
 
 stdenv.mkDerivation rec {
-  name = "hpctools-3.2.0.0DEV";
+  name = "hpctools-3.2.0-DEV";
   buildInputs = [ stdenv pkgconfig boost cmake mpich2 libxml2 python hdf5 doxygen];
 
-  src = fetchurl {
-    url = "https://owncloud.adev.name/public.php?service=files&t=2fced759f5bb316d91612eee5cdb6f99&download";
-    name = "hpctools-3.2.0.tar.gz";
-    curlOpts = "-k";
-    sha256 = "7512fc778e12a807ee5c69324b96b4b1a72243c98d7024c3ac2b9e51303433d6";
+  src = fetchgitPrivate {
+    url = "ssh://bbpcode.epfl.ch/hpc/HPCTools";
+    rev = "2778b16bef77a0f83b71aa8f89df79bfc726203a";
+    sha256 = "0b9kzr0wbh71lvnb45l7yzxv66s9s46b2733qndma32sf7wm2cxq";    
   };
-
-  enableParallelBuilding = true;
+  
+  patchPhase= ''
+	ln -s ${bbp-cmake}/share/bbp-cmake/Common CMake/common
+	'';     
+  
+  enableParallelBuilding = true;  
 }
 
