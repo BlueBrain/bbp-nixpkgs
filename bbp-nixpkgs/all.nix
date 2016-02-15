@@ -81,6 +81,11 @@ let
           };
           
           ### simulation     
+
+          cyme = callPackage ./hpc/cyme {
+         
+          };
+ 
           
           mod2c = callPackage ./hpc/mod2c {
       
@@ -110,9 +115,9 @@ let
 	  rdmini = callPackage ./hpc/rdmini {
 		ghc = haskellPackages.ghcWithPackages(haskellPackages:
 			with haskellPackages; [
-				hakyll_4_7_3_1
-				regex-posix
-				regex-pcre
+#				hakyll_4_7_3_1
+#				regex-posix
+#				regex-pcre
 			]);
 	  };
 
