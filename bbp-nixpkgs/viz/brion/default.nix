@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
   src = fetchgit {
     url = "https://github.com/BlueBrain/Brion.git";
     rev = "8e3b87ef49b7ec18fb8173f3d0335b6475ca1d0c";
-    sha256 = "0flvmpmwsnky0k7rjyha2vy6gbvwgk505b4c4khyx243camwxaxm";
-    deepClone = true;
+    sha256 = "1b64xvi47vyjk8dfyqdikwsnibq1fhh0g774vxb3j24gvkccvy4j";
+    leaveDotGit = true;
   };
 
 
