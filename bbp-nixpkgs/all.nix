@@ -72,7 +72,7 @@ let
                 mpiRuntime = bbp-mpi;
           };
           
-          mvdTool = callPackage ./hpc/mvdTool { 
+          mvdtool = callPackage ./hpc/mvdTool { 
           
           };
           
