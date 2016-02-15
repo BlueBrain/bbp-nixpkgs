@@ -102,6 +102,20 @@ let
                 mpiRuntime = bbp-mpi;      
           };
 
+
+		## 
+		## sub-cellular simulation
+		##
+
+	  rdmini = callPackage ./hpc/rdmini {
+		ghc = haskellPackages.ghcWithPackages(haskellPackages:
+			with haskellPackages; [
+				hakyll_4_7_3_1
+				regex-posix
+				regex-pcre
+			]);
+	  };
+
         };
         in
         mergePkgs;
