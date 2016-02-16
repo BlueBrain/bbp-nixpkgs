@@ -1,14 +1,14 @@
 { stdenv, fetchgitPrivate, cmake, cmake-external, pkgconfig, bison, flex, python }:
 
 stdenv.mkDerivation rec {
-  name = "mod2c-1.1.1-stable";
+  name = "mod2c-1.1.1";
   buildInputs = [ stdenv cmake cmake-external pkgconfig bison flex python];
 
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/sim/mod2c";
-    rev = "2d8cbf240ed6739de6c06a397238e028f61bf307";
-    sha256 = "06rc0lrv99hkki57g608kb3bc7vxrv0qvmwbq2a2rl4di721d94w";
+    rev = "b3bb86294e1fea3d0768291bec9f062db78bc8db";
+    sha256 = "1drkfav5cb8h86ysqrw8yq61msgzlgj7b4mpjy7swclcr0yv69z4";
     deepClone = true;
   };
    
