@@ -1,6 +1,6 @@
   
   
-echo "hello dude! "
+echo "cmake-external hook setup... "
 
 mkdir -p $out/nix-support;
 echo "Configure environment for BBP viz team cmake externals" > $out/README;
@@ -31,3 +31,10 @@ if [[ "$?" != "0" ]]; then
 else
 	echo " - ** no proxy needed"
 fi
+
+
+### git ssh related export for ssh env var
+echo "export SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >> $out/nix-support/setup-hook;
+echo "export GIT_SSH=${GIT_SSH}" >> $out/nix-support/setup-hook; 
+
+echo "cmake-external hook setup... done..."
