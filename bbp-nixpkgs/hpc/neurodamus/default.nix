@@ -24,6 +24,8 @@ stdenv.mkDerivation rec {
   
  
     cmakeFlags="-DBluron_PREFIX_DIR=${bluron}";
+
+  passthru = { sources = src; };
 }
 
 

@@ -21,39 +21,39 @@ let
           
           };
 
-		 ##
-		 ## BBP common components
-		 ##
-		 bbpsdk = callPackage ./common/bbpsdk {
+         ##
+         ## BBP common components
+         ##
+         bbpsdk = callPackage ./common/bbpsdk {
                    
           };
          
-		 vmmlib = callPackage ./common/vmmlib {   
-		 
+         vmmlib = callPackage ./common/vmmlib {   
+         
           };         
 
-		 ##
-		 ## BBP viz components
-		 ##
-		 servus = callPackage ./viz/servus {   
-		 
+         ##
+         ## BBP viz components
+         ##
+         servus = callPackage ./viz/servus {   
+         
           };
           
-		 lunchbox = callPackage ./viz/lunchbox {   
-		 
+         lunchbox = callPackage ./viz/lunchbox {   
+         
           }; 
           
          brion = callPackage ./viz/brion {   
-		 
+         
           }; 
           
           rtneuron = callPackage ./viz/rtneuron {   
-		 
+         
           };  
 
-		 ##
-		 ## BBP HPC components
-		 ##
+         ##
+         ## BBP HPC components
+         ##
           hpctools = callPackage ./hpc/hpctools { 
                 python = python27; 
                 mpiRuntime = bbp-mpi;
@@ -106,20 +106,24 @@ let
           neurodamus = callPackage ./hpc/neurodamus {
                 mpiRuntime = bbp-mpi;      
           };
+          
+          mods-src = callPackage ./hpc/neurodamus/corebluron.nix{
+          
+          };
 
 
-		## 
-		## sub-cellular simulation
-		##
+        ## 
+        ## sub-cellular simulation
+        ##
 
-	  rdmini = callPackage ./hpc/rdmini {
-		ghc = haskellPackages.ghcWithPackages(haskellPackages:
-			with haskellPackages; [
-#				hakyll_4_7_3_1
-#				regex-posix
-#				regex-pcre
-			]);
-	  };
+      rdmini = callPackage ./hpc/rdmini {
+        ghc = haskellPackages.ghcWithPackages(haskellPackages:
+            with haskellPackages; [
+#               hakyll_4_7_3_1
+#               regex-posix
+#               regex-pcre
+            ]);
+      };
 
         };
         in
