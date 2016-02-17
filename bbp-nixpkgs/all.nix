@@ -78,8 +78,17 @@ let
           
           highfive = callPackage ./hpc/highfive {
           
-          };
+	  };
+
+	  flatindexer = callPackage ./hpc/FLATIndexer {
+         	mpiRuntime = bbp-mpi; 
+	  };
           
+
+          bbptestdata = callPackage ./tests/BBPTestData {
+                
+          };
+
           ### simulation     
 
           cyme = callPackage ./hpc/cyme {
