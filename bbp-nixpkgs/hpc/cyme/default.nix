@@ -7,7 +7,7 @@ stdenv.mkDerivation rec {
   src = fetchgit {
     url = "https://github.com/BlueBrain/cyme.git";
     rev = "f8c3708ae10a85706ac487400da75e8e03c0b5b9";
-    sha256 = "0qj126psxmm75acy0vf4m8bk2fvcg6pa53fqyq3qjc943kbfhams";
+    sha256 = "1yv8cj782y9nb8r2ks8msdqywvkll88hhf3zzf5q4li459g617zh";
     leaveDotGit = true;
   }; 
 
