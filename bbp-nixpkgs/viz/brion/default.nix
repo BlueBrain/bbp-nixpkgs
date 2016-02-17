@@ -1,4 +1,17 @@
-{ stdenv, fetchgit, boost, cmake, cmake-external, servus, lunchbox, vmmlib, cppcheck, pkgconfig, hdf5-cpp, zlib, doxygen }:
+{ stdenv, 
+fetchgit, 
+boost, 
+cmake, 
+cmake-external, 
+servus, 
+lunchbox, 
+vmmlib, 
+cppcheck, 
+pkgconfig, 
+hdf5-cpp, 
+zlib, 
+mvdtool,
+doxygen }:
 
 stdenv.mkDerivation rec {
   name = "brion-1.6.0-DEV";
