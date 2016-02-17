@@ -8,31 +8,26 @@ lunchbox,
 vmmlib,
 servus,
 cmake, 
-bbp-cmake, 
+cmake-external, 
 mpiRuntime, 
 zlib, 
 python, 
-numpy,
 hdf5, 
 doxygen }:
 
 stdenv.mkDerivation rec {
-  name = "flatindexer-1.8.0-stable";
-  buildInputs = [ stdenv pkgconfig boost cmake bbp-cmake bbpsdk brion lunchbox vmmlib servus zlib python numpy hdf5 doxygen];
+  name = "flatindexer-1.8.0";
+  buildInputs = [ stdenv pkgconfig boost cmake cmake-external bbpsdk brion lunchbox vmmlib servus zlib python hdf5 doxygen];
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/building/FLATIndex";
     rev = "3cdc827d13494648c186df167ba12d74ef1541ca";
-    sha256 = "0m4l13gsd34rfcl0k12baf3wywgcwb6r82k26k8n4jzyb3qfs7qh";
+    sha256 = "0apjmjhc1k05jyrm8z7n8d8m47wy8y0r9pbk7g1jyw09hghlcfrg";
+    leaveDotGit = true; 
   };
   
-  
-  patchPhase= ''
-	ln -s ${bbp-cmake}/share/bbp-cmake/Common CMake/common &&
-	rm -rf \.gitexternals
-	'';
-	
-  cmakeFlags="-DFLAT_PYTHON=OFF -DDISABLE_SUBPROJECTS=YES";
+ 	
+  cmakeFlags="-DFLAT_PYTHON=OFF";
 
   enableParallelBuilding = true;
 }
