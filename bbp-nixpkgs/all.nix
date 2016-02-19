@@ -116,6 +116,10 @@ let
                 mpiRuntime = bbp-mpi;      
           };
           
+          neuromapp = callPackage ./hpc/neuromapp {
+                mpiRuntime = bbp-mpi;      
+          };          
+          
           mods-src = callPackage ./hpc/neurodamus/corebluron.nix{
           
           };
