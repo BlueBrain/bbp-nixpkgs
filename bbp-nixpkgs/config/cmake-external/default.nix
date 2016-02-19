@@ -40,7 +40,4 @@ stdenv.mkDerivation {
   
   propagatedBuildInputs = [ git cacert ]; 
 
-  preferLocalBuild = true;
-
-
 }
