@@ -137,6 +137,11 @@ let
 #               regex-pcre
             ]);
       };
+      
+      steps = callPackage ./hpc/steps {
+            mpiRuntime = bbp-mpi;
+            numpy = pythonPackages.numpy;
+      };      
 
         };
         in

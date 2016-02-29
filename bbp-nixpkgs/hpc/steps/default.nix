@@ -1,16 +1,22 @@
-{ stdenv, fetchgitPrivate, cmake }:
+{ stdenv, fetchgitPrivate, cmake, blas, liblapack, python, swig, numpy, mpiRuntime, gtest }:
 
 stdenv.mkDerivation rec {
-  name = "steps-";
-  buildInputs = [ stdenv cmake ];
+  name = "steps-2.2.1-unstable";
+  buildInputs = [ stdenv cmake blas liblapack mpiRuntime python numpy swig numpy gtest ];
 
   src = fetchgitPrivate {
     url = "ssh://git@github.com/CNS-OIST/HBP_STEPS.git";
-    rev = "182addb2847d4fc401df0e13f81fdbf32c8f1ac1";
-    sha256 = "14ffyqxb9q1hy532ibssw2sxmkqc57j8v71l62bf85gd50yiz48f";
+    rev = "39345322905fe942f194ddc1aba77bf29ec59f5b";
+    sha256 = "10x6y3ad946k213afx1lv9radlqgmrnlf68150rbl0x4ric5kwpj";
   };
+  
+  patches = [
+                ./gtest-patch.patch
+            ];
 
   enableParallelBuilding = true;
+  
+  cmakeFlags = [ "-DGTEST_USE_EXTERNAL=TRUE" ];
  
   
 }
