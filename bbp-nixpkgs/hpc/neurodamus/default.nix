@@ -1,7 +1,6 @@
 { stdenv
-, fetchgitPrivate
+, fetchgitExternal
 , cmake
-, cmake-external
 , pkgconfig
 , hdf5
 , mpiRuntime
@@ -12,18 +11,17 @@
 
 stdenv.mkDerivation rec {
   name = "neurodamus-1.8.1-stable";
-  buildInputs = [ stdenv cmake cmake-external pkgconfig hdf5 ncurses zlib mpiRuntime bluron reportinglib];
+  buildInputs = [ stdenv cmake pkgconfig hdf5 ncurses zlib mpiRuntime bluron reportinglib];
 
 
-  src = fetchgitPrivate {
+  src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
     rev = "bdd1cbe39b80d75a7da9109c3678dc883d5a4e4e";
-    sha256 = "1f15sjjwclrrcsyns23hji92f1pmhpz5mlds7dg0hq295dnbbi48";
-    deepClone = true;
+    sha256 = "0rld9jahm5asjwp51iy3b134c4d79plg156yizagvy598ff1dgza";
   };
   
  
-    cmakeFlags="-DBluron_PREFIX_DIR=${bluron}";
+  cmakeFlags="-DBluron_PREFIX_DIR=${bluron}";
 
   passthru = { sources = src; };
 }

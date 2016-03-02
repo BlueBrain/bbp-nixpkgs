@@ -9,8 +9,7 @@
 fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
     rev = "be841636d2d80355be1e50a7c1c84b71a4b5784d";
-    sha256 = "1dg165p799s4x03a1y3sidcjysm9r6ndcgr9j2pbcqfghys6blf2";
-    leaveDotGit = true;
+    sha256 = "100xj2dngz1dx804vd2p5ppwdvacxwn8071jklcmv4vcfq754aa1";
 }
   
 
