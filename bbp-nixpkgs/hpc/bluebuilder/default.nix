@@ -1,5 +1,5 @@
 { stdenv,
-fetchgitPrivate,
+fetchgitExternal,
 pkgconfig,
 boost, 
 hpctools, 
@@ -7,19 +7,17 @@ libxml2,
 hdf5,
 zlib,
 cmake, 
-cmake-external,
 mpiRuntime, 
 }:
 
 stdenv.mkDerivation rec {
   name = "bluebuilder-1.2.1-DEV";
-  buildInputs = [ stdenv pkgconfig boost hpctools hdf5 zlib cmake cmake-external mpiRuntime libxml2];
+  buildInputs = [ stdenv pkgconfig boost hpctools hdf5 zlib cmake mpiRuntime libxml2];
 
-  src = fetchgitPrivate {
+  src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/building/BlueBuilder";
     rev = "731bf5694aba9cb433273beb9009c5fbe50ee3fa";
-    sha256 = "0z7wn9mylxyv1522qwmgqnz933xym7wd7zqs6jqvp1ydgbgf13i2";
-    deepClone = true;
+    sha256 = "1vis3s3bbhd2836mch3cb29kr6ws8dpyxy7br1zc9zrxnlypzjx2";
   };
   
   cmakeFlags="-DBoost_USE_STATIC_LIBS=FALSE";  
