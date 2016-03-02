@@ -1,14 +1,13 @@
-{ stdenv, fetchgit, boost, cmake, cmake-external }:
+{ stdenv, fetchgitExternal, boost, cmake }:
 
 stdenv.mkDerivation rec {
   name = "cyme-0.1";
-  buildInputs = [ stdenv boost cmake cmake-external];
+  buildInputs = [ stdenv boost cmake ];
 
-  src = fetchgit {
+  src = fetchgitExternal {
     url = "https://github.com/BlueBrain/cyme.git";
     rev = "f8c3708ae10a85706ac487400da75e8e03c0b5b9";
-    sha256 = "0fbl83zlbnhmkzmn4s12rncj9l17qcwirg0d2xkqw1qgyagg0ibd";
-    leaveDotGit = true;
+    sha256 = "18v5dnw951dlqqxm008438zp42f4vb00px0ppik4whmv3mb3g21z";
   }; 
 
   enableParallelBuilding = true;
