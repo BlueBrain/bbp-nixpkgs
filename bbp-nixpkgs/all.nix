@@ -13,13 +13,23 @@ let
          callPackage = newScope mergePkgs;
          mergePkgs = pkgs // { 
          
-         
+        
+         ##
+         ## git / cmake external for viz components
+         ##
+          fetchgitExternal = callPackage ./config/fetchGitExternal{
+          
+          };   
+          
          ##
          ## cmake externals for viz components
+         ## might cause not deterministic builds
          ##
           cmake-external = callPackage ./config/cmake-external{
           
           };
+          
+       
 
          ##
          ## BBP common components
@@ -78,12 +88,12 @@ let
           
           highfive = callPackage ./hpc/highfive {
           
-	  };
+          };
 
-	  flatindexer = callPackage ./hpc/FLATIndexer {
-         	mpiRuntime = bbp-mpi; 
-	  };
-          
+          flatindexer = callPackage ./hpc/FLATIndexer {
+                mpiRuntime = bbp-mpi; 
+          };
+              
 
           bbptestdata = callPackage ./tests/BBPTestData {
                 
