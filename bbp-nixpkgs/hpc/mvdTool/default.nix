@@ -6,8 +6,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/MVDTool.git";
-    rev = "6a09a0c1170641b9c891ec61e99eba842aaf1bb8";
-    sha256 = "1jwgncvm76c7q7h90cncxwwf0lz9ilmy5hzfpamwmqhylys9ql17";
+    rev = "27be7fdb39b09c32ecc43ee12e3f9fb12aecfadd";
+    sha256 = "186i7sgys002p82h6xi8j86v6k3zz7d4ljnmqj47rlcwpqb6i0jz";
   };
   
   cmakeFlags="-DUNIT_TESTS=TRUE";   
