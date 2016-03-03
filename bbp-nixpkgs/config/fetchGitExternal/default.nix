@@ -10,7 +10,7 @@
 	echo "pre-run CMake for GitExternal checkout";
 	mkdir -p build;
 	cd build;
-	${cmake}/bin/cmake $out/ || true;
+	${cmake}/bin/cmake -DDISABLE_SUBPROJECTS=TRUE $out/ || true;
 	cd ..;
 	rm -rf build;
 	echo "delete build directory, keep only sources";
