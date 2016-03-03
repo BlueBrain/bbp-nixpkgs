@@ -15,8 +15,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "BlueBrain";
     repo = "neuromapp";
-    rev = "c65d920e206311709ef900aabb6c2690f602a6f8";
-    sha256 = "0hgjj39wgdzvn6rsf6wmj46fwynfmjyrm2fzk918svvpc4sa70ya";
+    rev = "c2d8f4609ba80f1f905996f716800c82af15e88a";
+    sha256 = "0apfybi9zz3dnlxkqmvlj2l750n8i122jxjmgss418przjad85mg";
   };
     
   cmakeFlags= "-DBoost_NO_BOOST_CMAKE=TRUE -DBoost_USE_STATIC_LIBS=FALSE ";
