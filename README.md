@@ -13,6 +13,9 @@ Contains all the nix expressions for the Blue Brain Project.
 For any information about nix usage in the BBP, please check https://bbpteam.epfl.ch/project/spaces/display/BBPHPC/Nix+Package+Manager
 
 
+== Infos ==
+
+
 
 
 
