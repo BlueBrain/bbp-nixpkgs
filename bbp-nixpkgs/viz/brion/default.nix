@@ -1,12 +1,10 @@
 { stdenv, 
-fetchgit, 
+fetchgitExternal, 
 boost, 
 cmake, 
-cmake-external, 
 servus, 
 lunchbox, 
-vmmlib, 
-cppcheck, 
+vmmlib,
 pkgconfig, 
 hdf5-cpp, 
 zlib, 
@@ -15,18 +13,19 @@ doxygen }:
 
 stdenv.mkDerivation rec {
   name = "brion-1.6.0-DEV";
-  buildInputs = [ stdenv pkgconfig boost cmake cmake-external servus lunchbox vmmlib hdf5-cpp zlib doxygen cppcheck];
+  buildInputs = [ stdenv pkgconfig boost cmake vmmlib servus lunchbox hdf5-cpp zlib doxygen ];
 
-  src = fetchgit {
+  src = fetchgitExternal {
     url = "https://github.com/BlueBrain/Brion.git";
-    rev = "8e3b87ef49b7ec18fb8173f3d0335b6475ca1d0c";
-    sha256 = "1b64xvi47vyjk8dfyqdikwsnibq1fhh0g774vxb3j24gvkccvy4j";
-    leaveDotGit = true;
+    rev = "f936a450d6bdd56355f2752d9038fcc39ebb7943";
+    sha256 = "1cn6fcg9whjnq2344sw6mdj1xf7dsb7sp3m5csdxk421n5i2xlpm";
   };
 
 
   enableParallelBuilding = true;
-    
+
+
+   
 }
 
 
