@@ -6,8 +6,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/hpc/HPCTools";
-    rev = "82b0f680365f4e7871275b4d84efe610b7521567";
-    sha256 = "0pk52d4jrbdxclzyjhmqkx9zr296h5fa7daz6d1rcjgw9dxlg3kb";    
+    rev = "acbccdad7b3e87c15712cb891b77232a918b2d36";
+    sha256 = "1phnl4lc78iv3igijqvak1ifwhivkw967dxblf536q8wawsk49ya";    
   };
       
   
