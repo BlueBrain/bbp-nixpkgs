@@ -16,8 +16,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/building/TouchDetector";
-    rev = "ddb6465d55ac838557bb311be66d0dcc77d61a9e";
-    sha256 = "033ifnvj4b9n3kgi8153h5dhahyarhdbhx785khmd1h8vsaghzj1";
+    rev = "32ac7ab928d9079797f58ca3cfd794e44de556fb";
+    sha256 = "1jwrw19cb2b76l4x2s17m1y8g2pf8zr3vvdg91z9qcjvmazc8za0";
   };
 
   enableParallelBuilding = true;
