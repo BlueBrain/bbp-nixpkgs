@@ -5,24 +5,21 @@
 
 
 let
-    pkgFun = 
-    pkgs:
-      with pkgs;
-      let 
-         callPackage = newScope mergePkgs;
-         mergePkgs = pkgs // { 
-         
+    MergePkgs = with MergePkgs;  std-pkgs // patches;
+    patches = with patches; with MergePkgs; { 
+        
 		  hdf5-cpp = callPackage ./hdf5 {
 			szip = null;
 			mpi = null;
 			enableCpp = true;
 		  };         
 
-        };
-        in
-        mergePkgs;
+
+		 openssl = libressl;
+    };
+       
 in
-  (pkgFun std-pkgs)
+  MergePkgs
 
 
 
