@@ -14,12 +14,17 @@ let
 			enableCpp = true;
 		  };         
 
+		  libnss-native-plugins = callPackage ./nss-plugin {
+
+
+		  };
 
 		 environment-modules =  callPackage ./env-modules { 
 			tcl = tcl-8_5;
 		 };
 		 
 		 envModuleGen = callPackage ./env-modules/generator.nix;
+
     };
        
 in

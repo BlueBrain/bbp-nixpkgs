@@ -1,6 +1,7 @@
 # All BPP related pkgs
 {
- std-pkgs
+ std-pkgs,
+ config
 }:
 
 
@@ -9,8 +10,14 @@ let
     pkgs:
       with pkgs;
       let 
-         bbp-mpi = mpich2;
+         bbp-mpi = if pkgs.isBlueGene == true
+			then mpi-bgq
+			else mpich2;
          callPackage = newScope mergePkgs;
+         enableBGQ = caller: file:
+		if mergePkgs.isBlueGene == true
+			then (newScope (mergePkgs // mergePkgs.bgq-map)) file
+			else caller file;
          mergePkgs = pkgs // { 
          
         
@@ -64,21 +71,21 @@ let
          ##
          ## BBP HPC components
          ##
-          hpctools = callPackage ./hpc/hpctools { 
+          hpctools = enableBGQ callPackage ./hpc/hpctools { 
                 python = python27; 
                 mpiRuntime = bbp-mpi;
           }; 
           
-          functionalizer = callPackage ./hpc/functionalizer { 
+          functionalizer = enableBGQ callPackage ./hpc/functionalizer { 
                  python = python27; 
                  mpiRuntime = bbp-mpi;                
           };  
           
-          touchdetector = callPackage ./hpc/touchdetector {  
+          touchdetector = enableBGQ callPackage ./hpc/touchdetector {  
                  mpiRuntime = bbp-mpi;  
           };
           
-          bluebuilder = callPackage ./hpc/bluebuilder {
+          bluebuilder = enableBGQ callPackage ./hpc/bluebuilder {
                 mpiRuntime = bbp-mpi;
           };
           
@@ -102,8 +109,8 @@ let
           ### simulation     
 
           cyme = callPackage ./hpc/cyme {
-         
-          };
+          
+	  };
  
           
           mod2c = callPackage ./hpc/mod2c {
