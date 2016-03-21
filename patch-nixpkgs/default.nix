@@ -14,8 +14,9 @@ let
 			enableCpp = true;
 		  };         
 
+		  libnss-native-plugins = callPackage ./nss-plugin {
 
-		 openssl = libressl;
+		  };
     };
        
 in

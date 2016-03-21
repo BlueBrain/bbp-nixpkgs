@@ -3,7 +3,7 @@
 let 
 
 # test if we are on BGQ
-bgq = builtins.pathExists "/bgsys"; 
+bgq = (import ./portability.nix).isBlueGene; 
 
 bgq-config = rec {
 
@@ -48,18 +48,6 @@ bgq-config = rec {
                 
         };
 
-
-	stdenv = {
-
-	           ## Ugly hack to support sssd authentication with LDAP under BG/Q
-		   ## see https://github.com/NixOS/nix/issues/554 for more details 
-		   userHook = ''
-				## avoid glibc compile error by avoiding : terminaison
-				if [[ "$name" !=  "glibc-"* ]]; then
-					export LD_LIBRARY_PATH="$HOME/.nix/nss-plugins/:$LD_LIBRARY_PATH";
-				fi
-			      '';
-		};
 
 
 	};
