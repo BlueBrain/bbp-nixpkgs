@@ -1,14 +1,14 @@
-{ stdenv, fetchgitExternal, perl, cmake, boost, pkgconfig, mpiRuntime, mod2c, mods-src}:
+{ stdenv, fetchgitPrivate, perl, cmake, boost, pkgconfig, mpiRuntime, mod2c, mods-src}:
 
 stdenv.mkDerivation rec {
-  name = "coreneuron-0.7.0";
+  name = "coreneuron-0.8.1";
   buildInputs = [ stdenv perl cmake boost pkgconfig mpiRuntime mod2c];
 
 
-  src = fetchgitExternal {
+  src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/sim/coreneuron";
-    rev =  "a7231d5aa7725b87c772b690c0f96b0404319414";
-    sha256 = "0618w46ximr1cp02w19fdvqnqlm37456f8lg3iqik7lridzxck2b";   
+    rev =  "cd60ce45ffb7676dbb549c91e35d28f7a6019889";
+    sha256 = "1sa1kribrzc14jcsizwc7hf8g35zvvvdb2kyb2zh3cli50pxpw6w";   
   };
 
 
