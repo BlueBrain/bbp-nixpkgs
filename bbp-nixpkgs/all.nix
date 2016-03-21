@@ -151,7 +151,17 @@ let
       steps = callPackage ./hpc/steps {
             mpiRuntime = bbp-mpi;
             numpy = pythonPackages.numpy;
-      };      
+      };
+      
+      
+      hpc-module = envModuleGen {
+			name = "HPCrelease";
+			description = "load BBP HPC environment";
+			packages = [ 
+							mergePkgs.functionalizer 
+							mergePkgs.coreneuron 
+					   ];
+      };
 
         };
         in

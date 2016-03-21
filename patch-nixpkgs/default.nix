@@ -15,7 +15,11 @@ let
 		  };         
 
 
-		 openssl = libressl;
+		 environment-modules =  callPackage ./env-modules { 
+			tcl = tcl-8_5;
+		 };
+		 
+		 envModuleGen = callPackage ./env-modules/generator.nix;
     };
        
 in
