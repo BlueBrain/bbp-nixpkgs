@@ -10,14 +10,14 @@
 , reportinglib}:
 
 stdenv.mkDerivation rec {
-  name = "neurodamus-1.8.1-stable";
+  name = "neurodamus-1.9.0";
   buildInputs = [ stdenv cmake pkgconfig hdf5 ncurses zlib mpiRuntime bluron reportinglib];
 
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
-    rev = "bdd1cbe39b80d75a7da9109c3678dc883d5a4e4e";
-    sha256 = "0rld9jahm5asjwp51iy3b134c4d79plg156yizagvy598ff1dgza";
+    rev = "3de16b8e4e5ae3cc2080afc03ecdb93a9ed597c5";
+    sha256 = "05wzlq15fvsvjp3xhkzjwc09gw3nrl9s4lq3rri3qsv41dm3hdl4";
   };
   
  

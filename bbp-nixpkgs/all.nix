@@ -156,9 +156,24 @@ let
       };
       
       steps = callPackage ./hpc/steps {
-            mpiRuntime = bbp-mpi;
+            mpiRuntime = null;
             numpy = pythonPackages.numpy;
-      };      
+	    liblapack = liblapackWithoutAtlas;
+      };
+     
+      steps-mpi = mergePkgs.steps.override {
+            mpiRuntime = bbp-mpi;
+      };
+ 
+      
+      hpc-module = envModuleGen {
+			name = "HPCrelease";
+			description = "load BBP HPC environment";
+			packages = [ 
+							mergePkgs.functionalizer 
+							mergePkgs.coreneuron 
+					   ];
+      };
 
         };
         in

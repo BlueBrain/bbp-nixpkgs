@@ -14,15 +14,15 @@
 }:
 
 stdenv.mkDerivation rec {
-  name = "bluron-2.2.1";
+  name = "bluron-2.3.1";
   buildInputs = [ stdenv git mpiRuntime python autoconf automake libtool pkgconfig 
                 which ncurses bison flex];
 
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/sim/bluron/bbp";
-    rev = "53f815748c7620065450cdc93c6bcd328ef8e6fb";
-    sha256 = "0bxs764saxl9g5r8ha6wmarrm4z6bynr3ia8kgp4ki4vfsifz3d0";
+    rev = "9753c2809cfccea0ee3982c0d43069da0f044997";
+    sha256 = "0myiz5cwdcdngirwmbmbbp9rz9wg31qq6ngb5m7935bpqp31w5sb";
   };
   
   
