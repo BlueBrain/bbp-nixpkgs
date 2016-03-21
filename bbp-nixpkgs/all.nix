@@ -171,7 +171,19 @@ let
 			description = "load BBP HPC environment";
 			packages = [ 
 							mergePkgs.functionalizer 
-							mergePkgs.coreneuron 
+							mergePkgs.touchdetector
+							mergePkgs.mvdtool
+							mergePkgs.highfive
+							mergePkgs.bluebuilder
+
+							# cellular sim
+							mergePkgs.coreneuron
+							mergePkgs.mod2c
+							mergePkgs.neurodamus
+							mergePkgs.bluron
+							mergePkgs.reportinglib
+							# sub cellular sim
+							mergePkgs.steps-mpi
 					   ];
       };
 
