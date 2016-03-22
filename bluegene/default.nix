@@ -25,6 +25,11 @@ let
 	 };    
 
 
+	stdenv = pkgs.stdenv.override {
+			extraAttrs = { isBlueGene = true; };
+        };
+
+
 	bgq-stdenv-origin = (overrideCC stdenv mpi-bgq)
                     //  { isBlueGene = true;
                           glibc = bgq-glibc; };
@@ -34,6 +39,7 @@ let
 	bgq-stdenv-gcc = (addAttrsToDerivation { NIX_ENFORCE_PURITY=""; } 
                             (overrideCC stdenv gcc-bgq)
                          );
+
 
 	 # BGQ derivated packages
    

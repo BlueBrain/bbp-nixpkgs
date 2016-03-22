@@ -31,7 +31,7 @@ stdenv.mkDerivation rec {
 	
 	targetEnvBin = "${targetEnv}/bin";
 	targetEnvPkgConfig = "${targetEnv}/lib/pkgconfig";
-	targetEnvPython = "${targetEnv}/lib/python";
+	targetEnvPython = "${targetEnv}/bin/python";
 	 
 	
 	buildPhase = ''
@@ -58,18 +58,25 @@ if { [file exists ${targetEnvBin} ] } {
 
 }
 
-## check if any pkgs config are availables
+## check if any pkgs config are available
 if { [file exists ${targetEnvPkgConfig} ] } {
 		prepend-path PKG_CONFIG_PATH ${targetEnvPkgConfig}
 
 }
 
 
-## check if any python modules are available
+## check if any python interpreter is present
 if { [file exists ${targetEnvPython} ] } {
-		prepend-path PYTHONPATH ${targetEnvPython}
+		prepend-path PYTHONHOME ${targetEnv}
+}
+
+## check if any python modules are available
+foreach pathname [ glob -nocomplain "${targetEnv}/lib*/python*/*-packages/" ]  {
+	
+	prepend-path PYTHONPATH \$pathname
 
 }
+
 
 
 EOF

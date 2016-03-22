@@ -10,9 +10,10 @@ let
     pkgs:
       with pkgs;
       let 
-         bbp-mpi = if pkgs.isBlueGene == true
-			then mpi-bgq
-			else mpich2;
+         bbp-mpi = if pkgs.isBlueGene == true then mpi-bgq
+		   else if config ? isSlurmCluster == true then mvapich2
+		   else mpich2;
+
          callPackage = newScope mergePkgs;
          enableBGQ = caller: file:
 		if mergePkgs.isBlueGene == true
@@ -117,19 +118,19 @@ let
       
           };
 
-          coreneuron = callPackage ./hpc/coreneuron {
+          coreneuron = enableBGQ callPackage ./hpc/coreneuron {
                 mpiRuntime = bbp-mpi;      
           };
           
           bluron = callPackage ./hpc/bluron {
+                mpiRuntime = bbp-mpi;
+          };
+
+          reportinglib = enableBGQ callPackage ./hpc/reportinglib {
                 mpiRuntime = bbp-mpi;      
           };
           
-          reportinglib = callPackage ./hpc/reportinglib {
-                mpiRuntime = bbp-mpi;      
-          };
-          
-          neurodamus = callPackage ./hpc/neurodamus {
+          neurodamus = enableBGQ callPackage ./hpc/neurodamus {
                 mpiRuntime = bbp-mpi;      
           };
           
@@ -182,10 +183,35 @@ let
 							mergePkgs.neurodamus
 							mergePkgs.bluron
 							mergePkgs.reportinglib
+		
 							# sub cellular sim
 							mergePkgs.steps-mpi
+							mergePkgs.python27Packages.numpy
+							mergePkgs.python27
+
+							#utils
+							bbp-mpi
 					   ];
       };
+
+      hpc-module-bgq = envModuleGen {
+			name = "HPCrelease";
+			description = "load BBP HPC environment on BGQ";
+			packages = [ 
+							mergePkgs.functionalizer 
+							mergePkgs.touchdetector
+							mergePkgs.highfive
+
+							# cellular sim
+							mergePkgs.coreneuron
+							mergePkgs.mod2c
+							mergePkgs.neurodamus
+							mergePkgs.bluron
+							mergePkgs.reportinglib
+					   ];
+      };
+
+
 
         };
         in
