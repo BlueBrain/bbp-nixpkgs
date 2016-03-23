@@ -14,6 +14,11 @@ let
 			enableCpp = true;
 		  };         
 
+
+		  mvapich2 = callPackage ./mvapich2 {
+			slurm = slurm-llnl;	
+		  };
+
 		  libnss-native-plugins = callPackage ./nss-plugin {
 
 
