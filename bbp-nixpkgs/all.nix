@@ -122,16 +122,30 @@ let
                 mpiRuntime = bbp-mpi;      
           };
           
-          bluron = callPackage ./hpc/bluron {
+          bluron = enableBGQ callPackage ./hpc/bluron/cmake-build.nix {
                 mpiRuntime = bbp-mpi;
           };
+
+
+	  neuron-modl = callPackage ./hpc/neuron {
+		mpiRuntime = null;
+		modlOnly = true;
+	  };
+
+	  neuron = enableBGQ callPackage ./hpc/neuron {
+		mpiRuntime = bbp-mpi;
+		nrnOnly = true;
+		nrnModl = mergePkgs.neuron-modl;
+	  };
+
 
           reportinglib = enableBGQ callPackage ./hpc/reportinglib {
                 mpiRuntime = bbp-mpi;      
           };
           
           neurodamus = enableBGQ callPackage ./hpc/neurodamus {
-                mpiRuntime = bbp-mpi;      
+                mpiRuntime = bbp-mpi;  
+		nrnEnv= mergePkgs.neuron;    
           };
           
           neuromapp = callPackage ./hpc/neuromapp {
@@ -181,7 +195,7 @@ let
 							mergePkgs.coreneuron
 							mergePkgs.mod2c
 							mergePkgs.neurodamus
-							mergePkgs.bluron
+							mergePkgs.neuron
 							mergePkgs.reportinglib
 		
 							# sub cellular sim
@@ -206,7 +220,7 @@ let
 							mergePkgs.coreneuron
 							mergePkgs.mod2c
 							mergePkgs.neurodamus
-							mergePkgs.bluron
+							mergePkgs.neuron
 							mergePkgs.reportinglib
 					   ];
       };
