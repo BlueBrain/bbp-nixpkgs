@@ -1,4 +1,5 @@
 { stdenv
+, which
 , fetchgitExternal
 , cmake
 , pkgconfig
@@ -6,12 +7,13 @@
 , mpiRuntime
 , zlib
 , ncurses
-, bluron
-, reportinglib}:
+, reportinglib
+, nrnEnv
+}:
 
 stdenv.mkDerivation rec {
   name = "neurodamus-1.9.0";
-  buildInputs = [ stdenv cmake pkgconfig hdf5 ncurses zlib mpiRuntime bluron reportinglib];
+  buildInputs = [ stdenv which cmake pkgconfig hdf5 ncurses zlib mpiRuntime reportinglib nrnEnv ];
 
 
   src = fetchgitExternal {
@@ -20,10 +22,21 @@ stdenv.mkDerivation rec {
     sha256 = "05wzlq15fvsvjp3xhkzjwc09gw3nrl9s4lq3rri3qsv41dm3hdl4";
   };
   
- 
-  cmakeFlags="-DBluron_PREFIX_DIR=${bluron}";
 
-  passthru = { sources = src; };
+  isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
+			then builtins.getAttr "isBlueGene" stdenv else false;
+ 
+  # missing -sqmp for symbols from reportinglib
+  # precify the neuron path manually
+  cmakeFlags=''${if isBGQ then ''-DADD_LIBS="-qsmp"'' else ''''} -DBluron_PREFIX_DIR=${nrnEnv}/'';
+
+
+  MODLUNIT="${nrnEnv}/share/nrn/lib/nrnunits.lib";
+
+
+
+
+
 }
 
 
