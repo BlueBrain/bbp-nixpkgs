@@ -99,6 +99,7 @@ let
 
           flatindexer = callPackage ./hpc/FLATIndexer {
                 mpiRuntime = bbp-mpi; 
+		numpy = pythonPackages.numpy;
           };
               
 
@@ -175,6 +176,7 @@ let
 							mergePkgs.mvdtool
 							mergePkgs.highfive
 							mergePkgs.bluebuilder
+							mergePkgs.flatindexer
 
 							# cellular sim
 							mergePkgs.coreneuron

@@ -31,7 +31,7 @@ stdenv.mkDerivation rec {
 	
 	targetEnvBin = "${targetEnv}/bin";
 	targetEnvPkgConfig = "${targetEnv}/lib/pkgconfig";
-	targetEnvPython = "${targetEnv}/lib/python";
+	targetEnvPython = "${targetEnv}/lib/python2.7";
 	 
 	
 	buildPhase = ''

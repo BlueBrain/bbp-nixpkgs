@@ -1,5 +1,5 @@
 { stdenv, 
-fetchgitPrivate, 
+fetchgitExternal, 
 pkgconfig, 
 boost, 
 bbpsdk, 
@@ -8,26 +8,27 @@ lunchbox,
 vmmlib,
 servus,
 cmake, 
-cmake-external, 
 mpiRuntime, 
 zlib, 
 python, 
+numpy,
 hdf5, 
 doxygen }:
 
 stdenv.mkDerivation rec {
   name = "flatindexer-1.8.0";
-  buildInputs = [ stdenv pkgconfig boost cmake cmake-external bbpsdk brion lunchbox vmmlib servus zlib python hdf5 doxygen];
+  buildInputs = [ stdenv pkgconfig boost cmake  bbpsdk brion lunchbox vmmlib servus zlib python numpy hdf5 doxygen];
 
-  src = fetchgitPrivate {
+  src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/building/FLATIndex";
-    rev = "3cdc827d13494648c186df167ba12d74ef1541ca";
-    sha256 = "0apjmjhc1k05jyrm8z7n8d8m47wy8y0r9pbk7g1jyw09hghlcfrg";
-    leaveDotGit = true; 
+    rev = "3360423a794b51170240a521caf010423fb5baca";
+    sha256 = "1ljassdipl19w2x4c4gjskig2v5ylgr2f7rddqqyb990404423jz"; 
   };
   
  	
-  cmakeFlags="-DFLAT_PYTHON=OFF";
+  cmakeFlags='' '';
+
+  CXXFLAGS=" -Wno-error";
 
   enableParallelBuilding = true;
 }
