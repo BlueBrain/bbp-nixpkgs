@@ -7,7 +7,7 @@ stdenv.mkDerivation rec {
   src = fetchgitExternal{
     url = "https://github.com/Eyescale/Lunchbox.git";
     rev = "01caa155d89e9f56318319fd236be1b0bfc1ed03";
-    sha256 = "1hh58n3bn1qilmlwd74j5lx1kycd4j772g5slckf8aiy123ia6ya";
+    sha256 = "0s1w1ds3z6gf1hyns14cv12xd854y7xsswsflzph0hh8cavyr83s";
   };
   
   enableParallelBuilding = true;
