@@ -10,7 +10,10 @@ stdenv.mkDerivation rec {
     sha256 = "04mv7rxi3ziml041blqi5dlbf7vajd5c8vcw0rylp68lcvm0f4ai";
   };
 
-  enableParallelBuilding = true;
+
+  # BBPSDK boost.python bindings take more than 1G mem per core to compile
+  # with recent GCC, disable parallel buildings or GCC SIGBUS
+  enableParallelBuilding = false;
   
 }
 
