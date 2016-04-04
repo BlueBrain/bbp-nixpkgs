@@ -11,7 +11,7 @@ mpiRuntime,
 }:
 
 stdenv.mkDerivation rec {
-  name = "bluebuilder-1.2.1-DEV";
+  name = "bluebuilder-1.2.1";
   buildInputs = [ stdenv pkgconfig boost hpctools hdf5 zlib cmake mpiRuntime libxml2];
 
   src = fetchgitExternal {
@@ -20,11 +20,16 @@ stdenv.mkDerivation rec {
     sha256 = "1vis3s3bbhd2836mch3cb29kr6ws8dpyxy7br1zc9zrxnlypzjx2";
   };
   
-  cmakeFlags="-DBoost_USE_STATIC_LIBS=FALSE";  
+  isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
+        then builtins.getAttr "isBlueGene" stdenv else false;
   
-  patchPhase= ''
+  cmakeFlags="-DBoost_USE_STATIC_LIBS=${if isBGQ then "TRUE" else "FALSE"}";  
+  
+  patchPhase= if isBGQ == false then
+    ''
     sed -i 's@set(Boost_USE_STATIC_LIBS ON)@set(Boost_USE_STATIC_LIBS OFF)@g' CMakeLists.txt
-    '';    
+    ''
+    else '''';    
 
   enableParallelBuilding = true;
 }
