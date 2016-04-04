@@ -38,7 +38,9 @@ rec {
             packages = [ 
                             pkgs.functionalizer 
                             pkgs.touchdetector
+                            pkgs.bluebuilder                            
                             pkgs.highfive
+                            pkgs.mvdtool                            
 
                             # cellular sim
                             pkgs.coreneuron
