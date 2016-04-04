@@ -33,6 +33,8 @@ stdenv.mkDerivation rec {
 	targetEnvBin = "${targetEnv}/bin";
 	targetEnvPkgConfig = "${targetEnv}/lib/pkgconfig";
 	targetEnvPython = "${targetEnv}/lib/python2.7";
+	targetEnvHoc = "${targetEnv}/hoc";
+	targetModlUnit = "${targetEnv}/share/nrnunits.lib";	
  
 	
 	buildPhase = ''
@@ -78,6 +80,18 @@ foreach pathname [ glob -nocomplain "${targetEnv}/lib*/python*/*-packages/" ]  {
 
 }
 
+## check if any hoc path is needed
+if { [file exists ${targetEnvHoc} ] } {
+		prepend-path HOC_LIBRARY_PATH ${targetEnvHoc}
+}
+
+## check if any MODLUNIT export path is needed
+if { [file exists ${targetModlUnit} ] } {
+		prepend-path MODLUNIT ${targetModlUnit}
+}
+
+
+${extraContent}
 
 
 EOF

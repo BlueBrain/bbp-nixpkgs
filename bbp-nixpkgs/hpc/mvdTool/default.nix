@@ -1,7 +1,7 @@
 { stdenv, fetchgit, pkgconfig, boost, cmake, zlib, hdf5 }:
 
 stdenv.mkDerivation rec {
-  name = "mvdTool-1.0-DEV";
+  name = "mvdTool-1.0";
   buildInputs = [ stdenv pkgconfig boost zlib cmake hdf5];
 
   src = fetchgit {

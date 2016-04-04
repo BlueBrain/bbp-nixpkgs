@@ -30,6 +30,7 @@ rec {
                             #utils
                             pkgs.bbp-mpi
                        ];
+            extraContent = "prepend-path BBP_HOME $targetEnv/";                       
       };
 
       hpc-bgq = pkgs.envModuleGen {
@@ -49,6 +50,7 @@ rec {
                             pkgs.neuron
                             pkgs.reportinglib
                        ];
+            extraContent = "prepend-path BBP_HOME $targetEnv/";
       };
 
 

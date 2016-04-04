@@ -34,8 +34,7 @@ stdenv.mkDerivation rec {
   MODLUNIT="${nrnEnv}/share/nrn/lib/nrnunits.lib";
 
 
-
-
+  propagatedBuildInputs = [ which hdf5 reportinglib ];
 
 }
 
