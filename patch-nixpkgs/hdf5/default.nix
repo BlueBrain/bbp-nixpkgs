@@ -31,7 +31,7 @@ stdenv.mkDerivation rec {
     ${if szip != null then "--with-szlib=${szip}" else ""}
     ${if mpi != null then "--enable-parallel" else ""}
     ${if enableShared then "--enable-shared" else ""}
-    ${if enableCpp then "--enable-cxx" else ""}    
+    ${if enableCpp then "--enable-cxx" else ""} 
   ";
   
   patches = [./bin-mv.patch];
