@@ -14,7 +14,12 @@ let
 			szip = null;
 			mpi = null;
 			enableCpp = true;
-		  };         
+		  };
+		  
+		  ## enforce thread safety
+		  hdf5 =  std-pkgs.lib.overrideDerivation std-pkgs.hdf5 ( oldAttrs:{
+					configureFlags = oldAttrs.configureFlags + " --enable-threadsafe ";
+		  });        
 
 		  slurm-llnl = std-pkgs.stdenv.lib.overrideDerivation std-pkgs.slurm-llnl ( oldAttrs: {
 			name = oldAttrs.name + "-bbp";
