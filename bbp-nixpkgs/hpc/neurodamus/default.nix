@@ -32,7 +32,18 @@ stdenv.mkDerivation rec {
 
 
   MODLUNIT="${nrnEnv}/share/nrn/lib/nrnunits.lib";
-
+  
+  # we need to patch the last line of special on not-BGQ paltforms
+  # current one is not able to work outside of build directory 
+  # and reference statically this one
+  postInstall = if isBGQ == false then 
+''
+grep -v "\-dll" $out/bin/special > ./special.tmp
+cp ./special.tmp $out/bin/special
+echo " \"\''${NRNIV}\" -dll \"$out/lib/libnrnmech.so\" \"\$@\" " >> $out/bin/special
+'' 
+  else
+'' '';
 
   propagatedBuildInputs = [ which hdf5 reportinglib ];
 
