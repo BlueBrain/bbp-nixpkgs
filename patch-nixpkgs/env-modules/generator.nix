@@ -32,9 +32,11 @@ stdenv.mkDerivation rec {
 	
 	targetEnvBin = "${targetEnv}/bin";
 	targetEnvPkgConfig = "${targetEnv}/lib/pkgconfig";
+	targetEnvMan = "${targetEnv}/share/man";
 	targetEnvPython = "${targetEnv}/lib/python2.7";
 	targetEnvHoc = "${targetEnv}/hoc";
-	targetModlUnit = "${targetEnv}/share/nrnunits.lib";	
+	targetModlUnit = "${targetEnv}/share/nrnunits.lib";
+
  
 	
 	buildPhase = ''
@@ -65,6 +67,17 @@ if { [file exists ${targetEnvBin} ] } {
 if { [file exists ${targetEnvPkgConfig} ] } {
 		prepend-path PKG_CONFIG_PATH ${targetEnvPkgConfig}
 
+}
+
+## configure MANPATH if necessary
+## keep syntax ":/path" if not existing
+## to not override system one
+if { [file exists ${targetEnvMan} ] } {
+		if { [info exists ::env(MANPATH) ] } {
+			append-path MANPATH ${targetEnvMan}
+		} else {
+			setenv MANPATH ":${targetEnvMan}"
+		}
 }
 
 
