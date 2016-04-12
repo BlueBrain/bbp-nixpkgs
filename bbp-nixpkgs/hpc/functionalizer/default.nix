@@ -1,8 +1,24 @@
-{ stdenv, fetchgitPrivate, pkgconfig, boost, hpctools, libxml2, cmake, mpiRuntime, zlib, python, hdf5, asciidoc, xmlto, docbook_xsl, libxslt }:
+{ stdenv
+, fetchgitPrivate
+, pkgconfig
+, boost
+, hpctools
+, libxml2
+, cmake
+, mpiRuntime
+, zlib
+, python
+, hdf5
+, generateDoc ? true
+, asciidoc
+, xmlto
+, docbook_xsl
+, libxslt }:
 
 stdenv.mkDerivation rec {
   name = "functionalizer-3.6.0-DEV";
-  buildInputs = [ stdenv pkgconfig boost hpctools zlib cmake mpiRuntime libxml2 python hdf5 asciidoc xmlto docbook_xsl libxslt ];
+  buildInputs = [ stdenv pkgconfig boost hpctools zlib cmake mpiRuntime libxml2 python hdf5 ]
+   ++ stdenv.lib.optional (generateDoc == true ) [ asciidoc xmlto docbook_xsl libxslt  ];
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/building/Functionalizer";
@@ -11,9 +27,8 @@ stdenv.mkDerivation rec {
   };
   
   cmakeFlags=[ "-DBoost_USE_STATIC_LIBS=FALSE"
-	       "-DUNIT_TESTS=TRUE"
-	       "-DFUNCTIONALIZER_DOCUMENTATION=TRUE"
-	     ];   
+	       "-DUNIT_TESTS=TRUE" ]
+	        ++ stdenv.lib.optional (generateDoc == true ) [ "-DFUNCTIONALIZER_DOCUMENTATION=TRUE" ] ;   
 
   enableParallelBuilding = true;
  
