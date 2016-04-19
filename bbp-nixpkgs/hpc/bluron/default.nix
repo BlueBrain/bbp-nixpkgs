@@ -1,29 +1,31 @@
 { stdenv
+, config
 , fetchgitPrivate
 , which
 , mpiRuntime
-, python
 , autoconf
 , automake
 , libtool
 , pkgconfig
 , git
 , ncurses
+, python
 , bison
 , flex
+, backend ? false
+, extraDep ? []
 }:
 
 stdenv.mkDerivation rec {
-  name = "bluron-2.2.1";
-  buildInputs = [ stdenv git mpiRuntime python autoconf automake libtool pkgconfig 
-                which ncurses bison flex];
+  name = "bluron-2.3.1${if backend==true then "-backend" else ""}";
+  buildInputs = [ stdenv git mpiRuntime autoconf automake python libtool pkgconfig 
+                which ncurses bison flex] ++ extraDep;
 
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/sim/bluron/bbp";
-    rev = "53f815748c7620065450cdc93c6bcd328ef8e6fb";
-    sha256 = "030k5aclfjay7avd11bk9f5g06zrkmm0lhqicdjrc87y572b18g1";
-    deepClone = true; 
+    rev = "795debf91dfc5d33d6f0692357e0b2ff7353450c";
+    sha256 = "1vnnq0ppb6amqg99cabmwms5yrl028m66rpixzkq0k9f7hah40jb";
   };
   
   
@@ -61,12 +63,27 @@ Cflags: -I\''${includedir}/
 EOF
 '';
 
+  isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
+			then builtins.getAttr "isBlueGene" stdenv
+			else false; 
   
-  configureFlags = ''
-                --with-paranrn --without-iv
-                --with-nrnpython have_cython=no 
+  backendFlags = ''
+               --enable-lm 
+	       ${if isBGQ==true then "--enable-bluegeneQ " else ""}
+	       --without-iv 
+               --without-memacs 
+               --with-paranrn --without-nmodl
                 '';
-  
+
+  frontendFlags = ''--with-nmodl-only --without-x --without-memacs'';
+
+
+  defaultFlags =  '' --with-paranrn --without-iv '';
+ 
+  configureFlags = if isBGQ == false 
+			then defaultFlags
+			else if backend == true then backendFlags
+			else frontendFlags;
   
   enableParallelBuilding = true;
 }

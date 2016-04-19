@@ -1,0 +1,5 @@
+{
+  isBlueGene = builtins.pathExists "/bgsys";
+}
+
+

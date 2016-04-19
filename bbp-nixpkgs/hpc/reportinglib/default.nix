@@ -1,7 +1,7 @@
 { stdenv, fetchgitExternal, cmake, boost, pkgconfig, mpiRuntime}:
 
 stdenv.mkDerivation rec {
-  name = "reportinglib-2.4.1-stable";
+  name = "reportinglib-2.4.1";
   buildInputs = [ stdenv cmake boost pkgconfig  mpiRuntime];
 
 

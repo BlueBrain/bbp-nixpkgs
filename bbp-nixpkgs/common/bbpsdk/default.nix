@@ -1,17 +1,19 @@
-{ stdenv, fetchgitPrivate, boost, lunchbox, brion, vmmlib, servus, cmake, cmake-external, pkgconfig, python, hdf5, doxygen }:
+{ stdenv, fetchgitExternal, boost, lunchbox, brion, vmmlib, servus, cmake,  pkgconfig, python, hdf5, doxygen }:
 
 stdenv.mkDerivation rec {
   name = "bbpsdk-0.24.0-DEV";
-  buildInputs = [ stdenv pkgconfig boost brion vmmlib servus cmake cmake-external lunchbox python hdf5 doxygen];
+  buildInputs = [ stdenv pkgconfig boost brion vmmlib servus cmake lunchbox python hdf5 doxygen];
 
-  src = fetchgitPrivate {
+  src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/common/BBPSDK";
-    rev= "bcd48b43afb3a6fa433bc7f9a5197a605f89a365";
-    sha256 = "0qi7dx1i530syhkkm8z0dg36ipbh1x6z9szybs5wf7wvhsf1jh66";
-    deepClone = true;
+    rev= "809c9ffc3b0f1dcfadd49f651e185540d1a0935f";
+    sha256 = "04mv7rxi3ziml041blqi5dlbf7vajd5c8vcw0rylp68lcvm0f4ai";
   };
 
-  enableParallelBuilding = true;
+
+  # BBPSDK boost.python bindings take more than 1G mem per core to compile
+  # with recent GCC, disable parallel buildings or GCC SIGBUS
+  enableParallelBuilding = false;
   
 }
 

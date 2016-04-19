@@ -5,24 +5,51 @@
 
 
 let
-    pkgFun = 
-    pkgs:
-      with pkgs;
-      let 
-         callPackage = newScope mergePkgs;
-         mergePkgs = pkgs // { 
-         
+    MergePkgs = with MergePkgs;  std-pkgs // patches;
+    patches = with patches; with MergePkgs; rec {
+
+		  ## patch version of HDF5 with 
+		  # cpp bindigns enabled        
 		  hdf5-cpp = callPackage ./hdf5 {
 			szip = null;
 			mpi = null;
 			enableCpp = true;
-		  };         
+		  };
+		  
+		  ## enforce thread safety
+		  hdf5 =  std-pkgs.hdf5.overrideDerivation  ( oldAttrs:{
+					configureFlags = oldAttrs.configureFlags + " --enable-threadsafe ";
+		  });        
 
-        };
-        in
-        mergePkgs;
+		  slurm-llnl = std-pkgs.stdenv.lib.overrideDerivation std-pkgs.slurm-llnl ( oldAttrs: {
+			name = oldAttrs.name + "-bbp";
+		
+                        configureFlags = oldAttrs.configureFlags + " --sysconfdir=/etc/slurm ";	
+	
+		 });
+		
+		  ## 
+		  # mvapich2 mpi implementation
+		  #
+		  mvapich2 = callPackage ./mvapich2 {
+			slurm = slurm-llnl;	
+		  };
+
+		  libnss-native-plugins = callPackage ./nss-plugin {
+
+
+		  };
+
+		 environment-modules =  callPackage ./env-modules { 
+			tcl = tcl-8_5;
+		 };
+		 
+		 envModuleGen = callPackage ./env-modules/generator.nix;
+
+    };
+       
 in
-  (pkgFun std-pkgs)
+  MergePkgs
 
 
 
