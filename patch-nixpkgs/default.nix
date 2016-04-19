@@ -17,7 +17,7 @@ let
 		  };
 		  
 		  ## enforce thread safety
-		  hdf5 =  std-pkgs.lib.overrideDerivation std-pkgs.hdf5 ( oldAttrs:{
+		  hdf5 =  std-pkgs.hdf5.overrideDerivation  ( oldAttrs:{
 					configureFlags = oldAttrs.configureFlags + " --enable-threadsafe ";
 		  });        
 
