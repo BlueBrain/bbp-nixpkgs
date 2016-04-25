@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/common/TestData";
-    rev = "1fac183b84678ccc71503697b9a9d4e7c0bba9b0";
-    sha256 = "161aaljhmkfffj4m752xn7db2nyaxilqjs2pns2yvjfqpm6p8krm";
+    rev = "5a14259bccca27529f6d9439808c09693bf4a095";
+    sha256 = "0rvyyv4pss4asvvbm3lprpx5hxp41hfdn0p7ykfmgdwc55xnikz6";
     leaveDotGit = true;
   };
   
@@ -22,7 +22,8 @@ stdenv.mkDerivation rec {
     cp -r ../ballAndStick $out/share/bbptestdata/ && 
     cp -r ../NESTSpikeData $out/share/bbptestdata/ && 
     cp -r ../neuronMeshTest $out/share/bbptestdata/ &&
-    cp -r ../local $out/share/bbptestdata/    
+    cp -r ../local $out/share/bbptestdata/    &&
+    install -D  installed/include/BBP/TestDatasets.h $out/include/BBP/TestDatasets.h 
     '';
     
 }
