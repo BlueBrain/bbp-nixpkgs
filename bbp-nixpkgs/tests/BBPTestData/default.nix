@@ -1,15 +1,14 @@
-{ stdenv, fetchgitPrivate, cmake, cmake-external, pkgconfig}:
+{ stdenv, fetchgitExternal, cmake, pkgconfig}:
 
 stdenv.mkDerivation rec {
   name = "bbptestdata-2.0.0-DEV";
-  buildInputs = [ stdenv cmake pkgconfig cmake-external];
+  buildInputs = [ stdenv cmake pkgconfig];
 
 
-  src = fetchgitPrivate {
+  src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/common/TestData";
     rev = "5a14259bccca27529f6d9439808c09693bf4a095";
-    sha256 = "0rvyyv4pss4asvvbm3lprpx5hxp41hfdn0p7ykfmgdwc55xnikz6";
-    leaveDotGit = true;
+    sha256 = "152xk32zvn3g62qhg2ay6cjfmpd9hk2bgwh95gnvmb2fcb0cbdls";
   };
   
   patchPhase = ''
