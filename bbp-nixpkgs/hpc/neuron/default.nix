@@ -21,19 +21,19 @@ assert nrnOnly -> (modlOnly == false);
 assert nrnOnly -> (nrnModl != null);
 
 stdenv.mkDerivation rec {
-	name = "neuron-7.4-BBP-${if modlOnly then "modl" else if nrnOnly then "nrn" else "all"}";
+    name = "neuron-7.4-BBP-${if modlOnly then "modl" else if nrnOnly then "nrn" else "all"}";
 
-	buildInputs = [ automake autoconf libtool mpiRuntime ncurses readline flex bison python which nrnModl];
+    buildInputs = [ automake autoconf libtool mpiRuntime ncurses readline flex bison python which nrnModl];
 
         src = fetchhg {
-		url = "http://www.neuron.yale.edu/hg/neuron/nrn";
-		rev = "2a2bd3b1c433";
-		sha256 = "1d0g1n8glbrn1bwdxkjhkva6pgrj3v88spmcdjjd85ssik1ij94y"; 
-	};
+        url = "http://www.neuron.yale.edu/hg/neuron/nrn";
+        rev = "2a2bd3b1c433";
+        sha256 = "1d0g1n8glbrn1bwdxkjhkva6pgrj3v88spmcdjjd85ssik1ij94y"; 
+    };
 
 
-	isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
-			then builtins.getAttr "isBlueGene" stdenv else false;
+    isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
+            then builtins.getAttr "isBlueGene" stdenv else false;
 
 
 
@@ -54,29 +54,32 @@ EOF
 
 '';
 
-	preConfigure = "./build.sh";
+    ## run the pre-configure neuron script
+    ## and force the exec prefix to the absolute install dir
+    preConfigure = ''
+                    ./build.sh
+                    export configureFlags="''${configureFlags} --exec-prefix=''${out}"
+                    '';
 
 
-	modlOnlyFlags = " --with-nmodl-only --without-x --without-memacs ";
+    modlOnlyFlags = " --with-nmodl-only --without-x --without-memacs ";
 
-	nrnOnlyFlags = "${if isBGQ then " --enable-bluegeneQ --without-iv --without-memacs --with-paranrn --without-nmodl --host=powerpc64 "
-			 else " --with-paranrn --without-iv --without-nmodl " }";
+    nrnOnlyFlags = "${if isBGQ then " --enable-bluegeneQ --without-iv --without-memacs --with-paranrn --without-nmodl --host=powerpc64 "
+             else " --with-paranrn --without-iv --without-nmodl --with-nrnpython=${python}/bin/python" }";
 
 
-	commonFlags = '' --exec-prefix=''${prefix} '';
+    configureFlags =   (if modlOnly then modlOnlyFlags
+                            else if nrnOnly then nrnOnlyFlags
+                            else " --with-paranrn --without-iv ");
 
-	configureFlags =  commonFlags
-                         + (if modlOnly then modlOnlyFlags
-			  else if nrnOnly then nrnOnlyFlags
-			  else '' --with-paranrn --without-iv '');
+    makeFlags = " ${if nrnOnly then "NMODL=${nrnModl}/bin/nocmodl" else "" } ";
 
-	makeFlags = " ${if nrnOnly then "NMODL=${nrnModl}/bin/nocmodl" else "" } ";
 
-  	enableParallelBuilding = true;	
+    enableParallelBuilding = true;  
 
-	## generate a pkg-config file for viz team cmake compat
-	## need to be removed as soon as neurodamus cmake has been refactored
-  	preInstall = if nrnOnly then ''
+    ## generate a pkg-config file for viz team cmake compat
+    ## need to be removed as soon as neurodamus cmake has been refactored
+    preInstall = if nrnOnly then ''
 mkdir -p $out/lib/pkgconfig;
 cat > $out/lib/pkgconfig/Bluron.pc << EOF
 prefix=$out  
@@ -104,10 +107,19 @@ else if nrnOnly then
 ''
 ln -s ${nrnModl}/bin/modlunit $out/bin/modlunit
 ln -s ${nrnModl}/bin/nocmodl $out/bin/nocmodl
+
+## standardise python neuron install dir if any
+if [[ -d $out/lib/python ]]; then
+    LOCAL_PYTHONVER="$(python -c "from distutils.sysconfig import get_python_version; print(get_python_version())")"
+    LOCAL_PYTHONDIR="$out/lib/python''${LOCAL_PYTHONVER}"
+    mkdir -p ''${LOCAL_PYTHONDIR}
+    mv ''${out}/lib/python ''${LOCAL_PYTHONDIR}/site-packages
+fi
 ''
 else
-'' '';   
+'' 
+'';   
 
-	propagatedBuildInputs = [ readline which libtool ];
-	
+    propagatedBuildInputs = [ readline which libtool ];
+    
 }
