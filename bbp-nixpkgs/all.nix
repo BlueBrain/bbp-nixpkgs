@@ -10,8 +10,9 @@ let
     pkgs:
       with pkgs;
       let 
+		has_slurm = builtins.pathExists "/usr/bin/srun";
 		bbp-mpi = if pkgs.isBlueGene == true then mpi-bgq
-				else if config ? isSlurmCluster == true then mvapich2
+				else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2
 				else mpich2;
 
 		callPackage = newScope mergePkgs;
