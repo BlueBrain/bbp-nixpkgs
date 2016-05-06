@@ -24,11 +24,16 @@ rec {
         
                             # sub cellular sim
                             pkgs.steps-mpi
-                            pkgs.python27Packages.numpy
-                            pkgs.python27
 
                             #utils
                             pkgs.bbp-mpi
+                            
+                            #python env for scientists
+                            pkgs.python27Full                            
+                            pkgs.python27Packages.numpy
+                            pkgs.python27Packages.matplotlib
+                            pkgs.python27Packages.pandas
+                                                        
                        ];
             extraContent = "prepend-path BBP_HOME $targetEnv/";                       
       };
