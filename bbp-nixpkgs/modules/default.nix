@@ -32,6 +32,7 @@ rec {
                             pkgs.python27Full                            
                             pkgs.python27Packages.numpy
                             pkgs.python27Packages.matplotlib
+			    pkgs.python27Packages.six
                             pkgs.python27Packages.pandas
                                                         
                        ];
