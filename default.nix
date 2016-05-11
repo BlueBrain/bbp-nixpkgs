@@ -37,7 +37,7 @@ let
 	## upstream packages
 	std-pkgs = args: (if builtins.pathExists ./std-nixpkgs/default.nix
 				then (import ./std-nixpkgs args) 
-				else (import (fetchTarball https://github.com/adevress/nixpkgs-bbp-upstream/archive/86ba673862361c808782af99b6929c8b921d908f.tar.gz) args));
+				else (import (fetchTarball https://github.com/adevress/nixpkgs-bbp-upstream/archive/2ef71721b47b53aade85cbbaa2ecf6e415e49c71.tar.gz) args));
 	
 	## upstream patched packages
 	patch-pkgs = args: (import ./patch-nixpkgs { std-pkgs = std-pkgs args; } );
