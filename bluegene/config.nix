@@ -25,7 +25,7 @@ bgq-config = rec {
 			# It is impossible to execute core-utils tests on BGQ due to
 			# the sssd default configuration that makes any user-related test fail
 			# see https://github.com/NixOS/nixpkgs/issues/1868 
-			coreutils = pkgs.stdenv.lib.overrideDerivation pkgs.coreutils (oldAttrs : {
+			coreutils = pkgs.coreutils.overrideDerivation (oldAttrs : {
                                 name = oldAttrs.name + "-bgq";
 
 				doCheck = false;
