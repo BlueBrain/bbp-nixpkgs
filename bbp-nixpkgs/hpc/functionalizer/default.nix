@@ -16,16 +16,17 @@
 , libxslt }:
 
 stdenv.mkDerivation rec {
-  name = "functionalizer-3.6.0-DEV";
+  name = "functionalizer-3.7.0";
   buildInputs = [ stdenv pkgconfig boost hpctools zlib cmake mpiRuntime libxml2 python hdf5 ]
    ++ stdenv.lib.optional (generateDoc == true ) [ asciidoc xmlto docbook_xsl libxslt  ];
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/building/Functionalizer";
-    rev = "85d21868571f8bc5144644cd795b4d683846b003";
-    sha256 = "0psb4vkc8qhh72579la4xbd5f48aag66136cvrn1s8nsjymdfsbj";
+    rev = "4f84d8ae165c9f006d3dd41069d0923add24cf9d";
+    sha256 = "0y4916dsqiamh5n37281zwif1iznkskh5avq3qlwy256pmzjfsp7";
   };
   
+
   cmakeFlags=[ "-DBoost_USE_STATIC_LIBS=FALSE"
 	       "-DUNIT_TESTS=TRUE" ]
 	        ++ stdenv.lib.optional (generateDoc == true ) [ "-DFUNCTIONALIZER_DOCUMENTATION=TRUE" ] ;   
