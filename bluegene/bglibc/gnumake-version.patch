@@ -1,0 +1,12 @@
+diff -ur glibc-2.17.bak/configure glibc-2.17/configure
+--- a/configure	2012-12-25 04:02:13.000000000 +0100
++++ b/configure	2016-05-25 18:15:36.873199407 +0200
+@@ -4972,7 +4972,7 @@
+   ac_prog_version=`$MAKE --version 2>&1 | sed -n 's/^.*GNU Make[^0-9]*\([0-9][0-9.]*\).*$/\1/p'`
+   case $ac_prog_version in
+     '') ac_prog_version="v. ?.??, bad"; ac_verc_fail=yes;;
+-    3.79* | 3.[89]*)
++    3.79* | 4.*)
+        ac_prog_version="$ac_prog_version, ok"; ac_verc_fail=no;;
+     *) ac_prog_version="$ac_prog_version, bad"; ac_verc_fail=yes;;
+ 
