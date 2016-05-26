@@ -21,12 +21,19 @@ let
                     configureFlags = oldAttrs.configureFlags + " --enable-threadsafe ";
           });        
 
-          slurm-llnl = std-pkgs.stdenv.lib.overrideDerivation std-pkgs.slurm-llnl ( oldAttrs: {
-            name = oldAttrs.name + "-bbp";
-        
-                        configureFlags = oldAttrs.configureFlags + " --sysconfdir=/etc/slurm "; 
-    
-         });
+	  ##  slurm BBP configuration
+	  #    Add support for Kerberos plugin and allow it to run
+	  #    with system configuration
+
+	 slurm-llnl-minimal = callPackage ./slurm {
+		lua = null;
+		numactl = null;
+		hwloc = null;
+	 };
+
+	 slurm-llnl = slurm-llnl-minimal.override {
+		slurmPlugins = [auks];
+	 };
         
           ## 
           # mvapich2 mpi implementation
@@ -34,6 +41,12 @@ let
           mvapich2 = callPackage ./mvapich2 {
             slurm = slurm-llnl; 
           };
+
+	  auks = callPackage ./auks {
+		slurm-llnl= slurm-llnl-minimal;	
+		nss-plugins = libnss-native-plugins;
+
+	  };
 
           libnss-native-plugins = callPackage ./nss-plugin {
 
