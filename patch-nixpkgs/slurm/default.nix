@@ -20,7 +20,7 @@ let
 
  copyPlugins = list_plugins: if list_plugins == [] then "" else 
 				     ''
-				      cp -f ${(builtins.head list_plugins)}/lib/slurm/* ''$out/lib/slurm/;
+				      cp -f ${(builtins.head list_plugins)}/lib/slurm/* ''${out}/lib/slurm/;
 				      
 				     ''
 				     + copyPlugins (builtins.tail list_plugins)
@@ -29,7 +29,7 @@ let
 in
 
 stdenv.mkDerivation rec {
-  name = "slurm-llnl-bbp-${version}";
+  name = "slurm-llnl-bbp-${if (slurmPlugins != []) then "with-plugins-" else "" }${version}";
   version = "14.11.5";
 
   src = fetchurl {
