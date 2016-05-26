@@ -1,0 +1,23 @@
+diff -ur slurm-spank-plugins-0.23.bak/private-mount.c slurm-spank-plugins-0.23/private-mount.c
+--- slurm-spank-plugins-0.23.bak/private-mount.c	2012-03-30 23:08:04.000000000 +0200
++++ slurm-spank-plugins-0.23/private-mount.c	2016-05-26 12:41:43.804054301 +0200
+@@ -22,6 +22,7 @@
+  ****************************************************************************/
+ 
+ /* private-mount.c - mount fs from /etc/slurm/fstab privately for job/task */
++#define _GNU_SOURCE
+ 
+ #include <sys/types.h>
+ #include <stdlib.h>
+@@ -56,9 +57,9 @@
+ static int _opt_fs_namespace (int val, const char *optarg, int remote);
+ static int _opt_private_mount (int val, const char *optarg, int remote);
+ 
+-typedef enum { NS_SYSTEM, NS_TASK, NS_JOB } mode_t;
++typedef enum { NS_SYSTEM, NS_TASK, NS_JOB } ns_mode_t;
+ 
+-static mode_t ns_mode   = NS_SYSTEM;
++static ns_mode_t ns_mode   = NS_SYSTEM;
+ static List mounts      = NULL;
+ static int allowed      = 0;
+ 
