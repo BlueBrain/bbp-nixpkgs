@@ -30,11 +30,12 @@ in
 
 stdenv.mkDerivation rec {
   name = "slurm-llnl-bbp-${if (slurmPlugins != []) then "with-plugins-" else "" }${version}";
-  version = "14.11.5";
+  version = "15.08.12";
 
   src = fetchurl {
-    url = "http://www.schedmd.com/download/archive/slurm-${version}.tar.bz2";
-    sha256 = "0xx1q9ximsyyipl0xbj8r7ajsz4xrxik8xmhcb1z9nv0aza1rff2";
+    url = [ "http://www.schedmd.com/download/archive/slurm-${version}.tar.bz2"
+	    "http://www.schedmd.com/download/latest/slurm-${version}.tar.bz2" ];
+    sha256 = "1jf3gazr4pv27hf8p52rli0n3yppxcypw60632wrc6glgb0qadyp";
   };
 
   buildInputs = [ python pkgconfig munge perl pam openssl mysql.lib lua hwloc numactl ] 
