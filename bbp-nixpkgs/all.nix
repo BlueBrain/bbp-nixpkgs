@@ -161,6 +161,11 @@ let
 		};
 
 
+
+		nest = enableBGQ callPackage ./hpc/nest {
+			mpiRuntime = bbp-mpi;
+		};
+
 		## 
 		## sub-cellular simulation
 		##

@@ -6,7 +6,8 @@ fi
 export LANG
 export NLSPATH=/opt/ibmcmp/msg/%L/%N:/opt/ibmcmp/vacpp/bg/12.1/msg/%L/%N
 export LD_LIBRARY_PATH=/opt/ibmcmp/lib:$LD_LIBRARY_PATH
-export XLCMP_CFG=/opt/ibmcmp/vac/bg/12.1/etc/vac.cfg.rhel6.5.gcc447
+export OS_RELEASE=`/usr/bin/head -1 /etc/redhat-release | sed -e "s/.*release[ \t]*\([0-9\.]*\).*/\1/g"`
+export XLCMP_CFG=/opt/ibmcmp/vac/bg/12.1/etc/vac.cfg.rhel${OS_RELEASE}.gcc447
 
 # avoid to pass useles options to linker
 # warnings when they are not needed.
