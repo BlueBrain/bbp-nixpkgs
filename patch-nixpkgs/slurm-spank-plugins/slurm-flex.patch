@@ -1,0 +1,12 @@
+diff -ur slurm-spank-plugins-0.23.bak/use-env/Makefile slurm-spank-plugins-0.23/use-env/Makefile
+--- slurm-spank-plugins-0.23.bak/use-env/Makefile	2012-03-30 23:08:04.000000000 +0200
++++ slurm-spank-plugins-0.23/use-env/Makefile	2016-05-26 13:01:56.818695135 +0200
+@@ -28,7 +28,7 @@
+ 	bison -d -o use-env-parser.c $< 
+ 
+ lex.yy.c : use-env-parser.l use-env-parser.h 
+-	lex $<
++	flex $<
+ 
+ clean: 
+ 	rm -f test *.o use-env-parser.[ch] lex.yy.c *.so
