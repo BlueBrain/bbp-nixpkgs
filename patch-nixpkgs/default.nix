@@ -21,41 +21,42 @@ let
                     configureFlags = oldAttrs.configureFlags + " --enable-threadsafe ";
           });        
 
-	  ##  slurm BBP configuration
-	  #    Add support for Kerberos plugin and allow it to run
-	  #    with system configuration
+          ##  slurm BBP configuration
+          #    Add support for Kerberos plugin and allow it to run
+          #    with system configuration
 
-	 slurm-llnl-minimal = callPackage ./slurm {
-		lua = null;
-		numactl = null;
-		hwloc = null;
-	 };
+         slurm-llnl-minimal = callPackage ./slurm {
+                lua = null;
+                numactl = null;
+                hwloc = null;
+         };
 
-	 slurm-llnl = slurm-llnl-minimal.override {
-		slurmPlugins = [auks slurm-plugins];
-		lua = lua5_1;
-	 };
+         slurm-llnl = slurm-llnl-minimal.override {
+                slurmPlugins = [auks slurm-plugins];
+                lua = lua5_1;
+         };
  
          ## slurm auks plugin
          #
-	 auks = callPackage ./auks {
-		slurm-llnl= slurm-llnl-minimal;	
-		nss-plugins = libnss-native-plugins;
+         auks = callPackage ./auks {
+                slurm-llnl= slurm-llnl-minimal; 
+                nss-plugins = libnss-native-plugins;
 
-	  };
+          };
 
-	 ## slurm lua plugin
+         ## slurm lua plugin
          slurm-plugins = callPackage ./slurm-spank-plugins {
                 slurm-llnl= slurm-llnl-minimal;
-		lua = lua5_1;
+                lua = lua5_1;
 
-	 };
+         };
        
           ## 
           # mvapich2 mpi implementation
           #
-          mvapich2 = callPackage ./mvapich2 {
-          };
+          mvapich2 = callPackage ./mvapich2 { };
+          
+          
           libnss-native-plugins = callPackage ./nss-plugin {
 
 
