@@ -195,7 +195,7 @@ let
 		modules = (import ./modules) { pkgs = mergePkgs; };
 
 
-
+		inherit enableBGQ;
         };
         in
         mergePkgs;
