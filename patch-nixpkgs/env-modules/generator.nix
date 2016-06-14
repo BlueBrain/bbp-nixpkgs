@@ -2,6 +2,7 @@
 stdenv,
 buildEnv,
 name,
+moduleFilePath ? name,
 packages,
 prefixDir ? "",
 description ? "" ,
@@ -112,7 +113,7 @@ EOF
 		
 		
 	installPhase = ''
-		install -D modulefile $out/share/modulefiles/${prefixDir}/${name};
+		install -D modulefile $out/share/modulefiles/${moduleFilePath};
 	'';
 
 }
