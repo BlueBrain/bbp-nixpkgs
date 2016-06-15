@@ -3,7 +3,7 @@ stdenv,
 buildEnv,
 name,
 version ? "",
-moduleFilePath ? "",
+moduleFilePrefix ? "nix",
 conflicts ? [] ,
 packages,
 isLibrary ? false,
@@ -22,11 +22,9 @@ assert builtins.length packages > 0;
             in 
                 builtins.any subPathExist  packages;
     
-    moduleFileSuffix = (if moduleFilePath == "" then
-                        (if version != ""
+    moduleFileSuffix = if version != ""
                             then "${name}/${version}" 
-                            else "${name}")
-                        else moduleFilePath);
+                            else "${name}";
                         
      depBuilder = depPrefixString: depList:  if depList == [] 
                                                 then ''''
@@ -144,12 +142,12 @@ EOF
     
     
     installPhase = ''
-        mkdir -p $out/share/modulefiles/
-        install -D modulefile $out/share/modulefiles/${moduleFileSuffix};
+        mkdir -p $out/share/modulefiles/${moduleFilePrefix}
+        install -D modulefile $out/share/modulefiles/${moduleFilePrefix}/${moduleFileSuffix};
     '';
     
     passthru = { 
-        modulename = "${moduleFileSuffix}";
+        modulename = "${moduleFilePrefix}/${moduleFileSuffix}";
     };
 
 }
