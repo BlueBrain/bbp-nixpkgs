@@ -7,7 +7,7 @@ numactl ? null,
 hwloc ? null,
 slurm-llnl ? null,
 libibverbs ? null,
-librdmacm ? true,
+librdmacm ? null,
 enableXrc ? false,
 debugInfo ? true,
 extraConfigureFlags ? [] }:
