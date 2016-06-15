@@ -54,7 +54,13 @@ let
           ## 
           # mvapich2 mpi implementation
           #
-          mvapich2 = callPackage ./mvapich2 { };
+          mvapich2 = callPackage ./mvapich2 {
+		# libibverbs needs a recompilation and a sync
+		# on viz cluster lx/viz1 due to InfiniBand OFed ABI maddness 
+		libibverbs = null;
+		librdmacm =  null;
+		extraConfigureFlags = [ "--with-device=ch3:nemesis"];
+	   };
           
           
           libnss-native-plugins = callPackage ./nss-plugin {
