@@ -24,6 +24,8 @@ let generic-modules = rec {
                             pkgs.neurodamus
                             pkgs.neuron
                             pkgs.reportinglib
+			    pkgs.readline
+			    pkgs.ncurses
         
                             # sub cellular sim
                             pkgs.steps-mpi
@@ -42,7 +44,7 @@ let generic-modules = rec {
                             pkgs.python27Packages.pandas
                                                         
                        ];
-            extraContent = "prepend-path BBP_HOME $targetEnv/";                       
+            extraContent = "setenv BBP_HOME $targetEnv/";                       
       };
 
 
@@ -423,6 +425,8 @@ with generic-modules; rec {
                             pkgs.neurodamus
                             pkgs.neuron
                             pkgs.reportinglib
+                            pkgs.readline
+                            pkgs.ncurses      
                        ];
             extraContent = "prepend-path BBP_HOME $targetEnv/";
      };
