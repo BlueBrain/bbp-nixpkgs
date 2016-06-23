@@ -97,8 +97,8 @@ let
 
 		};
 
-		highfive = callPackage ./hpc/highfive {
-
+		highfive = callPackage ./hpc/highfive {	
+		
 		};
 
 		flatindexer = callPackage ./hpc/FLATIndexer {

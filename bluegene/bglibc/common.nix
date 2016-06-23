@@ -37,28 +37,31 @@ stdenv.mkDerivation ({
   /* Don't try to apply these patches to the Hurd's snapshot, which is
      older.  */
   patches = stdenv.lib.optionals (hurdHeaders == null)
-    [ /* Have rpcgen(1) look for cpp(1) in $PATH.  */
-      ./rpcgen-path.patch
+    [ 
+
+
+      /* bg libc patch */
+      ./bgq-glibc-2.17.patch2
+
+
+      /* Have rpcgen(1) look for cpp(1) in $PATH.  */
+      /* ./rpcgen-path.patch */
 
       /* gnumake minimal make version fix */
       ./gnumake-version.patch
-
-      /* bg libc patch */
-      ./bgq-glibc-2.17.diff
-
       /* Allow NixOS and Nix to handle the locale-archive. */
-      ./nix-locale-archive.patch
+      /* ./nix-locale-archive.patch */
 
       /* Don't use /etc/ld.so.cache, for non-NixOS systems.  */
-      ./dont-use-system-ld-so-cache.patch
+      ./dont-use-system-ld-so-cache-bg.patch
 
       /* Without this patch many KDE binaries crash. */
-      ./glibc-elf-localscope.patch
+      /* ./glibc-elf-localscope.patch*/ 
 
       /* Add blowfish password hashing support.  This is needed for
          compatibility with old NixOS installations (since NixOS used
          to default to blowfish). */
-      ./glibc-crypt-blowfish.patch
+      /* ./glibc-crypt-blowfish.patch */
 
       /* Fix for random "./sysdeps/posix/getaddrinfo.c:1467:
          rfc3484_sort: Assertion `src->results[i].native == -1 ||
@@ -87,37 +90,40 @@ stdenv.mkDerivation ({
     echo "LDFLAGS-nscd += -static-libgcc" >> nscd/Makefile
   '';
 
+
+
+  dontDisableStatic = true;
+
   configureFlags =
     [ "-C"
-      "--enable-add-ons"
-      "--enable-obsolete-rpc"
       "--sysconfdir=/etc"
       "--localedir=/var/run/current-system/sw/lib/locale"
-      "libc_cv_ssp=no"
+
+	# bluegene/Q flags
+      "--disable-build-nscd"
+      "--disable-nscd"
+      "--enable-static"
+      "--disable-multilib"
+      "--enable-static-nss"
+      "--enable-shared"
+      "--without-cvs"
+      "--with-elf"
+      "--enable-__cxa_atexit"
+      "--with-__thread"
+      "--without-gd"
+
       (if kernelHeaders != null
        then "--with-headers=${kernelHeaders}/include"
        else "--without-headers")
       (if profilingLibraries
        then "--enable-profile"
        else "--disable-profile")
-    ] ++ stdenv.lib.optionals (cross == null && kernelHeaders != null) [
-      "--enable-kernel=2.6.32"
     ] ++ stdenv.lib.optionals (cross != null) [
       (if cross.withTLS then "--with-tls" else "--without-tls")
       (if cross.float == "soft" then "--without-fp" else "--with-fp")
-    ] ++ stdenv.lib.optionals (cross != null
-          && cross.platform ? kernelMajor
-          && cross.platform.kernelMajor == "2.6") [
-      "--enable-kernel=2.6.0"
-      "--with-__thread"
-    ] ++ stdenv.lib.optionals (cross == null && stdenv.isArm) [
-      "--host=arm-linux-gnueabi"
-      "--build=arm-linux-gnueabi"
+    ];
+  
 
-      # To avoid linking with -lgcc_s (dynamic link)
-      # so the glibc does not depend on its compiler store path
-      "libc_cv_as_needed=no"
-    ] ++ stdenv.lib.optional withGd "--with-gd";
 
   installFlags = [ "sysconfdir=$(out)/etc" ];
 
@@ -136,6 +142,8 @@ stdenv.mkDerivation ({
   # preprocessor symbol `__i686' will be defined to `1'.  This causes
   # the symbol __i686.get_pc_thunk.dx to be mangled.
   NIX_CFLAGS_COMPILE = stdenv.lib.optionalString (stdenv.system == "i686-linux") "-U__i686";
+
+
 }
 
 # Remove the `gccCross' attribute so that the *native* glibc store path
@@ -146,17 +154,7 @@ stdenv.mkDerivation ({
   name = name + "-${version}" +
     stdenv.lib.optionalString (cross != null) "-${cross.config}";
 
-  src =
-    if hurdHeaders != null
-    then fetchgit {
-      # Shamefully the "official" glibc won't build on GNU, so use the one
-      # maintained by the Hurd folks, `tschwinge/Roger_Whittaker' branch.
-      # See <http://www.gnu.org/software/hurd/source_repositories/glibc.html>.
-      url = "git://git.sv.gnu.org/hurd/glibc.git";
-      sha256 = "cecec9dd5a2bafc875c56b058b6d7628a22b250b53747513dec304f31ffdb82d";
-      rev = "d3cdecf18e6550b0984a42b43ed48c5fb26501e1";
-    }
-    else fetchurl {
+  src = fetchurl {
       url = "mirror://gnu/glibc/glibc-${version}.tar.gz";
       sha256 = "0ym3zk9ii64279wgw7pw9xkbxczy2ci7ka6mnfs05rhlainhicm3";
     };
@@ -173,19 +171,27 @@ stdenv.mkDerivation ({
     mkdir ../build
     cd ../build
 
+   export libc_cv_ppc_machine=yes
+   export libc_cv_forced_unwind=yes
+   export libc_cv_c_cleanup=yes
+   export libc_cv_powerpc64_tls=yes
+
+   # remove stack protector for CNK
+   export libc_cv_ssp=no
+ 
+
     configureScript="`pwd`/../$sourceRoot/configure"
 
-    ${stdenv.lib.optionalString (stdenv.cc.libc != null)
-      ''makeFlags="$makeFlags BUILD_LDFLAGS=-Wl,-rpath,${stdenv.cc.libc}/lib"''
-    }
-
-    ${preConfigure}
+      ${preConfigure}
   '';
+
+#   ${stdenv.lib.optionalString (stdenv.cc.libc != null)
+#      ''makeFlags="$makeFlags BUILD_LDFLAGS=-Wl,-rpath,${stdenv.cc.libc}/lib"''
+#    }
 
   meta = {
     homepage = http://www.gnu.org/software/libc/;
-    description = "The GNU C Library"
-      + stdenv.lib.optionalString (hurdHeaders != null) ", for GNU/Hurd";
+    description = "The GNU C Library";
 
     longDescription =
       '' Any Unix-like operating system needs a C library: the library which
@@ -201,19 +207,4 @@ stdenv.mkDerivation ({
     maintainers = [ stdenv.lib.maintainers.ludo ];
     #platforms = stdenv.lib.platforms.linux;
   } // meta;
-}
-
-// stdenv.lib.optionalAttrs withGd {
-  preBuild = "unset NIX_DONT_SET_RPATH";
-}
-
-// stdenv.lib.optionalAttrs (hurdHeaders != null) {
-  # Work around the fact that the configure snippet that looks for
-  # <hurd/version.h> does not honor `--with-headers=$sysheaders' and that
-  # glibc expects Mach, Hurd, and pthread headers to be in the same place.
-  CPATH = "${hurdHeaders}/include:${machHeaders}/include:${libpthreadHeaders}/include";
-
-  # Install NSS stuff in the right place.
-  # XXX: This will be needed for all new glibcs and isn't Hurd-specific.
-  makeFlags = ''vardbdir="$out/var/db"'';
 })
