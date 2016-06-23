@@ -68,6 +68,14 @@ let
 
           };
 
+         ## PETSc utility toolkit
+         #
+         petsc = callPackage ./petsc {
+		mpiRuntime = mpich2;
+          };
+
+
+
          environment-modules =  callPackage ./env-modules { 
             tcl = tcl-8_5;
          };
