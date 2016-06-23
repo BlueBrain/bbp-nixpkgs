@@ -1,0 +1,46 @@
+diff -ur glibc-2.17.old/elf/ldconfig.c glibc-2.17/elf/ldconfig.c
+--- glibc-2.17.old/elf/ldconfig.c	2016-06-16 11:23:48.051998916 +0200
++++ glibc-2.17/elf/ldconfig.c	2016-06-16 11:33:31.052348898 +0200
+@@ -50,7 +50,7 @@
+ #endif
+ 
+ #ifndef LD_SO_CONF
+-# define LD_SO_CONF SYSCONFDIR "/ld.so.bgq.conf"
++# define LD_SO_CONF PREFIX "/etc/ld.so.bgq.conf"
+ #endif
+ 
+ /* Get libc version number.  */
+diff -ur glibc-2.17.old/elf/Makefile glibc-2.17/elf/Makefile
+--- glibc-2.17.old/elf/Makefile	2016-06-16 11:23:48.041998909 +0200
++++ glibc-2.17/elf/Makefile	2016-06-16 11:36:26.742448830 +0200
+@@ -436,12 +436,12 @@
+ 
+ $(objpfx)pldd: $(pldd-modules:%=$(objpfx)%.o)
+ 
+-SYSCONF-FLAGS := -D'SYSCONFDIR="$(sysconfdir)"'
+-CFLAGS-ldconfig.c = $(SYSCONF-FLAGS) -D'LIBDIR="/lib64/bgq"' \
+-		-D'SLIBDIR="/lib64/bgq"' -DIS_IN_ldconfig=1
+-CFLAGS-dl-cache.c = $(SYSCONF-FLAGS)
+-CFLAGS-cache.c = $(SYSCONF-FLAGS)
+-CFLAGS-rtld.c = $(SYSCONF-FLAGS)
++PREFIX-FLAGS := -D'PREFIX="$(prefix)"'
++CFLAGS-ldconfig.c = $(PREFIX-FLAGS) -D'LIBDIR="$(libdir)"' \
++		-D'SLIBDIR="$(slibdir)"' -DIS_IN_ldconfig=1
++CFLAGS-dl-cache.c = $(PREFIX-FLAGS)
++CFLAGS-cache.c = $(PREFIX-FLAGS)
++CFLAGS-rtld.c = $(PREFIX-FLAGS)
+ 
+ CPPFLAGS-.os += $(if $(filter $(@F),$(patsubst %,%.os,$(all-rtld-routines))),\
+ 		     -DNOT_IN_libc=1 -DIS_IN_rtld=1 -DIN_LIB=rtld)
+diff -ur glibc-2.17.old/sysdeps/generic/dl-cache.h glibc-2.17/sysdeps/generic/dl-cache.h
+--- glibc-2.17.old/sysdeps/generic/dl-cache.h	2016-06-16 11:23:48.281999049 +0200
++++ glibc-2.17/sysdeps/generic/dl-cache.h	2016-06-16 11:38:58.102526865 +0200
+@@ -27,7 +27,7 @@
+   ((flags) == 1 || (flags) == _DL_CACHE_DEFAULT_ID)
+ #endif
+ 
+-#define LD_SO_CACHE "/etc/ld.so.bgq.cache"
++#define LD_SO_CACHE PREFIX "/etc/ld.so.bgq.cache"
+ 
+ #if 0
+ 
