@@ -58,32 +58,12 @@ in
 
   //
 
-  (if hurdHeaders != null
-   then rec {
-     inherit machHeaders hurdHeaders libpthreadHeaders mig fetchgit;
-
-     propagatedBuildInputs = [ machHeaders hurdHeaders libpthreadHeaders ];
-
-     passthru = {
-       # When building GCC itself `propagatedBuildInputs' above is not
-       # honored, so we pass it here so that the GCC builder can do the right
-       # thing.
-       inherit propagatedBuildInputs;
-     };
-   }
-   else { })
-
-  //
-
   (if cross != null
    then {
       preConfigure = ''
         sed -i s/-lgcc_eh//g "../$sourceRoot/Makeconfig"
 
         cat > config.cache << "EOF"
-        libc_cv_forced_unwind=yes
-        libc_cv_c_cleanup=yes
-        libc_cv_gnu89_inline=yes
         # Only due to a problem in gcc configure scripts:
         libc_cv_sparc64_tls=${if cross.withTLS then "yes" else "no"}
         EOF
@@ -93,11 +73,12 @@ in
         export RANLIB="$crossConfig-ranlib"
 
         dontStrip=1
+
       '';
 
       # To avoid a dependency on the build system 'bash'.
-      preFixup = ''
-        rm $out/bin/{ldd,tzselect,catchsegv,xtrace}
+      preFixup = '' 
+        rm $out/bin/{ldd,tzselect,catchsegv,xtrace} || true
       '';
     }
    else {}))

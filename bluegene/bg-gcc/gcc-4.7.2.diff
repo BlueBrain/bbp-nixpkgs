@@ -1,0 +1,1360 @@
+# begin_generated_IBM_copyright_prolog                             
+#                                                                  
+# This is an automatically generated copyright prolog.             
+# After initializing,  DO NOT MODIFY OR MOVE                       
+# ================================================================ 
+#                                                                  
+# Licensed Materials - Property of IBM                             
+# Blue Gene/Q                                                      
+# (C) Copyright IBM Corp. 2012  All Rights Reserved                 
+# US Government Users Restricted Rights - Use,                     
+# duplication or disclosure restricted by GSA ADP                  
+# Schedule contract with IBM Corp.                                 
+#                                                                  
+# This software is available to you under the                      
+# GNU General Public License (GPL).                                
+#                                                                  
+# ================================================================ 
+#                                                                  
+# end_generated_IBM_copyright_prolog                               
+Index: libgomp/configure
+===================================================================
+--- libgomp/configure	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ libgomp/configure	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -15167,39 +15167,8 @@
+ if test x$enable_linux_futex = xyes; then
+   :
+ fi
++# On BGQ we don't want GOMP changing pthread affinity
+ 
+-
+-# Check for pthread_{,attr_}[sg]etaffinity_np.
+-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+-/* end confdefs.h.  */
+-#define _GNU_SOURCE
+-   #include <pthread.h>
+-int
+-main ()
+-{
+-cpu_set_t cpuset;
+-   pthread_attr_t attr;
+-   pthread_getaffinity_np (pthread_self (), sizeof (cpu_set_t), &cpuset);
+-   if (CPU_ISSET (0, &cpuset))
+-     CPU_SET (1, &cpuset);
+-   else
+-     CPU_ZERO (&cpuset);
+-   pthread_setaffinity_np (pthread_self (), sizeof (cpu_set_t), &cpuset);
+-   pthread_attr_init (&attr);
+-   pthread_attr_getaffinity_np (&attr, sizeof (cpu_set_t), &cpuset);
+-   pthread_attr_setaffinity_np (&attr, sizeof (cpu_set_t), &cpuset);
+-  ;
+-  return 0;
+-}
+-_ACEOF
+-if ac_fn_c_try_link "$LINENO"; then :
+-
+-$as_echo "#define HAVE_PTHREAD_AFFINITY_NP 1" >>confdefs.h
+-
+-fi
+-rm -f core conftest.err conftest.$ac_objext \
+-    conftest$ac_exeext conftest.$ac_ext
+-
+ # At least for glibc, clock_gettime is in librt.  But don't pull that
+ # in if it still doesn't give us the function we want.
+ if test $ac_cv_func_clock_gettime = no; then
+@@ -16143,7 +16112,7 @@
+ # which will force linkage against -lpthread (or equivalent for the system).
+ # That's not 100% ideal, but about the best we can do easily.
+ if test $enable_shared = yes; then
+-  link_gomp="-lgomp %{static: $LIBS}"
++  link_gomp="-lgomp %{!dynamic: $LIBS}"
+ else
+   link_gomp="-lgomp $LIBS"
+ fi
+Index: libgomp/configure.ac
+===================================================================
+--- libgomp/configure.ac	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ libgomp/configure.ac	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -207,34 +207,11 @@
+ 
+ GCC_LINUX_FUTEX(:)
+ 
++# On BGQ we don't want GOMP changing pthread affinity
+ # Check for pthread_{,attr_}[sg]etaffinity_np.
+-AC_LINK_IFELSE(
+- [AC_LANG_PROGRAM(
+-  [#define _GNU_SOURCE
+-   #include <pthread.h>],
+-  [cpu_set_t cpuset;
+-   pthread_attr_t attr;
+-   pthread_getaffinity_np (pthread_self (), sizeof (cpu_set_t), &cpuset);
+-   if (CPU_ISSET (0, &cpuset))
+-     CPU_SET (1, &cpuset);
+-   else
+-     CPU_ZERO (&cpuset);
+-   pthread_setaffinity_np (pthread_self (), sizeof (cpu_set_t), &cpuset);
+-   pthread_attr_init (&attr);
+-   pthread_attr_getaffinity_np (&attr, sizeof (cpu_set_t), &cpuset);
+-   pthread_attr_setaffinity_np (&attr, sizeof (cpu_set_t), &cpuset);])],
+-  AC_DEFINE(HAVE_PTHREAD_AFFINITY_NP, 1,
+-[	Define if pthread_{,attr_}{g,s}etaffinity_np is supported.]))
+ 
+ # At least for glibc, clock_gettime is in librt.  But don't pull that
+ # in if it still doesn't give us the function we want.
+-if test $ac_cv_func_clock_gettime = no; then
+-  AC_CHECK_LIB(rt, clock_gettime,
+-    [LIBS="-lrt $LIBS"
+-     AC_DEFINE(HAVE_CLOCK_GETTIME, 1,
+-	       [Define to 1 if you have the `clock_gettime' function.])])
+-fi
+-
+ # See if we support thread-local storage.
+ GCC_CHECK_TLS
+ 
+Index: libgomp/team.c
+===================================================================
+--- libgomp/team.c	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ libgomp/team.c	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -397,7 +397,17 @@
+ 	pthread_attr_setstacksize (&thread_attr, stacksize);
+       attr = &thread_attr;
+     }
++  if (gomp_spreadlayout_on)
++    {
++      size_t stacksize;
++      pthread_attr_init (&thread_attr);
++      pthread_attr_setdetachstate (&thread_attr, PTHREAD_CREATE_DETACHED);
++      if (! pthread_attr_getstacksize (&gomp_thread_attr, &stacksize))
++        pthread_attr_setstacksize (&thread_attr, stacksize);
++      attr = &thread_attr;
+ 
++    }
++
+   start_data = gomp_alloca (sizeof (struct gomp_thread_start_data)
+ 			    * (nthreads-i));
+ 
+@@ -427,13 +437,18 @@
+ 
+       if (gomp_cpu_affinity != NULL)
+ 	gomp_init_thread_affinity (attr);
++      if (gomp_spreadlayout_on)
++        {
++          gomp_init_spread_affinity (attr);
+ 
++        }
++
+       err = pthread_create (&pt, attr, gomp_thread_start, start_data);
+       if (err != 0)
+ 	gomp_fatal ("Thread creation failed: %s", strerror (err));
+     }
+ 
+-  if (__builtin_expect (gomp_cpu_affinity != NULL, 0))
++  if (__builtin_expect (gomp_cpu_affinity != NULL, 0) || gomp_spreadlayout_on)
+     pthread_attr_destroy (&thread_attr);
+ 
+  do_release:
+Index: libgomp/env.c
+===================================================================
+--- libgomp/env.c	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ libgomp/env.c	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -30,6 +30,8 @@
+ #include "libgomp_f.h"
+ #include <ctype.h>
+ #include <stdlib.h>
++#include <unistd.h>  /* Contains definition of sysconf() system subroutine. */
++
+ #ifdef STRING_WITH_STRINGS
+ # include <string.h>
+ # include <strings.h>
+@@ -44,10 +46,14 @@
+ #endif
+ #include <limits.h>
+ #include <errno.h>
+-
++#include <stdio.h>
++#include <stdint.h>
+ #ifndef HAVE_STRTOULL
+ # define strtoull(ptr, eptr, base) strtoul (ptr, eptr, base)
+ #endif
++extern int __bg_cpu_count __attribute__ ((__weak__));
++int gomp_num_cpus;
++int gomp_min_cpu;
+ 
+ struct gomp_task_icv gomp_global_icv = {
+   .nthreads_var = 1,
+@@ -58,6 +64,8 @@
+ };
+ 
+ unsigned short *gomp_cpu_affinity;
++size_t gomp_spreadlayout_on;
++struct gomp_hwdthread_def gomp_hwthreads[64];
+ size_t gomp_cpu_affinity_len;
+ unsigned long gomp_max_active_levels_var = INT_MAX;
+ unsigned long gomp_thread_limit_var = ULONG_MAX;
+@@ -474,7 +482,155 @@
+   gomp_error ("Invalid value for environment variable OMP_WAIT_POLICY");
+   return -1;
+ }
++static int gomp_hwthreads_bfs_cmp(const void* athr, const void* bthr)
++{
++  const gomp_hwdthread_def* a = (const gomp_hwdthread_def*)athr;
++  const gomp_hwdthread_def* b = (const gomp_hwdthread_def*)bthr;
++  int a_set = a->cpu_id - a->core_id;
++  int b_set = b->cpu_id - b->core_id;
++  return a_set == b_set ? a->core_id - b->core_id : a_set - b_set;
++}
++static int gomp_hwthreads_spread_cmp(const void* athr, const void* bthr)
++{
++  const gomp_hwdthread_def* a = (const gomp_hwdthread_def*)athr;
++  const gomp_hwdthread_def* b = (const gomp_hwdthread_def*)bthr;
++  const int cpus           = gomp_num_cpus;
++  const int parthds        = gomp_global_icv.nthreads_var;
+ 
++  int remainder  = parthds % (cpus/4); // In case the # of threads is not divisible by 16
++  int depth      = parthds / (cpus/4); // Each core should have at least this many threads
++  if( depth == 0 )
++     return gomp_hwthreads_bfs_cmp(athr,bthr);  // Do a BF layout if threads <= 16.
++
++  int a_cpu_mod   = a->cpu_id - a->core_id;
++  int b_cpu_mod   = b->cpu_id - b->core_id;
++  int depth_for_a = ( a->cpu_id - gomp_min_cpu < remainder*4 ) ? depth+1 : depth;
++  int depth_for_b = ( b->cpu_id - gomp_min_cpu < remainder*4 ) ? depth+1 : depth;
++  if( a_cpu_mod >= depth_for_a && b_cpu_mod < depth_for_b )
++     return 1;
++
++  if( a_cpu_mod < depth_for_a && b_cpu_mod >= depth_for_b )
++     return -1;
++  return a->cpu_id - b->cpu_id;
++}
++static void gomp_mergesort(void *A, size_t n, size_t sz,
++                      int(*cmp)(const void*, const void*))
++{
++  /* An array of 0 or 1 elements is always sorted */
++  if(n < 2) return;
++  /* A is the first half; it has An elements */
++  /* B is the second half; it has Bn elements */
++  size_t An = n/2;
++  size_t Bn = n - An;
++  void*  B  = A + An*sz;
++
++  gomp_mergesort(A, An, sz, cmp);
++  gomp_mergesort(B, Bn, sz, cmp);
++
++  /* A and B are now sorted; merge them into C */
++  void* C = malloc(n*sz);
++  size_t i=0, j=0, k=0;
++  /* Take the smallest element from the head of A or B until we have
++   * used up all of A or B.
++   *       */
++  while(i<An && j<Bn)
++  { 
++    if(cmp(A+i*sz, B+j*sz) < 0)
++      memcpy(C+(k++)*sz, A+(i++)*sz, sz);
++    else
++      memcpy(C+(k++)*sz, B+(j++)*sz, sz);
++  }
++  /* Any remaining elements are appended to C */
++  if(i<An) {
++    memcpy(C+k*sz, A+i*sz, (An-i)*sz); }
++  if(j<Bn) { 
++    memcpy(C+k*sz, B+j*sz, (Bn-j)*sz); }
++  /* copy C back into A */
++  memcpy(A, C, n*sz);
++}
++#define UNSIGNED64(x) x##ULL
++
++#define _BGQ_SET(w,b,v) (((v) & ((UNSIGNED64(2)<<((w)-1))-1)) << (63-(b)))
++#define gomp_mfspr( SPRN )\
++({\
++   uint64_t tmp;\
++   asm volatile ("mfspr %0,%1" : "=&r" (tmp) : "i" (SPRN) );\
++   tmp;\
++})
++
++uint64_t gomp_Kernel_ThreadMask(uint32_t t)
++{
++    uint64_t gomp_sprValue = gomp_mfspr( 0x107 );
++    uint32_t gomp_numprocs = (uint32_t)((gomp_sprValue >> 8) & 0xFF); // number of processes in App/Job
++    uint64_t gomp_numCores = (uint64_t)((gomp_sprValue >> 32) & 0x0F) + 1;
++    uint64_t gomp_AppLeaderCore = (uint64_t)((gomp_sprValue >> 36) & 0x0F); // Normally 0. Can be non-zero for sub-block jobs
++    uint64_t thds = (gomp_numCores*4)/gomp_numprocs; // number of threads in the Job on this node
++    uint64_t thdcnt = thds;
++    uint64_t mask = 0;
++    if (t >= gomp_numprocs) return 0; // T coordinate is out of range. Return mask with no bits set
++    while (thdcnt--)
++    {
++        mask <<= 1;
++        mask |= 1;
++    }
++    mask <<= (64 - thds - t * thds);
++    mask >>= gomp_AppLeaderCore*4; // potential adjust for sub-node sub-block job              
++    return mask;
++}
++/* Parse the GOMP_BG_SPREADLAYOUT environment varible.  Return true if one was
++   present and it was successfully parsed.  */
++
++
++static bool
++gomp_parse_spreadlayout (void)
++{
++  uint64_t cpu_bitvector=0;
++  char *spread     = getenv("GOMP_BG_SPREADLAYOUT");
++  if (spread != NULL && strncasecmp(spread, "YES", 3) == 0)  {
++    uint64_t gomp_sprValue = gomp_mfspr( 0x107 );
++    uint8_t gomp_myProcessorID = (uint8_t)(gomp_mfspr(0x107))&0x7f; // Processor ID
++    uint32_t gomp_numprocs = (uint32_t)((gomp_sprValue >> 8) & 0xFF); // number of processes in App/Job
++    uint64_t threadMask = 0;
++    uint32_t t;
++    for (t=0; t<gomp_numprocs; t++)
++    {
++      threadMask = gomp_Kernel_ThreadMask(t);
++      if (_BGQ_SET(1,gomp_myProcessorID,1) & threadMask) {
++          cpu_bitvector = threadMask;
++          break;  /* Break out  */
++      }
++    }
++    int thr=0;
++    int cpu;
++    for(cpu=0; cpu<64; ++cpu)
++    {
++      uint64_t cpu_mask = 1ull << (63-cpu);
++      if( cpu_bitvector & cpu_mask )
++      {
++        gomp_hwthreads[thr].cpu_id  = cpu;
++        gomp_hwthreads[thr].core_id = cpu - (cpu%4);   /* 0, 4, 8, 12, ... */
++        ++thr;
++      }
++    }
++    gomp_min_cpu = gomp_hwthreads[0].cpu_id;
++    if (__bg_cpu_count)
++       gomp_num_cpus = __bg_cpu_count;
++    else
++       gomp_num_cpus = sysconf (_SC_NPROCESSORS_ONLN);
++
++    for(cpu=0; cpu<gomp_num_cpus; ++cpu) {
++       if(gomp_hwthreads[cpu].cpu_id < gomp_min_cpu)
++         gomp_min_cpu = gomp_hwthreads[cpu].cpu_id;
++ 
++    }      
++    gomp_mergesort(&gomp_hwthreads[0],gomp_num_cpus,
++              sizeof(gomp_hwthreads[0]), gomp_hwthreads_spread_cmp);
++    return(1);
++  }
++  else return(0);
++}
++ 
++
+ /* Parse the GOMP_CPU_AFFINITY environment varible.  Return true if one was
+    present and it was successfully parsed.  */
+ 
+@@ -593,10 +749,22 @@
+   if (!parse_unsigned_long_list ("OMP_NUM_THREADS",
+ 				 &gomp_global_icv.nthreads_var,
+ 				 &gomp_nthreads_var_list,
+-				 &gomp_nthreads_var_list_len))
++				 &gomp_nthreads_var_list_len))  {
+     gomp_global_icv.nthreads_var = gomp_available_cpus;
++  }
++  else {
++    if (gomp_global_icv.nthreads_var > 64) {
++       gomp_global_icv.nthreads_var = 64;
++       printf("GOMP runtime library warning. An attempt was made to increase the number of OpenMP threads past the thread limit 64.\n");
++       printf("The thread limit was set to 64\n");
++
++    }
++  }
++
+   if (parse_affinity () || bind_var)
+     gomp_init_affinity ();
++  gomp_spreadlayout_on = gomp_parse_spreadlayout();
++  if (gomp_spreadlayout_on) gomp_spread_affinity(); 
+   wait_policy = parse_wait_policy ();
+   if (!parse_spincount ("GOMP_SPINCOUNT", &gomp_spin_count_var))
+     {
+Index: libgomp/libgomp.h
+===================================================================
+--- libgomp/libgomp.h	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ libgomp/libgomp.h	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -407,6 +407,12 @@
+ 
+ extern unsigned short *gomp_cpu_affinity;
+ extern size_t gomp_cpu_affinity_len;
++extern size_t gomp_spreadlayout_on;
++typedef struct gomp_hwdthread_def {
++    int cpu_id;
++    int core_id;
++  } gomp_hwdthread_def;
++extern struct gomp_hwdthread_def gomp_hwthreads[64];
+ 
+ /* Function prototypes.  */
+ 
+@@ -414,6 +420,8 @@
+ 
+ extern void gomp_init_affinity (void);
+ extern void gomp_init_thread_affinity (pthread_attr_t *);
++extern void gomp_init_spread_affinity (pthread_attr_t *);
++extern void gomp_spread_affinity (void);
+ 
+ /* alloc.c */
+ 
+Index: libgomp/config/linux/affinity.c
+===================================================================
+--- libgomp/config/linux/affinity.c	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ libgomp/config/linux/affinity.c	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -32,11 +32,9 @@
+ #include "proc.h"
+ #include <stdlib.h>
+ #include <unistd.h>
+-
++static unsigned int affinity_counter;
+ #ifdef HAVE_PTHREAD_AFFINITY_NP
+ 
+-static unsigned int affinity_counter;
+-
+ void
+ gomp_init_affinity (void)
+ {
+@@ -117,7 +115,29 @@
+ }
+ 
+ #else
++void
++gomp_spread_affinity (void)
++{
++  cpu_set_t cpuset;
++  CPU_ZERO (&cpuset);
++  CPU_SET (gomp_hwthreads[0].cpu_id, &cpuset);
++  pthread_setaffinity_np (pthread_self (), sizeof (cpuset), &cpuset);
++  affinity_counter = 1;
+ 
++}
++void
++gomp_init_spread_affinity (pthread_attr_t *attr)
++{
++  unsigned int cpu;
++  cpu_set_t cpuset;
++
++  cpu = __sync_fetch_and_add (&affinity_counter, 1);
++  CPU_ZERO (&cpuset);
++  CPU_SET (gomp_hwthreads[cpu].cpu_id, &cpuset);
++  pthread_attr_setaffinity_np (attr, sizeof (cpu_set_t), &cpuset);
++}
++
++
+ #include "../posix/affinity.c"
+ 
+ #endif
+Index: libstdc++-v3/include/bits/fstream.tcc
+===================================================================
+--- libstdc++-v3/include/bits/fstream.tcc	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ libstdc++-v3/include/bits/fstream.tcc	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -647,7 +647,7 @@
+  	   && __testout && !_M_reading)
+ 	{
+ 	  // Measurement would reveal the best choice.
+-	  const streamsize __chunk = 1ul << 10;
++	  const streamsize __chunk = 1ul << 15;
+ 	  streamsize __bufavail = this->epptr() - this->pptr();
+ 
+ 	  // Don't mistake 'uncommitted' mode buffered with unbuffered.
+Index: libstdc++-v3/config/locale/generic/c_locale.cc
+===================================================================
+--- libstdc++-v3/config/locale/generic/c_locale.cc	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ libstdc++-v3/config/locale/generic/c_locale.cc	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -214,9 +214,10 @@
+     // Currently, the generic model only supports the "C" locale.
+     // See http://gcc.gnu.org/ml/libstdc++/2003-02/msg00345.html
+     __cloc = 0;
++#if 0
+     if (strcmp(__s, "C"))
+       __throw_runtime_error(__N("locale::facet::_S_create_c_locale "
+-			    "name not valid"));
++#endif			    "name not valid"));
+   }
+ 
+   void
+Index: configure.ac
+===================================================================
+--- configure.ac	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ configure.ac	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -2189,7 +2189,43 @@
+     done
+   fi
+ fi
++# Handle --with-bin=XXX.  If the value is not "yes", the contents of
++# the name directories are copied to $(bindir)/bin.  Multiple directories
++# are permitted.
++if test x"${with_bin}" != x && test x"${with_bin}" != xno ; then
++  if test x${is_cross_compiler} = xno ; then
++    echo 1>&2 '***' --with-bin is only supported when cross compiling
++    exit 1
++  fi
++  if test x"${with_bin}" != xyes ; then
++    # Copy the libraries in reverse order, so that files in the first named
++    # library override files in subsequent libraries.
++    x=${gcc_cv_tool_prefix}
++    for l in ${with_bin}; do
++      copy_dirs="$l $x/${target_noncanonical}/bin ${copy_dirs}"
++    done
++  fi
++fi
+ 
++# Handle --with-sbin=XXX.  If the value is not "yes", the contents of
++# the name directories are copied to $(sbindir)/sbin.  Multiple directories
++# are permitted.
++if test x"${with_sbin}" != x && test x"${with_sbin}" != xno ; then
++  if test x${is_cross_compiler} = xno ; then
++    echo 1>&2 '***' --with-sbin is only supported when cross compiling
++    exit 1
++  fi
++  if test x"${with_sbin}" != xyes ; then
++    # Copy the libraries in reverse order, so that files in the first named
++    # library override files in subsequent libraries.
++    x=${gcc_cv_tool_prefix}
++    for l in ${with_sbin}; do
++      copy_dirs="$l $x/${target_noncanonical}/sbin ${copy_dirs}"
++    done
++  fi
++fi
++
++
+ # Set with_gnu_as, with_gnu_ld, and with_system_zlib as appropriate.
+ #
+ # This is done by determining whether or not the appropriate directory
+Index: configure
+===================================================================
+--- configure	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ configure	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -6732,6 +6732,44 @@
+   fi
+ fi
+ 
++# Handle --with-bin=XXX.  If the value is not "yes", the contents of
++# the name directories are copied to $(bindir)/bin.  Multiple directories
++# are permitted.
++if test x"${with_bin}" != x && test x"${with_bin}" != xno ; then
++  if test x${is_cross_compiler} = xno ; then
++    echo 1>&2 '***' --with-bin is only supported when cross compiling
++    exit 1
++  fi
++  if test x"${with_bin}" != xyes ; then
++    # Copy the libraries in reverse order, so that files in the first named
++    # library override files in subsequent libraries.
++    x=${gcc_cv_tool_prefix}
++    for l in ${with_bin}; do
++      copy_dirs="$l $x/${target_noncanonical}/bin ${copy_dirs}"
++    done
++  fi
++fi
++
++# Handle --with-sbin=XXX.  If the value is not "yes", the contents of
++# the name directories are copied to $(sbindir)/sbin.  Multiple directories
++# are permitted.
++if test x"${with_sbin}" != x && test x"${with_sbin}" != xno ; then
++  if test x${is_cross_compiler} = xno ; then
++    echo 1>&2 '***' --with-sbin is only supported when cross compiling
++    exit 1
++  fi
++  if test x"${with_sbin}" != xyes ; then
++    # Copy the libraries in reverse order, so that files in the first named
++    # library override files in subsequent libraries.
++    x=${gcc_cv_tool_prefix}
++    for l in ${with_sbin}; do
++      copy_dirs="$l $x/${target_noncanonical}/sbin ${copy_dirs}"
++    done
++  fi
++fi
++
++                                                                                         
++
+ # Set with_gnu_as, with_gnu_ld, and with_system_zlib as appropriate.
+ #
+ # This is done by determining whether or not the appropriate directory
+Index: gcc/configure
+===================================================================
+--- gcc/configure	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ gcc/configure	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -22162,36 +22162,8 @@
+   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+   test $ac_status = 0; }; }
+     then
+-
+-# Solaris 9/x86 as incorrectly emits an alias for a hidden symbol with
+-# STV_HIDDEN, so disable .hidden support if so.
+-case "${target}" in
+-  i?86-*-solaris2* | x86_64-*-solaris2.1[0-9]*)
+-    if test x$gcc_cv_as != x && test x$gcc_cv_objdump != x; then
+-      cat > conftest.s <<EOF
+-.globl hidden
+-        .hidden hidden
+-hidden:
+-.globl default
+-        .set    default,hidden
+-EOF
+-      if $gcc_cv_as -o conftest.o conftest.s > /dev/null 2>&1 \
+-        && $gcc_cv_objdump -t conftest.o 2>/dev/null | \
+-        grep '\.hidden default' > /dev/null; then
+-        gcc_cv_as_hidden=no
+-      else
+-        gcc_cv_as_hidden=yes
+-      fi
++      gcc_cv_as_hidden=yes
+     else
+-      # Assume bug is present if objdump is missing.
+-      gcc_cv_as_hidden=no
+-    fi
+-    ;;
+-  *)
+-    gcc_cv_as_hidden=yes
+-    ;;
+-esac
+-    else
+       echo "configure: failed program was" >&5
+       cat conftest.s >&5
+     fi
+@@ -22649,23 +22621,7 @@
+ 		sed -e /.eh_frame/!d -e N | grep READONLY > /dev/null; then
+ 	  gcc_cv_as_cfi_directive=no
+ 	else
+-	  case "$target" in
+-	    i?86-*-solaris2.1[0-9]* | x86_64-*-solaris2.1[0-9]*)
+-	      # On Solaris/x86, make sure that GCC and gas agree on using
+-	      # read-only .eh_frame sections for 64-bit.
+-	      if $gcc_cv_as --64 -o conftest.o conftest.s > /dev/null 2>&1 && \
+-		$gcc_cv_objdump -h conftest.o 2>/dev/null | \
+-			sed -e /.eh_frame/!d -e N | \
+-			grep READONLY > /dev/null; then
+-		gcc_cv_as_cfi_directive=yes
+-	      else
+-		gcc_cv_as_cfi_directive=no
+-	      fi
+-	      ;;
+-	    *)
+-	      gcc_cv_as_cfi_directive=yes
+-	      ;;
+-	  esac
++          gcc_cv_as_cfi_directive=yes
+ 	fi
+       else
+         # no objdump, err on the side of caution
+@@ -23660,180 +23616,6 @@
+   set_have_as_tls=yes
+ fi
+ fi
+-case "$target" in
+-  *-*-irix6*)
+-    # IRIX 6.5 rld and libc.so lack TLS support, so even if gas and gld
+-    # with TLS support are in use, native TLS cannot work.
+-    set_have_as_tls=no
+-    ;;
+-  *-*-osf*)
+-    # Tru64 UNIX loader and libc.so lack TLS support, so even if gas and
+-    # gld with TLS support are in use, native TLS cannot work.
+-    set_have_as_tls=no
+-    ;;
+-  # TLS was introduced in the Solaris 9 FCS release and backported to
+-  # Solaris 8 patches.  Support for GNU-style TLS on x86 was only
+-  # introduced in Solaris 9 4/04, replacing the earlier Sun style that Sun
+-  # ld and GCC don't support any longer.
+-  *-*-solaris2.*)
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking linker and ld.so.1 TLS support" >&5
+-$as_echo_n "checking linker and ld.so.1 TLS support... " >&6; }
+-    ld_tls_support=no
+-    # Check ld and ld.so.1 TLS support.
+-    if echo "$ld_ver" | grep GNU > /dev/null; then
+-      # Assume all interesting versions of GNU ld have TLS support.
+-      # FIXME: still need ld.so.1 support, i.e. ld version checks below.
+-      ld_tls_support=yes
+-    else
+-      case "$target" in
+-        # Solaris 8/x86 ld has GNU style TLS support since version 1.280.
+-        i?86-*-solaris2.8)
+-          min_tls_ld_vers_minor=280
+-          ;;
+-        # Solaris 8/SPARC ld has TLS support since version 1.272.
+-        sparc*-*-solaris2.8)
+-          min_tls_ld_vers_minor=272
+-          ;;
+-	# Solaris 9/x86 ld has GNU style TLS support since version 1.374.
+-        i?86-*-solaris2.9)
+-          min_tls_ld_vers_minor=374
+-          ;;
+-	# Solaris 9/SPARC and Solaris 10+ ld have TLS support since FCS.
+-        sparc*-*-solaris2.9 | *-*-solaris2.1[0-9]*)
+-	  min_tls_ld_vers_minor=343
+-          ;;
+-      esac
+-      if test "$ld_vers_major" -gt 1 || \
+-        test "$ld_vers_minor" -ge "$min_tls_ld_vers_minor"; then
+- 	ld_tls_support=yes
+-      else
+-        set_have_as_tls=no
+-      fi
+-    fi
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ld_tls_support" >&5
+-$as_echo "$ld_tls_support" >&6; }
+-
+-    save_LIBS="$LIBS"
+-    save_LDFLAGS="$LDFLAGS"
+-    LIBS=
+-    LDFLAGS=
+-
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking alternate thread library" >&5
+-$as_echo_n "checking alternate thread library... " >&6; }
+-    case "$target" in
+-      # TLS support was backported to Solaris 8 patches, but only lives in
+-      # the alternate thread library which became the default in Solaris 9.
+-      # We want to always use that, irrespective of TLS support.
+-      *-*-solaris2.8)
+-        # Take multilib subdir into account.  There's no spec to handle
+-	# this.  The 64 symlink exists since Solaris 8.
+-        lwp_dir=/usr/lib/lwp
+-	lwp_spec="-L$lwp_dir%{m64:/64} -R$lwp_dir%{m64:/64}"
+-        LDFLAGS="-L$lwp_dir -R$lwp_dir"
+-        ;;
+-      *-*-solaris2*)
+-        lwp_dir="none"
+-	lwp_spec=""
+-	;;
+-    esac
+-    # Always define LIB_THREAD_LDFLAGS_SPEC, even without TLS support.
+-
+-cat >>confdefs.h <<_ACEOF
+-#define LIB_THREAD_LDFLAGS_SPEC "$lwp_spec"
+-_ACEOF
+-
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $lwp_dir" >&5
+-$as_echo "$lwp_dir" >&6; }
+-
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking library containing $tga_func" >&5
+-$as_echo_n "checking library containing $tga_func... " >&6; }
+-    # Before Solaris 10, __tls_get_addr (SPARC/x64) resp. ___tls_get_addr
+-    # (32-bit x86) only lived in libthread, so check for that.  Keep
+-    # set_have_as_tls if found, disable if not.
+-    as_ac_Search=`$as_echo "ac_cv_search_$tga_func" | $as_tr_sh`
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing $tga_func" >&5
+-$as_echo_n "checking for library containing $tga_func... " >&6; }
+-if { as_var=$as_ac_Search; eval "test \"\${$as_var+set}\" = set"; }; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-  ac_func_search_save_LIBS=$LIBS
+-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+-/* end confdefs.h.  */
+-
+-/* Override any GCC internal prototype to avoid an error.
+-   Use char because int might match the return type of a GCC
+-   builtin and then its argument prototype would still apply.  */
+-#ifdef __cplusplus
+-extern "C"
+-#endif
+-char $tga_func ();
+-int
+-main ()
+-{
+-return $tga_func ();
+-  ;
+-  return 0;
+-}
+-_ACEOF
+-for ac_lib in '' thread; do
+-  if test -z "$ac_lib"; then
+-    ac_res="none required"
+-  else
+-    ac_res=-l$ac_lib
+-    LIBS="-l$ac_lib  $ac_func_search_save_LIBS"
+-  fi
+-  if ac_fn_c_try_link "$LINENO"; then :
+-  eval "$as_ac_Search=\$ac_res"
+-fi
+-rm -f core conftest.err conftest.$ac_objext \
+-    conftest$ac_exeext
+-  if { as_var=$as_ac_Search; eval "test \"\${$as_var+set}\" = set"; }; then :
+-  break
+-fi
+-done
+-if { as_var=$as_ac_Search; eval "test \"\${$as_var+set}\" = set"; }; then :
+-
+-else
+-  eval "$as_ac_Search=no"
+-fi
+-rm conftest.$ac_ext
+-LIBS=$ac_func_search_save_LIBS
+-fi
+-eval ac_res=\$$as_ac_Search
+-	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+-$as_echo "$ac_res" >&6; }
+-eval ac_res=\$$as_ac_Search
+-if test "$ac_res" != no; then :
+-  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
+-
+-else
+-  set_have_as_tls=no
+-fi
+-
+-    # Clear LIBS if we cannot support TLS.
+-    if test $set_have_as_tls = no; then
+-      LIBS=
+-    fi
+-    # Even without TLS support on Solaris 8, explicitly link with libthread
+-    # to guarantee that the alternate thread library is used.
+-    case "$target" in
+-      *-*-solaris2.8)
+-	LIBS=-lthread
+-	;;
+-    esac
+-    # Always define LIB_TLS_SPEC, even without TLS support.
+-
+-cat >>confdefs.h <<_ACEOF
+-#define LIB_TLS_SPEC "$LIBS"
+-_ACEOF
+-
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $LIBS" >&5
+-$as_echo "$LIBS" >&6; }
+-
+-    LIBS="$save_LIBS"
+-    LDFLAGS="$save_LDFLAGS"
+-    ;;
+-esac
+ if test $set_have_as_tls = yes ; then
+ 
+ $as_echo "#define HAVE_AS_TLS 1" >>confdefs.h
+@@ -24703,37 +24485,7 @@
+ 
+ fi
+ 
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking assembler for .quad directive" >&5
+-$as_echo_n "checking assembler for .quad directive... " >&6; }
+-if test "${gcc_cv_as_ix86_quad+set}" = set; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-  gcc_cv_as_ix86_quad=no
+-  if test x$gcc_cv_as != x; then
+-    $as_echo '.quad 0' > conftest.s
+-    if { ac_try='$gcc_cv_as $gcc_cv_as_flags  -o conftest.o conftest.s >&5'
+-  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+-  (eval $ac_try) 2>&5
+-  ac_status=$?
+-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+-  test $ac_status = 0; }; }
+-    then
+-	gcc_cv_as_ix86_quad=yes
+-    else
+-      echo "configure: failed program was" >&5
+-      cat conftest.s >&5
+-    fi
+-    rm -f conftest.o conftest.s
+-  fi
+-fi
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gcc_cv_as_ix86_quad" >&5
+-$as_echo "$gcc_cv_as_ix86_quad" >&6; }
+-if test $gcc_cv_as_ix86_quad = yes; then
+ 
+-$as_echo "#define HAVE_AS_IX86_QUAD 1" >>confdefs.h
+-
+-fi
+-
+     { $as_echo "$as_me:${as_lineno-$LINENO}: checking assembler for sahf mnemonic" >&5
+ $as_echo_n "checking assembler for sahf mnemonic... " >&6; }
+ if test "${gcc_cv_as_ix86_sahf+set}" = set; then :
+@@ -24741,8 +24493,7 @@
+ else
+   gcc_cv_as_ix86_sahf=no
+   if test x$gcc_cv_as != x; then
+-    $as_echo '.code64
+-       sahf' > conftest.s
++    echo 'sahf' > conftest.s
+     if { ac_try='$gcc_cv_as $gcc_cv_as_flags  -o conftest.o conftest.s >&5'
+   { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+   (eval $ac_try) 2>&5
+@@ -24876,110 +24627,6 @@
+ _ACEOF
+ 
+ 
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking assembler for rep and lock prefix" >&5
+-$as_echo_n "checking assembler for rep and lock prefix... " >&6; }
+-if test "${gcc_cv_as_ix86_rep_lock_prefix+set}" = set; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-  gcc_cv_as_ix86_rep_lock_prefix=no
+-  if test x$gcc_cv_as != x; then
+-    $as_echo 'rep movsl
+-	 lock addl %edi, (%eax,%esi)
+-	 lock orl $0, (%esp)' > conftest.s
+-    if { ac_try='$gcc_cv_as $gcc_cv_as_flags  -o conftest.o conftest.s >&5'
+-  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+-  (eval $ac_try) 2>&5
+-  ac_status=$?
+-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+-  test $ac_status = 0; }; }
+-    then
+-	gcc_cv_as_ix86_rep_lock_prefix=yes
+-    else
+-      echo "configure: failed program was" >&5
+-      cat conftest.s >&5
+-    fi
+-    rm -f conftest.o conftest.s
+-  fi
+-fi
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gcc_cv_as_ix86_rep_lock_prefix" >&5
+-$as_echo "$gcc_cv_as_ix86_rep_lock_prefix" >&6; }
+-if test $gcc_cv_as_ix86_rep_lock_prefix = yes; then
+-
+-$as_echo "#define HAVE_AS_IX86_REP_LOCK_PREFIX 1" >>confdefs.h
+-
+-fi
+-
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking assembler for R_386_TLS_GD_PLT reloc" >&5
+-$as_echo_n "checking assembler for R_386_TLS_GD_PLT reloc... " >&6; }
+-if test "${gcc_cv_as_ix86_tlsgdplt+set}" = set; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-  gcc_cv_as_ix86_tlsgdplt=no
+-  if test x$gcc_cv_as != x; then
+-    $as_echo 'call    tls_gd@tlsgdplt' > conftest.s
+-    if { ac_try='$gcc_cv_as $gcc_cv_as_flags  -o conftest.o conftest.s >&5'
+-  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+-  (eval $ac_try) 2>&5
+-  ac_status=$?
+-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+-  test $ac_status = 0; }; }
+-    then
+-	if test x$gcc_cv_ld != x \
+-	 && $gcc_cv_ld -o conftest conftest.o -G > /dev/null 2>&1; then
+-	   gcc_cv_as_ix86_tlsgdplt=yes
+-	 fi
+-	 rm -f conftest
+-    else
+-      echo "configure: failed program was" >&5
+-      cat conftest.s >&5
+-    fi
+-    rm -f conftest.o conftest.s
+-  fi
+-fi
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gcc_cv_as_ix86_tlsgdplt" >&5
+-$as_echo "$gcc_cv_as_ix86_tlsgdplt" >&6; }
+-if test $gcc_cv_as_ix86_tlsgdplt = yes; then
+-
+-$as_echo "#define HAVE_AS_IX86_TLSGDPLT 1" >>confdefs.h
+-
+-fi
+-
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking assembler for R_386_TLS_LDM_PLT reloc" >&5
+-$as_echo_n "checking assembler for R_386_TLS_LDM_PLT reloc... " >&6; }
+-if test "${gcc_cv_as_ix86_tlsldmplt+set}" = set; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-  gcc_cv_as_ix86_tlsldmplt=no
+-  if test x$gcc_cv_as != x; then
+-    $as_echo 'tls_ld:
+-	 call    tls_ld@tlsldmplt' > conftest.s
+-    if { ac_try='$gcc_cv_as $gcc_cv_as_flags  -o conftest.o conftest.s >&5'
+-  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+-  (eval $ac_try) 2>&5
+-  ac_status=$?
+-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+-  test $ac_status = 0; }; }
+-    then
+-	if test x$gcc_cv_ld != x \
+-	 && $gcc_cv_ld -o conftest conftest.o -G > /dev/null 2>&1; then
+-	   gcc_cv_as_ix86_tlsldmplt=yes
+-	 fi
+-	 rm -f conftest
+-    else
+-      echo "configure: failed program was" >&5
+-      cat conftest.s >&5
+-    fi
+-    rm -f conftest.o conftest.s
+-  fi
+-fi
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gcc_cv_as_ix86_tlsldmplt" >&5
+-$as_echo "$gcc_cv_as_ix86_tlsldmplt" >&6; }
+-if test $gcc_cv_as_ix86_tlsldmplt = yes; then
+-
+-$as_echo "#define HAVE_AS_IX86_TLSLDMPLT 1" >>confdefs.h
+-
+-fi
+-
+     ;;
+ 
+   ia64*-*-*)
+@@ -26653,36 +26300,6 @@
+   fi
+ fi
+ 
+-# In binutils 2.21, GNU ld gained support for new emulations fully
+-# supporting the Solaris 2 ABI.  Detect their presence in the linker used.
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking linker *_sol2 emulation support" >&5
+-$as_echo_n "checking linker *_sol2 emulation support... " >&6; }
+-if test "${gcc_cv_ld_sol2_emulation+set}" = set; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-  gcc_cv_ld_sol2_emulation=no
+-  if test $in_tree_ld = yes ; then
+-    if test "$gcc_cv_gld_major_version" -eq 2 -a \
+-       "$gcc_cv_gld_minor_version" -ge 21 -o \
+-       "$gcc_cv_gld_major_version" -gt 2 \
+-       && test $in_tree_ld_is_elf = yes; then
+-      gcc_cv_ld_sol2_emulation=yes
+-    fi
+-  elif test x$gcc_cv_ld != x; then
+-    if $gcc_cv_ld -V 2>/dev/null | sed -e '1,/Supported emulations/d;q' | \
+-       grep _sol2 > /dev/null; then
+-      gcc_cv_ld_sol2_emulation=yes
+-    fi
+-  fi
+-fi
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gcc_cv_ld_sol2_emulation" >&5
+-$as_echo "$gcc_cv_ld_sol2_emulation" >&6; }
+-if test x"$gcc_cv_ld_sol2_emulation" = xyes; then
+-
+-$as_echo "#define HAVE_LD_SOL2_EMULATION 1" >>confdefs.h
+-
+-fi
+-
+ { $as_echo "$as_me:${as_lineno-$LINENO}: checking linker --sysroot support" >&5
+ $as_echo_n "checking linker --sysroot support... " >&6; }
+ if test "${gcc_cv_ld_sysroot+set}" = set; then :
+@@ -26775,7 +26392,7 @@
+ 	 # simply assert that glibc does provide this, which is true for all
+ 	 # realistically usable GNU/Hurd configurations.
+ 	 gcc_cv_libc_provides_ssp=yes;;
+-       *-*-darwin* | *-*-freebsd*)
++       *-*-darwin*)
+ 	 ac_fn_c_check_func "$LINENO" "__stack_chk_fail" "ac_cv_func___stack_chk_fail"
+ if test "x$ac_cv_func___stack_chk_fail" = x""yes; then :
+   gcc_cv_libc_provides_ssp=yes
+Index: gcc/gcc.c
+===================================================================
+--- gcc/gcc.c	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ gcc/gcc.c	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -3564,7 +3564,12 @@
+   unsigned int j;
+ 
+   gcc_exec_prefix = getenv ("GCC_EXEC_PREFIX");
++  if (!gcc_exec_prefix) {
++    gcc_exec_prefix = STANDARD_EXEC_PREFIX;
++    xputenv (concat ("GCC_EXEC_PREFIX=", gcc_exec_prefix, NULL));
++  }
+ 
++
+   n_switches = 0;
+   n_infiles = 0;
+   added_libraries = 0;
+Index: gcc/config.gcc
+===================================================================
+--- gcc/config.gcc	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ gcc/config.gcc	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -3368,7 +3368,7 @@
+ 				eval "with_$which=405"
+ 				;;
+ 			"" | common \
+-			| power | power[234567] | power6x | powerpc | powerpc64 \
++			| power | power[234567] | power6x | powerpc | a2q | powerpc64 \
+ 			| rios | rios1 | rios2 | rsc | rsc1 | rs64a \
+ 			| 401 | 403 | 405 | 405fp | 440 | 440fp | 464 | 464fp \
+ 			| 476 | 476fp | 505 | 601 | 602 | 603 | 603e | ec603e \
+Index: gcc/Makefile.in
+===================================================================
+--- gcc/Makefile.in	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ gcc/Makefile.in	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -1017,6 +1017,9 @@
+ # and the system's installed libraries.
+ LIBS = @LIBS@ libcommon.a $(CPPLIB) $(LIBINTL) $(LIBICONV) $(LIBIBERTY) \
+ 	$(LIBDECNUMBER) $(HOST_LIBS)
++ALL_OBJS = $(OBJS) $(GNAT1_OBJS) $(GNATBIND_OBJS) $(CXX_OBJS) $(F95_OBJS) \
++  $(JAVA_OBJS) $(OBJC_OBJS) $(OBJCXX_OBJS)
++
+ BACKENDLIBS = $(CLOOGLIBS) $(PPLLIBS) $(GMPLIBS) $(PLUGINLIBS) $(HOST_LIBS) \
+ 	$(ZLIB)
+ # Any system libraries needed just for GNAT.
+@@ -3803,6 +3806,10 @@
+ # objects from $(OBJS) as early as possible, build all their
+ # prerequisites strictly before all objects.
+ $(ALL_HOST_OBJS) : | $(generated_files)
++# In order for parallel make to really start compiling the expensive
++# objects from $(OBJS-common) as early as possible, build all their
++# prerequisites strictly before all objects.
++$(ALL_OBJS) : | $(simple_generated_h) $(simple_generated_c)
+ 
+ #
+ # How to compile object files to run on the build machine.
+@@ -4638,7 +4645,15 @@
+ # driver slower, and because people who need it can recreate it by
+ # using -dumpspecs.  We remove any old version because it would
+ # otherwise override the specs built into the driver.
+-	rm -f $(DESTDIR)$(libsubdir)/specs
++# BGQ:  We need the specs file to force -static linking by default
++
++	-if [ -f specs ] ; then \
++		rm -f $(DESTDIR)$(libsubdir)/specs; \
++		$(INSTALL_DATA) $(SPECS) $(DESTDIR)$(libsubdir)/specs; \
++		chmod a-x $(DESTDIR)$(libsubdir)/specs; \
++	fi
++
++
+ # Install gcov if it was compiled.
+ 	-if [ -f gcov$(exeext) ]; \
+ 	then \
+Index: gcc/config/rs6000/linux.h
+===================================================================
+--- gcc/config/rs6000/linux.h	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ gcc/config/rs6000/linux.h	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -19,7 +19,11 @@
+    You should have received a copy of the GNU General Public License
+    along with GCC; see the file COPYING3.  If not see
+    <http://www.gnu.org/licenses/>.  */
++/* Override rs6000.h definition.  */
++#undef        ASM_DEFAULT_SPEC
++#define ASM_DEFAULT_SPEC "-ma2q"
+ 
++
+ /* Linux doesn't support saving and restoring 64-bit regs in a 32-bit
+    process.  */
+ #define OS_MISSING_POWERPC64 1
+@@ -47,7 +51,7 @@
+     {						\
+       builtin_define_std ("PPC");		\
+       builtin_define_std ("powerpc");		\
+-      builtin_assert ("cpu=powerpc");		\
++      builtin_assert ("cpu=a2q");		\
+       builtin_assert ("machine=powerpc");	\
+       TARGET_OS_SYSV_CPP_BUILTINS ();		\
+     }						\
+Index: gcc/config/rs6000/linux64.h
+===================================================================
+--- gcc/config/rs6000/linux64.h	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ gcc/config/rs6000/linux64.h	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -179,6 +179,9 @@
+ #endif
+ #endif
+ 
++#undef  ASM_DEFAULT_SPEC
++#define ASM_DEFAULT_SPEC "-ma2q"
++
+ #define ASM_SPEC32 "-a32 \
+ %{mrelocatable} %{mrelocatable-lib} %{fpic:-K PIC} %{fPIC:-K PIC} \
+ %{memb} %{!memb: %{msdata=eabi: -memb}} \
+@@ -359,7 +362,7 @@
+ #define LINK_OS_DEFAULT_SPEC "%(link_os_linux)"
+ 
+ #define GLIBC_DYNAMIC_LINKER32 "/lib/ld.so.1"
+-#define GLIBC_DYNAMIC_LINKER64 "/lib64/ld64.so.1"
++#define GLIBC_DYNAMIC_LINKER64 "/bgsys/drivers/ppcfloor/gnu-linux-4.7.2/powerpc64-bgq-linux/lib/ld64.so.1"
+ #define UCLIBC_DYNAMIC_LINKER32 "/lib/ld-uClibc.so.0"
+ #define UCLIBC_DYNAMIC_LINKER64 "/lib/ld64-uClibc.so.0"
+ #if DEFAULT_LIBC == LIBC_UCLIBC
+@@ -523,7 +526,7 @@
+ #define TARGET_POSIX_IO
+ 
+ #define LINK_GCC_C_SEQUENCE_SPEC \
+-  "%{static:--start-group} %G %L %{static:--end-group}%{!static:%G}"
++  "%{static:--start-group} %G %L %{static: --end-group}%{!static:%G}"
+ 
+ /* Use --as-needed -lgcc_s for eh support.  */
+ #ifdef HAVE_LD_AS_NEEDED
+Index: gcc/config/rs6000/rs6000.c
+===================================================================
+--- gcc/config/rs6000/rs6000.c	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ gcc/config/rs6000/rs6000.c	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -3072,8 +3072,12 @@
+ 	  targetm.asm_out.aligned_op.di = NULL;
+ 	  targetm.asm_out.unaligned_op.di = NULL;
+ 	}
++#if 1
++  target_flags |= MASK_NO_UPDATE;
++#endif
+ 
+ 
++
+       /* Set branch target alignment, if not optimizing for size.  */
+       if (!optimize_size)
+ 	{
+@@ -19540,7 +19544,52 @@
+ 				NULL_RTX, NULL_RTX);
+ 	}
+     }
++  /* In AIX ABI we need to make sure r2 is really saved.  */
++  if (TARGET_AIX && crtl->calls_eh_return)
++    {
++      rtx tmp_reg, tmp_reg_si, hi, lo, compare_result, toc_save_done, jump;
++      long toc_restore_insn;
+ 
++      gcc_assert (frame_reg_rtx == frame_ptr_rtx
++                 || frame_reg_rtx == sp_reg_rtx);
++      tmp_reg = gen_rtx_REG (Pmode, 11);
++      tmp_reg_si = gen_rtx_REG (SImode, 11);
++      if (using_static_chain_p)
++       emit_move_insn (gen_rtx_REG (Pmode, 0), tmp_reg);
++      gcc_assert (saving_GPRs_inline && saving_FPRs_inline);
++      emit_move_insn (tmp_reg, gen_rtx_REG (Pmode, LR_REGNO));
++      /* Peek at instruction to which this function returns.  If it's
++        restoring r2, then we know we've already saved r2.  We can't
++        unconditionally save r2 because the value we have will already
++        be updated if we arrived at this function via a plt call or
++        toc adjusting stub.  */
++      emit_move_insn (tmp_reg_si, gen_rtx_MEM (SImode, tmp_reg));
++      toc_restore_insn = TARGET_32BIT ? 0x80410014 : 0xE8410028;
++      hi = gen_int_mode (toc_restore_insn & ~0xffff, SImode);
++      emit_insn (gen_xorsi3 (tmp_reg_si, tmp_reg_si, hi));
++      compare_result = gen_rtx_REG (CCUNSmode, CR0_REGNO);
++      validate_condition_mode (EQ, CCUNSmode);
++      lo = gen_int_mode (toc_restore_insn & 0xffff, SImode);
++      emit_insn (gen_rtx_SET (VOIDmode, compare_result,
++                             gen_rtx_COMPARE (CCUNSmode, tmp_reg_si, lo)));
++      toc_save_done = gen_label_rtx ();
++      jump = gen_rtx_IF_THEN_ELSE (VOIDmode,
++                                  gen_rtx_EQ (VOIDmode, compare_result,
++                                              const0_rtx),
++                                  gen_rtx_LABEL_REF (VOIDmode, toc_save_done),
++                                  pc_rtx);
++      jump = emit_jump_insn (gen_rtx_SET (VOIDmode, pc_rtx, jump));
++      JUMP_LABEL (jump) = toc_save_done;
++      LABEL_NUSES (toc_save_done) += 1;
++
++      emit_frame_save (frame_reg_rtx, frame_ptr_rtx, reg_mode, 2,
++                      sp_offset + 5 * reg_size, info->total_size);
++      emit_label (toc_save_done);
++      if (using_static_chain_p)
++       emit_move_insn (tmp_reg, gen_rtx_REG (Pmode, 0));
++    }
++
++
+   /* If we need to save CR, put it into r12 or r11.  */
+   if (!WORLD_SAVE_P (info) && info->cr_save_p && frame_reg_rtx != frame_ptr_rtx)
+     {
+@@ -20594,7 +20643,7 @@
+   if (crtl->calls_eh_return)
+     {
+       unsigned int i, regno;
+-
++#if 0
+       if (TARGET_AIX)
+ 	{
+ 	  rtx addr = gen_rtx_PLUS (Pmode, frame_reg_rtx,
+@@ -20603,7 +20652,7 @@
+ 
+ 	  emit_move_insn (gen_rtx_REG (reg_mode, 2), mem);
+ 	}
+-
++#endif
+       for (i = 0; ; ++i)
+ 	{
+ 	  rtx mem;
+Index: gcc/config/rs6000/rs6000.h
+===================================================================
+--- gcc/config/rs6000/rs6000.h	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ gcc/config/rs6000/rs6000.h	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -123,6 +123,7 @@
+ %{mcpu=power6x: %(asm_cpu_power6) -maltivec} \
+ %{mcpu=power7: %(asm_cpu_power7)} \
+ %{mcpu=a2: -ma2} \
++%{mcpu=a2q: -ma2q} \
+ %{mcpu=powerpc: -mppc} \
+ %{mcpu=rios: -mpwr} \
+ %{mcpu=rios1: -mpwr} \
+@@ -169,12 +170,11 @@
+ %{mcpu=e500mc: -me500mc} \
+ %{mcpu=e500mc64: -me500mc64} \
+ %{maltivec: -maltivec} \
+-%{mvsx: -mvsx %{!maltivec: -maltivec} %{!mcpu*: %(asm_cpu_power7)}} \
+--many"
++%{mvsx: -mvsx %{!maltivec: -maltivec} %{!mcpu*: %(asm_cpu_power7)}}" 
+ 
+ #define CPP_DEFAULT_SPEC ""
+ 
+-#define ASM_DEFAULT_SPEC ""
++#define ASM_DEFAULT_SPEC "-ma2q"
+ 
+ /* This macro defines names of additional specifications to put in the specs
+    that can be used in various specifications like CC1_SPEC.  Its definition
+@@ -690,12 +690,13 @@
+ 
+ /* Allocation boundary (in *bits*) for storing arguments in argument list.  */
+ #define PARM_BOUNDARY (TARGET_32BIT ? 32 : 64)
+-
++#if 0
+ /* Boundary (in *bits*) on which stack pointer should be aligned.  */
+ #define STACK_BOUNDARY	\
+   ((TARGET_32BIT && !TARGET_ALTIVEC && !TARGET_ALTIVEC_ABI && !TARGET_VSX) \
+     ? 64 : 128)
+-
++#endif
++#define STACK_BOUNDARY 256
+ /* Allocation boundary (in *bits*) for the code of a function.  */
+ #define FUNCTION_BOUNDARY 32
+ 
+@@ -760,7 +761,7 @@
+ 
+ /* Nonzero if move instructions will actually fail to work
+    when given unaligned data.  */
+-#define STRICT_ALIGNMENT 0
++#define STRICT_ALIGNMENT 1
+ 
+ /* Define this macro to be the value 1 if unaligned accesses have a cost
+    many times greater than aligned accesses, for example if they are
+Index: gcc/config/rs6000/t-linux64
+===================================================================
+--- gcc/config/rs6000/t-linux64	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ gcc/config/rs6000/t-linux64	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -26,10 +26,10 @@
+ # it doesn't tell anything about the 32bit libraries on those systems.  Set
+ # MULTILIB_OSDIRNAMES according to what is found on the target.
+ 
+-MULTILIB_OPTIONS        = m64/m32 msoft-float
+-MULTILIB_DIRNAMES       = 64 32 nof
+-MULTILIB_EXTRA_OPTS     = fPIC mstrict-align
+-MULTILIB_EXCEPTIONS     = m64/msoft-float
+-MULTILIB_EXCLUSIONS     = m64/!m32/msoft-float
+-MULTILIB_OSDIRNAMES	= ../lib64 $(if $(wildcard $(shell echo $(SYSTEM_HEADER_DIR))/../../usr/lib32),../lib32,../lib) nof
++MULTILIB_OPTIONS        = m64
++MULTILIB_DIRNAMES       = 64
++MULTILIB_EXTRA_OPTS     = 
++MULTILIB_EXCEPTIONS     = 
++MULTILIB_EXCLUSIONS     = m64
++MULTILIB_OSDIRNAMES	= $(if $(wildcard $(shell echo $(SYSTEM_HEADER_DIR))/../../usr/lib32),../lib32,../lib)
+ MULTILIB_MATCHES        = $(MULTILIB_MATCHES_FLOAT)
+Index: gcc/config/rs6000/sysv4.h
+===================================================================
+--- gcc/config/rs6000/sysv4.h	(.../tags/GNU_BASE/gnu/gcc-4.7.2)	(revision 62090)
++++ gcc/config/rs6000/sysv4.h	(.../branches/V1R2M3/gnu/gcc-4.7.2)	(revision 62090)
+@@ -304,12 +304,13 @@
+    alignment of user objects on the stack.  */
+ 
+ #undef PREFERRED_STACK_BOUNDARY
+-#define PREFERRED_STACK_BOUNDARY 128
+-
++#define PREFERRED_STACK_BOUNDARY 256
++#if 0
+ /* Real stack boundary as mandated by the appropriate ABI.  */
+ #define ABI_STACK_BOUNDARY \
+   ((TARGET_EABI && !TARGET_ALTIVEC && !TARGET_ALTIVEC_ABI) ? 64 : 128)
+-
++#endif
++#define ABI_STACK_BOUNDARY 256
+ /* An expression for the alignment of a structure field FIELD if the
+    alignment computed in the usual way is COMPUTED.  */
+ #define ADJUST_FIELD_ALIGN(FIELD, COMPUTED)				      \
+@@ -788,12 +789,12 @@
+ #define	STARTFILE_LINUX_SPEC "\
+ %{!shared: %{pg|p|profile:gcrt1.o%s;pie:Scrt1.o%s;:crt1.o%s}} \
+ %{mnewlib:ecrti.o%s;:crti.o%s} \
+-%{static:crtbeginT.o%s;shared|pie:crtbeginS.o%s;:crtbegin.o%s}"
++%{shared|pie:crtbeginS.o%s;static:crtbeginT.o%s;:crtbegin.o%s}"
+ #else
+ #define	STARTFILE_LINUX_SPEC "\
+ %{!shared: %{pg|p|profile:gcrt1.o%s;:crt1.o%s}} \
+ %{mnewlib:ecrti.o%s;:crti.o%s} \
+-%{static:crtbeginT.o%s;shared|pie:crtbeginS.o%s;:crtbegin.o%s}"
++%{shared|pie:crtbeginS.o%s;static:crtbeginT.o%s;:crtbegin.o%s}"
+ #endif
+ 
+ #define	ENDFILE_LINUX_SPEC "\
+@@ -822,7 +823,7 @@
+ # define LINK_EH_SPEC "%{!static:--eh-frame-hdr} "
+ #endif
+ 
+-#define CPP_OS_LINUX_SPEC "-D__unix__ -D__gnu_linux__ -D__linux__ \
++#define CPP_OS_LINUX_SPEC "-D__unix__ -D__gnu_linux__ -D__linux__ -D__bgq__ -D__bg__ \
+ %{!undef:							  \
+   %{!ansi:							  \
+     %{!std=*:-Dunix -D__unix -Dlinux -D__linux}			  \

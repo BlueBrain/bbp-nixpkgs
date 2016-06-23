@@ -65,6 +65,11 @@ stdenv.mkDerivation {
     
       '';
 
+   passthru = {
+	cc = "/bgsys/drivers/toolchain/V1R2M3/gnu-linux";
+	
+   };
+
 }
 
 
