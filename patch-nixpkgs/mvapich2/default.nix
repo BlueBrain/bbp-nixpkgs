@@ -40,6 +40,7 @@ stdenv.mkDerivation rec {
                           "--with-ib-libpath=${librdmacm}/lib" "--with-ib-include=${librdmacm}/include" ]                  
                     ++ extraConfigureFlags; 
 
+
   buildInputs = [ python perl pkgconfig slurm-llnl libibverbs librdmacm hwloc numactl ];
    
   propagatedBuildInputs = [slurm-llnl hwloc numactl librdmacm libibverbs ] 
@@ -47,6 +48,13 @@ stdenv.mkDerivation rec {
 
   # unsafe build script, cannot be built in parallel
   enableParallelBuilding = false;
+
+
+  postInstall = ''
+	## add pmi directly in the libmvapich2 path to avoid 
+        ## modules incompatibilities
+	${if (slurm-llnl!= null) then ''cp ${slurm-llnl}/lib/libpmi* $out/lib/'' else '' ''}
+	'';
 
   meta = with stdenv.lib; {
     description = "Implementation of the Message Passing Interface (MPI) standard";

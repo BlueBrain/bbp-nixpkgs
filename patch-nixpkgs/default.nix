@@ -31,7 +31,7 @@ let
                 hwloc = null;
          };
 
-         slurm-llnl = slurm-llnl-minimal.override {
+         slurm-llnl-full = slurm-llnl-minimal.override {
                 slurmPlugins = [auks slurm-plugins];
                 lua = lua5_1;
          };
@@ -59,6 +59,7 @@ let
 		# on viz cluster lx/viz1 due to InfiniBand OFed ABI maddness 
 		libibverbs = null;
 		librdmacm =  null;
+		slurm-llnl = slurm-llnl-full;
 		extraConfigureFlags = [ "--with-device=ch3:nemesis"];
 	   };
           

@@ -150,7 +150,7 @@ let generic-modules = rec {
             packages = [ 
                             pkgs.mvapich2 
                             ## add slurm for libpmi dependencies
-                            pkgs.slurm-llnl
+                            ## pkgs.slurm-llnl
                        ];
             conflicts = [ gcc52 ];
       };
