@@ -10,8 +10,9 @@ let
     pkgs:
       with pkgs;
       let 
+		has_slurm = builtins.pathExists "/usr/bin/srun";
 		bbp-mpi = if pkgs.isBlueGene == true then mpi-bgq
-				else if config ? isSlurmCluster == true then mvapich2
+				else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2
 				else mpich2;
 
 		callPackage = newScope mergePkgs;
@@ -96,8 +97,8 @@ let
 
 		};
 
-		highfive = callPackage ./hpc/highfive {
-
+		highfive = callPackage ./hpc/highfive {	
+		
 		};
 
 		flatindexer = callPackage ./hpc/FLATIndexer {
@@ -160,6 +161,11 @@ let
 		};
 
 
+
+		nest = enableBGQ callPackage ./hpc/nest {
+			mpiRuntime = bbp-mpi;
+		};
+
 		## 
 		## sub-cellular simulation
 		##
@@ -189,7 +195,7 @@ let
 		modules = (import ./modules) { pkgs = mergePkgs; };
 
 
-
+		inherit enableBGQ;
         };
         in
         mergePkgs;
