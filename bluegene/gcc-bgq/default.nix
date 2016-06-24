@@ -1,7 +1,7 @@
 { stdenv
 , coreutils
 , binutils
-, nativePrefix ? "/bgsys/drivers/toolchain/V1R2M1/gnu-linux"
+, nativePrefix ? "/bgsys/drivers/toolchain/V1R2M3/gnu-linux"
 } :
 
 
@@ -64,6 +64,11 @@ stdenv.mkDerivation {
     wrap "g++" "${./cc-wrapper.sh}" "$out/bin/powerpc64-bgq-linux-g++";   
     
       '';
+
+   passthru = {
+	cc = "/bgsys/drivers/toolchain/V1R2M3/gnu-linux";
+	
+   };
 
 }
 

@@ -97,8 +97,8 @@ let
 
 		};
 
-		highfive = callPackage ./hpc/highfive {
-
+		highfive = callPackage ./hpc/highfive {	
+		
 		};
 
 		flatindexer = callPackage ./hpc/FLATIndexer {
@@ -161,6 +161,11 @@ let
 		};
 
 
+
+		nest = enableBGQ callPackage ./hpc/nest {
+			mpiRuntime = bbp-mpi;
+		};
+
 		## 
 		## sub-cellular simulation
 		##
@@ -190,7 +195,7 @@ let
 		modules = (import ./modules) { pkgs = mergePkgs; };
 
 
-
+		inherit enableBGQ;
         };
         in
         mergePkgs;

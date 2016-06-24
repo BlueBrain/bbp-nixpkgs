@@ -3,43 +3,58 @@ fetchurl,
 python, 
 perl, 
 pkgconfig,
-slurm ? null,
+numactl ? null,
+hwloc ? null,
+slurm-llnl ? null,
 libibverbs ? null,
-rdmaCM ? true,
+librdmacm ? null,
+enableXrc ? false,
 debugInfo ? true,
-extraConfigureFlags ? "" }:
+extraConfigureFlags ? [] }:
 
-stdenv.mkDerivation {
-  name = "mvapich2-2.1";
+stdenv.mkDerivation rec {
+  name = "mvapich2-${version}";
+  version = "2.2rc1";
 
   src = fetchurl {
-    url = "http://mvapich.cse.ohio-state.edu/download/mvapich/mv2/mvapich2-2.1.tar.gz";
-    sha256 = "0bvvk4n9g4rmrncrgs9jnkcfh142i65wli5qp1akn9kwab1q80z6";
+    url = "http://mvapich.cse.ohio-state.edu/download/mvapich/mv2/mvapich2-${version}.tar.gz";
+    sha256 = "1rp93aw9f3bf40hq36kks0r3474smyvpmm073q6hv0bgmij4cqs8";
   };
 
-  configureFlags = "${if slurm != null then "--with-slurm --with-slurm-include=${slurm}/include 
-                    --with-slurm-lib=${slurm}/lib --with-pm=none --with-pmi=slurm" else ""}
-                    --enable-shared --enable-sharedlibs=gcc 
-                    --disable-fc --disable-f77 --disable-fortran
-                    --enable-cxx --enable-threads=multiple --with-munge
-                    --enable-fast --enable-smpcoll --with-hwloc --enable-xrc                    
-                    ${if debugInfo then "--enable-g=dbg --enable-debuginfo" else ""}
-                    ${if rdmaCM then "--with-mpe --enable-rdma-cm --with-rdma=gen2" else ""}
-                    ${if libibverbs != null then "--with-ib-include=${libibverbs}/include" else ""}
-                    ${if libibverbs != null then "--with-ib-libpath=${libibverbs}/lib" else ""}                    
-                    ${extraConfigureFlags}
-                    "; 
+  configureFlags = [ "--enable-shared" 
+                    "--enable-sharedlibs=gcc"
+                    "--disable-fc" "--disable-f77" "--disable-fortran"
+                    "--enable-cxx" 
+                    "--with-munge"
+                    "--enable-fast"
+                    "--disable-mcast"
+                    "--enable-threads=runtime"
+                    "--enable-smpcoll" ]
+                    ++  (if (enableXrc == true) then [ "--enable-xrc" ] else [ "--disable-xrc" ])
+                    ++ (stdenv.lib.optional) (hwloc != null) ["--with-hwloc"]                    
+                    ++ (stdenv.lib.optional) (slurm-llnl != null)  ["--with-slurm" "--with-slurm-include=${slurm-llnl}/include"
+                          "--with-slurm-lib=${slurm-llnl}/lib" "--with-pm=none" "--with-pmi=slurm" ]
+                    ++ (stdenv.lib.optional)  (libibverbs != null) [ "--with-ibverbs-include=${libibverbs}/include" "--with-ibverbs-lib=${libibverbs}/lib" ]
+                    ++ (stdenv.lib.optional)  (debugInfo != null) [ "--enable-g=dbg" "--enable-debuginfo"]
+                    ++ (stdenv.lib.optional) (librdmacm != null) [ "--with-mpe" "--enable-rdma-cm" "--with-rdma=gen2"
+                          "--with-ib-libpath=${librdmacm}/lib" "--with-ib-include=${librdmacm}/include" ]                  
+                    ++ extraConfigureFlags; 
 
-  buildInputs = [ python perl pkgconfig]
-   ++ stdenv.lib.optional (slurm != null) slurm
-   ++ stdenv.lib.optional (libibverbs != null) libibverbs;
+
+  buildInputs = [ python perl pkgconfig slurm-llnl libibverbs librdmacm hwloc numactl ];
    
-  propagatedBuildInputs = [] 
-        ++ stdenv.lib.optional (stdenv ? glibc) stdenv.glibc
-        ++ stdenv.lib.optional (slurm != null) slurm;
+  propagatedBuildInputs = [slurm-llnl hwloc numactl librdmacm libibverbs ] 
+        ++ stdenv.lib.optional (stdenv ? glibc) [ stdenv.glibc ] ;
 
   # unsafe build script, cannot be built in parallel
   enableParallelBuilding = false;
+
+
+  postInstall = ''
+	## add pmi directly in the libmvapich2 path to avoid 
+        ## modules incompatibilities
+	${if (slurm-llnl!= null) then ''cp ${slurm-llnl}/lib/libpmi* $out/lib/'' else '' ''}
+	'';
 
   meta = with stdenv.lib; {
     description = "Implementation of the Message Passing Interface (MPI) standard";
