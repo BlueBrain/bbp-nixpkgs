@@ -3,7 +3,6 @@
 stdenv.mkDerivation {
   name = "libnss-native-wrapper-1.0";
    
-  preferLocalBuild = true;
 
   buildCommand = ''
     # copy all libnss-* plugins 
