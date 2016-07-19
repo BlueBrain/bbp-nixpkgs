@@ -14,7 +14,7 @@ let
 	xlc = callPackage ./xlc { };
 
 
-	bgq-glibc = callPackage ./bgq-glibc { } ;
+	bgq-glibc = callPackage ./bgq-glibc-native { } ;
   
  
   	gcc-bgq = callPackage ./gcc-bgq { };
@@ -39,7 +39,15 @@ let
 	bgq-stdenv-gcc = (addAttrsToDerivation { NIX_ENFORCE_PURITY=""; } 
                             (overrideCC stdenv gcc-bgq)
                          );
-
+	 # BGQ pure environment
+	 #
+	 bglibc = callPackage ./bglibc {
+	    kernelHeaders = linuxHeaders;
+	    installLocales = config.glibc.locales or false;
+	    machHeaders = null;
+	    hurdHeaders = null;
+	    gccCross = null;		
+	 };
 
 	 # BGQ derivated packages
    
@@ -48,6 +56,11 @@ let
 					libc = bgq-glibc; };
 	       name = oldAttrs.name + "-bgq";
         });
+
+
+	bgq-tbb = tbb.override{
+		stdenv = bgq-stdenv-gcc;
+	};
 
         bgq-hdf5 = hdf5.override{
                 stdenv = bgq-stdenv;

@@ -1,5 +1,5 @@
 { stdenv
-, bgqGlibcPath ? "/bgsys/drivers/toolchain/V1R2M1/gnu-linux/powerpc64-bgq-linux/"
+, bgqGlibcPath ? "/bgsys/drivers/toolchain/V1R2M3/gnu-linux/powerpc64-bgq-linux/"
 } :
 
 
