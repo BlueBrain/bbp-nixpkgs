@@ -52,6 +52,7 @@ stdenv.mkDerivation rec {
     targetEnvPkgConfig = "${targetEnv}/lib/pkgconfig";
     targetEnvMan = "${targetEnv}/share/man";
     targetEnvPython = "${targetEnv}/lib/python2.7";
+    targetEnvPythonInterpret = "${targetEnv}/bin/python";    
     targetEnvHoc = "${targetEnv}/hoc";
     targetModlUnit = "${targetEnv}/share/nrnunits.lib";
 
@@ -112,7 +113,7 @@ if { [file exists ${targetEnvMan} ] } {
 
 
 ## check if any python interpreter is present
-if { [file exists ${targetEnvPython} ] } {
+if { [file exists ${targetEnvPythonInterpret} ] } {
         prepend-path PYTHONHOME ${targetEnv}
 }
 
