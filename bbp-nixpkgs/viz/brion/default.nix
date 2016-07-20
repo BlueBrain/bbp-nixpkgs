@@ -12,19 +12,21 @@ mvdtool,
 doxygen }:
 
 stdenv.mkDerivation rec {
-  name = "brion-1.6.0-DEV";
+  name = "brion-1.8.0";
   buildInputs = [ stdenv pkgconfig boost cmake vmmlib servus lunchbox hdf5-cpp zlib doxygen ];
 
   src = fetchgitExternal {
     url = "https://github.com/BlueBrain/Brion.git";
-    rev = "f936a450d6bdd56355f2752d9038fcc39ebb7943";
-    sha256 = "1cn6fcg9whjnq2344sw6mdj1xf7dsb7sp3m5csdxk421n5i2xlpm";
+    rev = "2fccd3fb1de1056038d4e3cc6dd848c98754cec1";
+    sha256 = "1fmqmj6zvw9c4m9b0fpmwq45dsnqghmiaqzk00q3dmrsf0hfpr6b";
   };
 
 
   enableParallelBuilding = true;
 
-
+  ## horrible hack to disable the -WError maddness
+  ##
+  cmakeFlags = "-DXCODE_VERSION=1";
    
 }
 
