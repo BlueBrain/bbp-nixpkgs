@@ -2,11 +2,12 @@
 stdenv,
 buildEnv,
 name,
-version ? "",
+version ? "default",
 moduleFilePrefix ? "nix",
 conflicts ? [] ,
 packages,
 isLibrary ? false,
+isDefault ? false,
 prefixDir ? "",
 description ? "" ,
 extraContent ? ""
@@ -22,11 +23,9 @@ assert builtins.length packages > 0;
             in 
                 builtins.any subPathExist  packages;
     
-    moduleFileSuffix = if version != ""
-                            then "${name}/${version}" 
-                            else "${name}";
+    moduleFileSuffix = "${name}/${version}";
                         
-     depBuilder = depPrefixString: depList:  if depList == [] 
+    depBuilder = depPrefixString: depList:  if depList == [] 
                                                 then ''''
                                                 else ''
                                                 ${depPrefixString} ${(builtins.head (depList)).modulename}
@@ -59,7 +58,9 @@ stdenv.mkDerivation rec {
  
     
     buildPhase = ''
-            cat > modulefile << EOF
+    
+## modulefile itself
+cat > modulefile << EOF
 #%Module1.0#####################################################################
 ##
 ## ${moduleFileSuffix}
@@ -139,13 +140,28 @@ ${extraContent}
 
 
 EOF
-    '';
+
+'' 
++ (if isDefault then
+''
+
+cat > .version << EOF
+#%Module1.0
+set ModulesVersion "${version}"
+EOF
+
+'' else '''');
     
     
-    installPhase = ''
+    installPhase = 
+    ''
         mkdir -p $out/share/modulefiles/${moduleFilePrefix}
-        install -D modulefile $out/share/modulefiles/${moduleFilePrefix}/${moduleFileSuffix};
-    '';
+        install -D modulefile $out/share/modulefiles/${moduleFilePrefix}/${moduleFileSuffix}
+    ''
+    + (if isDefault then 
+    ''
+        install -D .version $out/share/modulefiles/${moduleFilePrefix}/${name}/.version;
+    '' else '''');
     
     passthru = { 
         modulename = "${moduleFilePrefix}/${moduleFileSuffix}";
