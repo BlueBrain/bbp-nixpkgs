@@ -21,7 +21,8 @@ assert nrnOnly -> (modlOnly == false);
 assert nrnOnly -> (nrnModl != null);
 
 stdenv.mkDerivation rec {
-    name = "neuron-7.4-BBP-${if modlOnly then "modl" else if nrnOnly then "nrn" else "all"}";
+    name = "neuron-${version}-BBP-${if modlOnly then "modl" else if nrnOnly then "nrn" else "all"}";
+    version = "7.4";
 
     buildInputs = [ automake autoconf libtool mpiRuntime ncurses readline flex bison python which nrnModl];
 

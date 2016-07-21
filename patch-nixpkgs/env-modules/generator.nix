@@ -2,7 +2,7 @@
 stdenv,
 buildEnv,
 name,
-version ? "default",
+version ? "",
 moduleFilePrefix ? "nix",
 conflicts ? [] ,
 packages,
@@ -23,7 +23,13 @@ assert builtins.length packages > 0;
             in 
                 builtins.any subPathExist  packages;
     
-    moduleFileSuffix = "${name}/${version}";
+    versionString = if version != "" then version 
+                    # deduce automatically the version string if precised in the package
+                    else if ( packages != [] ) && ( (builtins.head packages).drvAttrs ? version) then (builtins.head packages).drvAttrs.version
+                    else "default";
+                    
+    
+    moduleFileSuffix = "${name}/${versionString}";
                         
     depBuilder = depPrefixString: depList:  if depList == [] 
                                                 then ''''
@@ -37,7 +43,8 @@ assert builtins.length packages > 0;
 stdenv.mkDerivation rec {
 
     inherit name;
-    inherit version;
+    
+    version = versionString;
 
     unpackPhase = ''echo "no sources needed"'';
     
@@ -65,7 +72,7 @@ cat > modulefile << EOF
 ##
 ## ${moduleFileSuffix}
 ##
-## modulefiles ${name}/${version} ${description}
+## modulefiles ${name}/${versionString} ${description}
 ##
 
 proc ModulesHelp { } {
@@ -147,7 +154,7 @@ EOF
 
 cat > .version << EOF
 #%Module1.0
-set ModulesVersion "${version}"
+set ModulesVersion "${versionString}"
 EOF
 
 '' else '''');
