@@ -12,7 +12,9 @@ mvdtool,
 doxygen }:
 
 stdenv.mkDerivation rec {
-  name = "brion-1.8.0";
+  name = "brion-${version}";
+  version = "1.8";
+
   buildInputs = [ stdenv pkgconfig boost cmake vmmlib servus lunchbox hdf5-cpp zlib doxygen ];
 
   src = fetchgitExternal {

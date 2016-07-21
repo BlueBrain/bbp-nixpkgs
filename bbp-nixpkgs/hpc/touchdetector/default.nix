@@ -17,9 +17,10 @@
 }:
 
 stdenv.mkDerivation rec {
-  name = "touchdetector-4.3.0";
+  name = "touchdetector-${version}";
+  version = "4.3.0";
   buildInputs = [ stdenv pkgconfig boost hpctools zlib cmake mpiRuntime libxml2  hdf5 ]
-	++ stdenv.lib.optional (generateDoc == true) [ asciidoc xmlto docbook_xsl libxslt ];
+        ++ stdenv.lib.optional (generateDoc == true) [ asciidoc xmlto docbook_xsl libxslt ];
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/building/TouchDetector";
@@ -30,9 +31,9 @@ stdenv.mkDerivation rec {
   cmakeFlags =  stdenv.lib.optional (generateDoc == true) [ "-DTOUCHDETECTOR_DOCUMENTATION=TRUE" ]; 
 
   postInstall = ''
-		install -D ../LICENSE.txt $out/share/doc/TouchDetector/LICENSE.txt ;
-		install -D ../README.txt $out/share/doc/TouchDetector/README.txt ;
-		'';
+                install -D ../LICENSE.txt $out/share/doc/TouchDetector/LICENSE.txt ;
+                install -D ../README.txt $out/share/doc/TouchDetector/README.txt ;
+                '';
 
   enableParallelBuilding = true;
 

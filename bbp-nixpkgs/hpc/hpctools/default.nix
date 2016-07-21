@@ -1,7 +1,8 @@
 { stdenv, fetchgitPrivate, boost, libxml2, cmake, mpiRuntime, pkgconfig, python, hdf5, doxygen }:
 
 stdenv.mkDerivation rec {
-  name = "hpctools-3.3.0-DEV";
+  name = "hpctools-${version}";
+  version = "3.3.0";
   buildInputs = [ stdenv pkgconfig boost cmake mpiRuntime libxml2 python hdf5 doxygen];
 
   src = fetchgitPrivate {

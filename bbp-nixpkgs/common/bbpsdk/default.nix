@@ -1,7 +1,8 @@
 { stdenv, fetchgitExternal, boost, lunchbox, brion, vmmlib, servus, cmake,  pkgconfig, python, hdf5, doxygen }:
 
 stdenv.mkDerivation rec {
-  name = "bbpsdk-0.25";
+  name = "bbpsdk-${version}";
+  version = "0.25";
   buildInputs = [ stdenv pkgconfig boost brion vmmlib servus cmake lunchbox python hdf5 doxygen];
 
   src = fetchgitExternal {
