@@ -16,7 +16,9 @@
 , libxslt }:
 
 stdenv.mkDerivation rec {
-  name = "functionalizer-3.8.1";
+  name = "functionalizer-${version}";
+  version = "3.8.1";
+  
   buildInputs = [ stdenv pkgconfig boost hpctools zlib cmake mpiRuntime libxml2 python hdf5 ]
    ++ stdenv.lib.optional (generateDoc == true ) [ asciidoc xmlto docbook_xsl libxslt  ];
 
