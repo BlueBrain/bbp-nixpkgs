@@ -1,7 +1,9 @@
 { stdenv, fetchgitPrivate, perl, cmake, boost, pkgconfig, mpiRuntime, mod2c, mods-src}:
 
 stdenv.mkDerivation rec {
-  name = "coreneuron-0.8.1";
+  name = "coreneuron-${version}";
+  version = "0.8.1";
+  
   buildInputs = [ stdenv perl cmake boost pkgconfig mpiRuntime mod2c];
 
 
