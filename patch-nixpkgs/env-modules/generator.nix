@@ -31,12 +31,16 @@ assert builtins.length packages > 0;
     
     moduleFileSuffix = "${name}/${versionString}";
                         
-    depBuilder = depPrefixString: depList:  if depList == [] 
-                                                then ''''
-                                                else ''
-                                                ${depPrefixString} ${(builtins.head (depList)).modulename}
-                                                ${depBuilder depPrefixString (builtins.tail depList)}
-                                                     '';
+    depBuilder = depPrefixString: depList:  
+                                          let 
+                                             extractName = dep: if (builtins.isString dep) then dep
+                                                                else dep.modulename;
+                                          in
+                                            if depList == [] then ''''
+                                              else ''
+                                                    ${depPrefixString} ${(extractName (builtins.head (depList)))}
+                                                    ${depBuilder depPrefixString (builtins.tail depList)}
+                                                    '';
             
                             
  in
