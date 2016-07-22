@@ -3,7 +3,9 @@
 }:
 
 
-let generic-modules = rec {
+let 
+      conflicts-modules = [ "mvapich2" "mvapich2-psm-x86_64" "openmpi" "gcc" "mpich2" ];
+      generic-modules = rec {
 
       ## hpc components
       mvdtool = pkgs.envModuleGen rec {
@@ -14,7 +16,7 @@ let generic-modules = rec {
             packages = [
                             pkgs.mvdtool
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules;
       };  
       
       hpctools = pkgs.envModuleGen rec {
@@ -25,7 +27,7 @@ let generic-modules = rec {
             packages = [
                             pkgs.hpctools
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules;
       };    
       
       functionalizer = pkgs.envModuleGen rec {
@@ -35,7 +37,7 @@ let generic-modules = rec {
             packages = [
                             pkgs.functionalizer
                        ];
-            conflicts = [ gcc52 ];
+            conflicts =  conflicts-modules;
       };
       
       touchdetector = pkgs.envModuleGen rec {
@@ -45,7 +47,7 @@ let generic-modules = rec {
             packages = [
                             pkgs.touchdetector
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules;
       };   
       
       bluebuilder = pkgs.envModuleGen rec {
@@ -55,7 +57,7 @@ let generic-modules = rec {
             packages = [
                             pkgs.bluebuilder
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules;
       };
       
       neuron = pkgs.envModuleGen rec {
@@ -73,9 +75,7 @@ let generic-modules = rec {
                        
             extraContent = "setenv BBP_HOME $targetEnv/";
             
-            conflicts = [ 
-                            gcc52
-                        ];
+            conflicts = conflicts-modules;
       };        
       
       hpc = pkgs.envModuleGen {
@@ -117,7 +117,9 @@ let generic-modules = rec {
                             pkgs.python27Packages.pandas
                                                         
                        ];
-            extraContent = "setenv BBP_HOME $targetEnv/";                       
+            extraContent = "setenv BBP_HOME $targetEnv/"; 
+            
+            conflicts = conflicts-modules;                      
       };
 
       ## viz components
@@ -129,7 +131,7 @@ let generic-modules = rec {
             packages = [
                             pkgs.brion
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules;
       };
 
       bbpsdk = pkgs.envModuleGen rec {
@@ -140,7 +142,7 @@ let generic-modules = rec {
             packages = [
                             pkgs.bbpsdk
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules;
       };
 
       
@@ -165,7 +167,7 @@ let generic-modules = rec {
                             #pythonPkgs.pycurl
                             #pythonPkgs.h5py
                        ];
-            conflicts = [ python34 ];                           
+            conflicts = [ python34 ] ++ conflicts-modules;                           
       };
       
       python34 = pkgs.envModuleGen rec {
@@ -181,7 +183,7 @@ let generic-modules = rec {
                             pythonPkgs.pycurl
                             pythonPkgs.h5py
                        ];
-            conflicts = [ python27 ];                           
+            conflicts = [ python27 ] ++ conflicts-modules;                          
       };    
 
 
@@ -215,6 +217,7 @@ let generic-modules = rec {
             packages = [ 
                             pkgs.cmake 
                        ];
+            conflicts = [ "cmake" ];
       };  
       
       boost = pkgs.envModuleGen rec {
@@ -225,7 +228,7 @@ let generic-modules = rec {
             packages = [ 
                             pkgs.boost.dev pkgs.boost.lib
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules ++ [ "boost" ];
       };        
      
       openblas = pkgs.envModuleGen rec {
@@ -235,7 +238,7 @@ let generic-modules = rec {
             packages = [
                             pkgs.openblas
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules;
       };
 
  
@@ -248,7 +251,7 @@ let generic-modules = rec {
                             ## add slurm for libpmi dependencies
                             ## pkgs.slurm-llnl
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules;
       };
       
       hdf5 = pkgs.envModuleGen rec {
@@ -258,7 +261,7 @@ let generic-modules = rec {
             packages = [ 
                             pkgs.hdf5 
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules ++ [ "hdf5" ];
       };  
      
 
@@ -270,7 +273,7 @@ let generic-modules = rec {
             packages = [
                             pkgs.petsc
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules;
       };
 
  
@@ -281,7 +284,7 @@ let generic-modules = rec {
             packages = [ 
                             pkgs.libxml2 
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules;
       };
       
                
@@ -293,7 +296,7 @@ let generic-modules = rec {
             packages = [ 
                             pkgs.zlib 
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules;
       };
       
       bison = pkgs.envModuleGen rec {
@@ -304,7 +307,7 @@ let generic-modules = rec {
             packages = [ 
                             pkgs.bison 
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules;
       }; 
       
       flex = pkgs.envModuleGen rec {
@@ -315,7 +318,7 @@ let generic-modules = rec {
             packages = [ 
                             pkgs.flex 
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules;
       };      
                   
 
@@ -327,7 +330,7 @@ let generic-modules = rec {
             packages = [ 
                             pkgs.swig
                        ];
-            conflicts = [ gcc52 ];
+            conflicts = conflicts-modules;
       };      
                   
 
