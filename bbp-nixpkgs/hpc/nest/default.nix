@@ -12,7 +12,8 @@
 }:
 
 stdenv.mkDerivation rec {
-  name = "nest-2.10.0";
+  name = "nest-${version}";
+  version = "2.10.0";
   buildInputs = [ stdenv cmake libtool pkgconfig mpiRuntime ]
                ++ stdenv.lib.optional (isBGQ == false) [ cython gsl readline python];
 

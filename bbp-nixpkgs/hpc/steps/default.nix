@@ -1,7 +1,9 @@
 { stdenv, fetchgitPrivate, cmake, blas, liblapack, python, swig, numpy, mpiRuntime, gtest }:
 
 stdenv.mkDerivation rec {
-  name = "steps-2.2.1";
+  name = "steps-${version}";
+  version = "2.2.1";
+  
   buildInputs = [ stdenv cmake blas liblapack mpiRuntime python numpy swig numpy gtest ];
 
   src = fetchgitPrivate {
