@@ -7,6 +7,7 @@ moduleFilePrefix ? "nix",
 conflicts ? [] ,
 packages,
 isLibrary ? false,
+isDefault ? false,
 prefixDir ? "",
 description ? "" ,
 extraContent ? ""
@@ -22,23 +23,32 @@ assert builtins.length packages > 0;
             in 
                 builtins.any subPathExist  packages;
     
-    moduleFileSuffix = if version != ""
-                            then "${name}/${version}" 
-                            else "${name}";
+    versionString = if version != "" then version 
+                    # deduce automatically the version string if precised in the package
+                    else if ( packages != [] ) && ( (builtins.head packages).drvAttrs ? version) then (builtins.head packages).drvAttrs.version
+                    else "default";
+                    
+    
+    moduleFileSuffix = "${name}/${versionString}";
                         
-     depBuilder = depPrefixString: depList:  if depList == [] 
-                                                then ''''
-                                                else ''
-                                                ${depPrefixString} ${(builtins.head (depList)).modulename}
-                                                ${depBuilder depPrefixString (builtins.tail depList)}
-                                                     '';
+    depBuilder = depPrefixString: depList:  
+                                          let 
+                                             extractName = dep: if (builtins.isString dep) then dep
+                                                                else dep.modulename;
+                                          in
+                                            if depList == [] then ''''
+                                              else ''
+                                                    ${depPrefixString} ${(extractName (builtins.head (depList)))}
+                                                    ${depBuilder depPrefixString (builtins.tail depList)}
+                                                    '';
             
                             
  in
 stdenv.mkDerivation rec {
 
     inherit name;
-    inherit version;
+    
+    version = versionString;
 
     unpackPhase = ''echo "no sources needed"'';
     
@@ -52,18 +62,21 @@ stdenv.mkDerivation rec {
     targetEnvPkgConfig = "${targetEnv}/lib/pkgconfig";
     targetEnvMan = "${targetEnv}/share/man";
     targetEnvPython = "${targetEnv}/lib/python2.7";
+    targetEnvPythonInterpret = "${targetEnv}/bin/python";    
     targetEnvHoc = "${targetEnv}/hoc";
     targetModlUnit = "${targetEnv}/share/nrnunits.lib";
 
  
     
     buildPhase = ''
-            cat > modulefile << EOF
+    
+## modulefile itself
+cat > modulefile << EOF
 #%Module1.0#####################################################################
 ##
 ## ${moduleFileSuffix}
 ##
-## modulefiles ${name}/${version} ${description}
+## modulefiles ${name}/${versionString} ${description}
 ##
 
 proc ModulesHelp { } {
@@ -112,7 +125,7 @@ if { [file exists ${targetEnvMan} ] } {
 
 
 ## check if any python interpreter is present
-if { [file exists ${targetEnvPython} ] } {
+if { [file exists ${targetEnvPythonInterpret} ] } {
         prepend-path PYTHONHOME ${targetEnv}
 }
 
@@ -138,13 +151,28 @@ ${extraContent}
 
 
 EOF
-    '';
+
+'' 
++ (if isDefault then
+''
+
+cat > .version << EOF
+#%Module1.0
+set ModulesVersion "${versionString}"
+EOF
+
+'' else '''');
     
     
-    installPhase = ''
+    installPhase = 
+    ''
         mkdir -p $out/share/modulefiles/${moduleFilePrefix}
-        install -D modulefile $out/share/modulefiles/${moduleFilePrefix}/${moduleFileSuffix};
-    '';
+        install -D modulefile $out/share/modulefiles/${moduleFilePrefix}/${moduleFileSuffix}
+    ''
+    + (if isDefault then 
+    ''
+        install -D .version $out/share/modulefiles/${moduleFilePrefix}/${name}/.version;
+    '' else '''');
     
     passthru = { 
         modulename = "${moduleFilePrefix}/${moduleFileSuffix}";

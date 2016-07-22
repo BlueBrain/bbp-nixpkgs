@@ -1,7 +1,9 @@
 { stdenv, fetchgitPrivate, cmake, pkgconfig, bison, flex, python }:
 
 stdenv.mkDerivation rec {
-  name = "mod2c-1.1.1";
+  name = "mod2c-${version}";
+  version = "1.1.1";
+  
   buildInputs = [ stdenv cmake pkgconfig bison flex python];
 
 
