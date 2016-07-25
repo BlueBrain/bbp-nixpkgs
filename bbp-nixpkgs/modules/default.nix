@@ -578,7 +578,7 @@ with generic-modules; rec {
         name = "all-modules";
         paths = [ # bgq specific modules
                   bgq-gcc bgq-boost bgq-hdf5 bgq-libxml2 bgq-zlib
-                  bgq-cmake bgq-mpi-xlc bgq-gcc47 
+                  bgq-cmake bgq-gcc47 bgq-mpich2
                   gcc clang hdf5 boost cmake bison flex 
                   python27  
                   

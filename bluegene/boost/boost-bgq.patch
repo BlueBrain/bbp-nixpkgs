@@ -1,0 +1,12 @@
+diff -ur boost_1_58_0.old/boost/test/impl/execution_monitor.ipp boost_1_58_0/boost/test/impl/execution_monitor.ipp
+--- boost_1_58_0.old/boost/test/impl/execution_monitor.ipp	2012-12-13 22:32:58.000000000 +0100
++++ boost_1_58_0/boost/test/impl/execution_monitor.ipp	2016-07-25 18:20:22.900546596 +0200
+@@ -173,7 +173,7 @@
+ #    endif 
+ #  endif 
+ 
+-#  if !defined(__CYGWIN__) && !defined(__QNXNTO__)
++#  if !defined(__CYGWIN__) && !defined(__QNXNTO__) &&! defined(__bgq__) 
+ #   define BOOST_TEST_USE_ALT_STACK
+ #  endif
+ 

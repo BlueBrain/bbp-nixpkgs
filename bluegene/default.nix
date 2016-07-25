@@ -184,7 +184,10 @@ let
 	});
               
   
-	bgq-boost = boost.override { 
+	bgq-boost = (boost.overrideDerivation (oldAttrs:  {
+			patches = [ boost/boost-bgq.patch ];
+
+	})).override { 
 					stdenv = bgq-stdenv-gcc;
 					enableStatic = true;
 					enableShared = true;
