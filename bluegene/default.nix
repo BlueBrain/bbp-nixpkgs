@@ -58,7 +58,7 @@ let
                             (overrideCC stdenv gcc-bgq)
                          );
 
-        bgq-stdenv-gcc47 =  stdenv crossBGQSystem bgbinutils bg-gcc47;
+        bgq-stdenv-gcc47 = (makeStdenvCross  stdenv crossBGQSystem bgbinutils bg-gcc47);
 
 
 	 # BGQ pure environment
@@ -112,6 +112,7 @@ let
            gcc = forceNativeDrv (gcc47-proto.cc.override {
               cross = crossBGQSystem;
               langCC = true;
+	      langFortran = true;
               binutilsCross = bgbinutils;
               libcCross = bglibc;
               enableShared = true;
@@ -122,6 +123,9 @@ let
           cross = crossBGQSystem;
        };
 
+       bg-mpich2 = (callPackage ./mpich2 {
+		stdenv = bgq-stdenv-gcc47;
+       }).crossDrv;
 
 
 	## GCC based environment
