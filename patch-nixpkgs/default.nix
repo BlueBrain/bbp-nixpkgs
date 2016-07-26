@@ -51,37 +51,43 @@ let
 
          };
        
-          ## 
-          # mvapich2 mpi implementation
-          #
-          mvapich2 = callPackage ./mvapich2 {
-		# libibverbs needs a recompilation and a sync
-		# on viz cluster lx/viz1 due to InfiniBand OFed ABI maddness 
-		libibverbs = null;
-		librdmacm =  null;
-		slurm-llnl = slurm-llnl-full;
-		extraConfigureFlags = [ "--with-device=ch3:nemesis"];
-	   };
+        ## 
+        # mvapich2 mpi implementation
+        #
+        mvapich2 = callPackage ./mvapich2 {
+            # libibverbs needs a recompilation and a sync
+            # on viz cluster lx/viz1 due to InfiniBand OFed ABI maddness 
+            libibverbs = null;
+            librdmacm =  null;
+            slurm-llnl = slurm-llnl-full;
+            extraConfigureFlags = [ "--with-device=ch3:nemesis"];
+        };
           
           
-          libnss-native-plugins = callPackage ./nss-plugin {
+        libnss-native-plugins = callPackage ./nss-plugin {
 
 
-          };
+        };
 
-         ## PETSc utility toolkit
-         #
-         petsc = callPackage ./petsc {
-		mpiRuntime = mpich2;
-          };
+        ## PETSc utility toolkit
+        #
+        petsc = callPackage ./petsc {
+            mpiRuntime = mpich2;
+        };
+        
+        papi = callPackage ./papi {
 
+        };        
 
+        hpctoolkit = callPackage ./hpctoolkit {
+            papi = papi;
+        };
 
-         environment-modules =  callPackage ./env-modules { 
+        environment-modules =  callPackage ./env-modules { 
             tcl = tcl-8_5;
-         };
-         
-         envModuleGen = callPackage ./env-modules/generator.nix;
+        };
+
+        envModuleGen = callPackage ./env-modules/generator.nix;
 
     };
        
