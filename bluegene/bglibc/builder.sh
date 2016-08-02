@@ -73,6 +73,12 @@ postInstall() {
         cp $out/$out/libexec/* $out/libexec/ 
     fi
 
+    ## HACK
+    ## the linker 2.21 for compute node after the patch has a corruption problem
+    ## easy/dirty hot fix : replace it by the native glibc 2.12.2 one
+    echo "Take linker from ${bglinkerfix} "
+    cp ${bglinkerfix} $out/lib/ld-2.17.so
+
 }
 
 genericBuild
