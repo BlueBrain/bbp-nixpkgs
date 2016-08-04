@@ -69,6 +69,25 @@ let
 
         };
 
+	#cmake = std-pkgs.cmake.overrideDerivation ( oldAttr: rec {
+	#	majorVersion = "3.6";
+	#	minorVersion = "1";
+	#	version = "${majorVersion}.${minorVersion}";	        
+	#
+	#	  src = fetchurl {
+	#	    url = "${oldAttr.meta.homepage}files/v${majorVersion}/cmake-${version}.tar.gz";
+	#	    sha256 = "04ggm9c0zklxypm6df1v4klrrd85m6vpv13kasj42za283n9ivi8";
+	#	  };
+
+
+	# });
+
+	##
+	#
+	folly = callPackage ./folly {
+
+	};
+
         ## PETSc utility toolkit
         #
         petsc = callPackage ./petsc {
