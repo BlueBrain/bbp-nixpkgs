@@ -37,10 +37,11 @@ stdenv.mkDerivation rec {
 		    autoreconf -ivf
                  '';
                  
-                 
-  configureScript = [ "sh ./configure" ];
-  
-  configureFlags = [ ];
+                  
+  configureFlags = [ 
+			"--with-boost=${boost.dev}" 
+			"-with-boost-libdir=${boost.lib}/lib"
+		    ];
                      
   enableParallelBuilding = true;  
   
