@@ -65,7 +65,7 @@ fi
 
 if test -n "@libc@"; then
     PATH=$PATH:@libc@/bin
-    crossAddCVars @libc@
+#    crossAddCVars @libc@
 fi
 
 if test "$dontSetConfigureCross" != "1"; then

@@ -6,7 +6,7 @@
 , pythonCrossNative ? null
 }:
 
-
+with stdenv.lib;
 
 let 
     # here we get an original ( host ) python version with Parser/pgen we need
@@ -27,17 +27,24 @@ let
 
 in
 
-(pythonOrigin.overrideDerivation ( oldAttr: rec {
+(pythonOrigin.override {
+	stdenv = stdenv;
+	bzip2 = bzip2;
+	openssl = openssl;
+
+	x11Support = false;
+	zlibSupport = false;
+	
+}).overrideDerivation ( oldAttr: rec {
         name =  "python-${version}-bgq";
 	version = "2.7.11";
 
-#	src = fetchurl {
-#		url = "http://www.python.org/ftp/python/${version}/Python-${version}.tar.xz";
-#    		sha256 = "1c8xan2dlsqfq8q82r3mhl72v3knq3qyn71fjq89xikx2smlqg7k";
-#	};
-
         nativeBuildInputs = [ pythonCrossNative ] ++ oldAttr.nativeBuildInputs ;
 
+	buildInputs = [ bzip2 openssl ] ;
+
+	C_INCLUDE_PATH = concatStringsSep ":" (map (p: "${p}/include") buildInputs);
+        LIBRARY_PATH = concatStringsSep ":" (map (p: "${p}/lib") buildInputs);
 
 	patches = [ ./cross-compile.patch ] ++ oldAttr.patches;
 
@@ -52,15 +59,7 @@ in
 		"BUILD_PGEN=${python_for_build}/share/cross_compile_tools/pgen"
 	      ];
 
+	propagatedBuildInputs = [ ];
 
-
-})).override {
-	stdenv = stdenv;
-	bzip2 = bzip2;
-	openssl = openssl;
-
-	x11Support = false;
-	zlibSupport = false;
-	
-}
+})
 

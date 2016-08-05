@@ -16,7 +16,6 @@ let
 		dontFixup = true; 
 		dontCrossStrip = true; 
 		dontStrip = true;		# avoid strip, same reason than before and we want to keep debug infos
-		NIX_DONT_SET_RPATH = "1";	# overloading the RPATH cause crash on BGQ compute node
 	};
 
 	bgdontFixPathStdenv = env: (addAttrsToDerivation bg-dontFixPath env); 
@@ -28,8 +27,7 @@ let
 	      nativeTools = false;
 	      nativeLibc = false;
 	      noLibc = (libc == null);
-	      stdenv = bgdontFixPathStdenv stdenv;
-	      inherit gcc binutils libc shell name cross;
+	      inherit gcc binutils libc shell name cross stdenv;
 	    });	
 
 	
@@ -42,7 +40,7 @@ let
 		libc = "glibc";
 
 	        platform = ((import ../std-nixpkgs/pkgs/top-level/platforms.nix).powerpc64_pc)
-				// { kernelArch = "powerpc"; };
+				// { kernelArch = "powerpc"; kernelMajor = "2.6"; };
 
 		openssl.system = "linux-ppc64";
 
@@ -70,9 +68,7 @@ let
 	 };    
 
 
-	stdenv = pkgs.stdenv.override {
-			extraAttrs = { isBlueGene = true; };
-        };
+	stdenv = pkgs.stdenv // rec { isBlueGene = true; };
 
 
 	bgq-stdenv-origin = (overrideCC stdenv mpi-bgq)
@@ -86,7 +82,7 @@ let
 
         bgq-stdenv-gcc47 =  ( bgdontFixPathStdenv 
 			     (makeStdenvCross  stdenv crossBGQSystem bgbinutils bg-gcc47)
-			    );
+			    ) ;
 
 	 # BGQ pure environment
 	 #
@@ -155,7 +151,7 @@ let
 
        bg-mpich2 = (callPackage ./mpich2 {
 		stdenv = bgq-stdenv-gcc47;
-       }).crossDrv;
+       });
 
 
 	## GCC based environment
@@ -170,6 +166,37 @@ let
         bgq-stdenv-mpixlc-static =  makeStaticLibraries bgq-stdenv-mpixlc;
  
 
+	## recursively import all package in cross compile stdenv
+	
+	all-pkgs-bgq-gcc47 = 
+			(let
+ 			     base_config = config;
+			     base_pkgs = (import ../std-nixpkgs/pkgs/top-level/all-packages.nix) { 
+						crossSystem = crossBGQSystem;
+						config = base_config // {
+							## global override to force the BGQ compute environment
+							# as default nix Cross compile environment 
+							packageOverrides = pkgs: (
+								 (base_config.packageOverrides pkgs) 
+								 // 
+								 { 
+									stdenvCross = bgq-stdenv-gcc47; 
+									libcCross = bglibc;
+									binutilsCross = bgbinutils;
+
+									perl = pkgs.perl.overrideDerivation (oldAttr:{ outputs = [ "out" ]; });
+
+									python = bgq-python27-gcc47;
+
+									openssl = bgq-openssl-gcc47;
+								 }
+							); 
+						};
+					};
+			     patch_pkgs = (import ../patch-nixpkgs { std-pkgs = base_pkgs; } );
+			     fortranCompiler = { gfortran = bgq-stdenv-gcc47; };
+			in
+			     patch_pkgs // fortranCompiler);
 	
 
 	 # BGQ derivated packages
@@ -207,12 +234,7 @@ let
         });
 
 
-        bgq-zlib-gcc47 = (zlib.override {
-                stdenv = bgq-stdenv-gcc47;
-        });
-
-
-
+        bgq-zlib-gcc47 = all-pkgs-bgq-gcc47.zlib;
 
         bgq-python27-gcc47 = callPackage ./python-2.7 {
 		stdenv = bgq-stdenv-gcc47;
@@ -223,6 +245,13 @@ let
 		pythonCrossNative = python27;
 
 	};
+
+        bgq-pythonPackages-gcc47 = (import ./bg-pythonPackages { 
+								 stdenv = bgq-stdenv-gcc47; 
+								 python = bgq-python27-gcc47; 
+								 pkgs = all-pkgs-bgq-gcc47; 
+				   				}
+				   );
 
 
 
@@ -235,15 +264,11 @@ let
 					linkStatic = true;
 	});            
 
-	bgq-bzip2-gcc47 = bzip2.override { 
-					stdenv = bgq-stdenv-gcc47;
-	};            
+	bgq-bzip2-gcc47 = all-pkgs-bgq-gcc47.bzip2; 
 
 
-	bgq-openssl-gcc47 = ((openssl.overrideDerivation (oldAttr: {
+	bgq-openssl-gcc47 = openssl.overrideDerivation (oldAttr: {
 		outputs = [ "out" ];
-	})).override {
-					stdenv = bgq-stdenv-gcc47;
 	});
 
 
@@ -253,6 +278,8 @@ let
 					zlib = null;
 					xz = null;
 	});
+
+	bgq-libxml2-gcc47 = all-pkgs-bgq-gcc47.libxml2;
               
   
 	bgq-boost = (boost.overrideDerivation (oldAttrs:  {
@@ -265,6 +292,13 @@ let
 					bzip2 = bgq-bzip2;
 					disableLibraries= "context";
 	};
+
+
+	bgq-boost-gcc47 = (all-pkgs-bgq-gcc47.boost.overrideDerivation (oldAttrs:  {
+                        patches = [ boost/boost-bgq.patch ];
+			disableLibraries= "context";
+        }));
+
 
 
 
