@@ -46,8 +46,7 @@ bgq-config = rec {
 
 			 openssh_with_kerberos = pkgs.appendToName "with-kerberos" (pkgs.openssh.override { withKerberos = true; });
 
-			
-                
+               
         };
 
 

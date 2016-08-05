@@ -21,6 +21,11 @@ let
                     configureFlags = oldAttrs.configureFlags + " --enable-threadsafe ";
           });        
 
+
+	  blis = callPackage ./blis {
+
+	 };
+
           ##  slurm BBP configuration
           #    Add support for Kerberos plugin and allow it to run
           #    with system configuration
@@ -93,7 +98,8 @@ let
         petsc = callPackage ./petsc {
             mpiRuntime = mpich2;
         };
-        
+
+	## profiling tools        
         papi = callPackage ./papi {
 
         };        
@@ -102,6 +108,7 @@ let
             papi = papi;
         };
 
+	## env modules
         environment-modules =  callPackage ./env-modules { 
             tcl = tcl-8_5;
         };
