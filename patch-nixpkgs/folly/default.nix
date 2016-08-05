@@ -44,7 +44,9 @@ stdenv.mkDerivation rec {
 		    ];
                      
   enableParallelBuilding = true;  
-  
+ 
+  propagatedBuildInputs = [ glog openssl libevent ];
+ 
   meta = {
     description = " folly whoah";
     longDescription = ''

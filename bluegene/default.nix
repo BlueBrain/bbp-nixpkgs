@@ -22,9 +22,9 @@ let
 	bgdontFixPathStdenv = env: (addAttrsToDerivation bg-dontFixPath env); 
 
 	bg-wrapGCCCross =
-	    {gcc, libc, binutils, cross, shell ? "", name ? "gcc-cross-wrapper"}:
+	    {gcc, libc, binutils, cross, shell ? "", name ? "gcc-cross-wrapper-bgq"}:
 	
-	    forceNativeDrv (import ../std-nixpkgs/pkgs/build-support/gcc-cross-wrapper {
+	    forceNativeDrv (import ./gcc-cross-wrapper {
 	      nativeTools = false;
 	      nativeLibc = false;
 	      noLibc = (libc == null);
