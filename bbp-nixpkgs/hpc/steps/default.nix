@@ -3,8 +3,10 @@
 stdenv.mkDerivation rec {
   name = "steps-${version}";
   version = "2.2.1";
+
+  nativeBuildInputs = [ cmake swig ];
   
-  buildInputs = [ stdenv cmake blas liblapack mpiRuntime python numpy swig numpy gtest ];
+  buildInputs = [ stdenv blas liblapack mpiRuntime python numpy gtest ];
 
   src = fetchgitPrivate {
     url = "ssh://git@github.com/CNS-OIST/HBP_STEPS.git";

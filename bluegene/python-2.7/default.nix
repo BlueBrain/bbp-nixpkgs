@@ -1,6 +1,7 @@
 { stdenv
 , fetchurl
 , bzip2
+, zlib
 , openssl
 , pythonOrigin
 , pythonCrossNative ? null
@@ -31,9 +32,10 @@ in
 	stdenv = stdenv;
 	bzip2 = bzip2;
 	openssl = openssl;
+	zlib = zlib;
 
 	x11Support = false;
-	zlibSupport = false;
+	zlibSupport = true;
 	
 }).overrideDerivation ( oldAttr: rec {
         name =  "python-${version}-bgq";
@@ -41,7 +43,7 @@ in
 
         nativeBuildInputs = [ pythonCrossNative ] ++ oldAttr.nativeBuildInputs ;
 
-	buildInputs = [ bzip2 openssl ] ;
+	buildInputs = [ bzip2 openssl zlib ] ;
 
 	C_INCLUDE_PATH = concatStringsSep ":" (map (p: "${p}/include") buildInputs);
         LIBRARY_PATH = concatStringsSep ":" (map (p: "${p}/lib") buildInputs);
@@ -49,6 +51,13 @@ in
 	patches = [ ./cross-compile.patch ] ++ oldAttr.patches;
 
 	dontStrip = true;
+
+	dontFixup = false;
+
+	## we need a modified version of the setup hook to include crossed buildInput AND nativebuildInput
+        ## due to the  cross compilation needs of BGQ 
+	setupHook = ./setup-hook.sh;
+
 
 	configureFlags = oldAttr.configureFlags
 	 ++  [ 	"--disable-ipv6" 

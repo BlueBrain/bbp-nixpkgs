@@ -12,7 +12,13 @@ stdenv.mkDerivation rec {
 	repo = "blis";
 	rev = "898614a555ea0aa7de4ca07bb3cb8f5708b6a002";
 	sha256 = "05dzcy32ddq4j4hzh3jarzr2ya0sd8qv6v26rxraxbl9yji9g7cn";
- };
+  };
+
+  patches = [
+
+		./enable-cblas-compat.patch
+
+	    ];
 
   configureOpt = [      "--enable-debug=opt"
                         "--enable-shared"

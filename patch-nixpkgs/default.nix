@@ -26,6 +26,10 @@ let
 
 	 };
 
+	  libflame = callPackage ./libflame {
+		blis = blis;
+	 };
+
           ##  slurm BBP configuration
           #    Add support for Kerberos plugin and allow it to run
           #    with system configuration
