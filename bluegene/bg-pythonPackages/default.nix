@@ -1,6 +1,8 @@
 { stdenv
 ,  pkgs
 ,  python
+, mpiRuntime
+, bg-hdf5
 }:
 
 let 
@@ -14,23 +16,40 @@ let
 				} 
 		  );
 
-     bg-numpy = pkgs.callPackage ./numpy {
-	blis = pkgs.blis;
-     };
+     bg-overrides = rec { 
+	     bg-numpy = pkgs.callPackage ./numpy {
+		blis = pkgs.blis;
+	     };
 
-     numpy = bg-numpy;
+	     numpy = bg-numpy;
 
 
-   
-     bg-h5py = pythonPkgs.h5py.override {	
-	stdenv = pkgs.stdenvCross;
-	numpy = bg-numpy;
-     };
+	    bg-mpi4py = pythonPkgs.mpi4py.override {
+		mpi = mpiRuntime.crossDrv;
+		openssh = null;
+	    };
 
+    	   
+	   bg-cython = pythonPkgs.cython.overrideDerivation (oldAttr: {
+		nativeBuildInputs = [ pkgs.makeWrapper ];
+	
+	    });
+ 
+	    bg-h5py = pythonPkgs.h5py.override {
+		mpi = mpiRuntime.crossDrv;
+		mpi4py = bg-mpi4py;
+		mpiSupport = false;
+		numpy = bg-numpy;
+		hdf5 = bg-hdf5.crossDrv;
+		cython = bg-cython;
+	    };
+
+
+    };
     
 
  
 in 
-  pythonPkgs // { bg-numpy = bg-numpy; bg-h5py = bg-h5py; }
+  pythonPkgs // bg-overrides
 
 

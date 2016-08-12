@@ -5,10 +5,59 @@
 , autoconf
 , libtool
 , perl
+, libc 
 , releaseBGQPrefix ? "/bgsys/drivers/V1R2M3/ppc64"
 } :
 
 
+let 
+ bgq-pami-spi-libs = stdenv.mkDerivation rec {
+	name = "bgq-pami-spi-libs";
+
+	unpackPhase = '' echo "copy SPI and pami BGQ libs to store..."'';
+
+	dontBuild = true;
+
+       # copy necessary libpami and associated SPI into a derivation
+       # to stay isolated from system libs and native MPI libs
+       # we would like to avoid side effects by including all IBM libs
+
+	installPhase = ''
+		 mkdir -p $out/{include,lib};
+		 # copy all necessary PAMI files
+		 cp  ${releaseBGQPrefix}/comm/lib/lib*pami* $out/lib;
+		 cp -r ${releaseBGQPrefix}/comm/include/pami*h $out/include;
+
+		 # copy all necessary SPI/CNK files
+		 mkdir -p $out/include/spi
+		 cp -r ${releaseBGQPrefix}/spi/lib/* $out/lib;
+		 cp -r ${releaseBGQPrefix}/spi/include/* $out/include;
+
+		 # copy all necessary hwi files
+		 mkdir -p $out/include/hwi/include;
+		 cp -r ${releaseBGQPrefix}/hwi/include/* $out/include/hwi/include;
+		 
+		 #copy all firmware related files
+		 mkdir -p $out/include/firmware/include;
+		 cp -r ${releaseBGQPrefix}/firmware/include/* $out/include/firmware/include;
+
+
+		 #copy all cnk related files
+		 mkdir -p $out/include/cnk/include;
+		 cp -r ${releaseBGQPrefix}/cnk/include/* $out/include/cnk/include;
+
+
+
+
+		 # fake the previous hierachy for dummy scripts
+		 ln -s $out $out/spi
+		 ln -s $out $out/comm
+		'';
+
+ };
+
+
+in
 stdenv.mkDerivation rec {
     name = "mpich2-${version}";
     version = "3.2-rob";
@@ -31,12 +80,12 @@ stdenv.mkDerivation rec {
 
     nativeBuildInputs = [ automake autoconf which libtool perl ];
 
+    buildInputs = [ bgq-pami-spi-libs ];
+
     dontDisableStatic = true;
 
 
     preConfigure = ''
-			export NIX_CROSS_LDFLAGS="-L${releaseBGQPrefix}/spi/lib/ ''${NIX_CROSS_LDFLAGS}";
-			export NIX_ENFORCE_PURITY=0;
 
 			./autogen.sh
 		   '';
@@ -50,9 +99,9 @@ stdenv.mkDerivation rec {
 			"--disable-fortran" 
 
 			# BGQ confs
-			"--with-bgq-install-dir=${releaseBGQPrefix}"
-			"--with-pami=${releaseBGQPrefix}/comm" "--with-pami-include=${releaseBGQPrefix}/comm/include"
-			"--with-pami-lib=${releaseBGQPrefix}/comm/lib/"
+			"--with-bgq-install-dir=${bgq-pami-spi-libs}"
+			"--with-pami=${bgq-pami-spi-libs}" "--with-pami-include=${bgq-pami-spi-libs}/include"
+			"--with-pami-lib=${bgq-pami-spi-libs}/lib/"
 
 			# pmi
 			#"--with-pmi=simple" 
@@ -63,11 +112,14 @@ stdenv.mkDerivation rec {
     PAMILIBNAME="pami-gcc";
 
 
-    # copy necessary libpami into the derivation itself
-    # we would like to avoid side effects by including all IBM libs
+    ## force repatching of wrapper without any /bgsys reference
     postInstall = ''
-		    cp  ${releaseBGQPrefix}/comm/lib/lib*pami* $out/lib 
+		    sed -i  's@${releaseBGQPrefix}/comm@${bgq-pami-spi-libs}@g' $out/bin/*
+  	    	    sed -i  's@${releaseBGQPrefix}/spi@${bgq-pami-spi-libs}@g' $out/bin/*
 		  '';
+
+   propagatedBuildInputs = [ libc bgq-pami-spi-libs ];
+
 
 }
 

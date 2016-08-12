@@ -101,6 +101,7 @@ let
         #
         petsc = callPackage ./petsc {
             mpiRuntime = mpich2;
+	    blas = openblas;
         };
 
 	## profiling tools        

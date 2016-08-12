@@ -196,6 +196,7 @@ let
 	#
        bg-mpich2 = (callPackage ./mpich2 {
 		stdenv = bgq-stdenv-gcc47;
+		libc = bglibc;
        });
 
 
@@ -244,7 +245,9 @@ let
 
 									numpy = bgq-pythonPackages-gcc47.bg-numpy;
 
-									hdf5 = bgq-hdf5;
+									hdf5 = bgq-hdf5-gcc47;
+
+									bbp-mpi = bg-mpich2;
 
 								 }
 							); 
@@ -301,8 +304,10 @@ let
 	};
 
         bgq-pythonPackages-gcc47 = (import ./bg-pythonPackages { 
+								 mpiRuntime = bg-mpich2;
 								 stdenv = bgq-stdenv-gcc47-nofix; 
 								 python = bgq-python27-gcc47; 
+								 bg-hdf5 = bgq-hdf5-gcc47;
 								 pkgs = all-pkgs-bgq-gcc47 // { makeWrapper = makeCrossWrapper; };
 				   				}
 				   );
@@ -358,7 +363,15 @@ let
 	                dontStrip = false; 
         }));
 
+	bgq-petsc-gcc47 = all-pkgs-bgq-gcc47.petsc.override {
+		fetchgit = fetchgit;
+		stdenv = bgq-stdenv-gcc47;
+		liblapack = null;
+		blas = all-pkgs-bgq-gcc47.blis;
+		blasLibName = "libblis";
+		mpiRuntime = bg-mpich2;
 
+	};
 
 
 	bgq-map = with MergePkgs; {
@@ -387,6 +400,7 @@ let
 		bzip2 = bgq-bzip2-gcc47;
 		stdenv = bgq-stdenv-gcc47;
 		mpiRuntime = bg-mpich2;
+		bbp-mpi = bg-mpich2;
 		blas = all-pkgs-bgq-gcc47.blis;
 		python = bgq-python27-gcc47;
 
