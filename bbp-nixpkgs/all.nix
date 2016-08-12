@@ -14,6 +14,9 @@ let
 		bbp-mpi = if pkgs.isBlueGene == true then mpi-bgq
 				else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2
 				else mpich2;
+		bbp-mpi-gcc = if pkgs.isBlueGene == true then bg-mpich2
+                                else bbp-mpi;
+
 
 		callPackage = newScope mergePkgs;
 		enableBGQ-proto = caller: file: map:
@@ -184,7 +187,7 @@ let
 		};
 
 		steps = enableBGQ-gcc47 callPackage ./hpc/steps {
-			mpiRuntime = bbp-mpi;
+			mpiRuntime = bbp-mpi-gcc;
 			numpy = if (mergePkgs.isBlueGene) then  mergePkgs.bgq-pythonPackages-gcc47.bg-numpy
 				else pythonPackages.numpy;
 

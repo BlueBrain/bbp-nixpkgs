@@ -1,11 +1,13 @@
 { stdenv, 
 fetchgit, 
 mpiRuntime,
-openblas,
+blas,
+blasLibName ? "libopenblas",
 liblapack,
 pkgconfig,
 python 
 }:
+
 
 stdenv.mkDerivation rec {
   name = "PETSc-${version}";
@@ -24,20 +26,38 @@ stdenv.mkDerivation rec {
 	export HOME=$(mktemp -d)
   '';
 
-  configureFlags = [
-			 "--with-mpi-dir=${mpiRuntime}"
-			 "--with-fc=0"
-			 "--with-blas-lib=${openblas}/lib/libopenblas.so"
-			 "--with-lapack-lib=${liblapack}/lib/liblapack.so"
+ 
 
-		   ];
+  configureOpts = [
+                         "--with-fc=0"
+                  ];
 
-  buildInputs = [ pkgconfig python openblas liblapack];
+
+  configureFlags = configureOpts  
+		   ++ [ "--with-mpi-dir=${mpiRuntime}" ]
+		   ++ [  "--with-blas-lib=${blas}/lib/${blasLibName}.so" ]
+		   ++ stdenv.lib.optional (liblapack != null) [	 "--with-lapack-lib=${liblapack}/lib/liblapack.so" ];
+
+
+  nativeBuildInputs = [ pkgconfig python ];
+
+  buildInputs = [ blas liblapack mpiRuntime];
    
+
+  ## cross compilation for Super-computer environments
+  ##
+  crossAttrs = {
+	configureFlags = configureOpts 
+			 ++ [ "--with-mpi-dir=${mpiRuntime.crossDrv}" "--with-batch" "--known-mpi-shared-libraries=0" ]
+			 ++ [  "--with-blas-lib=${blas.crossDrv}/lib/${blasLibName}.so" ]
+	                 ++ stdenv.lib.optional (liblapack != null) [  "--with-lapack-lib=${liblapack.crossDrv}/lib/liblapack.so" ];
+
+
+       dontSetConfigureCross = true;
+  };
 
 
   # -j not supported by petsc
-  # the option need to be manual with 
   enableParallelBuilding = false;
 
   meta = with stdenv.lib; {
