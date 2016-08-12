@@ -42,9 +42,9 @@ bgq-config = rec {
 
                          });
 	
-			 openssh_hpn = pkgs.appendToName "with-hpn" (pkgs.openssh.override { hpnSupport = true; });
+			openssh_hpn = pkgs.appendToName "with-hpn" (pkgs.openssh.override { hpnSupport = true; });
 
-			 openssh_with_kerberos = pkgs.appendToName "with-kerberos" (pkgs.openssh.override { withKerberos = true; });
+			openssh_with_kerberos = pkgs.appendToName "with-kerberos" (pkgs.openssh.override { withKerberos = true; });
 
                
         };
