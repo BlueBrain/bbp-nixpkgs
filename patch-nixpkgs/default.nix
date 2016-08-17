@@ -21,6 +21,20 @@ let
                     configureFlags = oldAttrs.configureFlags + " --enable-threadsafe ";
           });        
 
+
+	  blis = callPackage ./blis {
+
+	 };
+
+	  libflame = callPackage ./libflame {
+		blis = blis;
+	 };
+
+	 clapack = callPackage ./clapack {
+		blas = openblas;
+		
+	 };
+
           ##  slurm BBP configuration
           #    Add support for Kerberos plugin and allow it to run
           #    with system configuration
@@ -51,37 +65,65 @@ let
 
          };
        
-          ## 
-          # mvapich2 mpi implementation
-          #
-          mvapich2 = callPackage ./mvapich2 {
-		# libibverbs needs a recompilation and a sync
-		# on viz cluster lx/viz1 due to InfiniBand OFed ABI maddness 
-		libibverbs = null;
-		librdmacm =  null;
-		slurm-llnl = slurm-llnl-full;
-		extraConfigureFlags = [ "--with-device=ch3:nemesis"];
-	   };
+        ## 
+        # mvapich2 mpi implementation
+        #
+        mvapich2 = callPackage ./mvapich2 {
+            # libibverbs needs a recompilation and a sync
+            # on viz cluster lx/viz1 due to InfiniBand OFed ABI maddness 
+            libibverbs = null;
+            librdmacm =  null;
+            slurm-llnl = slurm-llnl-full;
+            extraConfigureFlags = [ "--with-device=ch3:nemesis"];
+        };
           
           
-          libnss-native-plugins = callPackage ./nss-plugin {
+        libnss-native-plugins = callPackage ./nss-plugin {
 
 
-          };
+        };
 
-         ## PETSc utility toolkit
-         #
-         petsc = callPackage ./petsc {
-		mpiRuntime = mpich2;
-          };
+	#cmake = std-pkgs.cmake.overrideDerivation ( oldAttr: rec {
+	#	majorVersion = "3.6";
+	#	minorVersion = "1";
+	#	version = "${majorVersion}.${minorVersion}";	        
+	#
+	#	  src = fetchurl {
+	#	    url = "${oldAttr.meta.homepage}files/v${majorVersion}/cmake-${version}.tar.gz";
+	#	    sha256 = "04ggm9c0zklxypm6df1v4klrrd85m6vpv13kasj42za283n9ivi8";
+	#	  };
 
 
+	# });
 
-         environment-modules =  callPackage ./env-modules { 
+	##
+	#
+	folly = callPackage ./folly {
+
+	};
+
+        ## PETSc utility toolkit
+        #
+        petsc = callPackage ./petsc {
+            mpiRuntime = mpich2;
+	    blas = openblas;
+        };
+
+	## profiling tools        
+        papi = callPackage ./papi {
+
+        };        
+
+        hpctoolkit = callPackage ./hpctoolkit {
+            papi = papi;
+        };
+
+	## env modules
+        environment-modules =  callPackage ./env-modules { 
             tcl = tcl-8_5;
-         };
-         
-         envModuleGen = callPackage ./env-modules/generator.nix;
+        };
+
+        envModuleGen = callPackage ./env-modules/generator.nix;
 
     };
        

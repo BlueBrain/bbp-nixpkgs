@@ -11,7 +11,9 @@ cross:
 , withGd ? false, gd ? null, libpng ? null
 , preConfigure ? ""
 , automake
-, autoconf, ... }@args:
+, autoconf
+, bglinkerfix ? "/bgsys/drivers/ppcfloor/gnu-linux/powerpc64-bgq-linux/lib/ld64.so.1"
+, ... }@args:
 
 let
 
@@ -25,7 +27,7 @@ assert machHeaders != null -> hurdHeaders != null;
 assert hurdHeaders != null -> libpthreadHeaders != null;
 
 stdenv.mkDerivation ({
-  inherit kernelHeaders installLocales;
+  inherit kernelHeaders installLocales bglinkerfix;
 
   # The host/target system.
   crossConfig = if cross != null then cross.config else null;

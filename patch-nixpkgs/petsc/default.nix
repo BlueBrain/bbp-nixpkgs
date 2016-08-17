@@ -1,11 +1,14 @@
 { stdenv, 
 fetchgit, 
 mpiRuntime,
-openblas,
+blas,
+blasLibName ? "openblas",
 liblapack,
+liblapackLibName ? "lapack",
 pkgconfig,
 python 
 }:
+
 
 stdenv.mkDerivation rec {
   name = "PETSc-${version}";
@@ -19,25 +22,65 @@ stdenv.mkDerivation rec {
 
 
   preConfigure = ''
-	# petsc python configure script want a HOME
-        # we provide him a tmp one
+	# petsc python configure script want an existing HOME directory
+        # we provide him a fake one
 	export HOME=$(mktemp -d)
   '';
 
-  configureFlags = [
-			 "--with-mpi-dir=${mpiRuntime}"
-			 "--with-fc=0"
-			 "--with-blas-lib=${openblas}/lib/libopenblas.so"
-			 "--with-lapack-lib=${liblapack}/lib/liblapack.so"
+ 
 
-		   ];
+  configureOpts = [
+                         "--with-fc=0"
+                  ];
 
-  buildInputs = [ pkgconfig python openblas liblapack];
+
+  configureFlags = configureOpts  
+		   ++ [ "--with-mpi-dir=${mpiRuntime}" ]
+	   ++ [  "--with-blas-lib=${blas}/lib/lib${blasLibName}.so" ]
+		   ++ stdenv.lib.optional (liblapack != null) [	 "--with-lapack-lib=${liblapack}/lib/lib${liblapackLibName}.so" ];
+
+
+  nativeBuildInputs = [ pkgconfig python ];
+
+  buildInputs = [ blas liblapack mpiRuntime];
    
+
+  ## cross compilation for Super-computer environments
+  ##
+  crossAttrs = {
+	## FixPETSc cross compilation bullshit
+	##
+	## PETSC need three steps configure steps to be configured in crossCompiled environment
+	## 1- configure one on frontend to generate script
+	## 2- run this generated script
+	## 3- configure again on backend
+	##
+	## we fake this behavior by using an already generated script that we reconfigure manually
+
+	preConfigure = ''
+			export HOME=$(mktemp -d)
+
+			## reconfigure script for cross compile
+			substitute ${./reconfigure-arch-linux2-c-debug.py.in} ./reconfigure-arch-linux2-c-debug.py \
+			--replace "@mpi_path@" "${mpiRuntime.crossDrv}" \
+			--replace "@liblapack_path@" "${liblapack.crossDrv}" \
+			--replace "@liblapackLibName@" "${liblapackLibName}" \
+                        --replace "@blas_path@" "${blas.crossDrv}" \
+                        --replace "@blasLibName@" "${blasLibName}" 
+
+			chmod a+x ./reconfigure-arch-linux2-c-debug.py
+		       '';
+
+	configureScript = "./reconfigure-arch-linux2-c-debug.py";
+
+	configureFlags = "";
+			 
+
+       dontSetConfigureCross = true;
+  };
 
 
   # -j not supported by petsc
-  # the option need to be manual with 
   enableParallelBuilding = false;
 
   meta = with stdenv.lib; {
