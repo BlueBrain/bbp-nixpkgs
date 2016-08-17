@@ -240,14 +240,16 @@ let
 
 									openssl = bgq-openssl-gcc47;
 
-									openblas = MergePkgs.blis;
-									openblasCompat = MergePkgs.blis;
+                                                                       openblas = bgq-openblas;
+                                                                       openblasCompat = bgq-openblas;
+
 
 									numpy = bgq-pythonPackages-gcc47.bg-numpy;
 
 									hdf5 = bgq-hdf5-gcc47;
 
 									bbp-mpi = bg-mpich2;
+
 
 								 }
 							); 
@@ -318,7 +320,7 @@ let
 					stdenv = bgq-stdenv-mpixlc-static;
 	};
 
-	bgq-xv-gcc47 = all-pkgs-bgq-gcc47.xv;
+	bgq-xv-gcc47 = all-pkgs-bgq-gcc47.xz;
 	   
 	bgq-bzip2 = (bzip2.override { 
 					stdenv = bgq-stdenv-gcc-static;
@@ -329,6 +331,7 @@ let
 
 
 	bgq-openssl-gcc47 = openssl.overrideDerivation (oldAttr: {
+		stdenv= bgq-stdenv-gcc47-nofix;
 		outputs = [ "out" ];
 	});
 
@@ -363,12 +366,28 @@ let
 	                dontStrip = false; 
         }));
 
-	bgq-petsc-gcc47 = all-pkgs-bgq-gcc47.petsc.override {
-		fetchgit = fetchgit;
+
+	bgq-clapack = all-pkgs-bgq-gcc47.clapack.override {
+		stdenv = bgq-stdenv-gcc47-nofix;
+		fetchurl = fetchurl;
+		blas = bgq-openblas;
+		blasLibName = "openblas";
+	};
+
+	bgq-openblas = callPackage ./bg-openblas {
 		stdenv = bgq-stdenv-gcc47;
-		liblapack = null;
-		blas = all-pkgs-bgq-gcc47.blis;
-		blasLibName = "libblis";
+		liblapack = all-pkgs-bgq-gcc47.liblapack;
+		config =  crossBGQSystem;
+	};
+	
+	
+
+	bgq-petsc-gcc47 = all-pkgs-bgq-gcc47.petsc.override {
+		stdenv = bgq-stdenv-gcc47;
+		liblapack = bgq-openblas;
+		liblapackLibName = "openblas";
+		blas = bgq-openblas;
+		blasLibName = "openblas";
 		mpiRuntime = bg-mpich2;
 
 	};
@@ -403,6 +422,7 @@ let
 		bbp-mpi = bg-mpich2;
 		blas = all-pkgs-bgq-gcc47.blis;
 		python = bgq-python27-gcc47;
+		petsc = bgq-petsc-gcc47;
 
 	};
 	

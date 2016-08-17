@@ -2,8 +2,9 @@
 fetchgit, 
 mpiRuntime,
 blas,
-blasLibName ? "libopenblas",
+blasLibName ? "openblas",
 liblapack,
+liblapackLibName ? "lapack",
 pkgconfig,
 python 
 }:
@@ -21,8 +22,8 @@ stdenv.mkDerivation rec {
 
 
   preConfigure = ''
-	# petsc python configure script want a HOME
-        # we provide him a tmp one
+	# petsc python configure script want an existing HOME directory
+        # we provide him a fake one
 	export HOME=$(mktemp -d)
   '';
 
@@ -35,8 +36,8 @@ stdenv.mkDerivation rec {
 
   configureFlags = configureOpts  
 		   ++ [ "--with-mpi-dir=${mpiRuntime}" ]
-		   ++ [  "--with-blas-lib=${blas}/lib/${blasLibName}.so" ]
-		   ++ stdenv.lib.optional (liblapack != null) [	 "--with-lapack-lib=${liblapack}/lib/liblapack.so" ];
+	   ++ [  "--with-blas-lib=${blas}/lib/lib${blasLibName}.so" ]
+		   ++ stdenv.lib.optional (liblapack != null) [	 "--with-lapack-lib=${liblapack}/lib/lib${liblapackLibName}.so" ];
 
 
   nativeBuildInputs = [ pkgconfig python ];
@@ -47,11 +48,33 @@ stdenv.mkDerivation rec {
   ## cross compilation for Super-computer environments
   ##
   crossAttrs = {
-	configureFlags = configureOpts 
-			 ++ [ "--with-mpi-dir=${mpiRuntime.crossDrv}" "--with-batch" "--known-mpi-shared-libraries=0" ]
-			 ++ [  "--with-blas-lib=${blas.crossDrv}/lib/${blasLibName}.so" ]
-	                 ++ stdenv.lib.optional (liblapack != null) [  "--with-lapack-lib=${liblapack.crossDrv}/lib/liblapack.so" ];
+	## FixPETSc cross compilation bullshit
+	##
+	## PETSC need three steps configure steps to be configured in crossCompiled environment
+	## 1- configure one on frontend to generate script
+	## 2- run this generated script
+	## 3- configure again on backend
+	##
+	## we fake this behavior by using an already generated script that we reconfigure manually
 
+	preConfigure = ''
+			export HOME=$(mktemp -d)
+
+			## reconfigure script for cross compile
+			substitute ${./reconfigure-arch-linux2-c-debug.py.in} ./reconfigure-arch-linux2-c-debug.py \
+			--replace "@mpi_path@" "${mpiRuntime.crossDrv}" \
+			--replace "@liblapack_path@" "${liblapack.crossDrv}" \
+			--replace "@liblapackLibName@" "${liblapackLibName}" \
+                        --replace "@blas_path@" "${blas.crossDrv}" \
+                        --replace "@blasLibName@" "${blasLibName}" 
+
+			chmod a+x ./reconfigure-arch-linux2-c-debug.py
+		       '';
+
+	configureScript = "./reconfigure-arch-linux2-c-debug.py";
+
+	configureFlags = "";
+			 
 
        dontSetConfigureCross = true;
   };
