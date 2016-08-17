@@ -1,4 +1,4 @@
-{ stdenv, fetchgitPrivate, cmake, blas, liblapack, python, swig, numpy, mpiRuntime, gtest }:
+{ stdenv, fetchgitPrivate, cmake, blas, liblapack, python, swig, numpy, petsc, mpiRuntime, gtest }:
 
 stdenv.mkDerivation rec {
   name = "steps-${version}";
@@ -6,16 +6,16 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ cmake swig ];
   
-  buildInputs = [ stdenv blas liblapack mpiRuntime python numpy gtest ];
+  buildInputs = [ stdenv blas liblapack mpiRuntime petsc python numpy gtest ];
 
   src = fetchgitPrivate {
-    url = "ssh://git@github.com/CNS-OIST/HBP_STEPS.git";
-    rev = "223d346ad08e2839ab6bc2a6b8231eaeb327c9c1";
-    sha256 = "19jkk47n2lqck9is0zl25b3g6yswrqcb5gx9vvq80wzcc2jys7wq";
+    url = "ssh://git@github.com/BlueBrain/HBP_STEPS.git";
+    rev = "34715cc7d77c954c0f9a813b61cd70f103d36364";
+    sha256 = "1wy8fi6px1bldd31xwmdz69gix624wabnhqk9dh5dz9hp2728k81";
   };
   
   patches = [
-                ./gtest-patch.patch
+    #            ./gtest-patch.patch
             ];
 
   enableParallelBuilding = true;
