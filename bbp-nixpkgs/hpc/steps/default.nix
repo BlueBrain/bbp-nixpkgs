@@ -10,13 +10,10 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://git@github.com/BlueBrain/HBP_STEPS.git";
-    rev = "34715cc7d77c954c0f9a813b61cd70f103d36364";
-    sha256 = "1wy8fi6px1bldd31xwmdz69gix624wabnhqk9dh5dz9hp2728k81";
+    rev = "85eb9104b985ddee8621f75c87ab5fd0c443b8bf";
+    sha256 = "16pszr7wcy1x6fhx9pdkwb2ailclm469vzq43dxd7khvsqydxi74";
   };
   
-  patches = [
-    #            ./gtest-patch.patch
-            ];
 
   enableParallelBuilding = true;
 
