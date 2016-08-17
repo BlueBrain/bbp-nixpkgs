@@ -22,14 +22,14 @@ assert nrnOnly -> (nrnModl != null);
 
 stdenv.mkDerivation rec {
     name = "neuron-${version}-BBP-${if modlOnly then "modl" else if nrnOnly then "nrn" else "all"}";
-    version = "7.4";
+    version = "7.4-201608";
 
     buildInputs = [ automake autoconf libtool mpiRuntime ncurses readline flex bison python which nrnModl];
 
         src = fetchhg {
         url = "http://www.neuron.yale.edu/hg/neuron/nrn";
-        rev = "2a2bd3b1c433";
-        sha256 = "1d0g1n8glbrn1bwdxkjhkva6pgrj3v88spmcdjjd85ssik1ij94y"; 
+        rev = "2350fc838a79";
+        sha256 = "114w3ds7fglh4wvqi281k6027liaqwaadkql2ab53v5mz5gcgclf"; 
     };
 
 
