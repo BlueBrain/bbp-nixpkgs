@@ -10,6 +10,11 @@ python
 }:
 
 
+let 
+	optFlags = "-g -O2 -ftree-vectorize";
+
+in
+
 stdenv.mkDerivation rec {
   name = "PETSc-${version}";
   version = "3.7";
@@ -31,6 +36,8 @@ stdenv.mkDerivation rec {
 
   configureOpts = [
                          "--with-fc=0"
+						 "COPTFLAGS='${optFlags}'"
+						 "CXXOPTFLAGS='${optFlags}'"
                   ];
 
 
@@ -44,6 +51,8 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ blas liblapack mpiRuntime];
    
+
+  buildFlags = [ "V=1"  ];
 
   ## cross compilation for Super-computer environments
   ##

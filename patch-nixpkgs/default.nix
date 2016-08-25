@@ -102,26 +102,26 @@ let
 
         };
 
-        ## PETSc utility toolkit
-        #
-        petsc = callPackage ./petsc {
-            mpiRuntime = mpich2;
-            blas = openblas;
-        };
+    ## PETSc utility toolkit
+    #
+    petsc = callPackage ./petsc {
+	        mpiRuntime = pkgs.openmpi;
+			blas = openblas;
+    };
 
-        ## profiling tools        
-        papi = callPackage ./papi {
+	## profiling tools        
+    papi = callPackage ./papi {
 
-        };        
+    };        
 
-        hpctoolkit = callPackage ./hpctoolkit {
-            papi = papi;
-        };
+    hpctoolkit = callPackage ./hpctoolkit {
+          papi = papi;
+    };
 
-        ## env modules
-        environment-modules =  callPackage ./env-modules { 
+	## env modules
+    environment-modules =  callPackage ./env-modules { 
             tcl = tcl-8_5;
-        };
+    };
 
         envModuleGen = callPackage ./env-modules/generator.nix;
         

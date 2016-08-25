@@ -8,6 +8,7 @@
 , mpiRuntime
 , zlib
 , python
+, pythonPackages
 , hdf5
 , generateDoc ? true
 , asciidoc
@@ -15,11 +16,18 @@
 , docbook_xsl
 , libxslt }:
 
+let
+  python-env = python.buildEnv.override {
+		extraLibs = [ pythonPackages.h5py ];
+  };
+
+in 
+
 stdenv.mkDerivation rec {
   name = "functionalizer-${version}";
   version = "3.8.1";
   
-  buildInputs = [ stdenv pkgconfig boost hpctools zlib cmake mpiRuntime libxml2 python hdf5 ]
+  buildInputs = [ stdenv pkgconfig boost hpctools zlib cmake mpiRuntime libxml2 python-env hdf5 ]
    ++ stdenv.lib.optional (generateDoc == true ) [ asciidoc xmlto docbook_xsl libxslt  ];
 
   src = fetchgitPrivate {
