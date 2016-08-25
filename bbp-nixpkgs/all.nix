@@ -32,6 +32,13 @@ let
 
 		inherit bbp-mpi;
 
+		## override component that need bbp-mpi
+		petsc = pkgs.petsc.override {
+			mpiRuntime = bbp-mpi;
+		};
+
+	
+
 		##
 		## git / cmake external for viz components
 		##
@@ -139,14 +146,16 @@ let
 
 
 		neuron-modl = callPackage ./hpc/neuron {
+			stdenv = (keepDebugInfo stdenv);
 			mpiRuntime = null;
 			modlOnly = true;
 		};
 
 		neuron = enableBGQ callPackage ./hpc/neuron {
-		mpiRuntime = bbp-mpi;
-		nrnOnly = true;
-		nrnModl = mergePkgs.neuron-modl;
+			stdenv = (keepDebugInfo stdenv);
+			mpiRuntime = bbp-mpi;
+			nrnOnly = true;
+			nrnModl = mergePkgs.neuron-modl;
 		};
 
 
