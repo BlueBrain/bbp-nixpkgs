@@ -104,7 +104,10 @@ let
     #
     petsc = callPackage ./petsc {
 	        mpiRuntime = pkgs.openmpi;
-			blas = openblas;
+			blas = openblasCompat;
+			blasLibName = "openblas";
+			liblapack = openblasCompat;
+			liblapackLibName = "openblas";
     };
 
 	## profiling tools        
