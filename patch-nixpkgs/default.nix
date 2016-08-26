@@ -8,30 +8,30 @@ let
     MergePkgs = with MergePkgs;  std-pkgs // patches;
     patches = with patches; with MergePkgs; rec {
 
-          ## patch version of HDF5 with 
-          # cpp bindigns enabled        
-          hdf5-cpp = callPackage ./hdf5 {
+        ## patch version of HDF5 with 
+        # cpp bindigns enabled        
+        hdf5-cpp = callPackage ./hdf5 {
             szip = null;
             mpi = null;
             enableCpp = true;
-          };
+        };
           
-          ## enforce thread safety
-          hdf5 =  std-pkgs.hdf5.overrideDerivation  ( oldAttrs:{
-                    configureFlags = oldAttrs.configureFlags + " --enable-threadsafe ";
-          });        
+        ## enforce thread safety
+        hdf5 =  std-pkgs.hdf5.overrideDerivation  ( oldAttrs:{
+            configureFlags = oldAttrs.configureFlags + " --enable-threadsafe ";
+        });        
 
 
-          blis = callPackage ./blis {
+        blis = callPackage ./blis {
 
-         };
+        };
 
-          libflame = callPackage ./libflame {
-                blis = blis;
-         };
+        libflame = callPackage ./libflame {
+            blis = blis;
+        };
 
          clapack = callPackage ./clapack {
-                blas = openblas;
+            blas = openblas;
                 
          };
 
@@ -49,7 +49,7 @@ let
                 slurmPlugins = [auks slurm-plugins];
                 lua = lua5_1;
          };
- 
+
          ## slurm auks plugin
          #
          auks = callPackage ./auks {
@@ -92,8 +92,6 @@ let
         #           url = "${oldAttr.meta.homepage}files/v${majorVersion}/cmake-${version}.tar.gz";
         #           sha256 = "04ggm9c0zklxypm6df1v4klrrd85m6vpv13kasj42za283n9ivi8";
         #         };
-
-
         # });
 
         ##
@@ -128,8 +126,8 @@ let
 
     };
     
-  additionalPythonPackages = pythonPackages:  rec {
-  
+    additionalPythonPackages = pythonPackages:  rec {
+
         ## python packages
         nose_xunitmp = pythonPackages.buildPythonPackage rec {
             name = "nose_xunitmp-${version}";
@@ -160,8 +158,8 @@ let
             ];
 
         };           
-  
-  };
+
+    };
        
 in
   MergePkgs // { pythonPackages = MergePkgs.pythonPackages // (additionalPythonPackages (MergePkgs.pythonPackages)); }
