@@ -64,6 +64,38 @@ let
                 lua = lua5_1;
 
          };
+
+		## IB VERBs is not binary portable and
+		#  is ABI specific to the OFed kernel module
+		#  need to be recompiled locally 
+		#  This is dirty and impure, but it is all we can do for IB support now
+		#  due to its unstable kernel ABI 
+		ibverbs-local = stdenv.mkDerivation {
+			name = "local-ibverb-wrapper-0.1";
+
+			preferLocalBuild = true;
+
+
+
+			buildCommand = ''
+					mkdir -p $out/{bin,lib,include}
+					cp -r /usr/include/infiniband $out/include/ ||true
+					cp -r /usr/include/rdma $out/include/ ||true 
+
+					cp -r /usr/lib64/libibverbs* $out/lib/ || true
+					cp -r /usr/lib64/libmlx*.so $out/lib/ || true 
+					cp -r /usr/lib64/librdma*	$out/lib/ || true
+					cp -r /usr/lib64/libibumad*	$out/lib/ || true 
+
+					cp -r /lib64/libnl* $out/lib || true 
+					cp -r /usr/bin/ibv_* $out/bin/ ||true 
+
+					for i in $out/lib/lib*.so*
+					do
+						patchelf --set-rpath "$out/lib" $i
+					done
+			'';
+		};
        
         ## 
         # mvapich2 mpi implementation
@@ -76,6 +108,13 @@ let
             slurm-llnl = slurm-llnl-full;
             extraConfigureFlags = [ "--with-device=ch3:nemesis"];
         };
+
+
+		mvapich2-rdma =  if (builtins.pathExists "/usr/include/infiniband/") then (mvapich2.override {
+			librdmacm = ibverbs-local;
+			libibverbs = ibverbs-local;
+			extraConfigureFlags = [];
+		}) else mvapich2;
           
           
         libnss-native-plugins = callPackage ./nss-plugin {
