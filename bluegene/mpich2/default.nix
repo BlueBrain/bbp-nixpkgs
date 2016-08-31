@@ -90,10 +90,12 @@ stdenv.mkDerivation rec {
 			./autogen.sh
 		   '';
 
+
+#            "--with-file-system=bg+bglockless"
+
     configureFlags = [
 			"--host=powerpc64-bgq-linux"
-	                "--with-device=pamid:BGQ"
-	                "--with-file-system=bg+bglockless"
+            "--with-device=pamid:BGQ"
 
 			# disable fortran
 			"--disable-fortran" 
