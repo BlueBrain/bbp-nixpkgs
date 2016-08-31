@@ -14,6 +14,9 @@ let
 		bbp-mpi = if pkgs.isBlueGene == true then mpi-bgq
 				else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2
 				else mpich2;
+		bbp-mpi-rdma = if pkgs.isBlueGene == true then mpi-bgq
+				else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2-rdma 
+				else mpich2;
 		bbp-mpi-gcc = if pkgs.isBlueGene == true then bg-mpich2
                                 else bbp-mpi;
 
@@ -34,7 +37,7 @@ let
 
 		## override component that need bbp-mpi
 		petsc = pkgs.petsc.override {
-			mpiRuntime = bbp-mpi;
+			mpiRuntime = bbp-mpi-rdma;
 		};
 
 	
@@ -90,12 +93,10 @@ let
 		## BBP HPC components
 		##
 		hpctools = enableBGQ callPackage ./hpc/hpctools { 
-			python = python27; 
 			mpiRuntime = bbp-mpi;
 		}; 
 
 		functionalizer = enableBGQ callPackage ./hpc/functionalizer { 
-			 python = python27; 
 			 mpiRuntime = bbp-mpi;                
 		};  
 
@@ -200,7 +201,7 @@ let
 			numpy = if (mergePkgs.isBlueGene) then  mergePkgs.bgq-pythonPackages-gcc47.bg-numpy
 				else pythonPackages.numpy;
 
-                        liblapack = if (mergePkgs.isBlueGene) then null
+            liblapack = if (mergePkgs.isBlueGene) then null
 				  else liblapackWithoutAtlas;
 		};
 
