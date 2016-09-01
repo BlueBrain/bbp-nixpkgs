@@ -405,8 +405,6 @@ let
 		stdenv = bgq-stdenv;
 		stdenv-gcc47 = bgq-stdenv-gcc47;
 		boost = bgq-boost;
-		python = bgq-python27-gcc47;
-		pythonPackages = bgq-pythonPackages-gcc47;
 		blas = MergePkgs.blis;
 	};
 

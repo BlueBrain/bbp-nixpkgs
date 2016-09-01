@@ -50,6 +50,12 @@ bgq-config = rec {
         };
 
 
+    openblas = {
+		preferLocalBuild = true;
+		flags = [ "NUM_THREADS=64" "TARGET=POWER7" ];
+	};
+
+	isBlueGene = true;
 
 	};
 
