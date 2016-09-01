@@ -19,9 +19,14 @@ stdenv.mkDerivation rec {
 
   CXXFLAGS="-pthread ";
   
-  cmakeFlags = [ "-DGTEST_USE_EXTERNAL=TRUE" ];
+  cmakeFlags = [ "-DGTEST_USE_EXTERNAL=TRUE" "-DPETSC_EXECUTABLE_RUNS=TRUE" 
+		 "-DCMAKE_CXX_COMPILER=mpic++" "-DCMAKE_C_COMPILER=mpicc" ];
  
-  
+  preConfigure = ''
+		# 42 dude !
+		export CC=mpicc
+		export CXX=mpicxx
+  ''; 
 }
 
 
