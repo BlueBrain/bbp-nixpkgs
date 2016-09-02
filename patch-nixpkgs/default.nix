@@ -8,6 +8,18 @@ let
     MergePkgs = with MergePkgs;  std-pkgs // patches;
     patches = with patches; with MergePkgs; rec {
 
+		##utility for debug info
+  		enableDebugInfo = stdenv: stdenv //
+	    { mkDerivation = args: stdenv.mkDerivation (args // {
+    	    dontStrip = true;
+			dontCrossStrip = true;
+	        NIX_CFLAGS_COMPILE = toString (args.NIX_CFLAGS_COMPILE or "") + " -ggdb -g -fno-omit-frame-pointer";
+			NIX_CROSS_CFLAGS_COMPILE = toString (args.NIX_CROSS_CFLAGS_COMPILE or "") + " -ggdb -g -fno-omit-frame-pointer";
+	      });
+	    };
+		
+
+
         ## patch version of HDF5 with 
         # cpp bindigns enabled        
         hdf5-cpp = callPackage ./hdf5 {

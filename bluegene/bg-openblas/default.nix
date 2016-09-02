@@ -19,17 +19,16 @@ stdenv.mkDerivation rec {
 
   makeFlags =
     [
-      "FC=gfortran"
       # Note that clang is available through the stdenv on OSX and
       # thus is not an explicit dependency.
-      "CC=${if stdenv.isDarwin then "clang" else "gcc"}"
       ''PREFIX="''$(out)"''
-      "USE_OPENMP=${if stdenv.isDarwin then "0" else "1"}"
+      "USE_OPENMP=1"
+      "INTERFACE64=0"
     ];
 
-  crossAttrs = rec {
+  crossAttrs =  {
 
-   makeFlags = [ "FC=${config.config}-gfortran" ''PREFIX="''$(out)"'' "USE_OPENMP=1" "TARGET=POWER7" ];
+   makeFlags = [ "FC=${config.config}-gfortran" ] ++ makeFlags;
 
   };
 
