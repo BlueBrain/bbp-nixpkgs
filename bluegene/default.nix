@@ -383,7 +383,7 @@ let
 	
 
 	bgq-petsc-gcc47 = all-pkgs-bgq-gcc47.petsc.override {
-		stdenv = bgq-stdenv-gcc47;
+		stdenv = enableDebugInfo bgq-stdenv-gcc47;
 		liblapack = bgq-openblas;
 		liblapackLibName = "openblas";
 		blas = bgq-openblas;
@@ -405,7 +405,7 @@ let
 		stdenv = bgq-stdenv;
 		stdenv-gcc47 = bgq-stdenv-gcc47;
 		boost = bgq-boost;
-		blas = MergePkgs.blis;
+		blas = bgq-openblas;
 	};
 
 
@@ -418,7 +418,7 @@ let
 		stdenv = bgq-stdenv-gcc47;
 		mpiRuntime = bg-mpich2;
 		bbp-mpi = bg-mpich2;
-		blas = all-pkgs-bgq-gcc47.blis;
+		blas = bgq-openblas;
 		python = bgq-python27-gcc47;
 		petsc = bgq-petsc-gcc47;
 

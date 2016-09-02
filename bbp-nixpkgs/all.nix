@@ -31,12 +31,15 @@ let
 
 		enableBGQ-gcc47 = caller: file: (enableBGQ-proto  caller file mergePkgs.bgq-map-gcc47);
 
+		targetAllPkgs = if (pkgs.isBlueGene == true) then (pkgs // mergePkgs.bgq-map-gcc47) else pkgs;
+
 		mergePkgs = pkgs // rec { 
 
 		inherit bbp-mpi;
 
 		## override component that need bbp-mpi
 		petsc = pkgs.petsc.override {
+			stdenv = enableDebugInfo  targetAllPkgs.stdenv;
 			mpiRuntime = bbp-mpi-rdma;
 		};
 
@@ -147,13 +150,13 @@ let
 
 
 		neuron-modl = callPackage ./hpc/neuron {
-			stdenv = (keepDebugInfo stdenv);
+			stdenv = (enableDebugInfo stdenv);
 			mpiRuntime = null;
 			modlOnly = true;
 		};
 
 		neuron = enableBGQ callPackage ./hpc/neuron {
-			stdenv = (keepDebugInfo stdenv);
+			stdenv = (enableDebugInfo stdenv);
 			mpiRuntime = bbp-mpi;
 			nrnOnly = true;
 			nrnModl = mergePkgs.neuron-modl;
@@ -188,15 +191,16 @@ let
 		##
 
 		rdmini = callPackage ./hpc/rdmini {
-		ghc = haskellPackages.ghcWithPackages(haskellPackages:
-		with haskellPackages; [
-		#               hakyll_4_7_3_1
-		#               regex-posix
-		#               regex-pcre
-		]);
+				ghc = haskellPackages.ghcWithPackages(haskellPackages:
+				with haskellPackages; [
+				#               hakyll_4_7_3_1
+				#               regex-posix
+				#               regex-pcre
+				]);
 		};
 
 		steps = enableBGQ-gcc47 callPackage ./hpc/steps {
+			stdenv = enableDebugInfo  targetAllPkgs.stdenv;
 			mpiRuntime = bbp-mpi-gcc;
 			numpy = if (mergePkgs.isBlueGene) then  mergePkgs.bgq-pythonPackages-gcc47.bg-numpy
 				else pythonPackages.numpy;
