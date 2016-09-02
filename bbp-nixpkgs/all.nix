@@ -95,8 +95,9 @@ let
 		##
 		## BBP HPC components
 		##
-		hpctools = enableBGQ callPackage ./hpc/hpctools { 
-			mpiRuntime = bbp-mpi;
+		hpctools = enableBGQ-gcc47 callPackage ./hpc/hpctools { 
+
+			mpiRuntime = bbp-mpi-gcc;
 		}; 
 
 		functionalizer = enableBGQ callPackage ./hpc/functionalizer { 
@@ -201,7 +202,7 @@ let
 
 		steps = enableBGQ-gcc47 callPackage ./hpc/steps {
 			stdenv = enableDebugInfo  targetAllPkgs.stdenv;
-			mpiRuntime = bbp-mpi-gcc;
+			mpiRuntime = bbp-mpi-rdma;
 			numpy = if (mergePkgs.isBlueGene) then  mergePkgs.bgq-pythonPackages-gcc47.bg-numpy
 				else pythonPackages.numpy;
 
