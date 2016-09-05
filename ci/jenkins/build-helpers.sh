@@ -53,6 +53,7 @@ function setupNixEnvironment {
 
 	if [[ "${HOSTNAME_STRING}" == *"bg1"* ]]; then
 		echo "#### BlueGene/Q environment detected"
+		export NODE_IS_BGQ=1
 		module load nix 
 		return
 	fi
@@ -97,7 +98,10 @@ function buildDerivationList {
 	export PKG_BUILD_DRV=""
 	for i in "$@"
 	do
-		export PKG_BUILD_DRV="${PKG_BUILD_DRV} -A ${i}"
+		if [[ "${BUILD_BG_CROSS}x" != "x" ]] && [[ "${NODE_IS_BGQ}x" != "x" ]]; then
+			export TARGET_DRV=".crossDrv"
+		fi
+		export PKG_BUILD_DRV="${PKG_BUILD_DRV} -A ${i}${TARGET_DRV}"
 	done
 	echo "#### arguments to nix-build: ${PKG_BUILD_DRV}"
 
