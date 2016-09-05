@@ -74,7 +74,7 @@ let
 	    cross = crossBGQSystem;
 	  });
 
-
+   cnk-spi = callPackage ./cnk-spi { };
 
 	xlc = callPackage ./xlc { };
 
@@ -197,6 +197,7 @@ let
        bg-mpich2 = (callPackage ./mpich2 {
 		stdenv = bgq-stdenv-gcc47;
 		libc = bglibc;
+		cnk-spi = cnk-spi;
        });
 
 
@@ -359,12 +360,13 @@ let
 
 
 	bgq-boost-gcc47 = (all-pkgs-bgq-gcc47.boost.overrideDerivation (oldAttrs:  {
-                        patches = [ boost/boost-bgq.patch ];
-			disableLibraries= "context";
+                    patches = [ boost/boost-bgq.patch ];
+					disableLibraries= "context";
 	                dontFixup = false;
         	        dontCrossStrip = false;
 	                dontStrip = false; 
-        }));
+
+    }));
 
 
 	bgq-clapack = all-pkgs-bgq-gcc47.clapack.override {
@@ -410,17 +412,19 @@ let
 
 
 	bgq-map-gcc47 = with MergePkgs; {
-         	cmake = bgq-cmake;
+        cmake = bgq-cmake;
 		hdf5 = bgq-hdf5-gcc47;
 	 	xz = bgq-xz-gcc47;
 		zlib = bgq-zlib-gcc47;
 		bzip2 = bgq-bzip2-gcc47;
 		stdenv = bgq-stdenv-gcc47;
+		boost = bgq-boost-gcc47;
 		mpiRuntime = bg-mpich2;
 		bbp-mpi = bg-mpich2;
 		blas = bgq-openblas;
 		python = bgq-python27-gcc47;
 		petsc = bgq-petsc-gcc47;
+		cnk-spi = cnk-spi;
 
 	};
 	
