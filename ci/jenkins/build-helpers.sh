@@ -73,8 +73,10 @@ function setupNixEnvironment {
 
 function copyClosuresToCache {
 	##copy all the closure to the nix server, for later reuse and installation
-	ssh-keyscan ${NIX_CACHE_HOST} >> ~/.ssh/known_hosts
-	nix-copy-closure --include-outputs -v ${NIX_CACHE_HOST} ${LIST_BUILD_PACKAGES} || true
+	if [[ -d /nix/store ]]; then
+		ssh-keyscan ${NIX_CACHE_HOST} >> ~/.ssh/known_hosts
+		nix-copy-closure --include-outputs -v ${NIX_CACHE_HOST} ${LIST_BUILD_PACKAGES} || true
+	fi
 }
 
 
