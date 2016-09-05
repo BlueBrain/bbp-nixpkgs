@@ -79,10 +79,10 @@ function copyClosuresToCache {
 
 
 function loadNixpkgsEnv {
-	export NIXPKGS_DIR="readlink  -f ${SCRIPT_DIR}/../../sourcethis.sh"
+	export NIXPKGS_DIR="$(readlink  -f ${SCRIPT_DIR}/../../sourcethis.sh)"
 
 	echo "### load and use BBPpkgs: ${NIXPKGS_DIR} "
-	
+    source ${NIXPKGS_DIR}	
 
 }
 

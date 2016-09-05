@@ -11,5 +11,6 @@ export NIX_PATH="ssh-config-file=$HOME/.ssh/config:$NIX_PATH"
 export NIX_PATH="BBPpkgs=${NIXPKG_DIR}:${NIX_PATH}"
 
 
-
+echo "### setup NIX_PATH as"
+echo "export NIX_PATH=${NIX_PATH}"
 
