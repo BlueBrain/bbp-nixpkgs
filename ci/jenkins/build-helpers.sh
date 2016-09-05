@@ -47,7 +47,7 @@ function setupNixEnvironment {
 	HOSTNAME_STRING=$(hostname)
 	echo "#### CI hostname ${HOSTNAME_STRING}"
 
-	if [[ "${SKIP_NIX_INSTALL}x" == "x" ]]; then
+	if [[ "${SKIP_NIX_INSTALL}x" != "x" ]]; then
 		return
 	fi
 
@@ -63,7 +63,7 @@ function setupNixEnvironment {
 	fi
 
 	installNixMonoUser
-	if [[ "${NODE_NEED_PROXY}x" == "x" ]]; then
+	if [[ "${NODE_NEED_PROXY}x" != "x" ]]; then
 		setupProxyVM
 	fi
 	initAllChannels
