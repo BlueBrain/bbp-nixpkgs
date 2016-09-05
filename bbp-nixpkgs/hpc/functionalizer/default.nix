@@ -27,8 +27,9 @@ stdenv.mkDerivation rec {
   name = "functionalizer-${version}";
   version = "3.9.0";
   
-  buildInputs = [ stdenv pkgconfig boost hpctools zlib cmake mpiRuntime libxml2 python-env hdf5 ]
-   ++ stdenv.lib.optional (generateDoc == true ) [ asciidoc xmlto docbook_xsl libxslt  ];
+  buildInputs = [ boost hpctools zlib mpiRuntime libxml2 hdf5 ];
+  
+  nativeBuildInputs = [ pkgconfig cmake python-env ] ++ stdenv.lib.optional (generateDoc == true ) [ asciidoc xmlto docbook_xsl libxslt  ];
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/building/Functionalizer";
@@ -37,13 +38,21 @@ stdenv.mkDerivation rec {
   };
   
 
-  cmakeFlags=[ "-DBoost_USE_STATIC_LIBS=FALSE"
-	       "-DUNIT_TESTS=TRUE" ]
+  preConfigure = ''
+		export cmakeFlags="$cmakeFlags -DDOC_INSTALL_DIR=$doc/share/doc/${name} -DMAN_INSTALL_DIR=$doc/share/man"
+  '';
+
+  cmakeFlags=[ "-DUNIT_TESTS=TRUE" ]
 	        ++ stdenv.lib.optional (generateDoc == true ) [ "-DFUNCTIONALIZER_DOCUMENTATION=TRUE" ] ;   
 
   enableParallelBuilding = true;
  
   outputs = [ "out" "doc" ];
+
+  crossAttrs = {
+    ## enforce mpiwrapper in cross compilation mode for bgq
+    cmakeFlags= cmakeFlags ++ [ "-DCMAKE_CXX_COMPILER=mpic++" "-DCMAKE_C_COMPILER=mpicc" ];
+  };
   
 }
 
