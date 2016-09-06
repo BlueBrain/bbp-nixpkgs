@@ -97,7 +97,12 @@ let
 		##
 		## BBP HPC components
 		##
-		hpctools = enableBGQ-gcc47 callPackage ./hpc/hpctools { 
+		hpctools = enableBGQ callPackage ./hpc/hpctools { 
+
+			mpiRuntime = bbp-mpi;
+		}; 
+
+		hpctools-gcc = enableBGQ-gcc47 callPackage ./hpc/hpctools { 
 
 			mpiRuntime = bbp-mpi-gcc;
 		}; 
@@ -106,9 +111,11 @@ let
 			 python = nativeAllPkgs.python;
 			 pythonPackages = nativeAllPkgs.pythonPackages;
 			 mpiRuntime = bbp-mpi-gcc;                
+			 hpctools = hpctools-gcc;
 		};  
 
 		touchdetector = enableBGQ callPackage ./hpc/touchdetector {  
+			 hpctools = hpctools.crossDrv;
 			 mpiRuntime = bbp-mpi;  
 		};
 
