@@ -33,6 +33,8 @@ let
 
 		targetAllPkgs = if (pkgs.isBlueGene == true) then (pkgs // mergePkgs.bgq-map-gcc47) else pkgs;
 
+		nativeAllPkgs = pkgs;
+
 		mergePkgs = pkgs // rec { 
 
 		inherit bbp-mpi;
@@ -100,8 +102,10 @@ let
 			mpiRuntime = bbp-mpi-gcc;
 		}; 
 
-		functionalizer = enableBGQ callPackage ./hpc/functionalizer { 
-			 mpiRuntime = bbp-mpi;                
+		functionalizer = enableBGQ-gcc47 callPackage ./hpc/functionalizer { 
+			 python = nativeAllPkgs.python;
+			 pythonPackages = nativeAllPkgs.pythonPackages;
+			 mpiRuntime = bbp-mpi-gcc;                
 		};  
 
 		touchdetector = enableBGQ callPackage ./hpc/touchdetector {  

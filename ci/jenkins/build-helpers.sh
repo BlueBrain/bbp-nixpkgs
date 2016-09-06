@@ -105,9 +105,11 @@ function buildDerivationList {
 	done
 	echo "#### arguments to nix-build: ${PKG_BUILD_DRV}"
 
+	set -e
 	set -o pipefail
 	nix-build ${DERIVATION_PATH} ${PKG_BUILD_DRV} -j $NCORES 2>&1 | tee build_log.txt
 	set +o pipefail
+	set +e
 
 	export LIST_BUILD_PACKAGES="$(tail -n $NB_PKGS build_log.txt)"
 
