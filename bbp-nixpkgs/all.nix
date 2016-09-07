@@ -115,7 +115,7 @@ let
 		};  
 
 		touchdetector = enableBGQ callPackage ./hpc/touchdetector {  
-			 hpctools = hpctools.crossDrv;
+			 hpctools = hpctools;
 			 mpiRuntime = bbp-mpi;  
 		};
 
