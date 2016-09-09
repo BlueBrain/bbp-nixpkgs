@@ -32,7 +32,6 @@ let
     
 	# specific stdenv properties for BGQ cross compilation for stripping
 	bg-dontFixPath = { 
-		dontFixup = true; 
 		dontCrossStrip = true; 
 		dontStrip = true;		# avoid strip, same reason than before and we want to keep debug infos
 	};
@@ -175,8 +174,8 @@ let
       bg-gccgo = bg-wrapGCCCross {
            gcc = forceNativeDrv (gcc47-proto.cc.override {
 	      stdenv = stdenv;
-              cross = crossBGQSystem;
-	      langC= true;
+          	 cross = crossBGQSystem;
+	      	  langC= true;
               langCC = true;
 	      langGo = true;
               langFortran = false;
@@ -365,7 +364,7 @@ let
 	                dontFixup = false;
         	        dontCrossStrip = false;
 	                dontStrip = false; 
-
+					DONT_USE_STATIC_STDCPP = "1";
     }));
 
 

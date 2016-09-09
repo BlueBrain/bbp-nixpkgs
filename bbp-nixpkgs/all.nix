@@ -114,9 +114,9 @@ let
 			 hpctools = hpctools-gcc;
 		};  
 
-		touchdetector = enableBGQ callPackage ./hpc/touchdetector {  
-			 hpctools = hpctools.crossDrv;
-			 mpiRuntime = bbp-mpi;  
+		touchdetector = enableBGQ-gcc47 callPackage ./hpc/touchdetector {  
+			 mpiRuntime = bbp-mpi-gcc;  
+			 hpctools = hpctools-gcc;
 		};
 
 		bluebuilder = enableBGQ callPackage ./hpc/bluebuilder {

@@ -38,11 +38,7 @@ stdenv.mkDerivation rec {
   };
   
 
-  preConfigure = ''
-		export cmakeFlags="$cmakeFlags -DDOC_INSTALL_DIR=$doc/share/doc/${name} -DMAN_INSTALL_DIR=$doc/share/man"
-  '';
-
-  cmakeFlags=[ "-DUNIT_TESTS=TRUE"  ]
+  cmakeFlags=[ "-DUNIT_TESTS=TRUE" ''-DLIB_SUFFIX='' ]
 	        ++ stdenv.lib.optional (generateDoc == true ) [ "-DFUNCTIONALIZER_DOCUMENTATION=TRUE" ] ;   
 
   enableParallelBuilding = true;
