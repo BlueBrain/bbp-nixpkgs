@@ -66,7 +66,8 @@ stdenv.mkDerivation rec {
 			--replace "@liblapack_path@" "${liblapack.crossDrv}" \
 			--replace "@liblapackLibName@" "${liblapackLibName}" \
                         --replace "@blas_path@" "${blas.crossDrv}" \
-                        --replace "@blasLibName@" "${blasLibName}" 
+                        --replace "@blasLibName@" "${blasLibName}" \
+			--replace "@python_interpreter@" "${python}/bin/python"
 
 			chmod a+x ./reconfigure-arch-linux2-c-debug.py
 		       '';

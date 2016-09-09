@@ -1,4 +1,4 @@
-#!/gpfs/bbp.cscs.ch/apps/bgq/nix/nix-root/store/f1rfls9vciv8fyxfgjdchg5i6ymdlikf-python-2.7.11-bgq/bin/python
+#!@python_interpreter@
 
 configure_options = [
   '--known-level1-dcache-size=32768',

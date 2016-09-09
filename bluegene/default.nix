@@ -383,6 +383,7 @@ let
 	
 
 	bgq-petsc-gcc47 = all-pkgs-bgq-gcc47.petsc.override {
+		inherit fetchgit;
 		stdenv = bgq-stdenv-gcc47;
 		liblapack = bgq-openblas;
 		liblapackLibName = "openblas";
