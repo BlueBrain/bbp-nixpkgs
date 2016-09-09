@@ -50,18 +50,18 @@ postInstall() {
 	mkdir -p $out/lib/gconv
 
 	# copy static libs
-     	cp $out/$out/lib/*.a $out/lib/
-        cp $out/$out/lib/*.o $out/lib/
+    # 	cp $out/$out/lib/*.a $out/lib/
+    #    cp $out/$out/lib/*.o $out/lib/
 
 
-        cp $out/$out/lib/libc.so $out/lib/libc.so
+    #    cp $out/$out/lib/libc.so $out/lib/libc.so
         # create relevant symlink
-	pushd $out/lib
-                for i in lib*.so.*
-                do
-		  ln -s ${i} ${i%.*} || true
-                done
-        popd
+	#pushd $out/lib
+    #            for i in lib*.so.*
+    #            do
+	#	  ln -s ${i} ${i%.*} || true
+    #            done
+    #    popd
 
         # copy gconv
         cp -r $out/$out/lib/gconv/* $out/lib/gconv/
@@ -73,6 +73,21 @@ postInstall() {
         cp $out/$out/libexec/* $out/libexec/ 
     fi
 
+    ## HACK
+    ##  - the linker 2.17 for compute node after the patch has a corruption problem
+    ## easy/dirty hot fix : replace it by the native glibc 2.12.2 one
+    ## 
+    # echo "Take linker from ${bglinkerfix} "
+    # cp ${bglinkerfix} $out/lib/ld-2.17.so
+    
+    ## HACK
+    ## even dirtier, do drop in replacement for now.....
+    echo "replaces libs with the ones from ${bglinkerfix} "
+    rm -rf ${out}/lib/* || true
+    cp -r /bgsys/drivers/ppcfloor/gnu-linux/powerpc64-bgq-linux/lib/* ${out}/lib/ || true
+    rm -f ${out}/lib/lib{gcc,gfortra,stdc,supc,gom,iber,spp}* || true
+
 }
 
 genericBuild
+
