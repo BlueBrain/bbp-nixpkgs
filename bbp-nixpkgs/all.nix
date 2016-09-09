@@ -14,14 +14,21 @@ let
 		bbp-mpi = if pkgs.isBlueGene == true then mpi-bgq
 				else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2
 				else mpich2;
+		bbp-mpi-gcc = if pkgs.isBlueGene == true then bg-mpich2
+                                else bbp-mpi;
+
 
 		callPackage = newScope mergePkgs;
-		enableBGQ = caller: file:
+		enableBGQ-proto = caller: file: map:
 		if mergePkgs.isBlueGene == true
-			then (newScope (mergePkgs // mergePkgs.bgq-map)) file
+			then (newScope (mergePkgs // map)) file
 			else caller file;
 
-		mergePkgs = pkgs // { 
+		enableBGQ = caller: file: (enableBGQ-proto caller file mergePkgs.bgq-map);
+
+		enableBGQ-gcc47 = caller: file: (enableBGQ-proto  caller file mergePkgs.bgq-map-gcc47);
+
+		mergePkgs = pkgs // rec { 
 
 		inherit bbp-mpi;
 
@@ -179,15 +186,16 @@ let
 		]);
 		};
 
-		steps = callPackage ./hpc/steps {
-			mpiRuntime = null;
-			numpy = pythonPackages.numpy;
-			liblapack = liblapackWithoutAtlas;
+		steps = enableBGQ-gcc47 callPackage ./hpc/steps {
+			mpiRuntime = bbp-mpi-gcc;
+			numpy = if (mergePkgs.isBlueGene) then  mergePkgs.bgq-pythonPackages-gcc47.bg-numpy
+				else pythonPackages.numpy;
+
+                        liblapack = if (mergePkgs.isBlueGene) then null
+				  else liblapackWithoutAtlas;
 		};
 
-		steps-mpi = mergePkgs.steps.override {
-			mpiRuntime = bbp-mpi;
-		};
+		steps-mpi = steps; # enable mpi by default 
 
 
 
