@@ -1,14 +1,17 @@
 { stdenv, fetchgitExternal, cmake, boost, pkgconfig, mpiRuntime}:
 
 stdenv.mkDerivation rec {
-  name = "reportinglib-2.4.1";
+  name = "reportinglib-${version}";
+  version = "2.4.2";
+
+
   buildInputs = [ stdenv cmake boost pkgconfig  mpiRuntime];
 
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/sim/reportinglib/bbp";
-    rev = "6ffbdbfb58b50ee312e85d7d75defffaf33abea8";
-    sha256 = "1p45wpnkyg0v8xjj4153n8z01nnll3lcfaji4026pmvhdspfhfix";
+    rev = "051e9f31abd28f67eb1dc26aad4120c2e6834ce2";
+    sha256 = "1a1q5bjbfwn5xidl8b6vi03z8lch2c0phydd6cliwyq7w38s7i3c";
   };
   
   

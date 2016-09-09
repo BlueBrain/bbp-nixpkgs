@@ -1,0 +1,5077 @@
+# begin_generated_IBM_copyright_prolog                             
+#                                                                  
+# This is an automatically generated copyright prolog.             
+# After initializing,  DO NOT MODIFY OR MOVE                       
+# ================================================================ 
+#                                                                  
+# Licensed Materials - Property of IBM                             
+# Blue Gene/Q                                                      
+# (C) Copyright IBM Corp. 2012  All Rights Reserved                 
+# US Government Users Restricted Rights - Use,                     
+# duplication or disclosure restricted by GSA ADP                  
+# Schedule contract with IBM Corp.                                 
+#                                                                  
+# This software is available to you under the                      
+# GNU General Public License (GPL).                                
+#                                                                  
+# ================================================================ 
+#                                                                  
+# end_generated_IBM_copyright_prolog                               
+Index: debug/Makefile
+===================================================================
+--- a/debug/Makefile	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/debug/Makefile	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -138,16 +138,16 @@
+ libpcprofile-routines = pcprofile
+ libpcprofile-inhibit-o = $(filter-out .os,$(object-suffixes))
+ 
+-others = pcprofiledump
+-install-bin = pcprofiledump
+-install-bin-script = xtrace
++others = 
++install-bin = 
++install-bin-script = 
+ 
+ include ../Makeconfig
+ 
+ ifeq ($(build-shared),yes)
+-install-bin-script += catchsegv
++#install-bin-script += catchsegv
+ endif
+-generated = catchsegv xtrace
++generated = 
+ 
+ include ../Rules
+ 
+Index: nscd/Makefile
+===================================================================
+--- a/nscd/Makefile	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/nscd/Makefile	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -42,7 +42,7 @@
+ 
+ others += nscd
+ others-pie += nscd
+-install-sbin := nscd
++install-sbin := 
+ 
+ extra-objs = $(nscd-modules:=.o)
+ 
+Index: timezone/Makefile
+===================================================================
+--- a/timezone/Makefile	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/timezone/Makefile	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -34,7 +34,7 @@
+ tzfiles := $(tzbases) $(tzlinks)
+ 
+ generated := $(addprefix z.,$(tzfiles))
+-install-sbin := zic zdump
++install-sbin := 
+ 
+ generated-dirs = testdata
+ 
+@@ -45,8 +45,8 @@
+ CPPFLAGS-zic = -DNOT_IN_libc
+ 
+ ifeq ($(have-ksh),yes)
+-install-bin-script = tzselect
+-generated += tzselect
++install-bin-script = 
++generated += 
+ endif
+ 
+ include ../Rules
+Index: wcsmbs/wchar.h
+===================================================================
+--- a/wcsmbs/wchar.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/wcsmbs/wchar.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -379,7 +379,10 @@
+ 
+ #ifdef __USE_EXTERN_INLINES
+ /* Define inline function as optimization.  */
++/* Added for bug fix */
++#ifndef __cplusplus
+ 
++
+ /* We can use the BTOWC and WCTOB optimizations since we know that all
+    locales must use ASCII encoding for the values in the ASCII range
+    and because the wchar_t encoding is always ISO 10646.  */
+@@ -394,7 +397,7 @@
+ __NTH (wctob (wint_t __wc))
+ { return (__builtin_constant_p (__wc) && __wc >= L'\0' && __wc <= L'\x7f'
+ 	  ? (int) __wc : __wctob_alias (__wc)); }
+-
++#endif
+ __extern_inline size_t
+ __NTH (mbrlen (const char *__restrict __s, size_t __n,
+ 	       mbstate_t *__restrict __ps))
+Index: libio/stdfiles.c
+===================================================================
+--- a/libio/stdfiles.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/libio/stdfiles.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -66,7 +66,10 @@
+ #endif
+ 
+ DEF_STDFILE(_IO_2_1_stdin_, 0, 0, _IO_NO_WRITES);
+-DEF_STDFILE(_IO_2_1_stdout_, 1, &_IO_2_1_stdin_, _IO_NO_READS);
++
++/* _IO_LINE_BUF added to allow stdout to be buffered correctly on BG */
++
++DEF_STDFILE(_IO_2_1_stdout_, 1, &_IO_2_1_stdin_, _IO_NO_READS+_IO_LINE_BUF);
+ DEF_STDFILE(_IO_2_1_stderr_, 2, &_IO_2_1_stdout_, _IO_NO_READS+_IO_UNBUFFERED);
+ 
+ struct _IO_FILE_plus *_IO_list_all = &_IO_2_1_stderr_;
+Index: Makefile
+===================================================================
+--- a/Makefile	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/Makefile	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -34,7 +34,7 @@
+ define autoconf-it
+ @-rm -f $@.new
+ $(AUTOCONF) $(ACFLAGS) $< > $@.new
+-chmod a-w$(patsubst %,$(comma)a+x,$(filter .,$(@D))) $@.new
++chmod a-w,a+x $@.new
+ mv -f $@.new $@
+ endef
+ 
+Index: include/dlfcn.h
+===================================================================
+--- a/include/dlfcn.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/include/dlfcn.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -46,6 +46,10 @@
+ 		     struct link_map **mapp, const ElfW(Sym) **symbolp)
+      internal_function;
+ libc_hidden_proto (_dl_addr)
++extern int _dl_addr_range (const struct link_map *lm, ElfW(Addr) *addrp, int *sizep)
++     internal_function;
++libc_hidden_proto (_dl_addr_range)
++
+ #endif
+ 
+ struct link_map;
+Index: sysdeps/powerpc/powerpc64/memset.S (deleted)
+===================================================================
+Index: sysdeps/powerpc/powerpc64/strcpy.S
+===================================================================
+--- a/sysdeps/powerpc/powerpc64/strcpy.S	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/powerpc/powerpc64/strcpy.S	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -26,6 +26,8 @@
+ 
+ EALIGN (BP_SYM (strcpy), 4, 0)
+ 	CALL_MCOUNT 2
++#define AVOID_A2_MICROCODED    /* Avoid A2 mc instructions */
++                               /* load w/u is mc, store w/u is not */
+ 
+ #define rTMP	r0
+ #define rRTN	r3	/* incoming DEST arg preserved as result */
+@@ -73,14 +75,23 @@
+ 	insrdi	r7F7F, r7F7F, 32, 0
+ 	add	rFEFE, rFEFE, rTMP
+ 	b	L(g2)
+-
++#ifdef AVOID_A2_MICROCODED
++L(g0): ld      rALT, 8(rSRC)
++	addi    rSRC, rSRC, 8
++#else
+ L(g0):	ldu	rALT, 8(rSRC)
++#endif
+ 	stdu	rWORD, 8(rDEST)
+ 	add	rTMP, rFEFE, rALT
+ 	nor	rNEG, r7F7F, rALT
+ 	and.	rTMP, rTMP, rNEG
+ 	bne-	L(g1)
++#ifdef AVOID_A2_MICROCODED
++	ld      rWORD, 8(rSRC)
++	addi    rSRC, rSRC, 8
++#else
+ 	ldu	rWORD, 8(rSRC)
++#endif
+ 	stdu	rALT, 8(rDEST)
+ L(g2):	add	rTMP, rFEFE, rWORD
+ 	nor	rNEG, r7F7F, rWORD
+@@ -124,12 +135,22 @@
+ 	cmpwi	rWORD, 0
+ 	beq-	L(u2)
+ 
++#ifdef AVOID_A2_MICROCODED
++L(u0): lbz     rALT, 1(rSRC)
++	addi    rSRC, rSRC, 1
++#else
+ L(u0):	lbzu	rALT, 1(rSRC)
++#endif
+ 	stbu	rWORD, 1(rDEST)
+ 	cmpwi	rALT, 0
+ 	beq-	L(u1)
+ 	nop		/* Let 601 load start of loop.  */
++#ifdef  AVOID_A2_MICROCODED
++	lbz     rWORD, 1(rSRC)
++	addi    rSRC, rSRC, 1
++#else
+ 	lbzu	rWORD, 1(rSRC)
++#endif
+ 	stbu	rALT, 1(rDEST)
+ 	cmpwi	rWORD, 0
+ 	bne+	L(u0)
+Index: sysdeps/powerpc/powerpc64/sysdep.h
+===================================================================
+--- a/sysdeps/powerpc/powerpc64/sysdep.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/powerpc/powerpc64/sysdep.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -31,7 +31,7 @@
+ 	.macro REST_ARG NARG
+ 	.if \NARG
+ 	REST_ARG \NARG-1
+-	ld	2+\NARG,112+40+8*(\NARG)(1)
++	ld	2+\NARG,128+40+8*(\NARG)(1)
+ 	.endif
+ 	.endm
+ 
+@@ -56,8 +56,8 @@
+ 	mflr	r0
+ 	SAVE_ARG \NARG
+ 	std	r0,16(r1)
+-	stdu	r1,-112(r1)
+-	cfi_adjust_cfa_offset(112)
++	stdu	r1,-128(r1)
++	cfi_adjust_cfa_offset(128)
+ 	cfi_offset(lr,16)
+ 	CFI_SAVE_ARG \NARG
+ 	bl	JUMPTARGET (_mcount)
+@@ -67,8 +67,8 @@
+ 	ld	r0,128(r1)
+ 	REST_ARG \NARG
+ 	mtlr	r0
+-	addi	r1,r1,112
+-	cfi_adjust_cfa_offset(-112)
++	addi	r1,r1,128
++	cfi_adjust_cfa_offset(-128)
+ 	cfi_restore(lr)
+ 	CFI_REST_ARG \NARG
+ #endif
+@@ -232,14 +232,14 @@
+ .Local_syscall_error: \
+     mflr 0; \
+     std 0,16(1); \
+-    stdu 1,-112(1); \
+-    cfi_adjust_cfa_offset(112); \
++    stdu 1,-128(1); \
++    cfi_adjust_cfa_offset(128); \
+     cfi_offset(lr,16); \
+     bl JUMPTARGET(__syscall_error); \
+     nop; \
+-    ld 0,112+16(1); \
+-    addi 1,1,112; \
+-    cfi_adjust_cfa_offset(-112); \
++    ld 0,128+16(1); \
++    addi 1,1,128; \
++    cfi_adjust_cfa_offset(-128); \
+     mtlr 0; \
+     cfi_restore(lr); \
+     blr; \
+Index: sysdeps/powerpc/powerpc64/strlen.S
+===================================================================
+--- a/sysdeps/powerpc/powerpc64/strlen.S	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/powerpc/powerpc64/strlen.S	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -79,6 +79,8 @@
+ 
+ ENTRY (BP_SYM (strlen))
+ 	CALL_MCOUNT 1
++#define AVOID_A2_MICROCODED    /* avoid a2 mc instrs */
++                               /* load w/u mc, store w/u is not */
+ 
+ #define rTMP1	r0
+ #define rRTN	r3	/* incoming STR arg, outgoing result */
+@@ -128,7 +130,12 @@
+ 	bt	28, L(loop)
+ 
+ /* Handle second doubleword of pair.  */
++#ifdef AVOID_A2_MICROCODED
++	ld      rWORD1, 8(rSTR)
++	addi    rSTR, rSTR, 8
++#else
+ 	ldu	rWORD1, 8(rSTR)
++#endif
+ 	and	rTMP1, r7F7F, rWORD1
+ 	or	rTMP2, r7F7F, rWORD1
+ 	add	rTMP1, rTMP1, r7F7F
+@@ -139,7 +146,12 @@
+ 
+ L(loop):
+ 	ld	rWORD1, 8(rSTR)
++#ifdef AVOID_A2_MICROCODED
++	ld      rWORD2, 16(rSTR)
++	addi    rSTR, rSTR, 16
++#else
+ 	ldu	rWORD2, 16(rSTR)
++#endif
+ 	add	rTMP1, rFEFE, rWORD1
+ 	nor	rTMP2, r7F7F, rWORD1
+ 	and.	rTMP1, rTMP1, rTMP2
+Index: sysdeps/powerpc/powerpc64/dl-trampoline.S
+===================================================================
+--- a/sysdeps/powerpc/powerpc64/dl-trampoline.S	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/powerpc/powerpc64/dl-trampoline.S	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -25,8 +25,10 @@
+    and r11 contains the link_map (from PLT0+16).  The link_map becomes
+    parm1 (r3) and the index (r0) need to be converted to an offset
+    (index * 24) in parm2 (r4).  */
++/* BGQ:  frame size must be a multiple of 32 -- however that just means there are
++   16 extra bytes at the top. */
+ 
+-#define FRAME_SIZE 176
++#define FRAME_SIZE 192
+ /* We need to save the registers used to pass parameters, ie. r3 thru
+    r10;  Use local var space rather than the parameter save area,
+    because gcc as of 2010/05 doesn't allocate a proper stack frame for
+Index: sysdeps/powerpc/powerpc64/strcmp.S
+===================================================================
+--- a/sysdeps/powerpc/powerpc64/strcmp.S	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/powerpc/powerpc64/strcmp.S	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -26,6 +26,8 @@
+ 
+ EALIGN (BP_SYM(strcmp), 4, 0)
+ 	CALL_MCOUNT 2
++#define AVOID_A2_MICROCODED    /* avoid microcoded instructions on A2 */
++                               /* load w/u are mc, store w/u are not. */
+ 
+ #define rTMP	r0
+ #define rRTN	r3
+@@ -67,9 +69,19 @@
+ 	add	rFEFE, rFEFE, rTMP
+ 	b	L(g1)
+ 
++#ifdef         AVOID_A2_MICROCODED
++L(g0): ld      rWORD1, 8(rSTR1)
++	addi    rSTR1, rSTR1, 8
++#else
+ L(g0):	ldu	rWORD1, 8(rSTR1)
++#endif
+ 	bne	cr1, L(different)
++#ifdef  AVOID_A2_MICROCODED
++	ld      rWORD2, 8(rSTR2)
++	addi    rSTR2, rSTR2, 8
++#else
+ 	ldu	rWORD2, 8(rSTR2)
++#endif
+ L(g1):	add	rTMP, rFEFE, rWORD1
+ 	nor	rNEG, r7F7F, rWORD1
+ 
+@@ -124,14 +136,31 @@
+ 	lbz	rWORD2, 0(rSTR2)
+ 	b	L(u1)
+ 
++#ifdef AVOID_A2_MICROCODED
++L(u0):  lbz    rWORD1, 1(rSTR1)
++	addi    rSTR1, rSTR1, 1
++#else
+ L(u0):	lbzu	rWORD1, 1(rSTR1)
++#endif
+ 	bne-	L(u4)
++#ifdef AVOID_A2_MICROCODED
++	lbz     rWORD2, 1(rSTR2)
++	addi    rSTR2, rSTR2, 1
++#else
+ 	lbzu	rWORD2, 1(rSTR2)
++#endif
+ L(u1):	cmpwi	cr1, rWORD1, 0
+ 	beq-	cr1, L(u3)
+ 	cmpd	rWORD1, rWORD2
+ 	bne-	L(u3)
++#ifdef AVOID_A2_MICROCODED
++	lbz     rWORD1, 1(rSTR1)
++	lbz     rWORD2, 1(rSTR2)
++	addi    rSTR1, rSTR1, 1
++	addi    rSTR2, rSTR2, 1
++#else
+ 	lbzu	rWORD1, 1(rSTR1)
++#endif
+ 	lbzu	rWORD2, 1(rSTR2)
+ 	cmpdi	cr1, rWORD1, 0
+ 	cmpd	rWORD1, rWORD2
+Index: sysdeps/powerpc/powerpc64/memcpy.c
+===================================================================
+--- a/sysdeps/powerpc/powerpc64/memcpy.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 0)
++++ b/sysdeps/powerpc/powerpc64/memcpy.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -0,0 +1,386 @@
++/* begin_generated_IBM_copyright_prolog                             */
++/*                                                                  */
++/* This is an automatically generated copyright prolog.             */
++/* After initializing,  DO NOT MODIFY OR MOVE                       */
++/*  --------------------------------------------------------------- */
++/*                                                                  */
++/* (C) Copyright IBM Corp.  2009                                    */
++/* Eclipse Public License (EPL) V1.0                                */
++/*                                                                  */
++/*  --------------------------------------------------------------- */
++/*                                                                  */
++/* end_generated_IBM_copyright_prolog                               */
++#undef memcpy
++#include <stdio.h>
++#include <string.h>
++#include <stdint.h>
++
++#ifndef MIN 
++#define MIN(a,b) ((a) < (b) ? (a) : (b))
++#endif
++#define __MYASM__(p) asm(p)
++#define VECTOR_LOAD(si,sb,tgt)                  \
++  asm volatile("qvlfdux %0,%1,%2": "=f"(tgt), "+b" (si): "r" (sb))      
++
++#define VECT_LOAD_NU(si,sb,tgt)                                         \
++  asm volatile("qvlfdx %0,%1,%2": "=f1"(tgt) : "b" (si), "r" (sb)) 
++
++#define VECTOR_STORE(si,sb,tgt)                                         \
++  asm volatile("qvstfdux %2,%0,%1": "+b" (si) : "r" (sb), "f" (tgt) :"memory") 
++
++#define VECT_STORE_NU(si,sb,tgt)                                        \
++  asm volatile("qvstfdx %2,%0,%1": : "b" (si), "r" (sb), "f" (tgt) :"memory")
++#if 0
++#define VECTOR_LOAD(si,sb,tgt) \
++do { \
++  asm volatile("qvlfdux %2,%0,%1": "+Ob" (si) : "r" (sb), "i" (tgt) :"memory"); \
++} while(0)
++#define VECTOR_STORE(si,sb,tgt) \
++do { \
++  asm volatile("qvstfdux %2,%0,%1": "+Ob" (si) : "r" (sb), "i" (tgt) :"memory"); \
++} while(0)
++#endif
++#ifdef NOT_IN_libc
++#define USE_QPX 0
++#else
++extern int __bg_cpu_count;
++#define USE_QPX (__bg_cpu_count > 0)
++#endif
++
++//
++// Alignment is not known, so can't use FPU.
++//
++void *_WordCpy( void *dest, const void *src , size_t n )
++{
++   const uint32_t *s32 = (const uint32_t *)src;
++   uint32_t *d32 = (uint32_t *)dest;
++   size_t qwords = n >> 4;
++   size_t dwords = n & 0x8;
++   size_t words  = n & 0x4;
++   size_t bytes  = n & 0x3;
++
++   while ( qwords-- )
++      {
++      uint32_t i32 = *(s32 + 0);
++      uint32_t j32 = *(s32 + 1);
++      uint32_t k32 = *(s32 + 2);
++      uint32_t l32 = *(s32 + 3);
++      *(d32 + 0) = i32;
++      *(d32 + 1) = j32;
++      *(d32 + 2) = k32;
++      *(d32 + 3) = l32;
++      s32 += 4;
++      d32 += 4;
++      }
++
++   if ( dwords )
++      {
++      uint32_t a32 = *(s32 + 0);
++      uint32_t b32 = *(s32 + 1);
++      *(d32 + 0) = a32;
++      *(d32 + 1) = b32;
++      s32 += 2;
++      d32 += 2;
++      }
++   if ( words )
++      *d32++ = *s32++;
++
++   if ( bytes )
++      {
++      const uint8_t *s8 = (const uint8_t *)s32;
++      uint8_t *d8 = (uint8_t *)d32;
++
++      while( bytes-- )
++         *d8++ = *s8++;
++      }
++   return( dest );
++}
++
++
++
++
++//
++// _QuadCpy: Requires pre-checked alignment!
++//
++void          *_QuadCpy( void *dest, const void *src, size_t n )
++{
++   const uint8_t *sp = (const uint8_t *)src;
++   uint8_t *dp = (uint8_t *)dest;
++
++
++  register long long _index_ = 32;
++
++   /* It now write a multiple of 128 bytes  */
++   int q128 = n >> 7;
++   n &= 0x7F;
++   while (q128--)
++      {
++      asm volatile( "qvlfdx 1, %2, %0;"
++                    "qvlfdux  2, %0,  %3;"
++                    "qvlfdux  3, %0,  %3;"
++                    "qvlfdux  4, %0,  %3;"
++                    "qvstfdx 1, %2, %1;"
++                    "qvstfdux  2, %1,  %3;"
++                    "qvstfdux  3, %1,  %3;"
++                    "qvstfdux  4, %1,  %3;"
++                    : "+b"(sp), "+b"(dp)
++                    : "r"(0), "r"(_index_), "b" (sp), "b" (dp)
++                    :  "memory",
++                       "fr1", "fr2", "fr3", "fr4"  );
++
++     sp += 32;
++     dp += 32;
++      }
++
++   int q32 = (n >> 5);
++   n &= 0x1F;
++   while (q32--) {
++     asm volatile( "qvlfdx 1, %2, %0;"
++                   "qvstfdx 1, %2, %1;"
++                   :: "b"(sp), "b"(dp), "r"(0)
++                   :  "memory",
++                       "fr1" );
++     sp +=32;
++     dp +=32;
++   }
++   if ( n )
++      _WordCpy( dp, sp, n );
++
++
++   return( dest );
++}
++
++
++//
++// _ConvergeCpy: Requires dest and src alignment are equal at least at word boundary
++//
++void          *_ConvergeCpy( void *dest, const void *src, size_t n )
++{  
++   void *rc = dest;
++   size_t h;
++
++   // head bytes till quad
++   if ( (h = (32 - ((uint64_t)dest & 0x1F))) < 32 )
++      {
++      const uint8_t *s8 = (const uint8_t *)src;
++      uint8_t *d8       =       (uint8_t *)dest;
++
++      h = MIN( h, n );
++      _WordCpy( d8, s8, h );
++
++      n -= h;
++      src  = (const void *)(s8 + h);
++      dest =       (void *)(d8 + h);
++      }
++   /* Only use QPX instruction to do the QuadCpy if we are on BG HW */
++   if ( (USE_QPX) && (n >= 128) && !((uint64_t)dest & 0x1F) && !((const uint64_t)src & 0x1F) )
++      {
++      _QuadCpy( dest, src, n );
++      return( rc );
++      }
++
++   if ( n )
++      _WordCpy( dest, src, n );
++
++   return( rc );
++}
++//Minimum number of bytes written is 1024.  32 quad load/store pairs assumed to be 64 byte aligned.
++
++
++//copying 'num' bytes   
++void          * quad_double_copy( void *dest, const void *src, size_t num )
++{
++  double *fpp1_1, *fpp1_2;
++  double *fpp2_1, *fpp2_2;
++  uint64_t y;
++  void *rc = dest;
++  register int inc __MYASM__("r7");
++  register double fr0 __asm__ ("fr0");
++  register double fr1 __asm__ ("fr1");
++  register double fr2 __asm__ ("fr2");
++  register double fr3 __asm__ ("fr3");
++  register double fr4 __asm__ ("fr4");
++  register double fr5 __asm__ ("fr5");
++  register double fr6 __asm__ ("fr6");
++  register double fr7 __asm__ ("fr7");
++  register double fr8 __asm__ ("fr8");
++  register double fr9 __asm__ ("fr9");
++  register double fr10 __asm__ ("fr10");
++  register double fr11 __asm__ ("fr11");
++
++  fpp1_1 = ((double *)src);
++  fpp1_2 = ((double *)src);
++  fpp2_1 = ((double *)dest); 
++  fpp2_2 = ((double *)dest);
++
++  fpp1_1 = fpp1_1 -8;  //offset by stride=0 bytes
++  fpp1_2 = fpp1_2 -4;
++
++  fpp2_1 = fpp2_1 -8;  //offset by stride=0 bytes
++  fpp2_2 = fpp2_2 -4;
++
++  inc=64;
++
++  y=num;
++  // may speed up the 2nd to 7th load by using non-update versions of load, tbd later...
++  VECTOR_LOAD(fpp1_1,inc,fr0);
++  VECTOR_LOAD(fpp1_1,inc,fr1);
++  VECTOR_LOAD(fpp1_1,inc,fr2);
++  VECTOR_LOAD(fpp1_1,inc,fr3);
++  VECTOR_LOAD(fpp1_1,inc,fr4);
++  VECTOR_LOAD(fpp1_1,inc,fr5);
++  VECTOR_LOAD(fpp1_1,inc,fr6);
++  VECTOR_LOAD(fpp1_1,inc,fr7);
++
++  VECTOR_STORE(fpp2_1,inc,fr0);
++  VECTOR_LOAD(fpp1_1,inc,fr0);
++  VECTOR_LOAD(fpp1_2,inc,fr8);
++  VECTOR_STORE(fpp2_1,inc,fr1);
++  VECTOR_LOAD(fpp1_1,inc,fr1);
++  VECTOR_LOAD(fpp1_2,inc,fr9);
++  y=y-640;   // The 2 stores up here and the 18 stores and the end at 32 bytes a store.
++  do{
++
++    VECTOR_STORE(fpp2_1,inc,fr2);
++    VECTOR_LOAD(fpp1_1,inc,fr2);
++    VECTOR_LOAD(fpp1_2,inc,fr10);
++    VECTOR_STORE(fpp2_2,inc,fr8);
++
++    VECTOR_STORE(fpp2_1,inc,fr3);
++    VECTOR_LOAD(fpp1_1,inc,fr3);
++    VECTOR_LOAD(fpp1_2,inc,fr11);
++    VECTOR_STORE(fpp2_2,inc,fr9);
++    VECTOR_STORE(fpp2_1,inc,fr4);
++    VECTOR_LOAD(fpp1_1,inc,fr4);
++    VECTOR_LOAD(fpp1_2,inc,fr8);
++    VECTOR_STORE(fpp2_2,inc,fr10);
++
++    VECTOR_STORE(fpp2_1,inc,fr5);
++    VECTOR_LOAD(fpp1_1,inc,fr5);
++    VECTOR_LOAD(fpp1_2,inc,fr9);
++    VECTOR_STORE(fpp2_2,inc,fr11);
++
++    VECTOR_STORE(fpp2_1,inc,fr6);
++    VECTOR_LOAD(fpp1_1,inc,fr6);
++    VECTOR_LOAD(fpp1_2,inc,fr10);
++    VECTOR_STORE(fpp2_2,inc,fr8);
++
++    VECTOR_STORE(fpp2_1,inc,fr7);
++    VECTOR_LOAD(fpp1_1,inc,fr7);
++    VECTOR_LOAD(fpp1_2,inc,fr11);
++    VECTOR_STORE(fpp2_2,inc,fr9);
++    y=y-384;  // Acount for the 12 stores in this section
++    if(y<=512) break;
++    src += 512;
++    dest += 512;
++    VECTOR_STORE(fpp2_1,inc,fr0);
++    VECTOR_LOAD(fpp1_1,inc,fr0);
++    VECTOR_LOAD(fpp1_2,inc,fr8);
++    VECTOR_STORE(fpp2_2,inc,fr10);
++    VECTOR_STORE(fpp2_1,inc,fr1);
++    VECTOR_LOAD(fpp1_1,inc,fr1);
++    VECTOR_LOAD(fpp1_2,inc,fr9);
++    VECTOR_STORE(fpp2_2,inc,fr11);
++    y=y-128;  //Account for the 4 stores here.
++  }while(1);
++  src += 1024;
++  dest += 1024;
++  VECTOR_STORE(fpp2_1,inc,fr0);
++  VECTOR_LOAD(fpp1_2,inc,fr8);
++  VECTOR_STORE(fpp2_2,inc,fr10);
++
++  VECTOR_STORE(fpp2_1,inc,fr1);
++  VECTOR_LOAD(fpp1_2,inc,fr9);
++  VECTOR_STORE(fpp2_2,inc,fr11);
++
++  VECTOR_STORE(fpp2_1,inc,fr2);
++  VECTOR_LOAD(fpp1_2,inc,fr10);
++  VECTOR_STORE(fpp2_2,inc,fr8);
++
++  VECTOR_STORE(fpp2_1,inc,fr3);
++  VECTOR_LOAD(fpp1_2,inc,fr11);
++  VECTOR_STORE(fpp2_2,inc,fr9);
++
++  VECTOR_STORE(fpp2_1,inc,fr4);
++  VECTOR_LOAD(fpp1_2,inc,fr8);
++  VECTOR_STORE(fpp2_2,inc,fr10);
++
++  VECTOR_STORE(fpp2_1,inc,fr5);
++  VECTOR_LOAD(fpp1_2,inc,fr9);
++  VECTOR_STORE(fpp2_2,inc,fr11);
++
++  VECTOR_STORE(fpp2_1,inc,fr6);
++  VECTOR_LOAD(fpp1_2,inc,fr10);
++  VECTOR_STORE(fpp2_2,inc,fr8);
++
++  VECTOR_STORE(fpp2_1,inc,fr7);
++  VECTOR_LOAD(fpp1_2,inc,fr11);
++  VECTOR_STORE(fpp2_2,inc,fr9);
++
++  VECTOR_STORE(fpp2_2,inc,fr10);
++
++  VECTOR_STORE(fpp2_2,inc,fr11);
++  if ( y   > 127 )   // So if we have more then 128 we should still use quad instructions
++        _ConvergeCpy( dest, src, y   );
++  else if ( y   > 0)
++   // small copies: not worth checking alignment to use the FPU
++   //               FPU requires alignment regardless of FLSTA
++       _WordCpy( dest, src, y   );
++
++   return(rc);    
++
++}
++
++//
++// _ConvergeCpyPlus: Requires dest and src alignment are equal at least at word boundary
++//
++void          *_ConvergeCpyPlus( void *dest, const void *src, size_t n )
++{
++   void *rc = dest;
++   size_t h;
++   // head bytes till quad
++   if ( (h = (64 - ((uint64_t)dest & 0x1F))) < 64 )
++      {
++      const uint8_t *s8 = (const uint8_t *)src;
++      uint8_t *d8       =       (uint8_t *)dest;
++
++      h = MIN( h, n );
++      _WordCpy( d8, s8, h );
++
++      n -= h;
++      src  = (const void *)(s8 + h);
++      dest =       (void *)(d8 + h);
++      }
++   /* Only use QPX if we are on BG */
++   if ( (USE_QPX) && (n >= 1024) && !((uint64_t)dest & 0x1F) && !((const uint64_t)src & 0x1F) )
++      {
++      // Do fancy copy that tries to avoid thread flushes.                                                       
++      quad_double_copy( dest, src, n );
++      return( rc );
++      }
++   /* Only use QPX if we are on BG */
++   if ( (USE_QPX) && (n >= 128) && !((uint64_t)dest & 0x1F) && !((const uint64_t)src & 0x1F) )
++      {
++      _QuadCpy( dest, src, n );
++      return( rc );
++      }
++
++   if ( n )
++      _WordCpy( dest, src, n );
++
++   return( rc );
++}
++
++
++void  *memcpy( void *dest, const void *src, size_t n )
++ {     
++if ( n > 1023 )  // 1024 bytes can be copied keeping the A2 core flushes in mind
++      return _ConvergeCpyPlus( dest, src, n );
++   else if ( n > 127 )   // less then 1024 don't worry about core flushes
++       return _ConvergeCpy( dest, src, n );
++   else 
++   // small copies: not worth checking alignment to use the FPU
++   //               FPU requires alignment regardless of FLSTA
++      return _WordCpy( dest, src, n );
++}
++libc_hidden_builtin_def (memcpy)
+Index: sysdeps/powerpc/powerpc64/ppc-mcount.S
+===================================================================
+--- a/sysdeps/powerpc/powerpc64/ppc-mcount.S	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/powerpc/powerpc64/ppc-mcount.S	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -24,16 +24,16 @@
+ ENTRY(_mcount)
+ 	mflr		 r4
+ 	ld		 r11, 0(r1)
+-	stdu		 r1,-112(r1)
+-	cfi_adjust_cfa_offset (112)
+-	std		 r4, 128(r1)
++	stdu		 r1,-128(r1)
++	cfi_adjust_cfa_offset (128)
++	std		 r4, 144(r1)
+ 	cfi_offset (lr, 16)
+ 	ld		 r3, 16(r11)
+ 	bl		 JUMPTARGET(__mcount_internal)
+ 	nop
+-	ld		 r0, 128(r1)
++	ld		 r0, 144(r1)
+ 	mtlr		 r0
+-	addi		 r1,r1,112
++	addi		 r1,r1,128
+ 	blr
+ END(_mcount)
+ 
+Index: sysdeps/powerpc/powerpc64/strncmp.S
+===================================================================
+--- a/sysdeps/powerpc/powerpc64/strncmp.S	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/powerpc/powerpc64/strncmp.S	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -26,6 +26,8 @@
+ 
+ EALIGN (BP_SYM(strncmp), 4, 0)
+ 	CALL_MCOUNT 3
++#define AVOID_A2_MICROCODED    /* avoid A2 mc instructions */
++                               /* load w/u are mc, store w/u are not */
+ 
+ #define rTMP	r0
+ #define rRTN	r3
+@@ -68,9 +70,19 @@
+ 	b	L(g1)
+ 
+ L(g0):	
++#ifdef  AVOID_A2_MICROCODED
++	ld      rWORD1, 8(rSTR1)
++	addi    rSTR1, rSTR1, 8
++#else
+ 	ldu	rWORD1, 8(rSTR1)
++#endif
+ 	bne-	cr1, L(different)
++#ifdef AVOID_A2_MICROCODED
++	ld      rWORD2, 8(rSTR2)
++	addi    rSTR2, rSTR2, 8
++#else
+ 	ldu	rWORD2, 8(rSTR2)
++#endif
+ L(g1):	add	rTMP, rFEFE, rWORD1
+ 	nor	rNEG, r7F7F, rWORD1
+ 	bdz	L(tail)
+@@ -104,7 +116,12 @@
+ 	blr
+ 
+ L(different):
++#ifdef AVOID_A2_MICROCODED
++	ld      rWORD1, -8(rSTR1)
++	addi    rSTR1, rSTR1, -8
++#else
+ 	ldu	rWORD1, -8(rSTR1)
++#endif
+ 	xor.	rBITDIF, rWORD1, rWORD2
+ 	sub	rRTN, rWORD1, rWORD2
+ 	blt-	L(highbit)
+@@ -141,23 +158,48 @@
+ 	nop
+ 	b	L(u1)
+ L(u0):
++#ifdef AVOID_A2_MICROCODED
++	lbz     rWORD2, 1(rSTR2)
++	addi    rSTR2, rSTR2, 1
++#else
+ 	lbzu	rWORD2, 1(rSTR2)
++#endif
+ L(u1):
+ 	bdz	L(u3)
+ 	cmpdi	cr1, rWORD1, 0
+ 	cmpd	rWORD1, rWORD2
+ 	beq-	cr1, L(u3)
++#ifdef AVOID_A2_MICROCODED
++	lbz     rWORD1, 1(rSTR1)
++	addi    rSTR1, rSTR1, 1
++#else
+ 	lbzu	rWORD1, 1(rSTR1)
++#endif
+ 	bne-	L(u2)
+-	lbzu	rWORD2, 1(rSTR2)
++#ifdef AVOID_A2_MICROCODED
++	lbz     rWORD2, 1(rSTR2)
++	addi    rSTR2, rSTR2, 1
++#else
++	lbzu    rWORD2, 1(rSTR2)
++#endif
+ 	bdz	L(u3)
+ 	cmpdi	cr1, rWORD1, 0
+ 	cmpd	rWORD1, rWORD2
+ 	bne-	L(u3)
++#ifdef  AVOID_A2_MICROCODED
++	lbz     rWORD1, 1(rSTR1)
++	addi    rSTR1, rSTR1, 1
++#else
+ 	lbzu	rWORD1, 1(rSTR1)
++#endif
+ 	bne+	cr1, L(u0)
+ 
+-L(u2):	lbzu	rWORD1, -1(rSTR1)	
++#ifdef AVOID_A2_MICROCODED
++L(u2): lbz     rWORD1, -1(rSTR1)
++       addi    rSTR1, rSTR1, -1
++#else
++ L(u2): lbzu    rWORD1, -1(rSTR1)
++#endif
+ L(u3):	sub	rRTN, rWORD1, rWORD2
+ 	blr
+ END (BP_SYM (strncmp))
+Index: sysdeps/powerpc/powerpc64/strchr.S
+===================================================================
+--- a/sysdeps/powerpc/powerpc64/strchr.S	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/powerpc/powerpc64/strchr.S	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -26,6 +26,8 @@
+ 
+ ENTRY (BP_SYM (strchr))
+ 	CALL_MCOUNT 2
++#define AVOID_A2_MICROCODED    /* avoid mc instrs on A2 */
++                               /* load w/u are mc, store w/u are not */
+ 
+ #define rTMP1	r0
+ #define rRTN	r3	/* outgoing result */
+@@ -81,7 +83,12 @@
+ 
+ /* The loop.  */
+ 
++#ifdef AVOID_A2_MICROCODED
++L(loop):ld     rWORD, 8(rSTR)
++       addi    rSTR, rSTR, 8
++#else
+ L(loop):ldu rWORD, 8(rSTR)
++#endif
+ 	and.	rTMP1, rTMP1, rTMP2
+ /* Test for 0.	*/
+ 	add	rTMP1, rFEFE, rWORD
+Index: sysdeps/powerpc/powerpc64/memset.c
+===================================================================
+--- a/sysdeps/powerpc/powerpc64/memset.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 0)
++++ b/sysdeps/powerpc/powerpc64/memset.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -0,0 +1,159 @@
++/* begin_generated_IBM_copyright_prolog                             */
++/*                                                                  */
++/* This is an automatically generated copyright prolog.             */
++/* After initializing,  DO NOT MODIFY OR MOVE                       */
++/*  --------------------------------------------------------------- */
++/*                                                                  */
++/* (C) Copyright IBM Corp.  2005, 2007                              */
++/* GPL License                                                      */
++/*                                                                  */
++/*  --------------------------------------------------------------- */
++/*                                                                  */
++/* end_generated_IBM_copyright_prolog                               */
++#include <sys/types.h>
++#include <string.h>
++#include <stdio.h>
++#include <stdint.h>
++#undef memset
++
++
++/* Only generate QPX instructions to move data if this procedure is being built for libc.  We want other tools, like ld.so to 
++ * be built without QPX so they can run on the FEN most of the time. */
++
++#ifdef NOT_IN_libc
++#define USE_QPX 0
++#else
++extern int __bg_cpu_count;
++#define USE_QPX (__bg_cpu_count > 0)
++#endif
++
++void *memset(void *s, int c, size_t n)
++
++{
++  union {
++         unsigned long long ul[ 6 ];
++         double         d[ 6 ];
++         }
++         __data_mover __attribute__ ((aligned( 16)));
++   volatile   void * __data_mover_ptr;
++   int head ;
++   unsigned char *p8 = (unsigned char *)s;
++   unsigned int *p32;
++   unsigned char  v8;
++   unsigned short v16;  /* 2 chars  */
++   unsigned int  v32;   /* 4 chars  */
++   unsigned long long v64;  /* 8 chars which is the same as long  */
++
++   v8  = (c & 0xFF);
++   if (n < 128) {  /* Most common case  */
++       while( n-- )
++          *p8++ = v8;
++      return( s );
++   }
++   else
++      {
++      head = (4 - ((unsigned long)s & 0x3));
++      if ( head < 4 )
++         {
++         if ( head > n )
++            head = n;
++         n -= head;
++
++         // bytes until aligned on words
++         while ( head-- )
++            *p8++ = v8;
++         }
++
++      if ( !n )
++         return( s );
++
++      v16 = (v8  | (v8  <<  8));
++
++      head = (32 - ((unsigned long)p8 & 0x1F));
++      v32 = (v16 | (v16 << 16));
++      v64 = v32;
++      v64 = (v64 | (v64 << 32));
++      if ( head < 32 )
++         {
++         p32  = (unsigned int *)p8;
++
++         if ( head > n )
++            head = n;
++         n -= head;
++
++         head >>= 2;
++
++         // words until 32 bit aligned
++         while ( head-- )
++            *p32++ = v32;
++
++         if ( !n )
++            return(s);
++
++         p8 = (unsigned char *)p32;
++         }
++      if (((unsigned long)&(__data_mover.d[0]) & 31) == 0) {
++      
++        __data_mover.ul[0] = v64;
++        __data_mover.ul[1] = v64;
++        __data_mover.ul[2] = v64;
++        __data_mover.ul[3] = v64;
++        __data_mover_ptr = &(__data_mover.d[0]);
++      }
++      else {
++        __data_mover.ul[2] = v64;
++        __data_mover.ul[3] = v64;
++        __data_mover.ul[4] = v64;
++        __data_mover.ul[5] = v64;
++        __data_mover_ptr = &(__data_mover.d[2]);
++      }
++
++      // quads
++      if ( (USE_QPX) && (head = (n /32)) )  // 16 -> 32
++         { 
++         register unsigned long long u32 = 32;   // 16 -> 32
++	 register double fr1 __asm__ ("fr1");
++         unsigned long h128 = (head / 4);
++         unsigned long h32 = (head & 3);
++         asm volatile( "qvlfdx %0, 0, %1;"
++                    : "=f" (fr1)
++                    : "b" ( __data_mover_ptr )
++                     );
++
++         while( h128-- )
++            {
++		// Tell the compiler what register is being used
++            asm volatile("qvstfdx %2, 0, %0;"
++                    "qvstfdux  %2, %0,  %1;"
++                    "qvstfdux  %2, %0,  %1;"
++                    "qvstfdux  %2, %0,  %1;"
++                    : "+b" (p8)
++                    : "r"(u32), "f"(fr1)
++                    :  "memory" );
++
++	    p8 += u32;
++            n  -= 128;
++            }
++         while( h32-- )
++            { 
++
++            asm volatile("qvstfdx %1, 0, %0;"
++                          : /* no outputs */
++                          : "b" (p8),
++                             "f"(fr1)
++                          : "memory" );
++            p8 += u32;
++            n  -= u32;
++            }
++         }
++      }
++   while( n-- )
++      *p8++ = v8;
++
++   return( s );
++}
++void bzero(void *s,  size_t n) {
++  memset(s, 0x00, n);
++}
++
++libc_hidden_builtin_def (memset)
+Index: sysdeps/unix/sysv/linux/powerpc/ldconfig.h
+===================================================================
+--- a/sysdeps/unix/sysv/linux/powerpc/ldconfig.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/unix/sysv/linux/powerpc/ldconfig.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -20,7 +20,7 @@
+ 
+ #define SYSDEP_KNOWN_INTERPRETER_NAMES \
+   { "/lib/ld.so.1", FLAG_ELF_LIBC6 },	\
+-  { "/lib64/ld64.so.1", FLAG_ELF_LIBC6 },
++  { "/lib64/bgq/ld64.so.1", FLAG_ELF_LIBC6 },
+ #define SYSDEP_KNOWN_LIBRARY_NAMES \
+   { "libc.so.6", FLAG_ELF_LIBC6 },	\
+   { "libm.so.6", FLAG_ELF_LIBC6 },
+Index: sysdeps/unix/sysv/linux/powerpc/libc-start.c
+===================================================================
+--- a/sysdeps/unix/sysv/linux/powerpc/libc-start.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/unix/sysv/linux/powerpc/libc-start.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -25,6 +25,8 @@
+ 
+ 
+ int __cache_line_size attribute_hidden;
++int __process_count __attribute__ ((nocommon));
++int __bg_cpu_count __attribute__ ((nocommon));
+ /* The main work is done in the generic function.  */
+ #define LIBC_START_MAIN generic_start_main
+ #define LIBC_START_DISABLE_INLINE
+@@ -32,7 +34,7 @@
+ #define MAIN_AUXVEC_ARG
+ #define INIT_MAIN_ARGS
+ #include <csu/libc-start.c>
+-
++extern char **__environ;
+ struct startup_info
+   {
+     void *__unbounded sda_base;
+@@ -43,6 +45,69 @@
+ 
+ int
+ /* GKM FIXME: GCC: this should get __BP_ prefix by virtue of the
++ *    BPs in the arglist of startup_info.main and startup_info.init. */
++  BP_SYM (__libc_no_magic_start_main) (int argc, char *__unbounded *__unbounded ubp_av,
++                              char *__unbounded *__unbounded ubp_ev,
++                              ElfW (auxv_t) * __unbounded auxvec,
++                              void (*rtld_fini) (void),
++                              struct startup_info *__unbounded stinfo,
++                              char *__unbounded *__unbounded stack_on_entry)
++{
++#if __BOUNDED_POINTERS__
++  char **argv;
++#else
++# define argv ubp_av
++#endif
++
++  /* the PPC SVR4 ABI says that the top thing on the stack will
++ *      be a NULL pointer, so if not we assume that we're being called
++ *           as a statically-linked program by Linux...  */
++  if (*stack_on_entry != NULL)
++    {
++      char *__unbounded * __unbounded temp;
++      /* ...in which case, we have argc as the top thing on the
++ *          stack, followed by argv (NULL-terminated), envp (likewise),
++ *                   and the auxilary vector.  */
++      /* 32/64-bit agnostic load from stack */
++      argc = *(long int *__unbounded) stack_on_entry;
++      ubp_av = stack_on_entry + 1;
++      ubp_ev = ubp_av + argc + 1;
++#ifdef HAVE_AUX_VECTOR
++      temp = ubp_ev;
++      while (*temp != NULL)
++        ++temp;
++      auxvec = (ElfW (auxv_t) *)++ temp;
++#endif
++      rtld_fini = NULL;
++    }
++
++  __process_count = 0;
++  __bg_cpu_count = 0;
++  /* Initialize the __cache_line_size variable from the aux vector.  */
++  for (ElfW (auxv_t) * av = auxvec; av->a_type != AT_NULL; ++av)
++    switch (av->a_type)
++      {
++      case AT_DCACHEBSIZE:
++        __cache_line_size = av->a_un.a_val;
++        break;
++      case AT_BG_PRCOUNT:
++        __process_count = av->a_un.a_val;
++        break;
++      case AT_BG_CPUCOUNT:
++        __bg_cpu_count = av->a_un.a_val;
++        break;
++
++      }
++
++   return generic_start_main (stinfo->main, argc, ubp_av, auxvec,
++                             stinfo->init, stinfo->fini, rtld_fini,
++                             stack_on_entry);
++}
++
++#define ENABLE_MAGIC 0
++int
++/* GKM FIXME: GCC: this should get __BP_ prefix by virtue of the
++
+    BPs in the arglist of startup_info.main and startup_info.init. */
+   BP_SYM (__libc_start_main) (int argc, char *__unbounded *__unbounded ubp_av,
+ 			      char *__unbounded *__unbounded ubp_ev,
+@@ -56,7 +121,14 @@
+ #else
+ # define argv ubp_av
+ #endif
++#ifdef ENABLE_MAGIC
++  char * launcher_path;
+ 
++/* Do we want to save the original arguments if they are passed onto the magic? */
++
++#endif
++
++
+   /* the PPC SVR4 ABI says that the top thing on the stack will
+      be a NULL pointer, so if not we assume that we're being called
+      as a statically-linked program by Linux...  */
+@@ -78,7 +150,11 @@
+ #endif
+       rtld_fini = NULL;
+     }
++  /* If __process_count is 0 then there was no value for it in the auxv */
+ 
++  __process_count = 0;
++  __bg_cpu_count = 0;
++
+   /* Initialize the __cache_line_size variable from the aux vector.  */
+   for (ElfW (auxv_t) * av = auxvec; av->a_type != AT_NULL; ++av)
+     switch (av->a_type)
+@@ -86,9 +162,49 @@
+       case AT_DCACHEBSIZE:
+ 	__cache_line_size = av->a_un.a_val;
+ 	break;
++      case AT_BG_PRCOUNT:
++        __process_count = av->a_un.a_val;
++        break;
++      case AT_BG_CPUCOUNT:
++        __bg_cpu_count = av->a_un.a_val;
++        break;
++
+       }
++#ifdef ENABLE_MAGIC
++  if ((__process_count > 0) || (__bg_cpu_count > 0)) {
++#endif
++      return generic_start_main (stinfo->main, argc, ubp_av, auxvec,
++                             stinfo->init, stinfo->fini, rtld_fini,
++                             stack_on_entry);
++#ifdef ENABLE_MAGIC
++  }    
+ 
+-  return generic_start_main (stinfo->main, argc, ubp_av, auxvec,
+-			     stinfo->init, stinfo->fini, rtld_fini,
+-			     stack_on_entry);
++/* At this point we know we are trying to run a program that was linked for Blue Gene/Q on 
++ * a machine that is not running CNK.  Either a login node or front end node.  If this is being
++ * run on a front end node and the magic information has not been initialized, , then there's no guarantee
++ *  it will run, slightly better chance but still not guaranteed on the login node. */
++
++  __environ = ubp_ev;
++
++  launcher_path = getenv("BG_PGM_LAUNCHER");
++
++/* If the launcher environment variable is not set, try to run as a normal program at this point. */
++
++  if (launcher_path == NULL) {
++       return generic_start_main (stinfo->main, argc, ubp_av, auxvec,
++                             stinfo->init, stinfo->fini, rtld_fini,
++                             stack_on_entry);
++
++  }
++
++  if ((strcmp(launcher_path, "YES") == 0) || (strcmp(launcher_path, "yes") == 0)) {
++    execve("/bgsys/drivers/ppcfloor/gnu-linux/powerpc64-bgq-linux/lib/bg-magic-launcher.so", ubp_av, ubp_ev);
++  }
++  else {
++
++/* We are going to assume if someone sets this environment variable to something other than 'YES' that they know
++ *  *   what they are doing and will set it to a valid path. */
++    execve(launcher_path, ubp_av, ubp_ev);
++  }
++#endif
+ }
+Index: sysdeps/unix/sysv/linux/powerpc/powerpc64/sysdep.h
+===================================================================
+--- a/sysdeps/unix/sysv/linux/powerpc/powerpc64/sysdep.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/unix/sysv/linux/powerpc/powerpc64/sysdep.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -162,6 +162,9 @@
+          "=&r" (r6), "=&r" (r7), "=&r" (r8)				\
+        : ASM_INPUT_##nr							\
+        : "r9", "r10", "r11", "r12",					\
++         "fr0", "fr1", "fr2", "fr3", "fr4",                            \
++         "fr5", "fr6", "fr7", "fr8", "fr9",                            \
++         "fr10", "fr11", "fr12", "fr13",                                \
+          "cr0", "ctr", "lr", "memory");					\
+ 	  err = (long int) r0;						\
+     r3;								\
+@@ -209,6 +212,9 @@
+          "=&r" (r6), "=&r" (r7), "=&r" (r8)				\
+        : ASM_INPUT_##nr							\
+        : "r9", "r10", "r11", "r12",					\
++         "fr0", "fr1", "fr2", "fr3", "fr4",                            \
++         "fr5", "fr6", "fr7", "fr8", "fr9",                            \
++         "fr10", "fr11", "fr12", "fr13",                                \
+          "cr0", "ctr", "memory");					\
+ 	  err = r0;  \
+     r3;  \
+Index: sysdeps/unix/sysv/linux/powerpc/powerpc64/clone.S
+===================================================================
+--- a/sysdeps/unix/sysv/linux/powerpc/powerpc64/clone.S	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/unix/sysv/linux/powerpc/powerpc64/clone.S	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -60,7 +60,9 @@
+ 	/* Set up stack frame for child.  */
+ 	clrrdi	r4,r4,4
+ 	li	r0,0
+-	stdu	r0,-112(r4) /* min stack frame is 112 bytes per ABI */
++       /* For BGQ this needs to be 32 byte aligned. */
++       /* The PPC64 ABI uses 112, we bump it up to 128. */
++	stdu	r0,-128(r4) /* min stack frame is 128 bytes per ABI */
+ 
+ 	/* Save fn, args, stack across syscall.  */
+ 	mr	r30,r3			/* Function in r30.  */
+Index: sysdeps/unix/sysv/linux/powerpc/bgprofil-counter.h
+===================================================================
+--- a/sysdeps/unix/sysv/linux/powerpc/bgprofil-counter.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 0)
++++ b/sysdeps/unix/sysv/linux/powerpc/bgprofil-counter.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -0,0 +1,16 @@
++/* Include both sigprof handlers, one to support sigprof as on Linux on Power
++ * and one for BGQ with threads. */
++#include <signal.h>
++#include <sigcontextinfo.h>
++
++static void
++bgprofil_counter (int signo, const SIGCONTEXT scp)
++{
++  bgprofil_count ((void *) GET_PC (scp));
++
++  /* This is a hack to prevent the compiler from implementing the
++ *      above function call as a sibcall.  The sibcall would overwrite
++ *           the signal context.  */
++  asm volatile ("");
++}
++
+Index: sysdeps/unix/sysv/linux/powerpc/sys/ucontext.h
+===================================================================
+--- a/sysdeps/unix/sysv/linux/powerpc/sys/ucontext.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/unix/sysv/linux/powerpc/sys/ucontext.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -125,7 +125,10 @@
+  * within the quadword.
+  */
+ 	vrregset_t	*v_regs;
+-	long		vmx_reserve[NVRREG+NVRREG+1];
++
++ /* Extra space for the QPX registers. */
++
++	long            vmx_reserve[NVRREG+NVRREG+32+1];
+ } mcontext_t;
+ 
+ #endif
+Index: sysdeps/unix/sysv/linux/powerpc/sys/procfs.h
+===================================================================
+--- a/sysdeps/unix/sysv/linux/powerpc/sys/procfs.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/unix/sysv/linux/powerpc/sys/procfs.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -50,11 +50,13 @@
+ typedef elf_fpreg_t elf_fpregset_t[ELF_NFPREG];
+ 
+ /* Altivec registers */
++#if 0
+ typedef struct {
+   unsigned int u[4];
+ } __attribute__ ((__aligned__ (16))) elf_vrreg_t;
+ typedef elf_vrreg_t elf_vrregset_t[ELF_NVRREG];
+ #endif
++#endif
+ 
+ struct elf_siginfo
+   {
+Index: sysdeps/unix/sysv/linux/prof-freq.c
+===================================================================
+--- a/sysdeps/unix/sysv/linux/prof-freq.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/unix/sysv/linux/prof-freq.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -25,6 +25,22 @@
+ int
+ __profile_frequency (void)
+ {
++#if !defined(IS_IN_rtld) || !defined(NOT_IN_libc)
++  char *env;
++  unsigned int freq;
++
++#if 0
+   return GLRO(dl_clktck);
++#endif
++  env = getenv("BG_GMON_PROF_FREQUENCY");
++  if (env != NULL) {
++    freq = atoi(env);
++    if ((freq >0) && (freq <= 100)) {
++      return freq;
++    }
++  }
++#endif
++  return 100;
++
+ }
+ libc_hidden_def (__profile_frequency)
+Index: sysdeps/unix/sysv/linux/sys/sysctl.h
+===================================================================
+--- a/sysdeps/unix/sysv/linux/sys/sysctl.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/unix/sysv/linux/sys/sysctl.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -22,10 +22,12 @@
+ #define __need_size_t
+ #include <stddef.h>
+ /* Prevent more kernel headers than necessary to be included.  */
++#if 0 /* Removed for BGQ */
+ #ifndef _LINUX_KERNEL_H
+ # define _LINUX_KERNEL_H	1
+ # define __undef_LINUX_KERNEL_H
+ #endif
++#endif
+ #ifndef _LINUX_TYPES_H
+ # define _LINUX_TYPES_H		1
+ # define __undef_LINUX_TYPES_H
+Index: sysdeps/unix/sysv/linux/getsysstats.c
+===================================================================
+--- a/sysdeps/unix/sysv/linux/getsysstats.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/unix/sysv/linux/getsysstats.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -36,7 +36,7 @@
+ #include <not-cancel.h>
+ #include <kernel-features.h>
+ 
+-
++extern int __bg_cpu_count;
+ /* How we can determine the number of available processors depends on
+    the configuration.  There is currently (as of version 2.0.21) no
+    system call to determine the number.  It is planned for the 2.1.x
+@@ -136,7 +136,7 @@
+     return cached_result;
+ 
+   /* XXX Here will come a test for the new system call.  */
+-
++  if (__bg_cpu_count > 0) return __bg_cpu_count;
+   const size_t buffer_size = __libc_use_alloca (8192) ? 8192 : 512;
+   char *buffer = alloca (buffer_size);
+   char *buffer_end = buffer + buffer_size;
+@@ -237,7 +237,7 @@
+ __get_nprocs_conf ()
+ {
+   /* XXX Here will come a test for the new system call.  */
+-
++  if (__bg_cpu_count > 0) return __bg_cpu_count;
+   /* Try to use the sysfs filesystem.  It has actual information about
+      online processors.  */
+   DIR *dir = __opendir ("/sys/devices/system/cpu");
+Index: sysdeps/posix/profil.c
+===================================================================
+--- a/sysdeps/posix/profil.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/posix/profil.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -22,18 +22,51 @@
+ #include <errno.h>
+ #include <signal.h>
+ #include <sys/time.h>
++#include <sys/gmon.h>
+ #include <libc-internal.h>
+ 
++/* Inline asm to atomically update either the right or left half of the word in the table.  */
++
++#define atomic_add_counter_left(mem) \
++    ({                                                                        \
++      __typeof (*(mem)) __val;                                                \
++      __asm __volatile ("1:     lwarx   %1,0,%2\n"                            \
++                        "       addis   %1,%1,1\n"                            \
++                        "       stwcx.  %1,0,%2\n"                            \
++                        "       bne-    1b"                                   \
++                        : "=m" (*mem)                                         \
++                        : "b" (__val), "b" (mem), "m" (*mem)                  \
++                        : "cr0", "memory");                                   \
++    })
++
++#define atomic_add_counter_right(mem) \
++    ({                                                                        \
++      __typeof (*(mem)) __val;                                                \
++      __asm __volatile ("1:     lwarx   %1,0,%2\n"                            \
++                        "       addi    %1,%1,1\n"                            \
++                        "       stwcx.  %1,0,%2\n"                            \
++                        "       bne-    1b"                                   \
++                        : "=m" (*mem)                                         \
++                        : "b" (__val), "b" (mem), "m" (*mem)                  \
++                        : "cr0", "memory");                                   \
++    })
++
++
++
+ #ifndef SIGPROF
+ 
+ #include <gmon/profil.c>
+ 
+ #else
+-
++#define MAX_HWTHD 68
+ static u_short *samples;
+ static size_t nsamples;
+ static size_t pc_offset;
+ static u_int pc_scale;
++static void*** hwthd_samples;
++static int* hwthd_sample_index;
++static int max_samples_per_hwthd;
++static int main_hwthd;
+ 
+ static inline void
+ profil_count (void *pc)
+@@ -47,13 +80,59 @@
+ 
+   if (i < nsamples)
+     ++samples[i];
++
++#if 0 // This is very ugly and only needed if threads are supported
++    if ((i % 2) == 0) {
++      atomic_add_counter_left((int*)&samples[i]);
++    }
++    else {
++      atomic_add_counter_right((int*)&samples[i-1]);
++    }
++#endif
+ }
++/* Gmon behavior for BG, collecting data for threads and shared libraries per hw thread. */
+ 
++static inline void
++bgprofil_count (void *pc)
++{
++  int hwthd = bgq_get_hwthd();
++
++  if (hwthd == main_hwthd) {
++    size_t i = (pc - pc_offset - (void *) 0) / 2;
++
++    if (sizeof (unsigned long long int) > sizeof (size_t))
++      i = (unsigned long long int) i * pc_scale / 65536;
++    else
++      i = i / 65536 * pc_scale + i % 65536 * pc_scale / 65536;
++
++    /* If this sample is out of range, it might be from a shared library -- let it fall through and see if 
++ *     it should be saved in the buffer. */
++
++    if (i < nsamples) {
++      ++samples[i];
++      return;
++    }
++  }
++
++  /* Get the current hwthd.  If there is a valid hwthd index, and the sample buffer for that hwthd exists and has space, then add the current
++ *    * sample to the list for the hwthd.  Otherwise do nothing.  Since each hw thread has its own buffer there should be no contention. */
++
++  if (hwthd_samples == NULL) {
++    return;
++  }
++
++  if ((hwthd_sample_index != NULL) && (hwthd_samples[hwthd] != NULL) && (hwthd_sample_index[hwthd] < max_samples_per_hwthd)) {
++    hwthd_samples[hwthd][hwthd_sample_index[hwthd]++] = pc;
++  }
++
++}
++
++
+ /* Get the machine-dependent definition of `profil_counter', the signal
+    handler for SIGPROF.  It calls `profil_count' (above) with the PC of the
+    interrupted code.  */
+ #include "profil-counter.h"
+-
++#include "bgprofil-counter.h"
+ /* Enable statistical profiling, writing samples of the PC into at most
+    SIZE bytes of SAMPLE_BUFFER; every processor clock tick while profiling
+    is enabled, the system examines the user PC and increments
+@@ -103,8 +182,17 @@
+   nsamples = size / sizeof *samples;
+   pc_offset = offset;
+   pc_scale = scale;
++ 
++/* Assume __profil (as opposed to __bgprofil) is only called for the main hwthd, so we should
++ * be able to save away the current hwthd here as the main hwthd.
++ *
++ * Note that with multiple ranks per node, the main hwthd is not always 0, so it needs to be
++ * explicitly set. */
+ 
+-  act.sa_handler = (sighandler_t) &profil_counter;
++  main_hwthd = bgq_get_hwthd();
++ 
++  act.sa_handler = (sighandler_t) &bgprofil_counter;
++
+   act.sa_flags = SA_RESTART;
+   __sigfillset (&act.sa_mask);
+   if (__sigaction (SIGPROF, &act, oact_ptr) < 0)
+@@ -116,5 +204,63 @@
+   return __setitimer (ITIMER_PROF, &timer, otimer_ptr);
+ }
+ weak_alias (__profil, profil)
++/* This function does nothing but set up the buffers for thread samples.  It is assumed that __profil is starting
++   the timer and setting up the sigprof handler for the main thread. */
+ 
++int
++__bgprofil (void ***sample_buffer, int *sample_index, int max_samples)
++{
++ 
++  hwthd_samples = sample_buffer;
++  hwthd_sample_index = sample_index;
++  max_samples_per_hwthd = max_samples;
++
++}
++weak_alias (__bgprofil, bgprofil)
++
++
++/* This function will start a prof timer on a thread.  It is assumed that the
++ * sigaction call was made on the main thread when gmon was enabled, so it is not
++ * necessary to do that -- this function will only control starting and stopping
++ * of the timer on the current thread. 
++ *
++ * Note that this will be done for the current hardware thread.  If threads are
++ * overcommitted the timer might not be active on the thread the user expects.  */
++
++int
++__thdprofil (int start)
++{
++  struct itimerval timer;
++#ifndef IS_IN_rtld
++  static struct itimerval totimer;
++# define totimer_ptr &totimer
++
++  if (!start)
++    {
++      /* Disable profiling.  */
++
++      if (__setitimer (ITIMER_PROF, &totimer, NULL) < 0)
++        return -1;
++      return 0;
++    }
++
++#else
++/* In ld.so profiling should never be disabled once it runs.  */
++//  assert (sample_buffer != NULL);
++# define totimer_ptr NULL
++
+ #endif
++
++  /* This will only be done if the program was linked with the -pg option and the samples buffer was created. */
++
++  if (hwthd_samples == NULL) 
++    return 0;
++
++  timer.it_value.tv_sec = 0;
++  timer.it_value.tv_usec = 1000000 / __profile_frequency ();
++  timer.it_interval = timer.it_value;
++  return __setitimer (ITIMER_PROF, &timer, totimer_ptr);
++ }
++ weak_alias (__thdprofil, thdprofil)
++#endif
++
+Index: sysdeps/generic/ldsodefs.h
+===================================================================
+--- a/sysdeps/generic/ldsodefs.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/generic/ldsodefs.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -448,7 +448,10 @@
+ /* These two are used only internally.  */
+ #define DL_DEBUG_HELP       (1 << 10)
+ #define DL_DEBUG_PRELINK    (1 << 11)
++#define DL_DEBUG_EVENTS     (1 << 12)
++#define DL_DEBUG_FAST_DISABLED (1 << 13)
+ 
++
+   /* OS version.  */
+   EXTERN unsigned int _dl_osversion;
+   /* Platform name.  */
+@@ -855,8 +858,9 @@
+    says what change is taking place.  This function's address is
+    the value of the `r_brk' member.  */
+ extern void _dl_debug_state (void);
++extern void _dl_debug_fast_state (void);
+ rtld_hidden_proto (_dl_debug_state)
+-
++rtld_hidden_proto (_dl_debug_fast_state)
+ /* Initialize `struct r_debug' if it has not already been done.  The
+    argument is the run-time load address of the dynamic linker, to be put
+    in the `r_ldbase' member.  Returns the address of the structure.  */
+Index: sysdeps/generic/dl-cache.h
+===================================================================
+--- a/sysdeps/generic/dl-cache.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sysdeps/generic/dl-cache.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -27,10 +27,14 @@
+   ((flags) == 1 || (flags) == _DL_CACHE_DEFAULT_ID)
+ #endif
+ 
++#define LD_SO_CACHE "/etc/ld.so.bgq.cache"
++
++#if 0
++
+ #ifndef LD_SO_CACHE
+ # define LD_SO_CACHE SYSCONFDIR "/ld.so.cache"
+ #endif
+-
++#endif
+ #ifndef add_system_dir
+ # define add_system_dir(dir) add_dir (dir)
+ #endif
+Index: catgets/Makefile
+===================================================================
+--- a/catgets/Makefile	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/catgets/Makefile	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -22,8 +22,9 @@
+ 
+ headers		= nl_types.h
+ routines	= catgets open_catalog
+-others		= gencat
+-install-bin	= gencat
++# Don't install on Blue Gene
++others		= 
++install-bin	= 
+ extra-objs	= $(gencat-modules:=.o)
+ 
+ tests = tst-catgets
+Index: inet/netinet/in.h
+===================================================================
+--- a/inet/netinet/in.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/inet/netinet/in.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -360,7 +360,13 @@
+    `unsigned short int' values as arguments and also return them.  But
+    this was a short-sighted decision since on different systems the types
+    may have different representations but the values are always the same.  */
++/* Done for BGQ.  Not sure if this is still needed. */
++#undef ntohl
++#undef ntohs
++#undef htonl
++#undef htons
+ 
++
+ extern uint32_t ntohl (uint32_t __netlong) __THROW __attribute__ ((__const__));
+ extern uint16_t ntohs (uint16_t __netshort)
+      __THROW __attribute__ ((__const__));
+Index: bits/dlfcn.h
+===================================================================
+--- a/bits/dlfcn.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/bits/dlfcn.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -58,7 +58,18 @@
+ 
+ /* This function calls the profiling functions.  */
+ extern void _dl_mcount_wrapper_check (void *__selfpc) __THROW;
++/* These functions are used to enable/disable shared library debug events
++   to minimize overhead during a debug session, especially in the case
++   parallel execution where thousands of nodes are loading shared libraries
++   simultaneously. */
+ 
++extern void _dl_debug_enable_events (void);
++
++extern void _dl_debug_disable_events (void);
++
++extern int _dl_debug_event_status (void);
++
++
+ __END_DECLS
+ 
+ #endif
+Index: posix/Makefile
+===================================================================
+--- a/posix/Makefile	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/posix/Makefile	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -93,8 +93,8 @@
+ tests           += wordexp-test tst-exec tst-spawn
+ endif
+ others		:= getconf
+-install-bin	:= getconf
+-install-others-programs	:= $(inst_libexecdir)/getconf
++install-bin	:= 
++install-others-programs	:= 
+ 
+ before-compile	:= testcases.h ptestcases.h
+ 
+Index: nss/Makefile
+===================================================================
+--- a/nss/Makefile	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/nss/Makefile	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -33,8 +33,8 @@
+ databases		= proto service hosts network grp pwd rpc ethers \
+ 			  spwd netgrp key alias sgrp
+ 
+-others                  := getent makedb
+-install-bin             := getent makedb
++others                  := 
++install-bin             := 
+ makedb-modules = xmalloc hash-string
+ extra-objs		+= $(makedb-modules:=.o)
+ 
+@@ -42,6 +42,10 @@
+ xtests			= bug-erange
+ 
+ include ../Makeconfig
++ifeq (yes,$(build-static-nss))
++otherlibs += $(nssobjdir)/libnss_files_pic.a $(resolvobjdir)/libnss_dns_pic.a \
++             $(resolvobjdir)/libresolv.a
++endif
+ 
+ # Specify rules for the nss_* modules.  We have some services.
+ services		:= files db
+Index: Makeconfig
+===================================================================
+--- a/Makeconfig	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/Makeconfig	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -145,14 +145,19 @@
+ # Where to install the library and object files.
+ ifndef libdir
+ libdir = $(exec_prefix)/lib
+-endif
+ inst_libdir = $(install_root)$(libdir)
++else
++inst_libdir = $(prefix)/$(libdir)
+ 
++endif
++
+ # Where to install the shared library and dynamic linker.
+ ifndef slibdir
+ slibdir = $(exec_prefix)/lib
++inst_slibdir = $(install_root)$(slibdir)
++else
++inst_slibdir = $(prefix)/$(slibdir)
+ endif
+-inst_slibdir = $(install_root)$(slibdir)
+ 
+ # Prefix to put on files installed in $(libdir).  For libraries `libNAME.a',
+ # the prefix is spliced between `lib' and the name, so the linker switch
+@@ -173,61 +178,62 @@
+ ifndef datadir
+ datadir = $(prefix)/share
+ endif
+-inst_datadir = $(install_root)$(datadir)
++inst_datadir = $(prefix)/share
+ 
+ # Where to install the timezone data files (which are machine-independent).
+ ifndef zonedir
+ zonedir = $(datadir)/zoneinfo
+ endif
+-inst_zonedir = $(install_root)$(zonedir)
++inst_zonedir = $(prefix)/share/zoneinfo
+ 
+ # Where to install the locale files.
+ ifndef localedir
+ localedir = $(libdir)/locale
+ endif
+-inst_localedir = $(install_root)$(localedir)
++inst_localedir = $(prefix)/$(localedir)
+ 
+ # Where to install the message catalog data files (which are
+ # machine-independent).
+ ifndef msgcatdir
+ msgcatdir = $(datadir)/locale
+ endif
+-inst_msgcatdir = $(install_root)$(msgcatdir)
++inst_msgcatdir = $(prefix)/$(msgcatdir)
+ 
+ # Where to install the locale charmap source files.
+ ifndef i18ndir
+ i18ndir = $(datadir)/i18n
+ endif
+-inst_i18ndir = $(install_root)$(i18ndir)
++inst_i18ndir = $(prefix)$(i18ndir)
+ 
+ # Where to install the shared object for charset transformation.
+ ifndef gconvdir
+ gconvdir = $(libdir)/gconv
+ endif
+-inst_gconvdir = $(install_root)$(gconvdir)
++inst_gconvdir = $(prefix)/$(gconvdir)
+ 
+ # Where to install programs.
+ ifndef bindir
+ bindir = $(exec_prefix)/bin
+-endif
+ inst_bindir = $(install_root)$(bindir)
++else
++inst_bindir = $(prefix)/$(bindir)
+ 
++endif
++
+ # Where to install internal programs.
+ ifndef libexecdir
+ libexecdir = $(exec_prefix)/libexec
++inst_libexecdir = $(install_root)$(libexecdir)
+ endif
+-inst_libexecdir = $(install_root)$(libexecdir)
++inst_libexecdir = $(prefix)$(libexecdir)
+ 
+ # Where to install administrative programs.
+ ifndef rootsbindir
+ rootsbindir = $(exec_prefix)/sbin
+-endif
+ inst_rootsbindir = $(install_root)$(rootsbindir)
+-
+-ifndef sbindir
+-sbindir = $(exec_prefix)/sbin
++else
++inst_rootsbindir = $(prefix)$(rootsbindir)
+ endif
+-inst_sbindir = $(install_root)$(sbindir)
+ 
+ # Where to install the Info files.
+ ifndef infodir
+@@ -245,9 +251,12 @@
+ # timezone specification and network data base files.
+ ifndef sysconfdir
+ sysconfdir = $(prefix)/etc
+-endif
+ inst_sysconfdir = $(install_root)$(sysconfdir)
++else
++inst_sysconfdir = $(prefix)$(sysconfdir)
+ 
++endif
++
+ # Directory for the database files and Makefile for nss_db.
+ ifndef vardbdir
+ vardbdir = $(localstatedir)/db
+@@ -443,7 +452,7 @@
+ endif
+ ifndef config-LDFLAGS
+ ifeq (yes,$(build-shared))
+-config-LDFLAGS = -Wl,-dynamic-linker=$(slibdir)/$(rtld-installed-name)
++config-LDFLAGS = -Wl,-dynamic-linker=/lib64/bgq/$(rtld-installed-name)
+ endif
+ endif
+ ifndef link-libc
+@@ -458,7 +467,7 @@
+ link-libc = $(link-libc-before-gnulib) $(gnulib)
+ link-libc-tests = $(link-libc-before-gnulib) $(gnulib-tests)
+ # This is how to find at build-time things that will be installed there.
+-rpath-dirs = math elf dlfcn nss nis rt resolv crypt
++rpath-dirs = math elf dlfcn nss nis rt resolv gmon crypt
+ rpath-link = \
+ $(common-objdir):$(subst $(empty) ,:,$(patsubst ../$(subdir),.,$(rpath-dirs:%=$(common-objpfx)%)))
+ else
+@@ -482,7 +491,17 @@
+ else
+ default-rpath = $(libdir)
+ endif
++# Brute force hack to set up an rpath for BGQ's dynamic linker that will search the BGQ directories first for toolchain libraries,
++# then the native directories in case there are some things like readline or zlib that we want to link to which are not provided
++# for BGQ but should work fine when running as PPC64.
++# WARNING:  we can link to some shared libraries from /usr/lib64 (ppc64) but must link to toolchain shared libraries from /lib64/bgq
++# Add /lib64 to the end of this so we can get Python to work...  There are some packages provided on RHEL6 that Python
++# uses, but aren't provided on BGQ.  So users can either build those themselves and put them in their LD_LIBRARY_PATH  or run with
++# these shared libraries that were built for LoP.
++#
++default-rpath=/usr/lib64/bgq:/lib64/bgq:/usr/lib64:/lib64
+ 
++
+ ifndef link-extra-libs
+ link-extra-libs = $(LDLIBS-$(@F))
+ link-extra-libs-static = $(link-extra-libs)
+@@ -490,7 +509,7 @@
+ endif
+ 
+ # The static libraries.
+-link-libc-static = -Wl,--start-group $(common-objpfx)libc.a $(static-gnulib) -Wl,--end-group
++link-libc-static = -Wl,--start-group $(common-objpfx)libc.a $(static-gnulib) $(otherlibs) -Wl,--end-group
+ link-libc-static-tests = -Wl,--start-group $(common-objpfx)libc.a $(static-gnulib-tests) -Wl,--end-group
+ link-libc-bounded = $(common-objpfx)libc_b.a $(gnulib) $(common-objpfx)libc_b.a
+ 
+@@ -537,7 +556,7 @@
+ libgcc_eh := -Wl,--as-needed -lgcc_s $(libunwind) -Wl,--no-as-needed
+ gnulib-arch =
+ gnulib = -lgcc $(gnulib-arch)
+-gnulib-tests := -lgcc $(libgcc_eh)
++gnulib-tests := -lgcc 
+ static-gnulib-arch =
+ # By default, elf/static-stubs.o, instead of -lgcc_eh, is used to
+ # statically link programs.  When --disable-shared is used, we use
+@@ -545,9 +564,9 @@
+ ifeq (yes,$(build-shared))
+ static-gnulib = -lgcc $(static-gnulib-arch)
+ else
+-static-gnulib = -lgcc -lgcc_eh $(static-gnulib-arch)
++static-gnulib = -lgcc $(static-gnulib-arch)
+ endif
+-static-gnulib-tests := -lgcc -lgcc_eh $(libunwind)
++static-gnulib-tests := -lgcc $(libunwind)
+ libc.so-gnulib := -lgcc
+ endif
+ +preinit = $(addprefix $(csu-objpfx),crti.o)
+@@ -953,6 +972,11 @@
+ # The name under which the run-time dynamic linker is installed.
+ # We are currently going for the convention that `/lib/ld.so.1'
+ # names the SVR4/ELF ABI-compliant dynamic linker.
++
++# On BGQ we are 64-bit only so the only rtld is ld64.so.1
++
++rtld-installed-name = ld64.so.1
++
+ ifndef rtld-installed-name
+ ifdef ld.so-version
+ rtld-installed-name = $(ld.so-version)
+Index: string/bits/string2.h
+===================================================================
+--- a/string/bits/string2.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/string/bits/string2.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -1297,7 +1297,7 @@
+ # endif
+ 
+ # ifndef _HAVE_STRING_ARCH_strdup
+-
++#ifndef __C99_COMPOUND_LITERAL
+ extern char *__strdup (const char *__string) __THROW __attribute_malloc__;
+ #  define __strdup(s) \
+   (__extension__ (__builtin_constant_p (s) && __string2_1bptr_p (s)	      \
+@@ -1309,7 +1309,7 @@
+ 			    __retval = (char *) memcpy (__retval, s, __len);  \
+ 			  __retval; }))					      \
+ 		  : __strdup (s)))
+-
++#endif
+ #  if defined __USE_SVID || defined __USE_BSD || defined __USE_XOPEN_EXTENDED
+ #   define strdup(s) __strdup (s)
+ #  endif
+Index: sunrpc/Makefile
+===================================================================
+--- a/sunrpc/Makefile	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sunrpc/Makefile	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -87,12 +87,11 @@
+ # and not wanted on complete systems.
+ # others := rpcinfo
+ # install-sbin := rpcinfo
+-install-bin := rpcgen
++install-bin := 
+ rpcgen-objs = rpc_main.o rpc_hout.o rpc_cout.o rpc_parse.o \
+ 	      rpc_scan.o rpc_util.o rpc_svcout.o rpc_clntout.o \
+ 	      rpc_tblout.o rpc_sample.o
+ extra-objs = $(rpcgen-objs) $(addprefix cross-,$(rpcgen-objs))
+-others += rpcgen
+ 
+ all: # Make this the default target; it will be defined in Rules.
+ 
+Index: sunrpc/bindrsvprt.c
+===================================================================
+--- a/sunrpc/bindrsvprt.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/sunrpc/bindrsvprt.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -28,15 +28,96 @@
+  *   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
++#include <stdio.h>
++#include <ctype.h> 
+ 
+ #include <errno.h>
++#include <stdlib.h>
+ #include <unistd.h>
+ #include <string.h>
+ #include <sys/types.h>
+ #include <sys/socket.h>
+ #include <netinet/in.h>
+ #include <bits/libc-lock.h>
++#define STARTPORT 600
++#define LOWPORT 512
++#define ENDPORT (IPPORT_RESERVED - 1)
++#define NPORTS  (ENDPORT - STARTPORT + 1)
+ 
++
++/*    
++ * Read the file /etc/rpc.blacklisted, so that we don't bind
++ * to this ports.
++ */
++      
++static int blacklist_read;
++static int *list;
++static int list_size = 0;
++
++static void
++load_blacklist (void)
++{
++  FILE *fp;
++  char *buf = NULL;
++  size_t buflen = 0;
++  int size = 0, ptr = 0;
++    
++  blacklist_read = 1;
++  
++  fp = fopen ("/etc/bindresvport.blacklist", "r");
++  if (NULL == fp)
++    return;
++
++  while (!feof (fp))
++    {
++      unsigned long port;
++      char *tmp, *cp;
++      ssize_t n = __getline (&buf, &buflen, fp);
++      if (n < 1)
++        break;
++
++      cp = buf;
++      tmp = strchr (cp, '#');  /* remove comments */
++      if (tmp)
++        *tmp = '\0';
++      while (isspace ((int)*cp))    /* remove spaces and tabs */
++        ++cp;
++      if (*cp == '\0')        /* ignore empty lines */
++        continue;
++      if (cp[strlen (cp) - 1] == '\n')
++        cp[strlen (cp) - 1] = '\0';
++
++      port = strtoul (cp, &tmp, 0);
++      if (port == ULONG_MAX && errno == ERANGE)
++       continue;
++
++      /* Don't bother with out-of-range ports */
++      if (port < LOWPORT || port > ENDPORT)
++        continue;
++
++      if (ptr >= size)
++       {
++         size += 10;
++         list = realloc (list, size * sizeof (int));
++         if (list == NULL)
++           {
++             free (buf);
++             return;
++           }
++       }
++
++      list[ptr++] = port;
++    }
++
++  fclose (fp);
++
++  if (buf)
++    free (buf);
++
++  list_size = ptr;
++}
++
++
+ /*
+  * Locks the static variables in this file.
+  */
+@@ -52,11 +133,9 @@
+   struct sockaddr_in myaddr;
+   int i;
+ 
+-#define STARTPORT 600
+-#define LOWPORT 512
+-#define ENDPORT (IPPORT_RESERVED - 1)
+-#define NPORTS	(ENDPORT - STARTPORT + 1)
+   static short startport = STARTPORT;
++  if (!blacklist_read)
++    load_blacklist (); 
+ 
+   if (sin == (struct sockaddr_in *) 0)
+     {
+@@ -74,7 +153,7 @@
+     {
+       port = (__getpid () % NPORTS) + STARTPORT;
+     }
+-
++  __set_errno (EADDRINUSE);
+   /* Initialize to make gcc happy.  */
+   int res = -1;
+ 
+@@ -86,12 +165,22 @@
+  again:
+   for (i = 0; i < nports; ++i)
+     {
+-      sin->sin_port = htons (port++);
+-      if (port > endport)
+-	port = startport;
++      int j;
++
++      sin->sin_port = htons (port);
++
++      /* Check, if this port is not blacklisted.  */
++     for (j = 0; j < list_size; j++)
++       if (port == list[j])
++         goto try_next_port;
++
+       res = __bind (sd, sin, sizeof (struct sockaddr_in));
+       if (res >= 0 || errno != EADDRINUSE)
+ 	break;
++
++try_next_port:
++      if (++port > endport)
++       port = startport;
+     }
+ 
+   if (i == nports && startport != LOWPORT)
+Index: iconv/Makefile
+===================================================================
+--- a/iconv/Makefile	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/iconv/Makefile	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -45,9 +45,9 @@
+ 
+ tests	= tst-iconv1 tst-iconv2 tst-iconv3 tst-iconv4 tst-iconv5
+ 
+-others		= iconv_prog iconvconfig
+-install-others-programs	= $(inst_bindir)/iconv
+-install-sbin	= iconvconfig
++others		= 
++install-others-programs	= 
++install-sbin	= 
+ 
+ CFLAGS-gconv_cache.c += -DGCONV_DIR='"$(gconvdir)"'
+ CFLAGS-gconv_conf.c = -DGCONV_PATH='"$(gconvdir)"'
+Index: locale/Makefile
+===================================================================
+--- a/locale/Makefile	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/locale/Makefile	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -30,9 +30,9 @@
+ 		  address telephone measurement identification collate
+ aux		= $(categories:%=lc-%) $(categories:%=C-%) SYS_libc C_name \
+ 		  xlocale localename global-locale coll-lookup
+-others		= localedef locale
++others		= 
+ #others-static	= localedef locale
+-install-bin	= localedef locale
++install-bin	= 
+ extra-objs	= $(localedef-modules:=.o) $(localedef-aux:=.o) \
+ 		  $(locale-modules:=.o) $(lib-modules:=.o)
+ 
+Index: dlfcn/dladdr.c
+===================================================================
+--- a/dlfcn/dladdr.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/dlfcn/dladdr.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -26,10 +26,25 @@
+ {
+   return __dladdr (address, info);
+ }
++int
++dladdrrange (void *lm, void **addrp, int* sizep)
++{
++  return __dladdrrange (lm, addrp, sizep);
++}
+ 
++
+ #else
+ 
+ int
++__dladdrrange (void *lm, void **addrp, int* sizep)
++{
++  return _dl_addr_range ((const struct link_map*)lm, (ElfW(Addr)*)addrp, sizep);
++}
++# ifdef SHARED
++strong_alias (__dladdrrange, dladdrrange)
++# endif
++
++int
+ __dladdr (const void *address, Dl_info *info)
+ {
+ # ifdef SHARED
+Index: dlfcn/Versions
+===================================================================
+--- a/dlfcn/Versions	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/dlfcn/Versions	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -1,6 +1,6 @@
+ libdl {
+   GLIBC_2.0 {
+-    dladdr; dlclose; dlerror; dlopen; dlsym;
++    dladdr; dlclose; dlerror; dlopen; dlsym; dladdrrange;
+   }
+   GLIBC_2.1 {
+     dlopen; dlvsym;
+Index: dlfcn/dlfcn.h
+===================================================================
+--- a/dlfcn/dlfcn.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/dlfcn/dlfcn.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -64,7 +64,13 @@
+    of the symbol called NAME.  */
+ extern void *dlsym (void *__restrict __handle,
+ 		    const char *__restrict __name) __THROW __nonnull ((2));
++/* Find the start address and size of a shared object with the given handle.  It is assumed that
++ * a previous call was made to dlopen to find the handle for the shared library.  If the handle is NULL
++ * the output variables are left unchanged.  */
+ 
++extern int dladdrrange(void *handle, void **addrp, int *sizep);
++
++
+ #ifdef __USE_GNU
+ /* Like `dlopen', but request object to be allocated in a new namespace.  */
+ extern void *dlmopen (Lmid_t __nsid, const char *__file, int __mode) __THROW;
+Index: Makerules
+===================================================================
+--- a/Makerules	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/Makerules	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -935,9 +935,9 @@
+ 	 echo '   Use the shared library, but some functions are only in';\
+ 	 echo '   the static library, so try that secondarily.  */';\
+ 	 cat $<; \
+-	 echo 'GROUP ( $(slibdir)/libc.so$(libc.so-version)' \
+-	      '$(libdir)/$(patsubst %,$(libtype.oS),$(libprefix)$(libc-name))'\
+-	      ' AS_NEEDED (' $(slibdir)/$(rtld-installed-name) ') )' \
++	echo 'GROUP ( $(inst_slibdir)/libc.so$(libc.so-version)' \
++		'$(inst_libdir)/$(patsubst %,$(libtype.oS),$(libprefix)$(libc-name))'\
++		' AS_NEEDED (' $(inst_slibdir)/$(rtld-installed-name) ') )' \
+ 	) > $@.new
+ 	mv -f $@.new $@
+ 
+Index: csu/bg-magic-launcher.c
+===================================================================
+--- a/csu/bg-magic-launcher.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 0)
++++ b/csu/bg-magic-launcher.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -0,0 +1,139 @@
++/*
++# =============================================================== #
++#                                                                 #
++# Licensed Materials - Property of IBM                            #
++# Blue Gene/Q                                                     #
++#                                                                 #
++# (C) Copyright IBM Corp. 2012 All Rights Reserved                #
++#                                                                 #
++# US Government Users Restricted Rights - Use, duplication        #
++# or disclosure restricted by GSA ADP Schedule                    #
++# Contract with IBM Corp.                                         #
++#                                                                 #
++# This software is available to you under                         #
++# GNU General Public License (GPL) version 2                      #
++# =============================================================== #
++*/
++static char COPYRIGHT[] = " Licensed Materials - Property of IBM, Blue Gene Q  COPYRIGHT 2012. All Rights Reserved. US Government Users restricted Rights - Use, Duplication or Disclosure restricted by GSA ADP Schedule Contract with IBM Corp.";
++
++/* This is a pseudo loader for running BGQ applications ppc64
++ * Linux machines.  When a BGQ application is invoked on Linux, code
++ * in its _start stub recognizes we are being run on Linux and exec's
++ * magic-bg-launcher.so from the BGQ toolchain.
++ *
++ * /bgsys/drivers/ppcfloor/gnu-linux/bin/bg-magic-launcher.so
++ *
++ * The user must have the environment variable set to this path:
++ *
++ * BG_PGM_LAUNCHER
++ *
++ * In addition, the following runjob environment variables must
++ * be set:
++ * 
++ *   RUNJOB_BLOCK:  The block to run on
++ *   RUNJOB_CORNER: The node to run on (unless the full block is used)
++ *   RUNJOB_SHAPE:  The shape if needed
++ *   RUNJOB_CWD:    The cwd to run from
++ *   RUNJOB_ENVS
++ *   RUNJOB_ENV_ALL:
++ *   RUNJOB_ENV_EXP: The user must have the appropriate setting for 
++ *   		     the environment variables for the program.
++ *
++ *   The runjob environment variables are documented in the man pages for
++ *   runjob.  Refer to that documentation for their description.
++ *
++ * The launcher code will be responsible for launching the program
++ * via runjob, passing in the executable and any command line arguments
++ * present.  The user will have to handle all the arguments listed 
++ * above in order for the program to run.
++ */
++
++#include <unistd.h>
++#include <sys/types.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <errno.h>
++
++#if 0
++#define DEBUG
++#endif
++
++#define MAX_RUNJOB_ARG 1024
++int runjob_argc = 0;
++char *runjob_argv[MAX_RUNJOB_ARG];
++
++void append_argv(char *arg)
++{
++#ifdef DEBUG
++printf("append_arg():\n");
++printf("    submit_argc = %d\n", runjob_argc);
++printf("    arg     = %s\n", arg);
++#endif /* DEBUG */
++    if (runjob_argc < MAX_RUNJOB_ARG - 1) {
++        runjob_argv[runjob_argc] = malloc(strlen(arg) + 1);
++        strcpy(runjob_argv[runjob_argc], arg);
++        runjob_argv[++runjob_argc] = NULL;
++    }
++}
++
++int ok_var(char *env);
++
++int main(int argc, char *argv[], char *envp[])
++{
++    int i;
++    char *argp;
++    const char* delim = " ";
++    char *result;
++
++    append_argv("/bgsys/drivers/ppcfloor/bin/runjob");
++    append_argv(":");
++
++#if 0
++    /* Don't add the env variables yet. */
++    for(i=0; envp && envp[i] ;i++) {
++        if (ok_var(envp[i])) {
++            append_argv("--env");
++	    append_argv(envp[i]);
++        }
++    }
++#endif
++
++    for(i=0; i < argc ;i++) {
++	append_argv(argv[i]);
++    }
++
++    fflush(stdout);
++#if 0
++    printf(" ### Before execve in the magic ###\n");
++    for (i=0; i<argc; i++) {
++      printf(" %s ", runjob_argv[i+2]);
++    }
++    printf(" # \n");
++#endif
++
++    execve(runjob_argv[0], (void *)&runjob_argv, envp);
++    perror(" ### Something went wrong ###\n");
++    printf(" # Failure when trying to run: %s %s", runjob_argv[0], runjob_argv[1]);
++    for (i=0; i<argc; i++) {
++      printf(" %s ", runjob_argv[i+2]);
++    }
++    printf(" # \n");
++    exit(-1);
++}
++
++#if 0
++int ok_var(char *env)
++{
++    int i;
++    char *ptr = strchr(env, '=');
++    if (!ptr)
++        return 0;
++
++    for(i=0; badvars[i] ;i++)
++        if (!strncmp(env, badvars[i], ptr-env))
++            return 0;
++    return 1;
++}
++#endif
++
+Index: csu/Versions
+===================================================================
+--- a/csu/Versions	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/csu/Versions	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -3,7 +3,9 @@
+ libc {
+   GLIBC_2.0 {
+     # helper functions
+-    __libc_init_first; __libc_start_main;
++    __libc_init_first; __libc_start_main; __libc_no_magic_start_main;
++    __bg_cpu_count;
++    __process_count;
+   }
+   GLIBC_2.1 {
+     # New special glibc functions.
+Index: csu/bgq-note.S
+===================================================================
+--- a/csu/bgq-note.S	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 0)
++++ b/csu/bgq-note.S	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -0,0 +1,38 @@
++/* Define an ELF note identifying the operating-system version that the
++   executable was created for.  The ELF note information identifies the
++   release and the date the toolchain was built.
++
++   The general format of ELF notes is as follows.
++   Offsets and lengths are bytes or (parenthetical references) to the
++   values in other fields.
++
++offset length  contents
++0      4       length of name
++4      4       length of data
++8      4       note type
++12     (0)     vendor name
++               - null-terminated ASCII string, padded to 4-byte alignment
++12+(0) (4)     note data,
++
++#include <config.h>
++
++/* The linker (GNU ld 2.8 and later) recognizes an allocated section whose
++   name begins with `.note' and creates a PT_NOTE program header entry
++   pointing at it. */
++
++/* For initial integration, a dummy release value and a hardcoded
++   date has been added here.  When code is intergrated into the driver
++   which introduces compatibility issues, the correct release information
++   will be set, along with the build date, automatically generated. */
++
++       .section ".note.BGQ-tag", "a"
++       .p2align 2
++       .long 1f - 0f           /* name length */
++       .long 3f - 2f           /* data length */
++       .long  16               /* note type */
++0:     .asciz "BGQ"            /* vendor name */
++1:     .p2align 2
++2:     .asciz "V1R2M1\0"       /* VXRXMX: the BGQ version */
++       .asciz __BLD_DATE       /* YYMMDD */
++3:     .p2align 2              /* pad out section */
++
+Index: csu/Makefile
+===================================================================
+--- a/csu/Makefile	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/csu/Makefile	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -23,20 +23,21 @@
+ # to make the .init and .fini sections work right.
+ 
+ subdir := csu
+-
++blddate := $(shell date +%y%m%d)
+ routines = init-first libc-start $(libc-init) sysdep version check_fds \
+ 	   libc-tls elf-init dso_handle
+ aux	 = errno
+ elide-routines.os = libc-tls
+ static-only-routines = elf-init
+ csu-dummies = $(filter-out $(start-installed-name),crt1.o Mcrt1.o)
+-extra-objs = start.o gmon-start.o \
++extra-objs = start.o gmon-start.o bg-magic-launcher.o bg-magic-launcher.so \
+ 	     $(start-installed-name) g$(start-installed-name) $(csu-dummies) \
+ 	     S$(start-installed-name)
+ omit-deps = $(patsubst %.o,%,$(start-installed-name) g$(start-installed-name) \
+ 			     b$(start-installed-name) $(csu-dummies) \
+ 			     S$(start-installed-name))
+-install-lib = $(start-installed-name) g$(start-installed-name) $(csu-dummies)
++install-lib = $(start-installed-name) g$(start-installed-name) $(csu-dummies) \
++		bg-magic-launcher.so
+ generated = version-info.h
+ before-compile = $(objpfx)version-info.h
+ 
+@@ -66,9 +67,9 @@
+ install-lib += $(static-start-installed-name) g$(static-start-installed-name)
+ endif
+ 
+-before-compile += $(objpfx)abi-tag.h
+-generated += abi-tag.h
+-
++before-compile += $(objpfx)abi-tag.h $(objpfx)bgq-note-date.h
++generated += abi-tag.h bgq-note-date.h
++NATIVE_CC = /usr/bin/gcc
+ # These are the special initializer/finalizer files.  They are always the
+ # first and last file in the link.  crti.o ... crtn.o define the global
+ # "functions" _init and _fini to run the .init and .fini sections.
+@@ -77,8 +78,8 @@
+ install-lib += $(crtstuff:=.o)
+ extra-objs += $(crtstuff:=.o)
+ 
+-extra-objs += abi-note.o init.o
+-asm-CPPFLAGS += -I$(objpfx).
++extra-objs += bgq-note.o abi-note.o init.o bg-magic-launcher.o
++asm-CPPFLAGS += -I$(objpfx). -D__BLD_DATE="\"$(blddate)"\"
+ 
+ include ../Rules
+ 
+@@ -93,16 +94,23 @@
+ # We link the ELF startfile along with a SHT_NOTE section indicating
+ # the kernel ABI the binaries linked with this library will require.
+ $(objpfx)$(start-installed-name): $(objpfx)start.o $(objpfx)abi-note.o \
+-				  $(objpfx)init.o
++				  $(objpfx)init.o $(objpfx)bgq-note.o
+ 	$(link-relocatable)
+ $(objpfx)S$(start-installed-name): $(objpfx)start.os $(objpfx)abi-note.o \
+-				  $(objpfx)init.o
++				  $(objpfx)init.o $(objpfx)bgq-note.o
+ 	$(link-relocatable)
+ $(objpfx)b$(start-installed-name): $(objpfx)start.ob $(objpfx)abi-note.ob \
+-				  $(objpfx)init.ob
++				  $(objpfx)init.ob $(objpfx)bgq-note.o
+ 	$(link-relocatable)
+ endif
++$(objpfx)bg-magic-launcher.o: bg-magic-launcher.c
++				$(NATIVE_CC) -o $@ -c $^
+ 
++$(objpfx)bg-magic-launcher.so: $(objpfx)bg-magic-launcher.o
++				$(NATIVE_CC) -o $@ \
++				$(objpfx)bg-magic-launcher.o
++
++
+ # The profiling startfile is made by linking together the normal
+ # startfile with gmon-start.o, which defines a constructor function
+ # to turn on profiling code at startup.
+Index: gmon/gmon.c
+===================================================================
+--- a/gmon/gmon.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/gmon/gmon.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -30,6 +30,7 @@
+ #include <sys/time.h>
+ #include <sys/gmon.h>
+ #include <sys/gmon_out.h>
++#include <sys/utsname.h>
+ #include <sys/uio.h>
+ 
+ #include <errno.h>
+@@ -51,7 +52,7 @@
+ struct __bb *__bb_head attribute_hidden;
+ 
+ struct gmonparam _gmonparam attribute_hidden = { GMON_PROF_OFF };
+-
++static int gmon_traditional = 1;
+ /*
+  * See profil(2) where this is described:
+  */
+@@ -59,13 +60,143 @@
+ #define		SCALE_1_TO_1	0x10000L
+ 
+ #define ERR(s) write_not_cancel (STDERR_FILENO, s, sizeof (s) - 1)
++#define PRINT(s) write_not_cancel (STDOUT_FILENO, s, sizeof (s) - 1)
++#define PRINTBUF(s) write_not_cancel (STDOUT_FILENO, s, strlen(s))
++#define CNK_SYSCALL_GETRANK 1076
+ 
++#define MAX_HWTHD 68
++#define MAX_HWTHD_SAMPLES 500000
++#define HWTHD_SAMPLE_END (void*)-1
++
++//#define GMON_DEBUG 1
++//#define GMON_DEBUG_HWTHD 1
++
+ void moncontrol (int mode);
+ void __moncontrol (int mode);
+ static void write_hist (int fd) internal_function;
+ static void write_call_graph (int fd) internal_function;
+ static void write_bb_counts (int fd) internal_function;
++static void write_pc_sample_data(int fd) internal_function;
++static int start_all_timers;
++extern void __thdprofil(int start);
++static void** hwthd_samples[MAX_HWTHD];
++static int hwthd_sample_index[MAX_HWTHD];
++static char hwthd_state[MAX_HWTHD];
++static int max_samples_per_hwthd = MAX_HWTHD_SAMPLES;
++extern void __bgprofil(void *p, int *s, int sz);
+ 
++static int current_rank = -1;
++static int first_output_rank = -1;
++static int last_output_rank = -1;
++static int skip_rank = -1;
++
++/* Only a subset of gmon.out files will be written out.  By default ranks 0-31 will be generated.  If the user wants more they have to set
++   an environment variable indicating which ones.
++   BG_GMON_RANK_SUBSET = 0:16:16 */
++
++static void determine_rank_subset() {
++  int i, len;
++  char ch, rbuf[1000];
++  char *rbufptr;
++  char cur_rank[8];
++  int cur_rank_index;
++#if defined(GMON_DEBUG)
++  char buf[64];
++#endif
++
++
++  rbufptr = getenv("BG_GMON_RANK_SUBSET");
++
++  if (rbufptr == NULL) {
++    first_output_rank = 0;
++    last_output_rank = 31;
++    skip_rank = 1;
++    return;
++  }
++
++  strcpy(rbuf, rbufptr);
++
++  len = strlen(rbuf);
++  cur_rank_index = 0;
++
++ i = 0;
++  while (i < len) {
++    ch = rbuf[i];
++    switch (ch) {
++      case ':':
++        if (first_output_rank == -1) {
++          cur_rank[cur_rank_index] = '\0';
++          first_output_rank = atoi(cur_rank);
++          cur_rank_index = 0;
++        }
++        else {
++          if (last_output_rank == -1) {
++            cur_rank[cur_rank_index] = '\0';
++            last_output_rank = atoi(cur_rank);
++            cur_rank_index = 0;
++           }
++        }
++        break;
++      case '0':
++      case '1':
++      case '2':
++      case '3':
++      case '4':
++      case '5':
++      case '6':
++      case '7':
++      case '8':
++      case '9':
++        cur_rank[cur_rank_index++] = rbuf[i];
++        break;
++      case ' ':
++        /* Just skip any blanks */
++        break;
++      case '\0':
++        break;
++      default :
++        break;
++    }
++    i++;
++  }
++
++  if (cur_rank_index > 0) {
++    cur_rank[cur_rank_index] = '\0';
++    if (first_output_rank == -1) {
++
++      /* If only a single rank was specified, assume only one gmon.out file is to be written out. */
++
++      first_output_rank = atoi(cur_rank);
++      last_output_rank = first_output_rank;
++    }
++    else if (last_output_rank == -1) {
++      last_output_rank = atoi(cur_rank);
++    }
++    else {
++      skip_rank = atoi(cur_rank);
++    }
++  }
++  if (first_output_rank == -1) {
++     first_output_rank = 0;
++  }
++  if (last_output_rank == -1) {
++     last_output_rank = 31;
++  }            
++                                     
++  if (skip_rank == -1) {
++      skip_rank = 1;
++  }
++#if defined(GMON_DEBUG)
++  memset(buf, 64, ' ');
++  len = sprintf (buf, " ###   First rank: %d last rank: %d skip: %d ###\n", first_output_rank, last_output_rank, skip_rank);
++  buf[len] = '\0';
++  PRINTBUF(buf);
++#endif
++
++}
++
++
++
+ /*
+  * Control profiling
+  *	profiling is what mcount checks to see if
+@@ -75,28 +206,132 @@
+ __moncontrol (mode)
+      int mode;
+ {
++  int len;
++  char buf[64];
+   struct gmonparam *p = &_gmonparam;
+ 
+   /* Don't change the state if we ran into an error.  */
+-  if (p->state == GMON_PROF_ERROR)
++  int hwthd = bgq_get_hwthd();
++  if (hwthd_state[hwthd] == GMON_PROF_ERROR)
+     return;
+ 
+   if (mode)
+     {
++        if (hwthd_state[hwthd] == GMON_PROF_OFF) {
++         if (hwthd == p->main_hwthd) {
++
++/* The call to __profil will start the timer on the main thread and set up the handler.  The call to __bgprofil will set
++ * up the buffers for use when profiling threads. */
++
++           __profil((void*) p->kcount, p->kcountsize, p->lowpc, s_scale);
++            __bgprofil((void ***) hwthd_samples, hwthd_sample_index, max_samples_per_hwthd);
++          }
++          else {
++            __thdprofil(1);
++          }
++         hwthd_state[hwthd] = GMON_PROF_ON;
++        }
++    }
++  else
++    {
++        if (hwthd_state[hwthd] == GMON_PROF_ON) {
++         if (hwthd == p->main_hwthd) {
++           __profil(NULL, 0, 0, 0);
++          }
++          else {
++            __thdprofil(0);
++          }
++         hwthd_state[hwthd] = GMON_PROF_OFF;
++       }
++    }
++}
++weak_alias (__moncontrol, moncontrol)
++
++void
++__monthdcontrol (int mode)
++{
++  struct gmonparam *p = &_gmonparam;
++#if defined(GMON_DEBUG)
++  char buf[64];
++  int len;
++#endif
++
++  int hwthd = bgq_get_hwthd();
++  /* Don't change the state if we ran into an error.  */
++  if (hwthd_state[hwthd] == GMON_PROF_ERROR)
++    return;
++
++  if (mode)
++    {
+       /* start */
+-      __profil((void *) p->kcount, p->kcountsize, p->lowpc, s_scale);
+-      p->state = GMON_PROF_ON;
++
++      /* Determine the current hw thread id.  The first time we use this hw thread, allocate the sample buffer.  The
++         first entry in the buffer will be the pthread_self id, set from the pthread_create code.  */
++
++      if (hwthd_samples[hwthd] == NULL) {
++#if defined(GMON_DEBUG)
++        len = sprintf (buf, " ###   Creating buffer for hwthd: %d size: %d ###\n", hwthd, max_samples_per_hwthd*8);
++        buf[len] = '\0';
++        PRINTBUF(buf);
++#endif
++
++        hwthd_samples[hwthd] = calloc(max_samples_per_hwthd*8, 1);
++       hwthd_sample_index[hwthd] = 0;
++       __thdprofil(1);
++       hwthd_state[hwthd] = GMON_PROF_ON;
++      }
++      else {
++       if (hwthd_sample_index[hwthd] + 2 < max_samples_per_hwthd) {
++
++         /* Idenitfy the pthread sample data on this hw thread.  The first entry will be the pthread_self id and the last 
++           * will be a special entry. */
++
++          hwthd_samples[hwthd][hwthd_sample_index[hwthd]++] = HWTHD_SAMPLE_END;
++          __thdprofil(1);
++          hwthd_state[hwthd] = GMON_PROF_ON;
++
++        }
++       else {
++
++       /* Can't start the timer on this thread because there is no space to save the profile data. */
++
++         __thdprofil(0);
++         hwthd_state[hwthd] = GMON_PROF_OFF;
++       }
++      }
+     }
+   else
+     {
+       /* stop */
+-      __profil(NULL, 0, 0, 0);
+-      p->state = GMON_PROF_OFF;
++      __thdprofil(0);
++      hwthd_state[hwthd] = GMON_PROF_OFF;
+     }
+ }
+-weak_alias (__moncontrol, moncontrol)
++void
++gmon_thread_timer(int start) {
++  __monthdcontrol(start);
++}
+ 
++void gmon_start_all_thread_timers() {
++  start_all_timers = 1;
++}
+ 
++/* This is called when the timer is started on a new thread, to identify the pthread id for the sample data. */
++
++void gmon_set_pthread_id(int id) {
++
++  int hwthd = bgq_get_hwthd();
++  /* I know this is not the main thread.... */
++  if((hwthd_samples[hwthd] != NULL) && (hwthd_sample_index[hwthd]+2 < max_samples_per_hwthd)) {
++    hwthd_samples[hwthd][hwthd_sample_index[hwthd]++] = (void*)id;
++  }
++}
++  
++int gmon_should_start_all_thread_timers() {
++  return start_all_timers;
++}
++
++
+ void
+ __monstartup (lowpc, highpc)
+      u_long lowpc;
+@@ -105,7 +340,48 @@
+   register int o;
+   char *cp;
+   struct gmonparam *p = &_gmonparam;
++  int n,i;
++  char *ep, *stt;
+ 
++#if defined(GMON_DEBUG)
++  int len;
++  char buf[64];
++#endif
++
++  start_all_timers = 0;
++
++  ep = getenv("BG_GMON_MAX_THREAD_SAMPLES");
++  if (ep != NULL) {
++    int bad = 0;
++    for (i=0; i<strlen(ep); i++) {
++      if ((ep[i] < '0') || (ep[i] > '9')) {
++        bad = 1;
++        break;
++      }
++      i++;
++    }
++    if (!bad) {
++      max_samples_per_hwthd = atoi(ep);
++    }
++  }
++  p->main_hwthd = bgq_get_hwthd(); 
++  p->mcount_hwthd = -1;
++  hwthd_samples[p->main_hwthd] = calloc(MAX_HWTHD_SAMPLES, 8);
++  hwthd_sample_index[p->main_hwthd] = 0;
++
++ /* If the user has set this env variable to automatically start all timers, then set the flag to indicate that. */
++
++  stt = getenv("BG_GMON_START_THREAD_TIMERS");
++  if (stt != NULL) {
++    if ((strcmp(stt, "ALL") == 0) || (strcmp(stt, "all") == 0)) {
++      start_all_timers = START_TIMER_ON_USER_AND_COMM_THREADS;
++    }
++    else if ((strcmp(stt, "NOCOMM") == 0) || (strcmp(stt, "nocomm") == 0)) {
++      start_all_timers = START_TIMER_ON_USER_THREADS;
++    }
++  }
++
++
+   /*
+    * round lowpc and highpc to multiples of the density we're using
+    * so the rest of the scaling (here and in gprof) stays in ints.
+@@ -130,6 +406,8 @@
+   else if (p->tolimit > MAXARCS)
+     p->tolimit = MAXARCS;
+   p->tossize = p->tolimit * sizeof(struct tostruct);
++// The profiling data from threads will be converted to this space
++//
+ 
+   cp = calloc (p->kcountsize + p->fromssize + p->tossize, 1);
+   if (! cp)
+@@ -139,12 +417,24 @@
+       p->state = GMON_PROF_ERROR;
+       return;
+     }
++#if defined(GMON_DEBUG)
++  len = sprintf (buf, " ###   Allocated: from %d bytes to %d bytes p->tos: %p p->froms: %p log: %0x016lx ###\n", p->fromssize, p->tossize, p->tos, p->froms, p->log_hashfraction);
++  buf[len] = '\0';
++  PRINTBUF(buf);
++#endif
++
+   p->tos = (struct tostruct *)cp;
+   cp += p->tossize;
+   p->kcount = (HISTCOUNTER *)cp;
+   cp += p->kcountsize;
+   p->froms = (ARCINDEX *)cp;
++#if defined(GMON_DEBUG)
++      len = sprintf (buf, " ###   Allocated: %d bytes p->tos: %p p->froms: %p ###\n", p->fromssize + p->tossize, p->tos, p->froms);
++      buf[len] = '\0';
++      PRINTBUF(buf);
++#endif
+ 
++
+   p->tos[0].link = 0;
+ 
+   o = p->highpc - p->lowpc;
+@@ -167,18 +457,101 @@
+ #endif
+     } else
+       s_scale = SCALE_1_TO_1;
+-
++  hwthd_state[p->main_hwthd] = GMON_PROF_OFF;
+   __moncontrol(1);
+ }
+ weak_alias (__monstartup, monstartup)
++/*
++ *  * Disable profiling so a gmon.out file is not created.
++ *   */
++void
++__mondisable (void)
++{
++  _gmonparam.state = GMON_PROF_ERROR;
++}
++weak_alias (__mondisable, mondisable)
+ 
++static void internal_function
++convert_sample_data()
++{
++  int i,j;
++  char *cp;
++  u_short *samples;
++  void *pc;
++#if defined(GMON_DEBUG_HWTHD)
++  int len;
++  char buf[64];
++#endif
++  struct gmonparam *p = &_gmonparam;
+ 
++  samples = (u_short*)p->kcount;
++
++  for (i=0; i<MAX_HWTHD; i++) {
++    if ((i != p->main_hwthd) && (hwthd_samples[i] != NULL)) {
++
++      /* Start at 1; the first entry is the pthread_id. */
++
++#if defined(GMON_DEBUG_HWTHD)
++      memset(buf, 64, ' ');
++      len = sprintf (buf, " ###   Starting to process %d samples for hwthd: %d hiaddr: %08lx ###\n", hwthd_sample_index[i], i, p->kcountsize);
++      buf[len] = '\0';
++      PRINTBUF(buf);
++#endif
++      j = 1;
++      while (j < hwthd_sample_index[i]) {
++         pc = hwthd_samples[i][j];
++
++#if defined(GMON_DEBUG_HWTHD)
++         memset(buf, 64, ' ');
++         len = sprintf (buf, " ###    sample %d for hwthd: %d pc: %016lx ###\n", j, i, pc);
++          buf[len] = '\0';
++         PRINTBUF(buf);
++#endif
++          /* If the pc value is -1 then that is the last entry for the pthread_id on this hwthd.  The next entry
++             is a new pthread_id and then more sample data. */
++
++         if (pc == HWTHD_SAMPLE_END) {
++           j += 2;
++         }
++          else {
++            size_t k = (pc - p->lowpc - (void *) 0) / 2;
++
++            if (sizeof (unsigned long long int) > sizeof (size_t))
++              k = (unsigned long long int) k * s_scale / 65536;
++            else
++              k = k / 65536 * s_scale + k % 65536 * s_scale / 65536;
++
++#if defined(GMON_DEBUG_HWTHD)
++            memset(buf, 64, ' ');
++            len = sprintf (buf, " ###   slot: %d ###\n", k);
++            buf[len] = '\0';
++            PRINT(buf);
++#endif
++            if (k < p->kcountsize)
++              ++samples[k];
++           j++;
++         }
++      }
++    }
++  }
++}  
++
++
++
++    
++
++
+ static void
+ internal_function
+ write_hist (fd)
+      int fd;
+ {
+   u_char tag = GMON_TAG_TIME_HIST;
++  u_int write_bytes;
++  u_int total_bytes;
++  char *write_ptr;
++/* Posix rules -- max amount written is 1MB */
++  u_int max_write_size = 1024*1024;
+ 
+   if (_gmonparam.kcountsize > 0)
+     {
+@@ -191,12 +564,11 @@
+ 	char dimen[15];
+ 	char dimen_abbrev;
+       } thdr;
+-      struct iovec iov[3] =
++      struct iovec iov[2] =
+ 	{
+ 	  { &tag, sizeof (tag) },
+-	  { &thdr, sizeof (struct gmon_hist_hdr) },
+-	  { _gmonparam.kcount, _gmonparam.kcountsize }
+-	};
++	  { &thdr, sizeof (struct gmon_hist_hdr) }
++        };
+ 
+       if (sizeof (thdr) != sizeof (struct gmon_hist_hdr)
+ 	  || (offsetof (struct real_gmon_hist_hdr, low_pc)
+@@ -215,12 +587,31 @@
+ 
+       thdr.low_pc = (char *) _gmonparam.lowpc;
+       thdr.high_pc = (char *) _gmonparam.highpc;
+-      thdr.hist_size = _gmonparam.kcountsize / sizeof (HISTCOUNTER);
++      thdr.hist_size = _gmonparam.kcountsize / sizeof (HISTCOUNTER); // This value is in bytes
+       thdr.prof_rate = __profile_frequency ();
+       strncpy (thdr.dimen, "seconds", sizeof (thdr.dimen));
+       thdr.dimen_abbrev = 's';
+ 
+-      writev_not_cancel_no_status (fd, iov, 3);
++      writev_not_cancel_no_status (fd, iov, 2);
++      writev_not_cancel_no_status (fd, iov, 2);
++
++      total_bytes = thdr.hist_size;
++      write_bytes = _gmonparam.kcountsize;
++      write_ptr = _gmonparam.kcount; // addr of the data to write
++
++      while(write_bytes > 0) {
++       if (write_bytes > max_write_size) {
++               write_not_cancel(fd, write_ptr, max_write_size);
++               write_bytes -= max_write_size;
++               write_ptr += max_write_size;
++       }
++       else {
++               write_not_cancel(fd, write_ptr, write_bytes);
++               write_ptr += write_bytes;
++               write_bytes = 0;
++       }
++      }
++
+     }
+ }
+ 
+@@ -239,6 +630,10 @@
+   u_long frompc;
+   struct iovec iov[2 * NARCS_PER_WRITEV];
+   int nfilled;
++#if defined(GMON_DEBUG)
++  int len;
++  char buf[64];
++#endif
+ 
+   for (nfilled = 0; nfilled < NARCS_PER_WRITEV; ++nfilled)
+     {
+@@ -251,10 +646,29 @@
+ 
+   nfilled = 0;
+   from_len = _gmonparam.fromssize / sizeof (*_gmonparam.froms);
++#if defined(GMON_DEBUG)
++      len = sprintf (buf, " ###   Writing call graph ###\n");
++      buf[len] = '\0';
++      PRINTBUF(buf);
++#endif
+   for (from_index = 0; from_index < from_len; ++from_index)
+     {
+-      if (_gmonparam.froms[from_index] == 0)
++      if (_gmonparam.froms[from_index] == 0) {
++#if 0  // Don't write out the 0 values
++       len = sprintf (buf, " ###   froms[%d] == 0 ###\n", from_index);
++        buf[len] = '\0';
++        PRINTBUF(buf);
++#endif
++
+ 	continue;
++      }
++      else {
++#if defined(GMON_DEBUG)
++        len = sprintf (buf, " ###   froms[%d]: %d ###\n", from_index, _gmonparam.froms[from_index]);
++        buf[len] = '\0';
++        PRINTBUF(buf);
++#endif
++      }
+ 
+       frompc = _gmonparam.lowpc;
+       frompc += (from_index * _gmonparam.hashfraction
+@@ -274,17 +688,33 @@
+ 	  arc.frompc = (char *) frompc;
+ 	  arc.selfpc = (char *) _gmonparam.tos[to_index].selfpc;
+ 	  arc.count  = _gmonparam.tos[to_index].count;
++#if defined(GMON_DEBUG)
++          len = sprintf (buf, " ###   arc.frompc: %p arc.selfpc: %p arc.count: %d nfilled: %d ###\n", arc.frompc, arc.selfpc, arc.count, nfilled);
++          buf[len] = '\0';
++          PRINTBUF(buf);
++#endif
+ 	  memcpy (raw_arc + nfilled, &arc, sizeof (raw_arc [0]));
+ 
+ 	  if (++nfilled == NARCS_PER_WRITEV)
+ 	    {
++#if defined(GMON_DEBUG)
++             len = sprintf (buf, " ###   Writing d: %d call graph bytes ###\n", 2*nfilled);
++             buf[len] = '\0';
++             PRINTBUF(buf);
++#endif
+ 	      writev_not_cancel_no_status (fd, iov, 2 * nfilled);
+ 	      nfilled = 0;
+ 	    }
+ 	}
+     }
+-  if (nfilled > 0)
+-    writev_not_cancel_no_status (fd, iov, 2 * nfilled);
++  if (nfilled > 0) {
++#if defined(GMON_DEBUG)
++      len = sprintf (buf, " ###   Writing d: %d call graph bytes ###\n", 2*nfilled);
++      buf[len] = '\0';
++      PRINTBUF(buf);
++#endif
++      writev_not_cancel_no_status (fd, iov, 2 * nfilled);
++    }
+ }
+ 
+ 
+@@ -341,20 +771,51 @@
+ {
+     int fd = -1;
+     char *env;
++    struct utsname uts;
++    char gmonfile[64];
+ 
+ #ifndef O_NOFOLLOW
+ # define O_NOFOLLOW	0
+ #endif
+-
++    determine_rank_subset();
+     env = getenv ("GMON_OUT_PREFIX");
+-    if (env != NULL && !__libc_enable_secure)
+-      {
+-	size_t len = strlen (env);
+-	char buf[len + 20];
+-	__snprintf (buf, sizeof (buf), "%s.%u", env, __getpid ());
+-	fd = open_not_cancel (buf, O_CREAT|O_TRUNC|O_WRONLY|O_NOFOLLOW, 0666);
+-      }
++    if (env != NULL && !__libc_enable_secure) {
++               size_t len = strlen (env);
++               char buf[len + 20];
++               sprintf (buf, "%s.%u", env, __getpid ());
++               fd = open_not_cancel (buf, O_CREAT|O_TRUNC|O_WRONLY|O_NOFOLLOW, 0666);
++    }
++    else {
++        uname(&uts);
++        if (strcmp(uts.sysname, "Linux") == 0) {
++                strcpy(gmonfile, "gmon.out");
++        }
++        else {
+ 
++              /* Use this syscall to find the node's rank, since getpid is not always unique for all nodes. */
++               current_rank = syscall(CNK_SYSCALL_GETRANK);
++              if (gmon_traditional) {
++                               sprintf(gmonfile, "gmon.out.%u", current_rank);
++              }
++              else {
++                       sprintf(gmonfile, "gmon.sample.%u", current_rank);
++              }
++        }
++
++/* Only a subset of the gmon.out files will be written out, unless the user specifies a larger range.  This is prevent
++ * 1000s of duplicate gmon.out files from being written. */
++
++       if ((current_rank < first_output_rank) || (current_rank > last_output_rank)) {
++         return;
++       }
++       if ((skip_rank > 1) && ((current_rank - first_output_rank)%skip_rank) != 0) {
++         return;
++       }
++                
++       fd = open_not_cancel (gmonfile, O_CREAT|O_TRUNC|O_WRONLY|O_NOFOLLOW, 0666);
++    }
++
++
+     if (fd == -1)
+       {
+ 	fd = open_not_cancel ("gmon.out", O_CREAT|O_TRUNC|O_WRONLY|O_NOFOLLOW,
+@@ -387,8 +848,15 @@
+     memset (ghdr.spare, '\0', sizeof (ghdr.spare));
+     write_not_cancel (fd, &ghdr, sizeof (struct gmon_hdr));
+ 
+-    /* write PC histogram: */
+-    write_hist (fd);
++    if (gmon_traditional) {
++       
++       convert_sample_data();
++       /* write PC histogram: */
++       write_hist (fd);
++    }
++    else {
++       write_pc_sample_data(fd);
++    }
+ 
+     /* write call-graph: */
+     write_call_graph (fd);
+@@ -430,3 +898,34 @@
+   /* free the memory. */
+   free (_gmonparam.tos);
+ }
++void
++write_pc_sample_data(int fd) {
++  u_char tag = GMON_TAG_SAMPLES;
++  int i;
++  struct gmon_sample_hdr thdr __attribute__ ((aligned (__alignof__ (char *))));
++
++  for (i=0; i<MAX_HWTHD; i++) {
++    if ((hwthd_samples[i] != NULL) && (hwthd_sample_index[i] > 0)) {
++      struct iovec iov[3] =
++        {
++          { &tag, sizeof (tag) },
++          { &thdr, sizeof (struct gmon_sample_hdr) },
++          { hwthd_samples[i], hwthd_sample_index[i]*8 }
++        };
++
++      *(char **) thdr.hist_hdr.low_pc = (char *) _gmonparam.lowpc;
++      *(char **) thdr.hist_hdr.high_pc = (char *) _gmonparam.highpc;
++      *(int32_t *) thdr.hist_hdr.hist_size = (_gmonparam.kcountsize
++                                     / sizeof (HISTCOUNTER));
++      *(int32_t *) thdr.hist_hdr.prof_rate = __profile_frequency ();
++      strncpy (thdr.hist_hdr.dimen, "seconds", sizeof (thdr.hist_hdr.dimen));
++      thdr.hist_hdr.dimen_abbrev = 's';
++      thdr.pc_scale = s_scale;
++      thdr.sample_size = hwthd_sample_index[i];
++
++      writev_not_cancel_no_status (fd, iov, 3);
++    }
++  }
++}
++
++
+Index: gmon/prof-freq.c
+===================================================================
+--- a/gmon/prof-freq.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/gmon/prof-freq.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -36,6 +36,10 @@
+ int
+ __profile_frequency (void)
+ {
++
++  char *env;
++  unsigned int freq; 
++#if 0
+   /*
+    * Discover the tick frequency of the machine if something goes wrong,
+    * we return 0, an impossible hertz.
+@@ -51,5 +55,15 @@
+   if (tim.it_interval.tv_usec < 2)
+     return 0;
+   return (1000000 / tim.it_interval.tv_usec);
++#endif
++  /* On BlueGene, we are just going to use 100 as the default. */
++  env = getenv("BG_GMON_PROF_FREQUENCY");
++  if (env != NULL) {
++    freq = atoi(env);
++    if ((freq > 0) && (freq <= 100)) {
++      return freq;
++    }
++  }
++  return 100;
+ }
+ libc_hidden_def (__profile_frequency)
+Index: gmon/mcount.c
+===================================================================
+--- a/gmon/mcount.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/gmon/mcount.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -40,7 +40,7 @@
+ #include <machine-gmon.h>
+ 
+ #include <atomic.h>
+-
++//#define GMON_DEBUG 1
+ /*
+  * mcount is called on entry to each function compiled with the profiling
+  * switch set.  _mcount(), which is declared in a machine-dependent way
+@@ -62,26 +62,45 @@
+ 	register struct tostruct *top, *prevtop;
+ 	register struct gmonparam *p;
+ 	register ARCINDEX toindex;
+-	int i;
++	int i, hwthd;
+ 
+ 	p = &_gmonparam;
++       hwthd = bgq_get_hwthd();
++
+ 	/*
+ 	 * check that we are profiling
+ 	 * and that we aren't recursively invoked.
+ 	 */
++#if 0
++       if (hwthd != p->main_hwthd) {
++#endif
++          while (atomic_compare_and_exchange_bool_acq (&p->mcount_hwthd, hwthd, -1));
++
++/* Be sure that the caller/callee information which is updated by multiple threads is synchronized. */
++       
++       bgq_isync();
++
++//     }
++#if 0
+ 	if (catomic_compare_and_exchange_bool_acq (&p->state, GMON_PROF_BUSY,
+ 						   GMON_PROF_ON))
+ 	  return;
+-
++#endif
+ 	/*
+ 	 * check that frompcindex is a reasonable pc value.
+ 	 * for example:	signal catchers get called from the stack,
+ 	 *		not from text space.  too bad.
+ 	 */
++#if defined(GMON_DEBUG)
++       printf(" ### mcount hwthd: %d mcount_hwthd: %d frompc: %p selfpc: %p textsize: %p ###\n", hwthd, p->mcount_hwthd, frompc, selfpc, p->textsize);
++#endif
+ 	frompc -= p->lowpc;
+-	if (frompc > p->textsize)
++       if (frompc > p->textsize) {
++#if defined(GMON_DEBUG)
++           printf(" ### offset: %p too large ###\n", frompc);
++#endif
+ 		goto done;
+-
++        }
+ 	/* The following test used to be
+ 		if (p->log_hashfraction >= 0)
+ 	   But we can simplify this if we assume the profiling data
+@@ -166,11 +185,31 @@
+ 
+ 	}
+ done:
+-	p->state = GMON_PROF_ON;
+-	return;
++#if 0
++       if (hwthd == p->main_hwthd) {
++          p->state = GMON_PROF_ON;
++          return;
++        }
++#endif
++
++       /* Synchronize the data that was just updated. */
++
++       bgq_lwsync();
++       if (atomic_compare_and_exchange_bool_acq (&p->mcount_hwthd, -1, hwthd)) {
++          p->state = GMON_PROF_ON;
++         return;
++       }
++       /* This should never happen since mcount should be running on this thread. */
++       else {
++         p->state = GMON_PROF_OFF;
++         return;
++        }
+ overflow:
+-	p->state = GMON_PROF_ERROR;
+-	return;
++       bgq_lwsync();
++        if (atomic_compare_and_exchange_bool_acq (&p->mcount_hwthd, -1, hwthd)) {
++          p->state = GMON_PROF_ERROR;
++         return;
++       }
+ }
+ 
+ /*
+Index: gmon/Versions
+===================================================================
+--- a/gmon/Versions	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/gmon/Versions	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -4,13 +4,16 @@
+     _mcount;
+ 
+     # Profiling support
+-    __monstartup; _mcleanup; __profile_frequency;
++    __monstartup; _mcleanup; __profile_frequency; __mondisable;
+ 
+     # m*
+-    monstartup;
++    monstartup; mondisable;
+ 
+     # p*
+     profil; profil_counter;
++    gmon_set_pthread_id; gmon_should_start_all_thread_timers; gmon_thread_timer;
++
++
+   }
+   GLIBC_2.2 {
+     # m*
+Index: gmon/sys/gmon.h
+===================================================================
+--- a/gmon/sys/gmon.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/gmon/sys/gmon.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -35,7 +35,23 @@
+ #include <features.h>
+ 
+ #include <sys/types.h>
++#define bgq_get_hwthd() \
++  ({  int __hwthd; \
++      asm volatile ("mfspr %0,263;": "=&r" (__hwthd) : : "memory" ); \
++      __hwthd & 0x7f;                                              \
++  })
+ 
++/* Synchronization needed for mcount when called on multiple threads. */
++
++#define bgq_lwsync() \
++  ({  asm volatile ("lwsync": : : "memory" ); \
++  })
++
++#define bgq_isync() \
++  ({  asm volatile ("isync": : : "memory" ); \
++  })
++
++
+ /*
+  * See gmon_out.h for gmon.out format.
+  */
+@@ -168,6 +184,8 @@
+ 	u_long		textsize;
+ 	u_long		hashfraction;
+ 	long		log_hashfraction;
++        int             mcount_hwthd;
++        int             main_hwthd;
+ };
+ 
+ /*
+@@ -192,7 +210,28 @@
+ /* Set up data structures and start profiling.  */
+ extern void __monstartup (u_long __lowpc, u_long __highpc) __THROW;
+ extern void monstartup (u_long __lowpc, u_long __highpc) __THROW;
++/* Disable generation of the gmon.out.n file for the current process. */
++extern void mondisable (void);
++/* Start the gmon timer on the current thread.
++ * start=1 --> starts the timer
++ * start=0 --> stops the timer */
+ 
++#define START_TIMER 1
++#define STOP_TIMER 0
++
++#define START_TIMER_ON_USER_THREADS 1
++#define START_TIMER_ON_USER_AND_COMM_THREADS 3
++
++/* Set the pthread id for the current thread. */
++extern void gmon_set_pthread_id(int id);
++
++/* Return 0 (false) or 1 (true) if all thread timers should be started at pthread_create time. */
++extern int gmon_should_start_all_thread_timers(void);
++
++/* Start or stop the timer on the current thread. */
++extern void gmon_thread_timer(int start);
++
++
+ /* Clean up profiling and write out gmon.out.  */
+ extern void _mcleanup (void) __THROW;
+ 
+Index: gmon/sys/gmon_out.h
+===================================================================
+--- a/gmon/sys/gmon_out.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/gmon/sys/gmon_out.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -54,7 +54,9 @@
+   {
+     GMON_TAG_TIME_HIST = 0,
+     GMON_TAG_CG_ARC = 1,
+-    GMON_TAG_BB_COUNT = 2
++    GMON_TAG_BB_COUNT = 2,
++    GMON_TAG_SAMPLES = 4,
++    GMON_TAG_THREAD_SAMPLES = 8
+   } GMON_Record_Tag;
+ 
+ struct gmon_hist_hdr
+@@ -66,7 +68,16 @@
+     char dimen[15];			/* phys. dim., usually "seconds" */
+     char dimen_abbrev;			/* usually 's' for "seconds" */
+   };
++struct gmon_sample_hdr
++  {
++    struct gmon_hist_hdr hist_hdr;     /* hist information */
++    int sample_size;              /* size of sample buffer */
++    int pc_scale;              /* scaling factor to map to histogram */
++    int hwthd;                   /* hardware thread */
++    int pthread_id;                    /* pthread id */
++  };
+ 
++
+ struct gmon_cg_arc_record
+   {
+     char from_pc[sizeof (char *)];	/* address within caller's body */
+Index: elf/dl-open.c
+===================================================================
+--- a/elf/dl-open.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/elf/dl-open.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -300,7 +300,21 @@
+   /* Print scope information.  */
+   if (__builtin_expect (GLRO(dl_debug_mask) & DL_DEBUG_SCOPES, 0))
+     _dl_show_scope (new, 0);
++  if (_r_debug_info.raise_next_event) {
++    if (GLRO(dl_debug_mask) & DL_DEBUG_FAST_DISABLED) {
++        if (GLRO(dl_debug_mask) & DL_DEBUG_EVENTS) _dl_debug_printf("\ndebug event: CONSISTENT (disabled) adds: %u deletes: %u\n", _r_debug_info.adds, _r_debug_info.deletes);
++      }
++    else {
++      if (GLRO(dl_debug_mask) & DL_DEBUG_EVENTS) _dl_debug_printf("\ndebug event: CONSISTENT adds: %u deletes: %u\n", _r_debug_info.adds, _r_debug_info.deletes);
++      _dl_debug_fast_state ();
++    }
++    _r_debug_info.raise_next_event = 0;
++  }
++  else {
++    if (GLRO(dl_debug_mask) & DL_DEBUG_EVENTS) _dl_debug_printf("\ndebug event: CONSISTENT (optimized) adds: %u deletes: %u\n", _r_debug_info.adds, _r_debug_info.deletes);
++  }
+ 
++
+   /* Only do lazy relocation if `LD_BIND_NOW' is not set.  */
+   int reloc_mode = mode & __RTLD_AUDIT;
+   if (GLRO(dl_lazy))
+Index: elf/link.h
+===================================================================
+--- a/elf/link.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/elf/link.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -65,7 +65,19 @@
+ 
+ /* This is the instance of that structure used by the dynamic linker.  */
+ extern struct r_debug _r_debug;
++struct r_debug_info
++  {
++    int                raise_next_event;
++    int         adds;
++    int         deletes;
++    int         consistent_events;
++    int                removed_consistent_events;
++  };
+ 
++/* This is the instance of that structure used by the dynamic linker.  */
++extern struct r_debug_info _r_debug_info;
++
++
+ /* This symbol refers to the "dynamic structure" in the `.dynamic' section
+    of whatever module refers to `_DYNAMIC'.  So, to find its own
+    `struct r_debug', a program could do:
+Index: elf/elf.h
+===================================================================
+--- a/elf/elf.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/elf/elf.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -1022,7 +1022,13 @@
+ #define AT_L1D_CACHESHAPE	35
+ #define AT_L2_CACHESHAPE	36
+ #define AT_L3_CACHESHAPE	37
++/* Number of available processors for the current BG partition. */
++#define AT_BG_PRCOUNT          38
+ 
++/* Number of available CPUs for the current BG partition. */
++#define AT_BG_CPUCOUNT         39
++
++
+ /* Note section contents.  Each entry in the note section begins with
+    a header of a fixed form.  */
+ 
+Index: elf/Makefile
+===================================================================
+--- a/elf/Makefile	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/elf/Makefile	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -69,9 +69,16 @@
+ install-others	= $(inst_slibdir)/$(rtld-installed-name)
+ install-bin-script = ldd
+ endif
++ifeq (yes,$(build-static-nss))
++nssobjdir := $(patsubst ../$(subdir),.,$(common-objpfx)nss)
++resolvobjdir := $(patsubst ../$(subdir),.,$(common-objpfx)resolv)
++otherlibs += $(nssobjdir)/libnss_files_pic.a $(resolvobjdir)/libnss_dns_pic.a \
++               $(resolvobjdir)/libresolv.a
++endif
+ 
++
+ others		= sprof sln pldd
+-install-bin	= sprof pldd
++install-bin	= sprof pldd compiledwith.pl
+ others-static   = sln
+ install-rootsbin = sln
+ sln-modules	:= static-stubs
+@@ -383,7 +390,7 @@
+ endif
+ 
+ 
+-common-ldd-rewrite = -e 's%@RTLD@%$(slibdir)/$(rtld-installed-name)%g' \
++common-ldd-rewrite = -e 's%@RTLD@%/lib64/bgq/$(rtld-installed-name)%g' \
+ 		     -e 's%@VERSION@%$(version)%g' \
+ 		     -e 's|@PKGVERSION@|$(PKGVERSION)|g' \
+ 		     -e 's|@REPORT_BUGS_TO@|$(REPORT_BUGS_TO)|g'
+@@ -407,13 +414,20 @@
+ | LC_ALL=C sed -f $(patsubst $(..)/%,/%,$(..)$(ldd-rewrite-script)) > $@.new
+ endef
+ endif
+-
+-$(objpfx)ldd: ldd.bash.in $(common-objpfx)soversions.mk \
+-	      $(common-objpfx)config.make
+-	$(gen-ldd)
++$(objpfx)ldd: ldd.bash.in
++	cp ldd.bash.in $@.new
+ 	chmod 555 $@.new
+ 	mv -f $@.new $@
++$(objpfx)compiledwith.pl:
++	cp compiledwith.pl $@
+ 
++#$(objpfx)ldd: ldd.bgq.in $(common-objpfx)soversions.mk \
++#            $(common-objpfx)config.make
++#      cp ldd.bgq.in $@.new
++#      chmod 555 $@.new
++#      mv -f $@.new $@
++
++
+ $(objpfx)sprof: $(libdl)
+ 
+ $(objpfx)sln: $(sln-modules:%=$(objpfx)%.o)
+@@ -423,8 +437,8 @@
+ $(objpfx)pldd: $(pldd-modules:%=$(objpfx)%.o)
+ 
+ SYSCONF-FLAGS := -D'SYSCONFDIR="$(sysconfdir)"'
+-CFLAGS-ldconfig.c = $(SYSCONF-FLAGS) -D'LIBDIR="$(libdir)"' \
+-		    -D'SLIBDIR="$(slibdir)"' -DIS_IN_ldconfig=1
++CFLAGS-ldconfig.c = $(SYSCONF-FLAGS) -D'LIBDIR="/lib64/bgq"' \
++		-D'SLIBDIR="/lib64/bgq"' -DIS_IN_ldconfig=1
+ CFLAGS-dl-cache.c = $(SYSCONF-FLAGS)
+ CFLAGS-cache.c = $(SYSCONF-FLAGS)
+ CFLAGS-rtld.c = $(SYSCONF-FLAGS)
+Index: elf/rtld.c
+===================================================================
+--- a/elf/rtld.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/elf/rtld.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -46,7 +46,7 @@
+ 
+ /* Avoid PLT use for our local calls at startup.  */
+ extern __typeof (__mempcpy) __mempcpy attribute_hidden;
+-
++#define CNK_SYSCALL_GETRANK 1076
+ /* GCC has mental blocks about _exit.  */
+ extern __typeof (_exit) exit_internal asm ("_exit") attribute_hidden;
+ #define _exit exit_internal
+@@ -1586,6 +1586,26 @@
+   /* We start adding objects.  */
+   r->r_state = RT_ADD;
+   _dl_debug_state ();
++  /* Minimize the number of debug events being issued.  A consistent event is only raised if something
++     happened since the initial event (ADD, DELETE) like an mmap or munmap. */
++
++  if (_r_debug_info.raise_next_event) {
++    if (GLRO(dl_debug_mask) & DL_DEBUG_FAST_DISABLED) {
++        if (GLRO(dl_debug_mask) & DL_DEBUG_EVENTS) _dl_debug_printf("\ndebug event: CONSISTENT (disabled) adds: %u deletes: %u\n", _r_debug_info.adds, _r_debug_info.deletes);
++    _r_debug_info.removed_consistent_events++;
++    }
++    else {
++      _dl_debug_fast_state();
++      if (GLRO(dl_debug_mask) & DL_DEBUG_EVENTS) _dl_debug_printf("\ndebug event: CONSISTENT adds: %u deletes: %u\n", _r_debug_info.adds, _r_debug_info.deletes);
++      _r_debug_info.consistent_events++;
++    }
++    _r_debug_info.raise_next_event = 0;
++  }
++  else {
++      if (GLRO(dl_debug_mask) & DL_DEBUG_EVENTS) _dl_debug_printf("\ndebug event: CONSISTENT (optimized) adds: %u deletes: %u\n", _r_debug_info.adds, _r_debug_info.deletes);
++      _r_debug_info.removed_consistent_events++;
++  }
++
+   LIBC_PROBE (init_start, 2, LM_ID_BASE, r);
+ 
+   /* Auditing checkpoint: we are ready to signal that the initial map
+@@ -2369,6 +2389,8 @@
+ 	DL_DEBUG_BINDINGS | DL_DEBUG_IMPCALLS },
+       { LEN_AND_STR ("versions"), "display version dependencies",
+ 	DL_DEBUG_VERSIONS | DL_DEBUG_IMPCALLS },
++      { LEN_AND_STR ("dbgevents"), "display debug events",
++	DL_DEBUG_EVENTS },
+       { LEN_AND_STR ("scopes"), "display scope information",
+ 	DL_DEBUG_SCOPES },
+       { LEN_AND_STR ("all"), "all previous options combined",
+@@ -2487,7 +2509,7 @@
+   char *envline;
+   enum mode mode = normal;
+   char *debug_output = NULL;
+-
++  char *num_events = NULL;
+   /* This is the default place for profiling data file.  */
+   GLRO(dl_profile_output)
+     = &"/var/tmp\0/var/profile"[INTUSE(__libc_enable_secure) ? 9 : 0];
+@@ -2694,9 +2716,13 @@
+       size_t name_len = strlen (debug_output);
+       char buf[name_len + 12];
+       char *startp;
++      int pid = syscall(CNK_SYSCALL_GETRANK);
++      if (pid < 0) {
++        pid = getpid();
++      }
+ 
+       buf[name_len + 11] = '\0';
+-      startp = _itoa (__getpid (), &buf[name_len + 11], 10, 0);
++      startp = _itoa (pid, &buf[name_len + 11], 10, 0);
+       *--startp = '.';
+       startp = memcpy (startp - name_len, debug_output, name_len);
+ 
+Index: elf/dl-close.c
+===================================================================
+--- a/elf/dl-close.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/elf/dl-close.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -468,6 +468,14 @@
+   /* Notify the debugger we are about to remove some loaded objects.  */
+   struct r_debug *r = _dl_debug_initialize (0, nsid);
+   r->r_state = RT_DELETE;
++
++  _r_debug_info.deletes++;
++
++  /* If we are optimizing debug events, then no event is triggered for the delete case.  If we aren't
++     optimizing debug events then invoke both debug procedures so users get same behavior as always. */
++
++  if (GLRO(dl_debug_mask) & DL_DEBUG_EVENTS) _dl_debug_printf("\ndebug event: DELETE (optimized)\n");
++
+   _dl_debug_state ();
+   LIBC_PROBE (unmap_start, 2, nsid, r);
+ 
+@@ -632,6 +640,7 @@
+ 	     start address and length when we loaded the object and
+ 	     the `munmap' call does the rest.  */
+ 	  DL_UNMAP (imap);
++          _r_debug_info.raise_next_event = 1;
+ 
+ 	  /* Finally, unlink the data structure and free it.  */
+ 	  if (imap->l_prev != NULL)
+@@ -742,6 +751,27 @@
+ 
+   /* Notify the debugger those objects are finalized and gone.  */
+   r->r_state = RT_CONSISTENT;
++  if (_r_debug_info.raise_next_event) {
++    if (GLRO(dl_debug_mask) & DL_DEBUG_FAST_DISABLED) {
++      if (GLRO(dl_debug_mask) & DL_DEBUG_EVENTS) {
++          _dl_debug_printf(" *\ndebug event: CONSISTENT (disabled) adds: %u deletes: %u\n", _r_debug_info.adds, _r_debug_info.deletes);
++        }
++    _r_debug_info.removed_consistent_events++;
++    }
++    else {
++      _dl_debug_fast_state();
++      if (GLRO(dl_debug_mask) & DL_DEBUG_EVENTS) {
++        _dl_debug_printf(" *\ndebug event: CONSISTENT adds: %u deletes: %u\n", _r_debug_info.adds, _r_debug_info.deletes);
++      _r_debug_info.consistent_events++;
++      }
++    }
++    _r_debug_info.raise_next_event = 0;
++  }
++  else {
++    if (GLRO(dl_debug_mask) & DL_DEBUG_EVENTS) _dl_debug_printf("\ndebug event: CONSISTENT (optimized) adds: %u deletes: %u\n", _r_debug_info.adds, _r_debug_info.deletes);
++    _r_debug_info.removed_consistent_events++;
++  }
++
+   _dl_debug_state ();
+   LIBC_PROBE (unmap_complete, 2, nsid, r);
+ 
+Index: elf/dl-environ.c
+===================================================================
+--- a/elf/dl-environ.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/elf/dl-environ.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -42,7 +42,24 @@
+ 
+ 	  break;
+ 	}
++/* For Blue Gene, accept BG_LD_.... variations of the LD env vars.  This will allow
++   users running on the FEN or LN to set flags or paths that are only honored by the
++   BGQ ld.so. */
+ 
++      if (__builtin_expect ((*current)[0] == 'B', 0)
++          && (*current)[1] == 'G' && (*current)[2] == '_'
++          && (*current)[3] == 'L'
++          && (*current)[4] == 'D' && (*current)[5] == '_')
++        {
++          result = &(*current)[6];
++
++          /* Save current position for next visit.  */
++          *position = ++current;
++
++          break;
++        }
++
++
+       ++current;
+     }
+ 
+Index: elf/ldd.bash.in
+===================================================================
+--- a/elf/ldd.bash.in	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/elf/ldd.bash.in	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -1,4 +1,4 @@
+-#! @BASH@
++#! /bin/bash
+ # Copyright (C) 1996-2011, 2012 Free Software Foundation, Inc.
+ # This file is part of the GNU C Library.
+ 
+@@ -24,9 +24,12 @@
+ 
+ # We should be able to find the translation right at the beginning.
+ TEXTDOMAIN=libc
+-TEXTDOMAINDIR=@TEXTDOMAINDIR@
++TEXTDOMAINDIR=/usr/share/locale
+ 
+-RTLDLIST=@RTLD@
++# If we are running this script on a FEN then there are two options for where to find the shared libraries'
++
++RTLDLIST='/lib64/bgq/ld64.so.1 /bgsys/drivers/ppcfloor/gnu-linux/powerpc64-bgq-linux/lib/ld64.so.1'
++
+ warn=
+ bind_now=
+ verbose=
+@@ -34,7 +37,7 @@
+ while test $# -gt 0; do
+   case "$1" in
+   --vers | --versi | --versio | --version)
+-    echo 'ldd @PKGVERSION@@VERSION@'
++    echo 'ldd (GNU libc) 2.17'
+     printf $"Copyright (C) %s Free Software Foundation, Inc.
+ This is free software; see the source for copying conditions.  There is NO
+ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+@@ -155,6 +158,7 @@
+ warning: you do not have execution permission for" "\`$file'" >&2
+     RTLD=
+     ret=1
++    implicit_ldso=1
+     for rtld in ${RTLDLIST}; do
+       if test -x $rtld; then
+ 	verify_out=`${rtld} --verify "$file"`
+@@ -162,6 +166,8 @@
+ 	case $ret in
+ 	[02]) RTLD=${rtld}; break;;
+ 	esac
++      else
++        implicit_ldso=0
+       fi
+     done
+     case $ret in
+@@ -169,11 +175,20 @@
+       # If the program exits with exit code 5, it means the process has been
+       # invoked with __libc_enable_secure.  Fall back to running it through
+       # the dynamic linker.
+-      try_trace "$file"
+-      rc=$?
+-      if [ $rc = 5 ]; then
+-	try_trace "$RTLD" "$file"
+-	rc=$?
++
++      # On BG we are running this script on the FEN to provide information for the cross-compiled
++      # environment.  Don't bother trying to do the try_trace
++      if [ $implicit_ldso = 1 ]; then
++        try_trace "$file"
++        rc=$?
++        if [ $rc = 5 ]; then
++         try_trace "$RTLD" "$file"
++         rc=$?
++       fi
++      else
++       add_env="$add_env LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/bgsys/drivers/ppcfloor/gnu-linux/powerpc64-bgq-linux/lib"
++        try_trace "$RTLD" "$file"
++        rc=$?
+       fi
+       [ $rc = 0 ] || result=1
+       ;;
+Index: elf/dl-load.c
+===================================================================
+--- a/elf/dl-load.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/elf/dl-load.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -1042,6 +1042,15 @@
+ 	 call _dl_debug_initialize in a static program in case dynamic
+ 	 linking has not been used before.  */
+       r->r_state = RT_ADD;
++      _r_debug_info.adds++;
++
++      /* When optimizing debug events, an ADD is not triggered through _dl_debug_fast_state.
++         If not optimizing debug events, then both _dl_debug_state and _dl_debug_fast_state are
++         called to maintain past behavior. */
++
++       _dl_debug_state ();
++      if (GLRO(dl_debug_mask) & DL_DEBUG_EVENTS) _dl_debug_printf("\ndebug event: ADD (optimized)\n");
++
+       _dl_debug_state ();
+       LIBC_PROBE (map_start, 2, nsid, r);
+       make_consistent = true;
+@@ -1294,7 +1303,9 @@
+ 	    errstring = N_("failed to map segment from shared object");
+ 	    goto call_lose_errno;
+ 	  }
++        _r_debug_info.raise_next_event = 1;
+ 
++
+ 	l->l_map_end = l->l_map_start + maplength;
+ 	l->l_addr = l->l_map_start - c->mapstart;
+ 
+@@ -1341,6 +1352,7 @@
+ 			fd, c->mapoff)
+ 		== MAP_FAILED))
+ 	  goto map_error;
++         _r_debug_info.raise_next_event = 1;
+ 
+       postmap:
+ 	if (c->prot & PROT_EXEC)
+@@ -1402,6 +1414,7 @@
+ 		    errstring = N_("cannot map zero-fill pages");
+ 		    goto call_lose_errno;
+ 		  }
++               _r_debug_info.raise_next_event = 1;
+ 	      }
+ 	  }
+ 
+@@ -2150,8 +2163,9 @@
+   /* Will be true if we found a DSO which is of the other ELF class.  */
+   bool found_other_class = false;
+ 
+-  if (strchr (name, '/') == NULL)
+-    {
++  /* On BGQ we will allow programs in the current directory to be found, even if they aren't preceded by './' */
++  if ((strchr (name, '/') == NULL) && (strcmp(name, rtld_progname) != 0))
++{
+       /* Search for NAME in several places.  */
+ 
+       size_t namelen = strlen (name) + 1;
+Index: elf/dl-misc.c
+===================================================================
+--- a/elf/dl-misc.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/elf/dl-misc.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -32,7 +32,7 @@
+ #include <sysdep.h>
+ #include <_itoa.h>
+ #include <bits/libc-lock.h>
+-
++#define CNK_SYSCALL_GETRANK 1076
+ /* Read the whole contents of FILE into new mmap'd space with given
+    protections.  *SIZEP gets the size of the file.  On error MAP_FAILED
+    is returned.  */
+@@ -97,8 +97,10 @@
+ 	  if (pid == 0)
+ 	    {
+ 	      char *p;
+-	      pid = __getpid ();
+-	      assert (pid >= 0 && sizeof (pid_t) <= 4);
++             pid = syscall(CNK_SYSCALL_GETRANK);
++             if (pid < 0) {
++               pid = getpid();
++              }
+ 	      p = _itoa (pid, &pidbuf[10], 10, 0);
+ 	      while (p > pidbuf)
+ 		*--p = ' ';
+Index: elf/dl-addr.c
+===================================================================
+--- a/elf/dl-addr.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/elf/dl-addr.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -118,7 +118,21 @@
+     }
+ }
+ 
++int
++internal_function
++_dl_addr_range(const struct link_map *lm, ElfW(Addr) *addr, int *size)
++{
+ 
++  if (lm != NULL) {
++    *addr = lm->l_addr;
++    *size = lm->l_map_end - lm->l_map_start;
++    return 1;
++  }
++  return 0;
++}
++libc_hidden_def (_dl_addr_range)
++
++
+ int
+ internal_function
+ _dl_addr (const void *address, Dl_info *info,
+Index: elf/compiledwith.pl
+===================================================================
+--- a/elf/compiledwith.pl	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 0)
++++ b/elf/compiledwith.pl	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -0,0 +1,187 @@
++#!/usr/bin/perl -w
++# begin_generated_IBM_copyright_prolog
++#
++# This is an automatically generated copyright prolog.
++# After initializing,  DO NOT MODIFY OR MOVE
++# ================================================================
++#
++# Licensed Materials - Property of IBM
++# Blue Gene/Q
++# (C) Copyright IBM Corp. 2012  All Rights Reserved
++# US Government Users Restricted Rights - Use,
++# duplication or disclosure restricted by GSA ADP
++# Schedule contract with IBM Corp.
++#
++# This software is available to you under the
++# GNU General Public License (GPL).
++#
++# ================================================================
++#
++# end_generated_IBM_copyright_prolog
++use strict 'vars';		# require variables to be declared
++use strict 'subs';		# don't allow bare variables (without $,@,%)
++use strict 'refs';		# don't allow symbolic references
++
++if ($ARGV[0] eq "-h") {
++    print "Usage:  compiledwith.pl file\n";
++    print "\n";
++    print "  This tool provides information on the compilation of an\n";
++    print "  elf file.  It identifies what compiler was used (GNU or XL),\n";
++    print "  the compiler version information and -qsaveopt detail if present.\n";
++    print "  It can be used on a program, relocatable (.o) file, static archive\n";
++    print "  or shared library.  For a program it will indicate if it\n";
++    print "  was linked with the BGQ toolchain and is valid to run on CNK.\n";
++    print "\n";
++    print "  arguments:\n";
++    print "    file:  program, static archive, shared library or relocatable (.o) file\n";
++    exit 0;
++}
++
++my $obj = $ARGV[0];
++my $line;
++my $i;
++my $j;
++my $start;
++my $filetype = "";
++my %gcc = ();
++my %xl = ();
++my %detail = ();
++my $outstring = "";
++my $datestring = "";
++my $done = 0;
++my $xlstr = "";
++my $gccstr = "";
++my $optstr = "";
++my $drvstr = "";
++my $pgm = 0;
++my $buf = "";
++my $founddot = 0;
++my $foundat = 0;
++my @lines;
++my @saveopt;
++my $cmp = "";
++my $cnt = 0;
++
++open(FILETYPE, "file $obj | ") || die "Unable to open $obj\n";
++
++while ($line = <FILETYPE>) {
++  if ($line =~ /.*executable.*dynamic.*/) {
++    $filetype = "Dynamically linked executable";
++    $pgm = 1;
++  }
++  elsif ($line =~ /.*executable.*static.*/) {
++    $filetype = "Statically linked executable";
++    $pgm = 1;
++  }
++  elsif ($line =~ /.*relocatable,.*/) {
++    $filetype = "relocatable";
++  }
++  elsif ($line =~ /.*shared\sobject.*/) {
++    $filetype = "Shared object";
++  }
++  elsif ($line =~ /.*archive.*/) {
++    $filetype = "Static archive";
++  }
++  else {
++    print " ### Unrecognized file type for this tool: $line ###\n";
++  }
++}
++close(FILETYPE);
++
++my $bgqstr = "";
++if ($pgm) {
++  open(NOTES, "/bgsys/drivers/ppcfloor/gnu-linux/bin/powerpc64-bgq-linux-readelf -n $obj | grep BGQ |");
++  if ($line = <NOTES>) {
++	$bgqstr = "built for BGQ and";
++  }
++  else {
++        $bgqstr = "NOT built for BGQ and";
++  }
++  close(NOTES);
++}
++
++print "$filetype $bgqstr compiled with:\n";
++
++#open(COMMENTS, "strings -a $obj | ") || die "Unable to open $obj\n";
++open(COMMENTS, "/bgsys/drivers/ppcfloor/gnu-linux/bin/powerpc64-bgq-linux-objdump -s --section=.comment $obj | grep -v 'file format' | grep -v 'Contents of section' | sed 's/ ..... ........ ........ ........ ........  //' | sed 's/ .... ........ ........ ........ ........  //' |") || die "Unable to open objdump output for $obj\n";
++
++while ($line = <COMMENTS>) {
++	chomp($line);
++ 	$buf = $buf.$line;
++}
++
++$cnt = $buf =~ s/\.IBM XL/~IBM XL/g;
++#print " ### found $cnt cases of IBM XL ###\n";
++$cnt = $buf =~ s/GCC:/~GCC:/g;
++#print " ### found $cnt cases of GCC ###\n";
++
++@lines = split('~', $buf);
++
++foreach my $line(@lines) {
++  if ($line =~ /(GCC:\s.*4\.4\.6).*/) {
++    $gccstr = $1;
++    if (defined($gcc{$gccstr})) {
++      $gcc{$gccstr}++;
++    }
++    else {
++      $gcc{$gccstr} = 1;
++    }
++  }
++  elsif ($line =~ /IBM\sXL/) {
++      @saveopt = split('@', $line);
++      $drvstr = "";
++      $xlstr = $saveopt[0];
++      if ($saveopt[0] =~ /(IBM\sXL.*\d+\.\d+\.\d+\.\d+)/) {
++        $xlstr = $1;
++      }
++      else {
++        $xlstr = $saveopt[0];
++      }
++      shift(@saveopt);
++      foreach my $s(@saveopt) {
++        if ($s =~ /version\sDriver\s.*Level\:(.*)\.\./) {
++          $drvstr = "driver".$1;
++        }
++      }
++      if (defined($xl{$xlstr})) {
++        $xl{$xlstr}->{count}++;
++      }
++      else {
++        $xl{$xlstr} = {
++		detail => { %detail },
++		count => 1
++        };
++      }
++      ${$xl{$xlstr}->{detail}}{$drvstr}++;
++    }
++}
++
++foreach $cmp (sort keys %gcc) {
++	if ($gcc{$cmp} > 1) {
++		print "  $cmp ($gcc{$cmp} files)\n";
++	}
++	else {
++		print "  $cmp ($gcc{$cmp} file)\n";
++	}
++}
++
++foreach $cmp (sort keys %xl) {
++	if ($xl{$cmp}->{count} > 1) {
++		print "  $cmp ($xl{$cmp}->{count} files)\n";
++	}
++	else {
++		print "  $cmp ($xl{$cmp}->{count} file)\n";
++	}
++	foreach my $d (keys %{$xl{$cmp}->{detail}}) {
++		if ($d ne "") {
++			if (${$xl{$cmp}->{detail}}{$d} > 1) {
++ 				print"    $d (${$xl{$cmp}->{detail}}{$d} files)\n";
++			}
++			else {
++                		print"    $d (${$xl{$cmp}->{detail}}{$d} file)\n";
++			}
++		}
++        }
++}
++
++exit 0;
+
+Property changes on: elf/compiledwith.pl
+___________________________________________________________________
+Added: svn:executable
+   + *
+
+Index: elf/ldconfig.c
+===================================================================
+--- a/elf/ldconfig.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/elf/ldconfig.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -50,7 +50,7 @@
+ #endif
+ 
+ #ifndef LD_SO_CONF
+-# define LD_SO_CONF SYSCONFDIR "/ld.so.conf"
++# define LD_SO_CONF SYSCONFDIR "/ld.so.bgq.conf"
+ #endif
+ 
+ /* Get libc version number.  */
+@@ -171,6 +171,9 @@
+ static int
+ is_hwcap_platform (const char *name)
+ {
++#if 0
++/* On BGQ let's avoid searching all the different HW platform options, and only
++ * search bgq subdirectories. */
+   int hwcap_idx = _dl_string_hwcap (name);
+ 
+   if (hwcap_idx != -1 && ((1 << hwcap_idx) & hwcap_mask))
+@@ -184,6 +187,8 @@
+     if (hwcap_extra[hwcap_idx - _DL_FIRST_EXTRA] != NULL
+ 	&& !strcmp (name, hwcap_extra[hwcap_idx - _DL_FIRST_EXTRA]))
+       return 1;
++#endif
++  if (!strcmp(name, "bgq")) return 1;
+ 
+   return 0;
+ }
+@@ -1265,8 +1270,6 @@
+ 	  add_dir (argv[i]);
+     }
+ 
+-  hwcap_extra[63 - _DL_FIRST_EXTRA] = "tls";
+-
+   set_hwcap ();
+ 
+   if (opt_chroot)
+Index: elf/Versions
+===================================================================
+--- a/elf/Versions	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/elf/Versions	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -20,6 +20,7 @@
+   GLIBC_PRIVATE {
+     # functions used in other libraries
+     _dl_addr;
++    _dl_addr_range;
+     _dl_sym; _dl_vsym;
+     _dl_open_hook;
+     __libc_dlopen_mode; __libc_dlsym; __libc_dlclose;
+@@ -46,6 +47,7 @@
+   GLIBC_2.4 {
+     # stack canary
+     __stack_chk_guard;
++    __bg_cpu_count;
+   }
+   GLIBC_PRIVATE {
+     # Those are in the dynamic linker, but used by libc.so.
+@@ -60,6 +62,10 @@
+     _dl_make_stack_executable;
+     # Only here for gdb while a better method is developed.
+     _dl_debug_state;
++    _dl_debug_fast_state;
++    _dl_debug_enable_events;
++    _dl_debug_disable_events;
++    _dl_debug_event_status;
+     # Pointer protection.
+     __pointer_chk_guard;
+   }
+Index: malloc/malloc.c
+===================================================================
+--- a/malloc/malloc.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/malloc/malloc.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -191,14 +191,14 @@
+     MORECORE_CONTIGUOUS        1
+     MORECORE_CANNOT_TRIM       NOT defined
+     MORECORE_CLEARS            1
+-    MMAP_AS_MORECORE_SIZE      (1024 * 1024)
++    MMAP_AS_MORECORE_SIZE      8* (1024 * 1024)
+ 
+     Tuning options that are also dynamically changeable via mallopt:
+ 
+     DEFAULT_MXFAST             64 (for 32bit), 128 (for 64bit)
+-    DEFAULT_TRIM_THRESHOLD     128 * 1024
++    DEFAULT_TRIM_THRESHOLD     1024 * 1024
+     DEFAULT_TOP_PAD            0
+-    DEFAULT_MMAP_THRESHOLD     128 * 1024
++    DEFAULT_MMAP_THRESHOLD     1024 * 1024
+     DEFAULT_MMAP_MAX           65536
+ 
+     There are several other #defined constants and macros that you
+@@ -351,7 +351,8 @@
+ #  define MALLOC_ALIGNMENT       (2 * SIZE_SZ < __alignof__ (long double) \
+ 				  ? __alignof__ (long double) : 2 * SIZE_SZ)
+ # else
+-#  define MALLOC_ALIGNMENT       (2 * SIZE_SZ)
++/* Note: on BGQ this will be 32 bytes for quad double vectors (size_t is 8 bytes) */
++#  define MALLOC_ALIGNMENT       (4 * SIZE_SZ)
+ # endif
+ #endif
+ 
+@@ -485,7 +486,8 @@
+    thus avoid running out of kernel resources.  */
+ 
+ #ifndef MMAP_AS_MORECORE_SIZE
+-#define MMAP_AS_MORECORE_SIZE (1024 * 1024)
++#define MMAP_AS_MORECORE_SIZE (1024 * 1024 * 8)
++unsigned long mmap_as_morecore_size = MMAP_AS_MORECORE_SIZE;
+ #endif
+ 
+ /*
+@@ -635,6 +637,7 @@
+   M_TOP_PAD        -2         0          any
+   M_MMAP_THRESHOLD -3         128*1024   any   (or 0 if no MMAP support)
+   M_MMAP_MAX       -4         65536      any   (0 disables use of mmap)
++  M_MORE_CORE      -10        8*1024*1024  The value must be a multiple of page size.
+ */
+ int      __libc_mallopt(int, int);
+ libc_hidden_proto (__libc_mallopt)
+@@ -862,7 +865,7 @@
+ #define M_TRIM_THRESHOLD       -1
+ 
+ #ifndef DEFAULT_TRIM_THRESHOLD
+-#define DEFAULT_TRIM_THRESHOLD (128 * 1024)
++#define DEFAULT_TRIM_THRESHOLD (1024 * 1024)
+ #endif
+ 
+ /*
+@@ -904,7 +907,8 @@
+ */
+ 
+ #ifndef DEFAULT_MMAP_THRESHOLD_MIN
+-#define DEFAULT_MMAP_THRESHOLD_MIN (128 * 1024)
++/* For now -- match what we did on BGP */
++#define DEFAULT_MMAP_THRESHOLD_MIN (1024 * 1024)
+ #endif
+ 
+ #ifndef DEFAULT_MMAP_THRESHOLD_MAX
+@@ -913,7 +917,7 @@
+      maximum heap size and its alignment.  Going above 512k (i.e., 1M
+      for new heaps) wastes too much address space.  */
+ # if __WORDSIZE == 32
+-#  define DEFAULT_MMAP_THRESHOLD_MAX (512 * 1024)
++#  define DEFAULT_MMAP_THRESHOLD_MAX (4 * 1024 * 1024)
+ # else
+ #  define DEFAULT_MMAP_THRESHOLD_MAX (4 * 1024 * 1024 * sizeof(long))
+ # endif
+@@ -1029,6 +1033,7 @@
+ */
+ 
+ #define M_MMAP_MAX             -4
++#define M_MORE_CORE             -10
+ 
+ #ifndef DEFAULT_MMAP_MAX
+ #define DEFAULT_MMAP_MAX       (65536)
+@@ -1245,7 +1250,7 @@
+ #define aligned_OK(m)  (((unsigned long)(m) & MALLOC_ALIGN_MASK) == 0)
+ 
+ #define misaligned_chunk(p) \
+-  ((uintptr_t)(MALLOC_ALIGNMENT == 2 * SIZE_SZ ? (p) : chunk2mem (p)) \
++  ((uintptr_t)(MALLOC_ALIGNMENT == 4 * SIZE_SZ ? (p) : chunk2mem (p)) \
+    & MALLOC_ALIGN_MASK)
+ 
+ 
+@@ -1480,7 +1485,7 @@
+ 
+ #define NBINS             128
+ #define NSMALLBINS         64
+-#define SMALLBIN_WIDTH    MALLOC_ALIGNMENT
++#define SMALLBIN_WIDTH    16
+ #define SMALLBIN_CORRECTION (MALLOC_ALIGNMENT > 2 * SIZE_SZ)
+ #define MIN_LARGE_SIZE    ((NSMALLBINS - SMALLBIN_CORRECTION) * SMALLBIN_WIDTH)
+ 
+@@ -1983,8 +1988,8 @@
+     assert(p->fd->bk == p);
+     assert(p->bk->fd == p);
+   }
+-  else /* markers are always of size SIZE_SZ */
+-    assert(sz == SIZE_SZ);
++  else /* markers are always of size 2*SIZE_SZ on BGQ */
++    assert(sz == 2*SIZE_SZ);
+ }
+ 
+ /*
+@@ -2265,6 +2270,7 @@
+   unsigned long   remainder_size; /* its size */
+ 
+   unsigned long   sum;            /* for updating stats */
++  char*           mm = 0;         /* Return value from mmap call. */
+ 
+   size_t          pagemask  = GLRO(dl_pagesize) - 1;
+   bool            tried_mmap = false;
+@@ -2280,8 +2286,6 @@
+   if ((unsigned long)(nb) >= (unsigned long)(mp_.mmap_threshold) &&
+       (mp_.n_mmaps < mp_.n_mmaps_max)) {
+ 
+-    char* mm;             /* return value from mmap call*/
+-
+   try_mmap:
+     /*
+       Round up size to nearest page.  For mmapped chunks, the overhead
+@@ -2291,10 +2295,7 @@
+       See the front_misalign handling below, for glibc there is no
+       need for further alignments unless we have have high alignment.
+     */
+-    if (MALLOC_ALIGNMENT == 2 * SIZE_SZ)
+-      size = (nb + SIZE_SZ + pagemask) & ~pagemask;
+-    else
+-      size = (nb + SIZE_SZ + MALLOC_ALIGN_MASK + pagemask) & ~pagemask;
++    size = (nb + SIZE_SZ + MALLOC_ALIGN_MASK + pagemask) & ~pagemask;
+     tried_mmap = true;
+ 
+     /* Don't try if size wraps around 0 */
+@@ -2402,16 +2403,16 @@
+       /* The fencepost takes at least MINSIZE bytes, because it might
+ 	 become the top chunk again later.  Note that a footer is set
+ 	 up, too, although the chunk is marked in use. */
+-      old_size = (old_size - MINSIZE) & ~MALLOC_ALIGN_MASK;
+-      set_head(chunk_at_offset(old_top, old_size + 2*SIZE_SZ), 0|PREV_INUSE);
++      old_size -= 6 * SIZE_SZ;
++      set_head(chunk_at_offset(old_top, old_size + 4*SIZE_SZ), 0|PREV_INUSE);
+       if (old_size >= MINSIZE) {
+-	set_head(chunk_at_offset(old_top, old_size), (2*SIZE_SZ)|PREV_INUSE);
+-	set_foot(chunk_at_offset(old_top, old_size), (2*SIZE_SZ));
++	set_head(chunk_at_offset(old_top, old_size), (4*SIZE_SZ)|PREV_INUSE);
++	set_foot(chunk_at_offset(old_top, old_size), (4*SIZE_SZ));
+ 	set_head(old_top, old_size|PREV_INUSE|NON_MAIN_ARENA);
+ 	_int_free(av, old_top, 1);
+       } else {
+-	set_head(old_top, (old_size + 2*SIZE_SZ)|PREV_INUSE);
+-	set_foot(old_top, (old_size + 2*SIZE_SZ));
++	set_head(old_top, (old_size + 4*SIZE_SZ)|PREV_INUSE);
++	set_foot(old_top, (old_size + 4*SIZE_SZ));
+       }
+     }
+     else if (!tried_mmap)
+@@ -2473,8 +2474,8 @@
+       size = (size + old_size + pagemask) & ~pagemask;
+ 
+     /* If we are relying on mmap as backup, then use larger units */
+-    if ((unsigned long)(size) < (unsigned long)(MMAP_AS_MORECORE_SIZE))
+-      size = MMAP_AS_MORECORE_SIZE;
++    if ((unsigned long)(size) < (unsigned long)(mmap_as_morecore_size))
++      size = mmap_as_morecore_size;
+ 
+     /* Don't try if size wraps around 0 */
+     if ((unsigned long)(size) > (unsigned long)(nb)) {
+@@ -2486,6 +2487,7 @@
+ 	/* We do not need, and cannot use, another sbrk call to find end */
+ 	brk = mbrk;
+ 	snd_brk = brk + size;
++        mm = 0; /* Forget that mmap failed from above. */
+ 
+ 	/*
+ 	   Record that we no longer have a contiguous sbrk region.
+@@ -2601,6 +2603,7 @@
+ 
+       /* handle non-contiguous cases */
+       else {
++        int corr;
+ 	if (MALLOC_ALIGNMENT == 2 * SIZE_SZ)
+ 	  /* MORECORE/mmap must correctly align */
+ 	  assert(((unsigned long)chunk2mem(brk) & MALLOC_ALIGN_MASK) == 0);
+@@ -2616,7 +2619,10 @@
+ 	      is always true after initialization.
+ 	    */
+ 
+-	    aligned_brk += MALLOC_ALIGNMENT - front_misalign;
++            corr = MALLOC_ALIGNMENT - front_misalign;
++            aligned_brk += corr;
++            p = (mchunkptr)(aligned_brk);
++            p->prev_size = corr;
+ 	  }
+ 	}
+ 
+@@ -2657,9 +2663,9 @@
+ 	    lost.
+ 	  */
+ 	  chunk_at_offset(old_top, old_size            )->size =
+-	    (2*SIZE_SZ)|PREV_INUSE;
++	    (4*SIZE_SZ)|PREV_INUSE;
+ 
+-	  chunk_at_offset(old_top, old_size + 2*SIZE_SZ)->size =
++	  chunk_at_offset(old_top, old_size + 4*SIZE_SZ)->size =
+ 	    (2*SIZE_SZ)|PREV_INUSE;
+ 
+ 	  /* If possible, release the rest. */
+@@ -2673,6 +2679,7 @@
+   }
+ 
+   } /* if (av !=  &main_arena) */
++  if (mm != MAP_FAILED) { 
+ 
+   if ((unsigned long)av->system_mem > (unsigned long)(av->max_system_mem))
+     av->max_system_mem = av->system_mem;
+@@ -2685,6 +2692,15 @@
+   /* check that one of the above allocation paths succeeded */
+   if ((unsigned long)(size) >= (unsigned long)(nb + MINSIZE)) {
+     remainder_size = size - nb;
++    correction=0;
++    front_misalign = (INTERNAL_SIZE_T)chunk2mem(p) & MALLOC_ALIGN_MASK;
++    if (front_misalign > 0) {
++       correction = MALLOC_ALIGNMENT - front_misalign;
++       p = ((char *)p)+correction;
++       p->prev_size = correction;
++    }
++    remainder_size = size - (nb+correction);
++
+     remainder = chunk_at_offset(p, nb);
+     av->top = remainder;
+     set_head(p, nb | PREV_INUSE | (av != &main_arena ? NON_MAIN_ARENA : 0));
+@@ -2692,7 +2708,7 @@
+     check_malloced_chunk(av, p, nb);
+     return chunk2mem(p);
+   }
+-
++}
+   /* catch all failure paths */
+   __set_errno (ENOMEM);
+   return 0;
+@@ -2845,7 +2861,7 @@
+ {
+   mstate ar_ptr;
+   void *victim;
+-
++  int use_main_arena = 0;
+   __malloc_ptr_t (*hook) (size_t, const __malloc_ptr_t)
+     = force_reg (__malloc_hook);
+   if (__builtin_expect (hook != NULL, 0))
+@@ -2862,10 +2878,11 @@
+     if (__builtin_expect(ar_ptr != NULL, 1)) {
+       victim = _int_malloc(ar_ptr, bytes);
+       (void)mutex_unlock(&ar_ptr->mutex);
++      use_main_arena = 1;
+     }
+   } else
+     (void)mutex_unlock(&ar_ptr->mutex);
+-  assert(!victim || chunk_is_mmapped(mem2chunk(victim)) ||
++  assert(!victim || use_main_arena || chunk_is_mmapped(mem2chunk(victim)) ||
+ 	 ar_ptr == arena_for_chunk(mem2chunk(victim)));
+   return victim;
+ }
+@@ -2892,6 +2909,7 @@
+   if (chunk_is_mmapped(p))                       /* release mmapped memory. */
+   {
+     /* see if the dynamic brk/mmap threshold needs adjusting */
++#if 0
+     if (!mp_.no_dyn_threshold
+ 	&& p->size > mp_.mmap_threshold
+ 	&& p->size <= DEFAULT_MMAP_THRESHOLD_MAX)
+@@ -2899,6 +2917,7 @@
+ 	mp_.mmap_threshold = chunksize (p);
+ 	mp_.trim_threshold = 2 * mp_.mmap_threshold;
+       }
++#endif
+     munmap_chunk(p);
+     return;
+   }
+@@ -2938,7 +2957,7 @@
+      Therefore we can exclude some size values which might appear
+      here by accident or by "design" from some intruder.  */
+   if (__builtin_expect ((uintptr_t) oldp > (uintptr_t) -oldsize, 0)
+-      || __builtin_expect (misaligned_chunk (oldp), 0))
++      || __builtin_expect (misaligned_chunk (oldmem), 0))
+     {
+       malloc_printerr (check_action, "realloc(): invalid pointer", oldmem);
+       return NULL;
+@@ -3007,7 +3026,7 @@
+ {
+   mstate ar_ptr;
+   void *p;
+-
++  int use_main_arena = 0;
+   __malloc_ptr_t (*hook) __MALLOC_PMT ((size_t, size_t,
+ 					const __malloc_ptr_t)) =
+     force_reg (__memalign_hook);
+@@ -3029,6 +3048,7 @@
+     if (__builtin_expect(ar_ptr != NULL, 1)) {
+       p = _int_memalign(ar_ptr, alignment, bytes);
+       (void)mutex_unlock(&ar_ptr->mutex);
++      use_main_arena = 1;
+     }
+   } else
+     (void)mutex_unlock(&ar_ptr->mutex);
+@@ -3749,7 +3769,7 @@
+      Therefore we can exclude some size values which might appear
+      here by accident or by "design" from some intruder.  */
+   if (__builtin_expect ((uintptr_t) p > (uintptr_t) -size, 0)
+-      || __builtin_expect (misaligned_chunk (p), 0))
++      || __builtin_expect (misaligned_chunk (chunk2mem(p)), 0))
+     {
+       errstr = "free(): invalid pointer";
+     errout:
+@@ -4702,7 +4722,7 @@
+ 
+   case M_MMAP_THRESHOLD:
+     /* Forbid setting the threshold too high. */
+-    if((unsigned long)value > HEAP_MAX_SIZE/2)
++    if((unsigned long)value > HEAP_MAX_SIZE)
+       res = 0;
+     else
+       {
+@@ -4710,6 +4730,9 @@
+ 	mp_.no_dyn_threshold = 1;
+       }
+     break;
++   case M_MORE_CORE:
++      mmap_as_morecore_size = value;
++   break;
+ 
+   case M_MMAP_MAX:
+     mp_.n_mmaps_max = value;
+@@ -5130,18 +5153,18 @@
+ }
+ 
+ 
+-strong_alias (__libc_calloc, __calloc) weak_alias (__libc_calloc, calloc)
+-strong_alias (__libc_free, __cfree) weak_alias (__libc_free, cfree)
+-strong_alias (__libc_free, __free) strong_alias (__libc_free, free)
+-strong_alias (__libc_malloc, __malloc) strong_alias (__libc_malloc, malloc)
+-strong_alias (__libc_memalign, __memalign)
++weak_alias (__libc_calloc, __calloc) weak_alias (__libc_calloc, calloc)
++weak_alias (__libc_free, __cfree) weak_alias (__libc_free, cfree)
++weak_alias (__libc_free, __free) strong_alias (__libc_free, free)
++weak_alias (__libc_malloc, __malloc) strong_alias (__libc_malloc, malloc)
++weak_alias (__libc_memalign, __memalign)
+ weak_alias (__libc_memalign, memalign)
+-strong_alias (__libc_realloc, __realloc) strong_alias (__libc_realloc, realloc)
+-strong_alias (__libc_valloc, __valloc) weak_alias (__libc_valloc, valloc)
+-strong_alias (__libc_pvalloc, __pvalloc) weak_alias (__libc_pvalloc, pvalloc)
+-strong_alias (__libc_mallinfo, __mallinfo)
++weak_alias (__libc_realloc, __realloc) strong_alias (__libc_realloc, realloc)
++weak_alias (__libc_valloc, __valloc) weak_alias (__libc_valloc, valloc)
++weak_alias (__libc_pvalloc, __pvalloc) weak_alias (__libc_pvalloc, pvalloc)
++weak_alias (__libc_mallinfo, __mallinfo)
+ weak_alias (__libc_mallinfo, mallinfo)
+-strong_alias (__libc_mallopt, __mallopt) weak_alias (__libc_mallopt, mallopt)
++weak_alias (__libc_mallopt, __mallopt) weak_alias (__libc_mallopt, mallopt)
+ 
+ weak_alias (__malloc_stats, malloc_stats)
+ weak_alias (__malloc_usable_size, malloc_usable_size)
+Index: malloc/arena.c
+===================================================================
+--- a/malloc/arena.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/malloc/arena.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -26,11 +26,7 @@
+ 
+ #define HEAP_MIN_SIZE (32*1024)
+ #ifndef HEAP_MAX_SIZE
+-# ifdef DEFAULT_MMAP_THRESHOLD_MAX
+-#  define HEAP_MAX_SIZE (2 * DEFAULT_MMAP_THRESHOLD_MAX)
+-# else
+-#  define HEAP_MAX_SIZE (1024*1024) /* must be a power of two */
+-# endif
++#  define HEAP_MAX_SIZE (8*1024*1024) /* must be a power of two -- BGQ make bigger */
+ #endif
+ 
+ /* HEAP_MIN_SIZE and HEAP_MAX_SIZE limit the size of mmap()ed heaps
+Index: malloc/mcheck.c
+===================================================================
+--- a/malloc/mcheck.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/malloc/mcheck.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -54,6 +54,8 @@
+     struct hdr *next;
+     __ptr_t block;		/* Real block allocated, for memalign.  */
+     unsigned long int magic2;	/* Extra, keeps us doubleword aligned.  */
++    unsigned long int magic3;   /* Extra, keeps us doubleword aligned.  */
++    unsigned long int magic4;   /* Extra, keeps us doubleword aligned.  */
+   };
+ 
+ /* This is the beginning of the list of all memory blocks allocated.
+@@ -261,16 +263,7 @@
+   __memalign_hook = memalignhook;
+   if (block == NULL)
+     return NULL;
+-
+-  hdr = ((struct hdr *) (block + slop)) - 1;
+-
+-  hdr->size = size;
+-  link_blk (hdr);
+-  hdr->block = (__ptr_t) block;
+-  hdr->magic2 = (uintptr_t) block ^ MAGICWORD;
+-  ((char *) &hdr[1])[size] = MAGICBYTE;
+-  flood ((__ptr_t) (hdr + 1), MALLOCFLOOD, size);
+-  return (__ptr_t) (hdr + 1);
++  return (__ptr_t) (block);
+ }
+ 
+ static __ptr_t
+Index: nptl/Makefile
+===================================================================
+--- a/nptl/Makefile	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/nptl/Makefile	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -385,8 +385,8 @@
+ 	 echo '   Use the shared library, but some functions are only in';\
+ 	 echo '   the static library, so try that secondarily.  */';\
+ 	 cat $<; \
+-	 echo 'GROUP ( $(slibdir)/libpthread.so$(libpthread.so-version)' \
+-	      '$(libdir)/$(patsubst %,$(libtype.oS),$(libprefix)pthread)'\
++	 echo 'GROUP ( $(inst_slibdir)/libpthread.so$(libpthread.so-version)' \
++		'$(inst_libdir)/$(patsubst %,$(libtype.oS),$(libprefix)pthread)'\
+ 	      ')' \
+ 	) > $@.new
+ 	mv -f $@.new $@
+Index: nptl/sysdeps/powerpc/pthreaddef.h
+===================================================================
+--- a/nptl/sysdeps/powerpc/pthreaddef.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/nptl/sysdeps/powerpc/pthreaddef.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -20,13 +20,13 @@
+ 
+ /* Required stack pointer alignment at beginning.  The ABI requires 16
+    bytes (for both 32-bit and 64-bit PowerPC).  */
+-#define STACK_ALIGN		16
++#define STACK_ALIGN		32
+ 
+ /* Minimal stack size after allocating thread descriptor and guard size.  */
+ #define MINIMAL_REST_STACK	4096
+ 
+ /* Alignment requirement for TCB.  */
+-#define TCB_ALIGNMENT		16
++#define TCB_ALIGNMENT		32
+ 
+ 
+ /* Location of current stack frame.  */
+Index: nptl/sysdeps/unix/sysv/linux/powerpc/bits/pthreadtypes.h
+===================================================================
+--- a/nptl/sysdeps/unix/sysv/linux/powerpc/bits/pthreadtypes.h	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/nptl/sysdeps/unix/sysv/linux/powerpc/bits/pthreadtypes.h	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -80,9 +80,9 @@
+ {
+   struct __pthread_mutex_s
+   {
+-    int __lock;
+-    unsigned int __count;
+-    int __owner;
++    volatile int __lock;
++    volatile unsigned int __count;
++    volatile int __owner;
+ #if __WORDSIZE == 64
+     unsigned int __nusers;
+ #endif
+@@ -119,7 +119,7 @@
+ {
+   struct
+   {
+-    int __lock;
++    volatile int __lock;
+     unsigned int __futex;
+     __extension__ unsigned long long int __total_seq;
+     __extension__ unsigned long long int __wakeup_seq;
+@@ -155,7 +155,7 @@
+ # if __WORDSIZE == 64
+   struct
+   {
+-    int __lock;
++    volatile int __lock;
+     unsigned int __nr_readers;
+     unsigned int __readers_wakeup;
+     unsigned int __writer_wakeup;
+Index: nptl/sysdeps/unix/sysv/linux/pt-raise.c
+===================================================================
+--- a/nptl/sysdeps/unix/sysv/linux/pt-raise.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/nptl/sysdeps/unix/sysv/linux/pt-raise.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -33,6 +33,18 @@
+   pid_t pid = THREAD_GETMEM (THREAD_SELF, pid);
+   if (__builtin_expect (pid < 0, 0))
+     pid = -pid;
++    if (pid == 0) {
++       pid_t selftid;
++             /* This system call is not supposed to fail.  */
++#ifdef INTERNAL_SYSCALL
++      INTERNAL_SYSCALL_DECL (err);
++      selftid = INTERNAL_SYSCALL (gettid, err, 0);
++#else
++      selftid = INLINE_SYSCALL (gettid, 0);
++#endif
++      THREAD_SETMEM (THREAD_SELF, tid, selftid);
++      pid = selftid;
++    }
+ 
+   return INLINE_SYSCALL (tgkill, 3, pid, THREAD_GETMEM (THREAD_SELF, tid),
+ 			 sig);
+Index: nptl/sysdeps/unix/sysv/linux/lowlevellock.c
+===================================================================
+--- a/nptl/sysdeps/unix/sysv/linux/lowlevellock.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/nptl/sysdeps/unix/sysv/linux/lowlevellock.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -35,7 +35,7 @@
+ 
+ 
+ /* These functions don't get included in libc.so  */
+-#ifdef IS_IN_libpthread
++#if defined(IS_IN_libpthread) || !defined(SHARED)
+ void
+ __lll_lock_wait (int *futex, int private)
+ {
+@@ -45,6 +45,8 @@
+   while (atomic_exchange_acq (futex, 2) != 0)
+     lll_futex_wait (futex, 2, private);
+ }
++#endif
++#ifdef IS_IN_libpthread
+ 
+ 
+ int
+Index: nptl/sysdeps/pthread/configure
+===================================================================
+--- a/nptl/sysdeps/pthread/configure	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/nptl/sysdeps/pthread/configure	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -18,72 +18,3 @@
+ fi
+ 
+ 
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for forced unwind support" >&5
+-$as_echo_n "checking for forced unwind support... " >&6; }
+-if ${libc_cv_forced_unwind+:} false; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+-/* end confdefs.h.  */
+-#include <unwind.h>
+-int
+-main ()
+-{
+-
+-struct _Unwind_Exception exc;
+-struct _Unwind_Context *context;
+-_Unwind_GetCFA (context)
+-  ;
+-  return 0;
+-}
+-_ACEOF
+-if ac_fn_c_try_compile "$LINENO"; then :
+-  libc_cv_forced_unwind=yes
+-else
+-  libc_cv_forced_unwind=no
+-fi
+-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+-fi
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $libc_cv_forced_unwind" >&5
+-$as_echo "$libc_cv_forced_unwind" >&6; }
+-if test $libc_cv_forced_unwind = yes; then
+-  $as_echo "#define HAVE_FORCED_UNWIND 1" >>confdefs.h
+-
+-  old_CFLAGS="$CFLAGS"
+-  CFLAGS="$CFLAGS -Werror -fexceptions"
+-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for C cleanup handling" >&5
+-$as_echo_n "checking for C cleanup handling... " >&6; }
+-if ${libc_cv_c_cleanup+:} false; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+-/* end confdefs.h.  */
+-
+-extern void some_function (void);
+-void cl (void *a) { }
+-int
+-main ()
+-{
+-
+-  int a __attribute__ ((cleanup (cl)));
+-  some_function ()
+-  ;
+-  return 0;
+-}
+-_ACEOF
+-if ac_fn_c_try_compile "$LINENO"; then :
+-  libc_cv_c_cleanup=yes
+-else
+-  libc_cv_c_cleanup=no
+-fi
+-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+-fi
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $libc_cv_c_cleanup" >&5
+-$as_echo "$libc_cv_c_cleanup" >&6; }
+-  CFLAGS="$old_CFLAGS"
+-  if test $libc_cv_c_cleanup = no; then
+-    as_fn_error $? "the compiler must support C cleanup handling" "$LINENO" 5
+-  fi
+-else
+-  as_fn_error $? "forced unwind support is required" "$LINENO" 5
+-fi
+Index: nptl/sysdeps/pthread/configure.in
+===================================================================
+--- a/nptl/sysdeps/pthread/configure.in	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/nptl/sysdeps/pthread/configure.in	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -19,31 +19,3 @@
+   esac
+ fi
+ 
+-dnl Iff <unwind.h> is available, make sure it is the right one and it
+-dnl contains struct _Unwind_Exception.
+-AC_CACHE_CHECK(dnl
+-for forced unwind support, libc_cv_forced_unwind, [dnl
+-AC_TRY_COMPILE([#include <unwind.h>], [
+-struct _Unwind_Exception exc;
+-struct _Unwind_Context *context;
+-_Unwind_GetCFA (context)],
+-libc_cv_forced_unwind=yes, libc_cv_forced_unwind=no)])
+-if test $libc_cv_forced_unwind = yes; then
+-  AC_DEFINE(HAVE_FORCED_UNWIND)
+-dnl Check for C cleanup handling.
+-  old_CFLAGS="$CFLAGS"
+-  CFLAGS="$CFLAGS -Werror -fexceptions"
+-  AC_CACHE_CHECK([for C cleanup handling], libc_cv_c_cleanup, [dnl
+-  AC_TRY_COMPILE([
+-extern void some_function (void);
+-void cl (void *a) { }], [
+-  int a __attribute__ ((cleanup (cl)));
+-  some_function ()],
+-libc_cv_c_cleanup=yes, libc_cv_c_cleanup=no)])
+-  CFLAGS="$old_CFLAGS"
+-  if test $libc_cv_c_cleanup = no; then
+-    AC_MSG_ERROR([the compiler must support C cleanup handling])
+-  fi
+-else
+-  AC_MSG_ERROR(forced unwind support is required)
+-fi
+Index: nptl/pthread_create.c
+===================================================================
+--- a/nptl/pthread_create.c	(.../tags/GNU_BASE/gnu/glibc-2.17)	(revision 60705)
++++ b/nptl/pthread_create.c	(.../bgq/gnu/glibc-2.17)	(revision 60705)
+@@ -28,7 +28,7 @@
+ #include <libc-internal.h>
+ #include <resolv.h>
+ #include <kernel-features.h>
+-
++#include <sys/gmon.h>
+ #include <shlib-compat.h>
+ 
+ #include <stap-probe.h>
+@@ -36,8 +36,27 @@
+ 
+ /* Local function to start thread and handle cleanup.  */
+ static int start_thread (void *arg);
++typedef struct start_routine_with_timer {
++  void * (*start_routine)(void*);
++  void * arg;
++  pthread_mutex_t lock;
++  pthread_cond_t wait;
++} thread_code_with_timer;
+ 
++/* Set up a procedure to start the timer then call the original pthread code. */
++void *start_routine_with_timer(void *data) {
++  void * (*start_routine)(void*) = ((thread_code_with_timer*)data)->start_routine;
++  void * arg = ((thread_code_with_timer*)data)->arg;
++  gmon_thread_timer(1);
++  gmon_set_pthread_id(pthread_self());
++  pthread_mutex_lock(&((thread_code_with_timer*)data)->lock);
++  pthread_cond_signal(&((thread_code_with_timer*)data)->wait);
++  pthread_mutex_unlock(&((thread_code_with_timer*)data)->lock);
++  return (*start_routine)(arg);
++}
+ 
++
++
+ /* Nozero if debugging mode is enabled.  */
+ int __pthread_debug;
+ 
+@@ -439,8 +458,12 @@
+     /* Just some value > 0 which gets rounded to the nearest page size.  */
+     .guardsize = 1,
+   };
++/* Overload the define for SCHED_RR with SCHED_COMM */
+ 
++#define SCHED_COMM SCHED_RR
+ 
++
++
+ int
+ __pthread_create_2_1 (newthread, attr, start_routine, arg)
+      pthread_t *newthread;
+@@ -451,11 +474,15 @@
+   STACK_VARIABLES;
+ 
+   const struct pthread_attr *iattr = (struct pthread_attr *) attr;
++  struct start_routine_with_timer thread_with_timer_info;
+   if (iattr == NULL)
+     /* Is this the best idea?  On NUMA machines this could mean
+        accessing far-away memory.  */
+     iattr = &default_attr;
++  int gmon_threads = gmon_should_start_all_thread_timers();
++  int profiling = ((gmon_threads == START_TIMER_ON_USER_AND_COMM_THREADS) || ((gmon_threads == START_TIMER_ON_USER_THREADS) && (iattr->schedpolicy != SCHED_COMM)));
+ 
++
+   struct pthread *pd = NULL;
+   int err = ALLOCATE_STACK (iattr, &pd);
+   if (__builtin_expect (err != 0, 0))
+@@ -476,12 +503,20 @@
+   /* Self-reference for TLS.  */
+   pd->header.tcb = pd;
+ #endif
++  if (profiling) {
++    thread_with_timer_info.start_routine = start_routine;
++    thread_with_timer_info.arg = arg;
++    pd->start_routine = &start_routine_with_timer;
++    pd->arg = &thread_with_timer_info;
++  }
++  else {
+ 
+   /* Store the address of the start routine and the parameter.  Since
+      we do not start the function directly the stillborn thread will
+      get the information from its thread descriptor.  */
+-  pd->start_routine = start_routine;
+-  pd->arg = arg;
++    pd->start_routine = start_routine;
++    pd->arg = arg;
++  }
+ 
+   /* Copy the thread attribute flags.  */
+   struct pthread *self = THREAD_SELF;
+@@ -559,11 +594,34 @@
+ 
+   /* Pass the descriptor to the caller.  */
+   *newthread = (pthread_t) pd;
++  /* If the profiling flag is set, we want to invoke thread code which starts the itimer on the new thread. */
+ 
+-  LIBC_PROBE (pthread_create, 4, newthread, attr, start_routine, arg);
++  if (profiling) {
++    pthread_cond_init(&thread_with_timer_info.wait, NULL);
++    pthread_mutex_init(&thread_with_timer_info.lock, NULL);
++    pthread_mutex_lock(&thread_with_timer_info.lock);
+ 
+-  /* Start the thread.  */
+-  return create_thread (pd, iattr, STACK_VARIABLES_ARGS);
++    /* Make sure the timer has started on the new thread before returning from here. */
++
++    err = create_thread(pd, iattr, STACK_VARIABLES_ARGS);
++    if (err == 0) {
++      pthread_cond_wait(&thread_with_timer_info.wait, &thread_with_timer_info.lock);
++    }
++    else {
++      /* Not sure what to do here?  Try again to start the thread without profiling? */
++    }
++    pthread_mutex_unlock(&thread_with_timer_info.lock);
++    pthread_mutex_destroy(&thread_with_timer_info.lock);
++    pthread_cond_destroy(&thread_with_timer_info.wait);
++    return err;
++  }
++  else
++  {
++    LIBC_PROBE (pthread_create, 4, newthread, attr, start_routine, arg);
++
++    /* Start the thread.  */
++    return create_thread (pd, iattr, STACK_VARIABLES_ARGS);
++  }
+ }
+ versioned_symbol (libpthread, __pthread_create_2_1, pthread_create, GLIBC_2_1);
+ 

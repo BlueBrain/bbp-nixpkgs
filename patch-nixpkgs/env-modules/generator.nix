@@ -6,6 +6,7 @@ version ? "",
 moduleFilePrefix ? "nix",
 conflicts ? [] ,
 packages,
+setRoot ? "",
 isLibrary ? false,
 isDefault ? false,
 prefixDir ? "",
@@ -103,6 +104,14 @@ ${if isLibrary == true then
 prepend-path CMAKE_PREFIX_PATH ${targetEnv}
 '' 
 else 
+'' ''
+}
+
+${if setRoot != "" then
+''
+setenv ${setRoot}_ROOT ${targetEnv}
+''
+else
 '' ''
 }
 
