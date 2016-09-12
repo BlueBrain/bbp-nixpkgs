@@ -39,9 +39,13 @@ stdenv.mkDerivation rec {
   # and reference statically this one
   postInstall = if isBGQ == false then 
 ''
+## rename accordingly special mech path
 grep -v "\-dll" $out/bin/special > ./special.tmp
 cp ./special.tmp $out/bin/special
 echo " \"\''${NRNIV}\" -dll \"$out/lib/libnrnmech.so\" \"\$@\" " >> $out/bin/special
+## nrn mech is not installed properly by cmake 
+mkdir -p $out/lib
+cp lib/*/*/.libs/*.so* $out/lib/
 '' 
   else
 '' '';
