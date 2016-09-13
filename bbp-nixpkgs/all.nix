@@ -17,9 +17,8 @@ let
 		bbp-mpi-rdma = if pkgs.isBlueGene == true then mpi-bgq
 				else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2-rdma 
 				else mpich2;
-		bbp-mpi-gcc = if pkgs.isBlueGene == true then bg-mpich2
+		bbp-mpi-gcc = if pkgs.isBlueGene == true then bg-mpich
                                 else bbp-mpi;
-
 
 		callPackage = newScope mergePkgs;
 		enableBGQ-proto = caller: file: map:
@@ -100,29 +99,29 @@ let
 		##
 		## BBP HPC components
 		##
-		hpctools = enableBGQ callPackage ./hpc/hpctools { 
-
+		hpctools-xlc = enableBGQ callPackage ./hpc/hpctools { 
 			mpiRuntime = bbp-mpi;
 		}; 
 
-		hpctools-gcc = enableBGQ-gcc47 callPackage ./hpc/hpctools { 
-
+		hpctools = enableBGQ-gcc47 callPackage ./hpc/hpctools { 
+            stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
 			mpiRuntime = bbp-mpi-gcc;
 		}; 
 
 		functionalizer = enableBGQ-gcc47 callPackage ./hpc/functionalizer { 
+             stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
 			 python = nativeAllPkgs.python;
 			 pythonPackages = nativeAllPkgs.pythonPackages;
 			 mpiRuntime = bbp-mpi-gcc;                
-			 hpctools = hpctools-gcc;
 		};  
 
 		touchdetector = enableBGQ callPackage ./hpc/touchdetector {  
-			 hpctools = hpctools;
 			 mpiRuntime = bbp-mpi;  
+			 hpctools = hpctools-xlc; # impossible to use MPI 3.2 for now on BGQ
 		};
 
 		bluebuilder = enableBGQ callPackage ./hpc/bluebuilder {
+			hpctools = hpctools-xlc;
 			mpiRuntime = bbp-mpi;
 		};
 
@@ -184,7 +183,7 @@ let
 
 		neurodamus = enableBGQ callPackage ./hpc/neurodamus {
 			mpiRuntime = bbp-mpi;  
-			nrnEnv= mergePkgs.neuron;    
+			nrnEnv = mergePkgs.neuron;    
 		};
 
 		neuromapp = callPackage ./hpc/neuromapp {
@@ -215,8 +214,8 @@ let
 		};
 
 		steps = enableBGQ-gcc47 callPackage ./hpc/steps {
+			mpiRuntime = if(mergePkgs.isBlueGene) then bbp-mpi-gcc else bbp-mpi-rdma;
 			stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
-			mpiRuntime = bbp-mpi-rdma;
 			numpy = if (mergePkgs.isBlueGene) then  mergePkgs.bgq-pythonPackages-gcc47.bg-numpy
 				else pythonPackages.numpy;
 

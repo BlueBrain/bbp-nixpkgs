@@ -33,16 +33,12 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/building/Functionalizer";
-    rev = "76274c82a1095a98817b39087d78836165fb6ac7";
-    sha256 = "1dlmaac6d7cc4m8mcfkaavczw35rz35pg1za26ssb76iaxahaqhx";
+    rev = "161df613d52d1ac41d8fb105daf901e7f12e8696";
+    sha256 = "1rw9wby8jr2ffs3i6li37xfawimmihrvkpc0w0aypsa1cd6wxh1n";
   };
   
 
-  preConfigure = ''
-		export cmakeFlags="$cmakeFlags -DDOC_INSTALL_DIR=$doc/share/doc/${name} -DMAN_INSTALL_DIR=$doc/share/man"
-  '';
-
-  cmakeFlags=[ "-DUNIT_TESTS=TRUE"  ]
+  cmakeFlags=[ "-DUNIT_TESTS=TRUE" ''-DLIB_SUFFIX='' ]
 	        ++ stdenv.lib.optional (generateDoc == true ) [ "-DFUNCTIONALIZER_DOCUMENTATION=TRUE" ] ;   
 
   enableParallelBuilding = true;

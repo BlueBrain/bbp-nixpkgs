@@ -17,10 +17,6 @@ stdenv.mkDerivation rec {
     name = "mpich2-${version}";
     version = "3.2-rob";
     
-#    src = fetchurl {
-#	url = "http://www.mpich.org/static/downloads/3.1.4/mpich-${version}.tar.gz";
-#    	sha256 = "0ss68395k4yfa56m4v0xs0bkbxf7fpifih51ll6c01j3x4q572zn";
-#    };
 
     # use the version of Rob Latham who maintains the MPICH branch for BGQ compatibility
     # Official MPICH2 version after 3.1.3 are not supported anymore for BGQ
@@ -46,9 +42,12 @@ stdenv.mkDerivation rec {
 		   '';
 
 
-#            "--with-file-system=bg+bglockless"
 
     configureFlags = [
+			# add debug symbols
+			"--enable-g=dbg"
+
+			# configure for cross compilation BGQ
 			"--host=powerpc64-bgq-linux"
             "--with-device=pamid:BGQ"
 
@@ -68,6 +67,8 @@ stdenv.mkDerivation rec {
 
     PAMILIBNAME="pami-gcc";
 
+	dontStrip = true;
+	dontCrossStrip = true;
 
     ## force repatching of wrapper without any /bgsys reference
     postInstall = ''
