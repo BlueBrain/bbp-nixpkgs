@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
     sha256 = "1liik1pfab6jyx608zgi1gw8mrkq3l7f7n4521m1im3356xy26hc";    
   };
       
-  cmakeFlags= [ "-DLIB_SUFFIX=" ];
+  cmakeFlags= [ "-DLIB_SUFFIX=" "-DCMAKE_BUILD_TYPE=RelWithDebInfo" ];
   
   enableParallelBuilding = true;  
 

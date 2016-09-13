@@ -193,7 +193,7 @@ let
 
 	## special MPICH 3.2 patched by Rob for BGQ
 	#
-       bg-mpich2 = (callPackage ./mpich2 {
+    bg-mpich = (callPackage ./mpich2 {
 		stdenv = bgq-stdenv-gcc47;
 		libc = bglibc;
 		cnk-spi = cnk-spi;
@@ -248,7 +248,7 @@ let
 
 									hdf5 = bgq-hdf5-gcc47;
 
-									bbp-mpi = bg-mpich2;
+									bbp-mpi = bg-mpich;
 
 
 								 }
@@ -306,7 +306,7 @@ let
 	};
 
         bgq-pythonPackages-gcc47 = (import ./bg-pythonPackages { 
-								 mpiRuntime = bg-mpich2;
+								 mpiRuntime = bg-mpich;
 								 stdenv = bgq-stdenv-gcc47-nofix; 
 								 python = bgq-python27-gcc47; 
 								 bg-hdf5 = bgq-hdf5-gcc47;
@@ -389,7 +389,7 @@ let
 		liblapackLibName = "openblas";
 		blas = bgq-openblas;
 		blasLibName = "openblas";
-		mpiRuntime = bg-mpich2;
+		mpiRuntime = bg-mpich;
 
 	};
 
@@ -402,7 +402,7 @@ let
 		bzip2 = bgq-bzip2;
 		libxml2 = bgq-libxml2;
 		mpiRuntime = mpi-bgq;
-		mpich2-gcc47 = bg-mpich2;
+		mpich2-gcc47 = bg-mpich;
 		stdenv = bgq-stdenv;
 		stdenv-gcc47 = bgq-stdenv-gcc47;
 		boost = bgq-boost;
@@ -418,8 +418,8 @@ let
 		bzip2 = bgq-bzip2-gcc47;
 		stdenv = bgq-stdenv-gcc47;
 		boost = bgq-boost-gcc47;
-		mpiRuntime = bg-mpich2;
-		bbp-mpi = bg-mpich2;
+		mpiRuntime = bg-mpich;
+		bbp-mpi = bg-mpich;
 		blas = bgq-openblas;
 		python = bgq-python27-gcc47;
 		petsc = bgq-petsc-gcc47;

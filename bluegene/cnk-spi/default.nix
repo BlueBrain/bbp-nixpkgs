@@ -23,6 +23,10 @@ stdenv.mkDerivation rec {
 		 cp  ${releaseBGQPrefix}/comm/lib/lib*pami* $out/lib;
 		 cp -r ${releaseBGQPrefix}/comm/include/pami*h $out/include;
 
+		 # create default symlink for pami
+		 ln -s $out/lib/libpami-gcc.so $out/lib/libpami.so
+		 ln -s $out/lib/libpami-gcc.a $out/lib/libpami.a
+
 		 # copy all necessary SPI/CNK files
 		 mkdir -p $out/include/spi
 		 cp -r ${releaseBGQPrefix}/spi/lib/* $out/lib;
