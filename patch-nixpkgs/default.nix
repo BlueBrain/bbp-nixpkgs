@@ -13,8 +13,8 @@ let
 	    { mkDerivation = args: stdenv.mkDerivation (args // {
     	    dontStrip = true;
 			dontCrossStrip = true;
-	        NIX_CFLAGS_COMPILE = toString (args.NIX_CFLAGS_COMPILE or "") + " -ggdb -g -fno-omit-frame-pointer";
-			NIX_CROSS_CFLAGS_COMPILE = toString (args.NIX_CROSS_CFLAGS_COMPILE or "") + " -ggdb -g -fno-omit-frame-pointer";
+	        NIX_CFLAGS_COMPILE = toString (args.NIX_CFLAGS_COMPILE or "") + " -ggdb -g ";
+			NIX_CROSS_CFLAGS_COMPILE = toString (args.NIX_CROSS_CFLAGS_COMPILE or "") + " -ggdb -g";
 	      });
 	    };
 		
