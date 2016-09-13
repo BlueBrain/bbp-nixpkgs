@@ -30,7 +30,10 @@ let
 
 		enableBGQ-gcc47 = caller: file: (enableBGQ-proto  caller file mergePkgs.bgq-map-gcc47);
 
-		targetAllPkgs = if (pkgs.isBlueGene == true) then (pkgs // mergePkgs.bgq-map-gcc47) else pkgs;
+		pkgsWithBGQGCC = if (pkgs.isBlueGene == true) then (pkgs // mergePkgs.bgq-map-gcc47) else pkgs;
+
+
+		pkgsWithBGQXLC = if (pkgs.isBlueGene == true) then (pkgs // mergePkgs.bgq-map) else pkgs;
 
 		nativeAllPkgs = pkgs;
 
@@ -40,7 +43,7 @@ let
 
 		## override component that need bbp-mpi
 		petsc = pkgs.petsc.override {
-			stdenv = enableDebugInfo  targetAllPkgs.stdenv;
+			stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
 			mpiRuntime = bbp-mpi-rdma;
 		};
 
@@ -101,12 +104,12 @@ let
 		}; 
 
 		hpctools = enableBGQ-gcc47 callPackage ./hpc/hpctools { 
-            stdenv = enableDebugInfo  targetAllPkgs.stdenv;
+            stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
 			mpiRuntime = bbp-mpi-gcc;
 		}; 
 
 		functionalizer = enableBGQ-gcc47 callPackage ./hpc/functionalizer { 
-             stdenv = enableDebugInfo  targetAllPkgs.stdenv;
+             stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
 			 python = nativeAllPkgs.python;
 			 pythonPackages = nativeAllPkgs.pythonPackages;
 			 mpiRuntime = bbp-mpi-gcc;                
@@ -161,11 +164,13 @@ let
 
 
 		neuron-modl = callPackage ./hpc/neuron {
+			stdenv = (enableDebugInfo pkgsWithBGQXLC.stdenv);
 			mpiRuntime = null;
 			modlOnly = true;
 		};
 
 		neuron = enableBGQ callPackage ./hpc/neuron {
+			stdenv = (enableDebugInfo pkgsWithBGQXLC.stdenv);
 			mpiRuntime = bbp-mpi;
 			nrnOnly = true;
 			nrnModl = mergePkgs.neuron-modl;
@@ -209,8 +214,8 @@ let
 		};
 
 		steps = enableBGQ-gcc47 callPackage ./hpc/steps {
-			stdenv = enableDebugInfo  targetAllPkgs.stdenv;
 			mpiRuntime = if(mergePkgs.isBlueGene) then bbp-mpi-gcc else bbp-mpi-rdma;
+			stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
 			numpy = if (mergePkgs.isBlueGene) then  mergePkgs.bgq-pythonPackages-gcc47.bg-numpy
 				else pythonPackages.numpy;
 
