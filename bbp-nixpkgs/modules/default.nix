@@ -428,6 +428,8 @@ let
                             ## pkgs.slurm-llnl
                        ];
             conflicts = conflicts-modules;
+
+			extraContent = ''setenv MV2_ENABLE_AFFINITY "0" '';
       };
       
       hdf5 = pkgs.envModuleGen rec {
