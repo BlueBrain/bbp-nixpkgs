@@ -4,12 +4,12 @@ buildEnv,
 name,
 version ? "",
 moduleFilePrefix ? "nix",
+moduleFileSuffix ? "",
 conflicts ? [] ,
 packages,
 setRoot ? "",
 isLibrary ? false,
 isDefault ? false,
-prefixDir ? "",
 description ? "" ,
 extraContent ? ""
 }:
@@ -30,7 +30,7 @@ assert builtins.length packages > 0;
                     else "default";
                     
     
-    moduleFileSuffix = "${name}/${versionString}";
+    moduleFilePath = "${name}/${moduleFileSuffix}/${versionString}";
                         
     depBuilder = depPrefixString: depList:  
                                           let 
@@ -75,7 +75,7 @@ stdenv.mkDerivation rec {
 cat > modulefile << EOF
 #%Module1.0#####################################################################
 ##
-## ${moduleFileSuffix}
+## ${moduleFilePath}
 ##
 ## modulefiles ${name}/${versionString} ${description}
 ##
@@ -176,7 +176,7 @@ EOF
     installPhase = 
     ''
         mkdir -p $out/share/modulefiles/${moduleFilePrefix}
-        install -D modulefile $out/share/modulefiles/${moduleFilePrefix}/${moduleFileSuffix}
+        install -D modulefile $out/share/modulefiles/${moduleFilePrefix}/${moduleFilePath}
     ''
     + (if isDefault then 
     ''
@@ -184,7 +184,7 @@ EOF
     '' else '''');
     
     passthru = { 
-        modulename = "${moduleFilePrefix}/${moduleFileSuffix}";
+        modulename = "${moduleFilePrefix}/${moduleFilePath}";
     };
 
 }
