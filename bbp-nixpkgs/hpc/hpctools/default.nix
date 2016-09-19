@@ -5,16 +5,14 @@
 , cmake
 , mpiRuntime
 , pkgconfig
-, python
 , hdf5
-, doxygen 
 , cnk-spi ? null
 }:
 
 stdenv.mkDerivation rec {
   name = "hpctools-${version}";
   version = "3.3.0";
-  buildInputs = [ stdenv pkgconfig boost cmake mpiRuntime libxml2 python hdf5 doxygen cnk-spi ];
+  buildInputs = [ stdenv pkgconfig boost cmake mpiRuntime libxml2 hdf5 cnk-spi ];
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/hpc/HPCTools";
