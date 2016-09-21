@@ -7,8 +7,8 @@ export NIX_CACHE_HOST="bbpnixcache.epfl.ch"
 
 
 ## number of cores for -j 
-let NCORES=$(grep -c "processor" /proc/cpuinfo)+2
-
+#let NCORES=$(grep -c "processor" /proc/cpuinfo)+2
+let NCORES=ncore
 
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
