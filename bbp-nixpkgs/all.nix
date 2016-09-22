@@ -186,9 +186,9 @@ let
 			nrnEnv = mergePkgs.neuron;    
 		};
 
-		neuromapp = callPackage ./hpc/neuromapp {
-			mpiRuntime = bbp-mpi;      
-		};          
+		neuromapp = enableBGQ callPackage ./hpc/neuromapp {
+			mpiRuntime = bbp-mpi;
+		};
 
 		mods-src = callPackage ./hpc/neurodamus/corebluron.nix{
 
