@@ -41,11 +41,11 @@ stdenv.mkDerivation rec {
   buildInputs = [ python pkgconfig munge perl pam openssl mysql.lib lua hwloc numactl ] 
 		++ extraDeps;
 
-  configureFlags = ''
-    --with-munge=${munge}
-    --with-ssl=${openssl}
-    --sysconfdir=/etc/slurm
-  '';
+  configureFlags = [
+    "--with-ssl=${openssl}"
+    "--sysconfdir=/etc/slurm" ]
+    ++ stdenv.lib.optional (munge != null) [ "--with-munge=${munge}" ];
+ 
 
   preConfigure = ''
     substituteInPlace ./doc/html/shtml2html.py --replace "/usr/bin/env python" "${python.interpreter}"

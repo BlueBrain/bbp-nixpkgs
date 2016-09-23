@@ -601,19 +601,22 @@ let
         name = "all-modules";
         paths = [ boost mvapich2 hdf5 libxml2 zlib
                   openblas petsc folly
-                  bison flex swig
-                  R golang clang gcc gcc52 
-                  cmake rust 
-                  readline ncurses
+                  bison flex swig gcc clang
+		  
+ 
+                  cmake readline ncurses
                   python27-light python27-full python34-light python34-full cython
                   qt4
+
                   # viz team
                   brion bbpsdk
+
                   # hpc team
                   mvdtool hpctools functionalizer touchdetector bluebuilder neuron 
                   nest steps mod2c coreneuron
-				  #rdma local specific
-				  mvapich2-rdma
+
+		  #rdma local specific
+		  mvapich2-rdma
                 ];
       };
      
