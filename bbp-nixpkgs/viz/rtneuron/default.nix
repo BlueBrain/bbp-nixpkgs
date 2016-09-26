@@ -1,26 +1,34 @@
-{ stdenv, 
-fetchgitPrivate, 
-boost, 
-cpp-netlib, 
-pkgconfig, 
-cmake, 
-cmake-external, 
-lunchbox, 
-servus,
-brion, 
-python }:
+{ stdenv
+, fetchgitExternal 
+, boost 
+, pkgconfig 
+, cmake 
+, openscenegraph
+, lunchbox 
+, brion 
+, bbpsdk
+, collage
+, equalizer
+, osgtransparency
+, python
+, pythonPackages
+, qt
+}:
 
 stdenv.mkDerivation rec {
-  name = "rtneuron-2.10.0";
-  buildInputs = [ stdenv pkgconfig boost cpp-netlib cmake-external cmake lunchbox servus brion python];
+  name = "rtneuron-${version}";
+  version = "2.10.0";
 
-  src = fetchgitPrivate{
+  buildInputs = [ stdenv pkgconfig boost cmake openscenegraph 
+				  lunchbox brion bbpsdk collage osgtransparency
+				  equalizer python pythonPackages.numpy qt ]  ;
+
+  src = fetchgitExternal{
     url = "ssh://bbpcode.epfl.ch/viz/RTNeuron";
-    rev = "f29be0399345aaf191074893c01ec51fa28f3f7b";
-    sha256 = "11j1l1rdq22d4iyzlxsrhhc2462nfcxms0qdyra61r1vhk6nb251";
-    deepClone = true;
+    rev = "6b8cbd9f77304219ab5c679028de78bba6754773";
+    sha256 = "1wbjj1zlc8r4r8bd1wn4398zch8630a0y61vsp51s361blhnwhg2";
   };
-  
+
   enableParallelBuilding = true;
   
 }

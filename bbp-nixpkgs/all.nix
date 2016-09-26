@@ -80,6 +80,12 @@ let
 		##
 		## BBP viz components
 		##
+		#
+
+		opengl = mesa;
+
+		qt = qt53;
+
 		servus = callPackage ./viz/servus {   
 
 		};
@@ -92,8 +98,28 @@ let
 
 		}; 
 
-		rtneuron = callPackage ./viz/rtneuron {   
+		pression = callPackage ./viz/pression {
 
+		};
+
+		collage = callPackage ./viz/collage {
+
+		};
+
+		hwsd = callPackage ./viz/hwsd {
+
+        };
+
+		osgtransparency = callPackage ./viz/osgtransparency {
+
+		};
+
+		equalizer = callPackage ./viz/equalizer {
+
+		};
+
+		rtneuron = callPackage ./viz/rtneuron {   
+		
 		};  
 
 		##
@@ -108,11 +134,12 @@ let
 			mpiRuntime = bbp-mpi-gcc;
 		}; 
 
-		functionalizer = enableBGQ-gcc47 callPackage ./hpc/functionalizer { 
-             stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
+		functionalizer = enableBGQ callPackage ./hpc/functionalizer { 
+#             stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
 			 python = nativeAllPkgs.python;
 			 pythonPackages = nativeAllPkgs.pythonPackages;
-			 mpiRuntime = bbp-mpi-gcc;                
+			 mpiRuntime = bbp-mpi;                
+			 hpctools = hpctools-xlc;
 		};  
 
 		touchdetector = enableBGQ callPackage ./hpc/touchdetector {  
