@@ -33,8 +33,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/building/Functionalizer";
-    rev = "8863297270f86e586e57e99443342477df141009";
-    sha256 = "0jdcd53766wjyb647avy6176k91611scvivmngrxccv5ij2kvgdi";
+    rev = "4955bd86fb1171c64d774566eb6408f2edf99348";
+    sha256 = "17m7nkkryydm7jy6rywfhv52bsgff6n6yrq69xjvkj30q61203g5";
   };
   
 
