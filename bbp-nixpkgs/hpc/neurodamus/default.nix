@@ -13,14 +13,14 @@
 
 stdenv.mkDerivation rec {
   name = "neurodamus-${version}";
-  version = "1.9.0-201608";
+  version = "1.9.0-201609";
   buildInputs = [ stdenv which cmake pkgconfig hdf5 ncurses zlib mpiRuntime reportinglib nrnEnv ];
 
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
-    rev = "bc503d69774ad568d07c1f7d12f19d281887f98f";
-    sha256 = "1r7g5q9kzsabxs5a5f41992bj8d9z954hn6nqjk88fsabxnzvdvk";
+    rev = "e38ea3b7b94ef73e538d0c6da59b827f24f40c55";
+    sha256 = "1ml6dkmz0cyy06f2kzl4xhy0mn57riqjdhc00p6dhi3r6b9gq5j0";
   };
   
 
