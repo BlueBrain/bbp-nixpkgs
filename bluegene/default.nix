@@ -6,9 +6,14 @@
 
 
 let
-    MergePkgs = with MergePkgs;  pkgs // bgq-override;
-    bgq-override = with bgq-override; with MergePkgs; { 
+    bgq-driver = if (builtins.pathExists "/bgsys/drivers/V1R2M4") then "V1R2M4"
+		 else "V1R2M2";
 
+    MergePkgs = with MergePkgs;  pkgs // bgq-override;
+
+    bgq-override = with bgq-override; with MergePkgs; rec { 
+
+	inherit bgq-driver;
 
 	makeCrossSetupHook = { deps ? [], substitutions ? {} }: script:
 	    runCommand "hook" substitutions
@@ -73,7 +78,9 @@ let
 	    cross = crossBGQSystem;
 	  });
 
-   cnk-spi = callPackage ./cnk-spi { };
+	cnk-spi = callPackage ./cnk-spi { 
+		inherit bgq-driver;
+	};
 
 	xlc = callPackage ./xlc { };
 
@@ -81,7 +88,7 @@ let
 	bgq-glibc = callPackage ./bgq-glibc-native { } ;
   
  
-  	gcc-bgq =   (callPackage ./gcc-bgq { }) // { target = crossBGQSystem; } ;
+  	gcc-bgq =   (callPackage ./gcc-bgq { inherit bgq-driver; }) // { target = crossBGQSystem; } ;
  
 
 	mpi-bgq = callPackage ./mpi-bgq {  
@@ -384,6 +391,7 @@ let
 	
 
 	bgq-petsc-gcc47 = all-pkgs-bgq-gcc47.petsc.override {
+		fetchgit = fetchgit;
 		stdenv = enableDebugInfo bgq-stdenv-gcc47;
 		liblapack = bgq-openblas;
 		liblapackLibName = "openblas";
