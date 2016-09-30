@@ -19,6 +19,10 @@ let
 	    };
 		
 
+		openscenegraph = callPackage ./openscenegraph {
+
+
+		};
 
         ## patch version of HDF5 with 
         # cpp bindigns enabled        
@@ -42,7 +46,7 @@ let
             blis = blis;
         };
 
-         clapack = callPackage ./clapack {
+        clapack = callPackage ./clapack {
             blas = openblas;
                 
          };
@@ -52,6 +56,7 @@ let
           #    with system configuration
 
          slurm-llnl-minimal = callPackage ./slurm {
+		inherit config;
                 lua = null;
                 numactl = null;
                 hwloc = null;

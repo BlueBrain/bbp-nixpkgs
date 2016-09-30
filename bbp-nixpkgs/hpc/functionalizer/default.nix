@@ -25,7 +25,7 @@ in
 
 stdenv.mkDerivation rec {
   name = "functionalizer-${version}";
-  version = "3.9.0";
+  version = "3.9.1";
   
   buildInputs = [ boost hpctools zlib mpiRuntime libxml2 hdf5 ];
   
@@ -33,8 +33,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/building/Functionalizer";
-    rev = "161df613d52d1ac41d8fb105daf901e7f12e8696";
-    sha256 = "1rw9wby8jr2ffs3i6li37xfawimmihrvkpc0w0aypsa1cd6wxh1n";
+    rev = "8863297270f86e586e57e99443342477df141009";
+    sha256 = "0jdcd53766wjyb647avy6176k91611scvivmngrxccv5ij2kvgdi";
   };
   
 
