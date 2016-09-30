@@ -1,6 +1,6 @@
 {
 stdenv,
-fetchurl,
+fetchFromGitHub,
 tcl,
 tcllib
 }:
@@ -10,10 +10,11 @@ stdenv.mkDerivation rec {
 	version = "3.2.10";
 	name= "environment-modules-${version}";
 
-	src = fetchurl {
-		url = "https://sourceforge.net/projects/modules/files/Modules/modules-${version}/modules-${version}.tar.gz/download";
-		sha256 = "fb05c82a83477805a1d97737a9f0ca0db23f69b7bce504f1609ba99477b03955";
-		name = "${name}.tar.gz";
+	src = fetchFromGitHub {
+		owner = "adevress";
+		repo ="environment-modules";
+		rev = "3.2.10";
+		sha256 = "04zi4ad7c9sz9n95m6zgnrjnridvi0a3ncg07p0v9ww76m59lh3a";
 	};
 
 	buildInputs = [ stdenv tcl tcllib ];
