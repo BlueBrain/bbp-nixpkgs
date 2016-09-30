@@ -159,7 +159,7 @@ let
     ## PETSc utility toolkit
     #
     petsc = callPackage ./petsc {
-	        mpiRuntime = pkgs.openmpi;
+		        mpiRuntime = pkgs.openmpi;
 			blas = openblasCompat;
 			blasLibName = "openblas";
 			liblapack = openblasCompat;
