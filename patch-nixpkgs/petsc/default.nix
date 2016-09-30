@@ -70,17 +70,18 @@ stdenv.mkDerivation rec {
                         export HOME=$(mktemp -d)
 
                         ## reconfigure script for cross compile
-                        substitute ${./reconfigure-arch-linux2-c-debug.py.in} ./reconfigure-arch-linux2-c-debug.py \
+                        substitute ${./reconfigure-arch-linux2-c-debug.py.in} reconfigure-arch-linux2-c-debug.py \
                         --replace "@mpi_path@" "${mpiRuntime.crossDrv}" \
                         --replace "@liblapack_path@" "${liblapack.crossDrv}" \
                         --replace "@liblapackLibName@" "${liblapackLibName}" \
                         --replace "@blas_path@" "${blas.crossDrv}" \
-                        --replace "@blasLibName@" "${blasLibName}" 
+                        --replace "@blasLibName@" "${blasLibName}" \
+			--replace "@python_interpreter@" "${python}/bin/python"
 
                         chmod a+x ./reconfigure-arch-linux2-c-debug.py
                        '';
 
-        configureScript = "./reconfigure-arch-linux2-c-debug.py";
+        configureScript = "${python}/bin/python ./reconfigure-arch-linux2-c-debug.py";
 
         configureFlags = "";
                          
