@@ -1,5 +1,6 @@
 { stdenv
-, releaseBGQPrefix ? "/bgsys/drivers/V1R2M3/ppc64"
+, bgq-driver
+, releaseBGQPrefix ? "/bgsys/drivers/${bgq-driver}/ppc64"
 } :
 
 
@@ -18,8 +19,10 @@ stdenv.mkDerivation rec {
        # we would like to avoid side effects by including all IBM libs
 
 	installPhase = ''
+		 echo "create derivation for CNK files out of ${releaseBGQPrefix} "
 		 mkdir -p $out/{include,lib};
 		 # copy all necessary PAMI files
+		 echo "... copy PAMI "
 		 cp  ${releaseBGQPrefix}/comm/lib/lib*pami* $out/lib;
 		 cp -r ${releaseBGQPrefix}/comm/include/pami*h $out/include;
 
@@ -28,11 +31,13 @@ stdenv.mkDerivation rec {
 		 ln -s $out/lib/libpami-gcc.a $out/lib/libpami.a
 
 		 # copy all necessary SPI/CNK files
+		 echo "... copy SPI/CNK"
 		 mkdir -p $out/include/spi
 		 cp -r ${releaseBGQPrefix}/spi/lib/* $out/lib;
 		 cp -r ${releaseBGQPrefix}/spi/include/* $out/include;
 
 		 # copy all necessary hwi files
+		 echo "... copy HWI "
 		 mkdir -p $out/include/hwi/include;
 		 cp -r ${releaseBGQPrefix}/hwi/include/* $out/include/hwi/include;
 		 
