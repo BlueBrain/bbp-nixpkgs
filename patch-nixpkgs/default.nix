@@ -56,6 +56,7 @@ let
           #    with system configuration
 
          slurm-llnl-minimal = callPackage ./slurm {
+		inherit config;
                 lua = null;
                 numactl = null;
                 hwloc = null;
