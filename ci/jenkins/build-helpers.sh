@@ -7,7 +7,15 @@ export NIX_CACHE_HOST="bbpnixcache.epfl.ch"
 
 
 ## number of cores for -j
-NCORES="$(ncore)" 
+## use ncore if present
+## or try to get it from /proc if not 
+if [[ "$(which ncore 2> /dev/null)x" != "x" ]]; then
+	NCORES="$(ncore)" 
+else
+	NCORES="$(grep -c "processor" /proc/cpuinfo)"
+fi
+
+## add 2 process for configure and fetching
 let NCORES=${NCORES}+2
 
 
