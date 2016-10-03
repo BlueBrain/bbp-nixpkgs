@@ -1,4 +1,4 @@
-{ stdenv, fetchgit, pkgconfig, boost, cmake, zlib, hdf5 }:
+{ stdenv, fetchgit, pkgconfig, boost, cmake, zlib, hdf5, highfive }:
 
 stdenv.mkDerivation rec {
   name = "mvd-tool-${version}";
@@ -19,6 +19,8 @@ stdenv.mkDerivation rec {
   doCheck = true;
   
   checkTarget = "test";
+
+  propagatedBuildInputs = [ highfive ];
   
 }
 
