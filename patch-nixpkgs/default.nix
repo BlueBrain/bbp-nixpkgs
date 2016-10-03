@@ -56,7 +56,7 @@ let
           #    with system configuration
 
          slurm-llnl-minimal = callPackage ./slurm {
-		inherit config;
+				inherit config;
                 lua = null;
                 numactl = null;
                 hwloc = null;
@@ -159,7 +159,7 @@ let
     ## PETSc utility toolkit
     #
     petsc = callPackage ./petsc {
-		        mpiRuntime = pkgs.openmpi;
+	        mpiRuntime = pkgs.openmpi;
 			blas = openblasCompat;
 			blasLibName = "openblas";
 			liblapack = openblasCompat;
@@ -180,10 +180,13 @@ let
             tcl = tcl-8_5;
     };
 
-        envModuleGen = callPackage ./env-modules/generator.nix;
-        
+    envModuleGen = callPackage ./env-modules/generator.nix;
 
-    };
+	gitreview = callPackage ./gitreview {
+
+	};
+
+	};
     
     additionalPythonPackages = pythonPackages:  rec {
 
