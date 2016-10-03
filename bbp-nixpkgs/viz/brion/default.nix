@@ -24,9 +24,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal {
     url = "https://github.com/BlueBrain/Brion.git";
-    rev = "0877e10f589e49682d5164886d7518cafac197a6";
-    sha256 = "0gl1znigwahivxwc9ymqp5sf4l928kvs452323k42nfk8pvnbfxg";
-	fetchSubmodules = true;
+    rev = "f9defb9eff8186dd2f05c7672a94e68a3ad9d23d";
+    sha256 = "1gpb1bkvw5w8iz7bf8amn9ny7167nmdk4kd70lds5ngxvki2np7g";
   };
 
 
