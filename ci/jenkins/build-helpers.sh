@@ -102,6 +102,7 @@ function buildDerivationList {
 	echo "### Launch build for $@"
  	NB_PKGS="$#"
 	echo "#### configured for ${NB_PKGS} derivations"	
+	echo "#### parallel build with -j ${NCORES} "
 
 	export PKG_BUILD_DRV=""
 	for i in "$@"
