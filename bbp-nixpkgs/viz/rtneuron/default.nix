@@ -37,8 +37,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal{
     url = "ssh://bbpcode.epfl.ch/viz/RTNeuron";
-    rev = "6b8cbd9f77304219ab5c679028de78bba6754773";
-    sha256 = "1wbjj1zlc8r4r8bd1wn4398zch8630a0y61vsp51s361blhnwhg2";
+    rev = "7784a737cb7a4f91e39e7c9f3dcf70c6666f38b8";
+    sha256 = "0yfb2d8k5lzp9kjvgknq9bzfpb0bdaawgxygjin3ddcnplc7l3l6";
   };
 
   enableParallelBuilding = true;

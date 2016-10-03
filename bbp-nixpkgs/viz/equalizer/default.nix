@@ -24,8 +24,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal {
     url = "https://github.com/Eyescale/Equalizer.git";
-    rev = "2949626596bb9d4fe4cb49e965d3a4dfc44580dc";
-    sha256 = "02jpzswg8rk32v3qk5jjfxx2k3ym5q5p2ijf7zjznncf11gwqby1";
+    rev = "bf0ba1a2786e05bd10c6e8555f7df12cf416817f";
+    sha256 = "0vz43jbjibhjmg5mvp2mkzr2h8c4r0vifqb944vnvqrnn51iks1q";
   };
 
   # need to have the lib directory in LDPATH for binary creation 
