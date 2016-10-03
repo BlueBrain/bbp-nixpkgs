@@ -683,9 +683,37 @@ let
       };
       
 
+	dev-env-gcc = pkgs.envModuleGen rec {
+            name = "dev-env-gcc";
+            version = "09.2016";
+            description = "GCC development environment from nix";
+            dependencies = [
+							# compiler
+                            gcc
+							
+							# VCS
+							git mercurial 
+							#build tools
+							cmake
+		
+							# libs
+							mvapich2
+							boost
+							zlib
+							hdf5
+							libxml2
+							openblas
+							swig
+							readline
+							ncurses
+							
+                       ];
+			conflicts = conflicts-modules;
+    };
 
+	 
       
-      all = pkgs.buildEnv {
+     all = pkgs.buildEnv {
         name = "all-modules";
         paths = [ boost mvapich2 hdf5 libxml2 zlib
                   openblas petsc folly
@@ -709,6 +737,9 @@ let
 
 				  #rdma local specific
 				  mvapich2-rdma
+
+				  #dev env
+				  dev-env-gcc
                 ];
       };
      

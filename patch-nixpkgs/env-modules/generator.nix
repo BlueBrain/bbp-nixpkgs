@@ -6,7 +6,8 @@ version ? "",
 moduleFilePrefix ? "nix",
 moduleFileSuffix ? "",
 conflicts ? [] ,
-packages,
+dependencies ? [],
+packages ? [],
 setRoot ? "",
 isLibrary ? false,
 isDefault ? false,
@@ -14,8 +15,6 @@ description ? "" ,
 extraContent ? ""
 }:
 
-assert builtins.isList packages;
-assert builtins.length packages > 0;
 
  let
     pathSuffixExist = suffix:
@@ -90,7 +89,7 @@ set     root        ${targetEnv}
 
 
 ${depBuilder "conflict" conflicts}
-
+${depBuilder "prereq" dependencies}
 ## check if any binaries are available
 if { [file exists ${targetEnvBin} ] } {
         prepend-path PATH ${targetEnvBin}
