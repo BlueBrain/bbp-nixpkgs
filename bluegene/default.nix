@@ -85,7 +85,9 @@ let
 	xlc = callPackage ./xlc { };
 
 
-	bgq-glibc = callPackage ./bgq-glibc-native { } ;
+	bgq-glibc = callPackage ./bgq-glibc-native {
+		inherit bgq-driver;
+	 } ;
   
  
   	gcc-bgq =   (callPackage ./gcc-bgq { inherit bgq-driver; }) // { target = crossBGQSystem; } ;
