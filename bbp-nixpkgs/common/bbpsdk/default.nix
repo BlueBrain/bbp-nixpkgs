@@ -1,14 +1,26 @@
-{ stdenv, fetchgitExternal, boost, lunchbox, brion, vmmlib, servus, cmake,  pkgconfig, python, hdf5, doxygen }:
+{ stdenv
+, fetchgitExternal
+, boost
+, lunchbox
+, brion
+, vmmlib
+, servus
+, mvdtool 
+, cmake
+, pkgconfig
+, python
+, hdf5
+, doxygen }:
 
 stdenv.mkDerivation rec {
   name = "bbpsdk-${version}";
   version = "0.25";
-  buildInputs = [ stdenv pkgconfig boost brion vmmlib servus cmake lunchbox python hdf5 doxygen];
+  buildInputs = [ stdenv pkgconfig boost brion vmmlib servus mvdtool cmake lunchbox python hdf5 doxygen];
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/common/BBPSDK";
-    rev= "b56d8a0cc18fb92d0c0579bce03ff21e61c174bb";
-    sha256 = "1wr1yflbzs7lb6jcw4x5ka2im3rvj22zkw7011n58y091qvhydp8";
+    rev= "bbf564e45237573ce860bcc68d92fdd0f5e09930";
+    sha256 = "1zaiavabx5j2xqiwyybrr046v829wxkyi5k4adrr5inlzjgzm0n8";
   };
 
 
