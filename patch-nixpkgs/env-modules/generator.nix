@@ -29,7 +29,7 @@ extraContent ? ""
                     else "default";
                     
     
-    moduleFilePath = "${name}/${moduleFileSuffix}/${versionString}";
+    moduleFilePath = ''${name}/${if (moduleFileSuffix != "") then "${moduleFileSuffix}/" else ""}${versionString}'';
                         
     depBuilder = depPrefixString: depList:  
                                           let 
@@ -89,7 +89,7 @@ set     root        ${targetEnv}
 
 
 ${depBuilder "conflict" conflicts}
-${depBuilder "prereq" dependencies}
+${depBuilder "module load" dependencies}
 ## check if any binaries are available
 if { [file exists ${targetEnvBin} ] } {
         prepend-path PATH ${targetEnvBin}
