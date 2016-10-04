@@ -711,13 +711,41 @@ let
 			conflicts = conflicts-modules;
     };
 
+	dev-env-clang = pkgs.envModuleGen rec {
+            name = "dev-env-clang";
+            version = "09.2016";
+            description = "clang development environment from nix";
+            dependencies = [
+							# compiler
+                            clang
+							
+							# VCS
+							git mercurial 
+							#build tools
+							cmake
+		
+							# libs
+							mvapich2
+							boost
+							zlib
+							hdf5
+							libxml2
+							openblas
+							swig
+							readline
+							ncurses
+							
+                       ];
+			conflicts = conflicts-modules;
+    };
+
 	 
       
      all = pkgs.buildEnv {
         name = "all-modules";
         paths = [ boost mvapich2 hdf5 libxml2 zlib
                   openblas petsc folly
-                  bison flex swig gcc clang
+                  bison flex swig gcc 
 		  
  
                   cmake readline ncurses
@@ -769,6 +797,8 @@ let
         paths = [ 
                 papi 
                 hpctoolkit
+				dev-env-clang
+				clang
                 ];
       };
 
