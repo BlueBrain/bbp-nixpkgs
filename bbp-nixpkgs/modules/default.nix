@@ -8,7 +8,7 @@ let
 
       conflicts-modules = [ "mvapich2" "mvapich2-psm-x86_64" "openmpi" "gcc" "mpich2" "virtualgl"  ];
 
-	  nix-target-prefix = if isBlueGene then "nix/bgq/" else "nix/";
+	  nix-target-prefix = if isBlueGene then "nix/bgq" else "nix";
 
 	  bgq-cross = pkg: if isBlueGene then pkg.crossDrv else pkg;
 
