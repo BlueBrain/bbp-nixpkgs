@@ -126,6 +126,13 @@ let
             extraConfigureFlags = [ "--with-device=ch3:nemesis"];
         };
 
+        mvapich2-clang = mvapich2.override {
+            stdenv = ( overrideCC stdenv clang);
+        };
+
+
+
+
 
 		mvapich2-rdma =  if (builtins.pathExists "/usr/include/infiniband/") then (mvapich2.override {
 			librdmacm = ibverbs-local;
