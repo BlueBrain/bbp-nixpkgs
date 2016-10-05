@@ -8,11 +8,14 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/MVDTool.git";
-    rev = "782bee8a9ecd9872df12001e6e6fc585ea56ec63";
-    sha256 = "0lm46sqf5yrcjip43ww9lrp4q50q9hghis6l7k066p7l6inh8a11";
+    rev = "fa7523e24df0bd5e2db5997cdd666295693a8fc2";
+    sha256 = "1fpjz9zfn5slfmdsa92zkxbkx7amziq8wa64ic49i22ccg19ymj5";
   };
   
-  cmakeFlags="-DUNIT_TESTS=TRUE";   
+  cmakeFlags=[ 
+			   "-DUNIT_TESTS=ON"
+			   "-DMVDTOOL_INSTALL_HIGHFIVE=OFF"
+			 ];   
 
   enableParallelBuilding = true;
   
