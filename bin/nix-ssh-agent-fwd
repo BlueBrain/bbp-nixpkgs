@@ -1,0 +1,64 @@
+#!/bin/bash
+
+
+# globals
+NIX_DAEMON_USER="nix-daemon"
+NIX_PATH_CONTENT="$NIX_PATH"
+TMP_SSH_CONFIG_DIR="$(mktemp -d /tmp/nix-ssh-config-XXXXXXXXX)"
+
+
+## configure ssh agent location
+##
+if [[ -e ${SSH_AUTH_SOCK} ]]; then
+
+NIX_PATH_CONTENT="ssh-auth-sock=${SSH_AUTH_SOCK}:${NIX_PATH_CONTENT}"
+
+setfacl -m "u:${NIX_DAEMON_USER}:rwx" ${SSH_AUTH_SOCK}
+setfacl -m "u:${NIX_DAEMON_USER}:rwx" "$(dirname ${SSH_AUTH_SOCK})"
+
+else
+	echo "Error: ssh-agent environment variable  SSH_AUTH_SOCK is not existing" >&2
+	
+fi
+
+
+
+## configure ssh config path 
+mkdir -p ${TMP_SSH_CONFIG_DIR}/.ssh
+
+TMP_SSH_CONFIG_FILE="${TMP_SSH_CONFIG_DIR}/.ssh/config"
+
+## use ssh_config user file as initial template
+## if it exists
+## to forward user alias and parameters
+##
+if [[ -e ${HOME}/.ssh/config ]]; then
+	cp ${HOME}/.ssh/config ${TMP_SSH_CONFIG_FILE}
+else
+	touch ${TMP_SSH_CONFIG_FILE}
+fi
+
+
+## Disable strict host key checking
+## Needed to have the nix-daemon able to read
+## a file not owned by him without throwing
+## a SSH error
+##
+cat >> ${TMP_SSH_CONFIG_FILE} << EOF
+
+Host *
+        StrictHostKeyChecking no
+        UserKnownHostsFile /dev/null
+EOF
+
+
+setfacl -m "u:${NIX_DAEMON_USER}:rwx" -R ${TMP_SSH_CONFIG_DIR}
+NIX_PATH_CONTENT="ssh-config-file=${TMP_SSH_CONFIG_FILE}:${NIX_PATH_CONTENT}"
+
+
+
+##
+## print the suggested NIX_PATH including SSH config file and agent
+##
+echo "export NIX_PATH=\"${NIX_PATH_CONTENT}\""
+
