@@ -31,6 +31,9 @@ stdenv.mkDerivation rec {
   # precify the neuron path manually
   cmakeFlags=''${if isBGQ then ''-DADD_LIBS="-qsmp"'' else ''''} -DBluron_PREFIX_DIR=${nrnEnv}/'';
 
+ passthru = {
+	src = src;
+ }; 
 
   MODLUNIT="${nrnEnv}/share/nrn/lib/nrnunits.lib";
   
