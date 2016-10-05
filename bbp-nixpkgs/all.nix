@@ -213,6 +213,14 @@ let
 			nrnEnv = mergePkgs.neuron;    
 		};
 
+		neurodamus-coreneuron = neurodamus.overrideDerivation ( oldAttr: {
+                        src = fetchgitExternal {
+                          url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
+                          rev = "d2b246b3598dd7f87ed2f589900938b67a315a97";
+                          sha256 = "2ml6dkmz0cyy06f2kzl4xhy0mn57riqjdhc00p6dhi3r6b9gq5j0";
+                        };
+		});
+
 		neuromapp = enableBGQ callPackage ./hpc/neuromapp {
 			mpiRuntime = bbp-mpi;
 		};
