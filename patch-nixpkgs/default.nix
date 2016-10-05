@@ -24,6 +24,26 @@ let
 
 		};
 
+
+		## new virtualGL verison for viz team
+        virtualgl = std-pkgs.virtualgl.overrideDerivation ( oldAttr: rec {
+			version ="2.5.1";
+  			name = "virtualgl-${version}";
+		    src = fetchFromGitHub {
+				owner = "VirtualGL";
+				repo = "VirtualGL";
+				rev = "d06ce499b566d7ef9c285ffc2a74a2fe5d58b8df";
+			    sha256 = "1yhdn0p5l42wbdppxmks4a4z4p5kqzgj9a9k94qf8nh3rh4cqwrl";
+		    };
+
+		  patches = [];
+		  prePatch = ''
+		    sed -i s,LD_PRELOAD=lib,LD_PRELOAD=$out/lib/lib, server/vglrun.in
+		  '';
+
+
+		});
+
         ## patch version of HDF5 with 
         # cpp bindigns enabled        
         hdf5-cpp = callPackage ./hdf5 {
