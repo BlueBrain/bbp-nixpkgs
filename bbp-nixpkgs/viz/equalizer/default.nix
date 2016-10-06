@@ -28,6 +28,8 @@ stdenv.mkDerivation rec {
     sha256 = "1gbk8yva5mb4919lzii7dm78kd8p2ch87mqnzjy1fshb9zvxp8xz";
   };
 
+  patches  = [ ./qt.patch ];
+
   # need to have the lib directory in LDPATH for binary creation 
   preBuild = ''
 	export LD_LIBRARY_PATH="''${PWD}/lib:''${LDLIBRARY_PATH}"
