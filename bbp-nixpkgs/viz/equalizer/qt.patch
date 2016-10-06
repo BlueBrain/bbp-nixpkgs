@@ -1,0 +1,13 @@
+diff -ur Equalizer-cc86c17/eq/CMakeLists.txt Equalizer-cc86c17.new/eq/CMakeLists.txt
+--- Equalizer-cc86c17/eq/CMakeLists.txt	2016-10-06 17:35:21.208485400 +0200
++++ Equalizer-cc86c17.new/eq/CMakeLists.txt	2016-10-06 17:35:04.740473743 +0200
+@@ -58,6 +58,9 @@
+   pixelData.h
+   qt/types.h
+   qt/window.h
++  qt/shareContextWindow.h
++  qt/windowFactory.h
++  qt/windowSystem.h
+   resultImageListener.h
+   segment.h
+   server.h
