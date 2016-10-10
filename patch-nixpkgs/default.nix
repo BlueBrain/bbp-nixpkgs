@@ -27,13 +27,13 @@ let
 
 		## new virtualGL verison for viz team
         virtualgl = std-pkgs.virtualgl.overrideDerivation ( oldAttr: rec {
-			version ="2.5.1";
+			version ="2.5.1-fixaliasing";
   			name = "virtualgl-${version}";
 		    src = fetchFromGitHub {
 				owner = "VirtualGL";
 				repo = "VirtualGL";
-				rev = "d06ce499b566d7ef9c285ffc2a74a2fe5d58b8df";
-			    sha256 = "1yhdn0p5l42wbdppxmks4a4z4p5kqzgj9a9k94qf8nh3rh4cqwrl";
+				rev = "5efe949c6f85c6ddf6bc5b786c6ce505bbd1d5d1";
+			    	sha256 = "0wdpdvk1dw19b78zj7p7sa393j1cvssab10b48qlvjk6f06xn8kb";
 		    };
 
 		  patches = [];
