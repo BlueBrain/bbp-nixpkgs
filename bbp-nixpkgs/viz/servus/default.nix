@@ -1,8 +1,8 @@
-{ stdenv, fetchgitExternal, cmake,  boost, pkgconfig, doxygen }:
+{ stdenv, fetchgitExternal, cmake,  boost, pkgconfig, doxygen, avahi ? null }:
 
 stdenv.mkDerivation rec {
   name = "servus-1.4.0";
-  buildInputs = [ stdenv pkgconfig boost cmake doxygen];
+  buildInputs = [ stdenv pkgconfig boost cmake doxygen avahi];
 
   src = fetchgitExternal {
     url = "https://github.com/HBPVIS/Servus.git";  
