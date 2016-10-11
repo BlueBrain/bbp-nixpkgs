@@ -44,13 +44,22 @@ let
 
 		});
 
-	## nvidia openGL implementation
-	# required on viz cluster with nvidia hardware
-	# where the native library are not usable ( too old ) 
-	nvidia-x11-34032 = callPackage ./nvidia-driver/legacy340-32-kernel26.nix {
-		libsOnly = true;
-		kernel = null;
-	};
+		# ispc compiler for brayns
+		ispc = callPackage ./ispc {
+			# require clang compiler
+			inherit clangStdenv;
+			clangUnwrapped = llvmPackages.clang-unwrapped;
+			#require cmake 3.6
+			inherit cmake36;
+		};
+
+		## nvidia openGL implementation
+		# required on viz cluster with nvidia hardware
+		# where the native library are not usable ( too old ) 
+		nvidia-x11-34032 = callPackage ./nvidia-driver/legacy340-32-kernel26.nix {
+			libsOnly = true;
+			kernel = null;
+		};
 
 
 
@@ -176,16 +185,18 @@ let
 
         };
 
-        #cmake = std-pkgs.cmake.overrideDerivation ( oldAttr: rec {
-        #       majorVersion = "3.6";
-        #       minorVersion = "1";
-        #       version = "${majorVersion}.${minorVersion}";            
-        #
-        #         src = fetchurl {
-        #           url = "${oldAttr.meta.homepage}files/v${majorVersion}/cmake-${version}.tar.gz";
-        #           sha256 = "04ggm9c0zklxypm6df1v4klrrd85m6vpv13kasj42za283n9ivi8";
-        #         };
-        # });
+        cmake36 = std-pkgs.cmake.overrideDerivation ( oldAttr: rec {
+               majorVersion = "3.6";
+               minorVersion = "1";
+               version = "${majorVersion}.${minorVersion}";            
+        
+                 src = fetchurl {
+                   url = "${oldAttr.meta.homepage}files/v${majorVersion}/cmake-${version}.tar.gz";
+                   sha256 = "04ggm9c0zklxypm6df1v4klrrd85m6vpv13kasj42za283n9ivi8";
+                 };
+	
+				outputs = [ "out" "doc" ];
+         });
 
         ##
         #
