@@ -29,7 +29,7 @@ let
 	 else {};
 
 	in
-	   configExpr;
+	   configExpr // { allowUnfree = true; };
 
 	## import all config: blue gene override and others 
 	all-config = (import ./bluegene/config.nix) // configSystem // config ;
