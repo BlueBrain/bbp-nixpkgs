@@ -94,6 +94,10 @@ let
 
 		}; 
 
+		zerobuf = callPackage ./viz/zerobuf {
+
+        };
+
 		brion = callPackage ./viz/brion {   
 
 		}; 
@@ -121,6 +125,16 @@ let
 		rtneuron = callPackage ./viz/rtneuron {   
 		
 		};  
+
+		ospray = callPackage ./viz/ospray {
+
+
+        };
+
+		brayns = callPackage ./viz/brayns {
+
+
+		};
 
 		##
 		## BBP HPC components
