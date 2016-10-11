@@ -27,10 +27,11 @@ stdenv.mkDerivation rec {
 	};
 
 
-
 	outputs = [ "out" "doc" ];
 
     propagatedBuildInputs = [ ispc ];
+
+	enableParallelBuilding = true;
 
 
 }

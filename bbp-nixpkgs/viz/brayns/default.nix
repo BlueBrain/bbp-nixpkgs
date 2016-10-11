@@ -38,6 +38,7 @@ stdenv.mkDerivation rec {
 				## this idiotic -WError at release time....
 				"-DXCODE_VERSION=1" ];
 
+  enableParallelBuilding = true;
 	
 
 }
