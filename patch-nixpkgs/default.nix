@@ -19,8 +19,13 @@ let
 	    };
 		
 
+		##open scene graph, for viz software
 		openscenegraph = callPackage ./openscenegraph {
 
+		};
+	
+		##httpxx, http protocol parser for C++ 
+		httpxx = callPackage ./httpxx {
 
 		};
 

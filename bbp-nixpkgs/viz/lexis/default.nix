@@ -1,18 +1,26 @@
-{ stdenv, boost, fetchgitExternal, cmake }:
+{ stdenv
+, boost
+, fetchgitExternal
+, cmake
+, zeroeq
+, zerobuf 
+}:
 
 stdenv.mkDerivation rec {
-  name = "lunchbox-1.12.0";
-  buildInputs = [ stdenv boost pkgconfig cmake ];
+  name = "lexis-1.12.0";
+  buildInputs = [ stdenv boost zeroeq zerobuf ];
+  nativeBuildInputs = [ cmake zerobuf.python ];
 
-  src = fetchgitExternal{
-    url = "https://github.com/Eyescale/Lunchbox.git";
-    rev = "3a51571880103e93777ebc339f938137aa33b76c";
-    sha256 = "1qpc5q24xxxyglqm1xchrhz7mxyp7sz72p48hal885shm6h84vm5";
+
+  src = fetchgitExternal {
+    url = "https://github.com/HBPVIS/Lexis.git";
+    rev = "c24dc078337d0c6f65ab057178bd7d9d655732ee";
+    sha256 = "1qhi41an0b7vi5jl0fvaq7q5ivqgjnfgbh6d9xj8vq5v17hhqj8v";
   };
   
   enableParallelBuilding = true;
 
-  propagatedBuildInputs = [ servus ];
+  propagatedBuildInputs = [ zeroeq zerobuf  ];
   
 }
 
