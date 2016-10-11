@@ -98,6 +98,14 @@ let
 
         };
 
+		zeroeq = callPackage ./viz/zeroeq {
+
+		};
+
+		lexis = callPackage ./viz/lexis {
+
+		};
+
 		brion = callPackage ./viz/brion {   
 
 		}; 
@@ -107,6 +115,10 @@ let
 		};
 
 		collage = callPackage ./viz/collage {
+
+		};
+
+		deflect = callPackage ./viz/deflect {
 
 		};
 
