@@ -182,6 +182,10 @@ let
 
 		};
 
+		morpho-tool = callPackage ./hpc/morpho-tool {
+
+		};
+
 		highfive = callPackage ./hpc/highfive {	
 		
 		};
