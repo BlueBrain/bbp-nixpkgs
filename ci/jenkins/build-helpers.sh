@@ -36,11 +36,12 @@ function installNixMonoUser {
 }
 
 function setupProxyVM {
-## VM are proxyfied
+	## VM are proxyfied
 	export BBP_NETWORK_PROXY=http://bbpfe08.epfl.ch:80/
 	echo "### configure Proxy to ${BBP_NETWORK_PROXY} "
 	export ALL_PROXY=$BBP_NETWORK_PROXY
 	export http_proxy=$BBP_NETWORK_PROXY
+	export https_proxy=$BBP_NETWORK_PROXY
 
 }
 
@@ -72,7 +73,7 @@ function setupNixEnvironment {
 	fi
 
 	installNixMonoUser
-	if [[ "${NODE_NEED_PROXY}x" != "x" ]]; then
+	if [[ "${NODE_NEED_PROXY}x" != "x" ]] || [[ "${HTTP_PROXY}x" != "x" ]]; then
 		setupProxyVM
 	fi
 	initAllChannels
