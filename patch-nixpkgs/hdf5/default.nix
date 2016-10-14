@@ -27,12 +27,12 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = []
     ++ stdenv.lib.optional (mpi != null) mpi;
 
-  configureFlags = "
-    ${if szip != null then "--with-szlib=${szip}" else ""}
-    ${if mpi != null then "--enable-parallel" else ""}
-    ${if enableShared then "--enable-shared" else ""}
-    ${if enableCpp then "--enable-cxx" else ""}
-  ";
+  configureFlags = [
+     (if szip != null then "--with-szlib=${szip}" else "")
+    (if mpi != null then "--enable-parallel" else "")
+    (if enableShared then "--enable-shared" else "")
+    (if enableCpp then "--enable-cxx" else "")
+  	];
   
   patches = [./bin-mv.patch];
   

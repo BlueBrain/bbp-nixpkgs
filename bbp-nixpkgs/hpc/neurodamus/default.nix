@@ -12,14 +12,15 @@
 }:
 
 stdenv.mkDerivation rec {
-  name = "neurodamus-1.9.0";
+  name = "neurodamus-${version}";
+  version = "1.9.0-201609";
   buildInputs = [ stdenv which cmake pkgconfig hdf5 ncurses zlib mpiRuntime reportinglib nrnEnv ];
 
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
-    rev = "3de16b8e4e5ae3cc2080afc03ecdb93a9ed597c5";
-    sha256 = "05wzlq15fvsvjp3xhkzjwc09gw3nrl9s4lq3rri3qsv41dm3hdl4";
+    rev = "e38ea3b7b94ef73e538d0c6da59b827f24f40c55";
+    sha256 = "1ml6dkmz0cyy06f2kzl4xhy0mn57riqjdhc00p6dhi3r6b9gq5j0";
   };
   
 
@@ -30,6 +31,9 @@ stdenv.mkDerivation rec {
   # precify the neuron path manually
   cmakeFlags=''${if isBGQ then ''-DADD_LIBS="-qsmp"'' else ''''} -DBluron_PREFIX_DIR=${nrnEnv}/'';
 
+ passthru = {
+	src = src;
+ }; 
 
   MODLUNIT="${nrnEnv}/share/nrn/lib/nrnunits.lib";
   
@@ -38,9 +42,13 @@ stdenv.mkDerivation rec {
   # and reference statically this one
   postInstall = if isBGQ == false then 
 ''
+## rename accordingly special mech path
 grep -v "\-dll" $out/bin/special > ./special.tmp
 cp ./special.tmp $out/bin/special
 echo " \"\''${NRNIV}\" -dll \"$out/lib/libnrnmech.so\" \"\$@\" " >> $out/bin/special
+## nrn mech is not installed properly by cmake 
+mkdir -p $out/lib
+cp lib/*/*/.libs/*.so* $out/lib/
 '' 
   else
 '' '';

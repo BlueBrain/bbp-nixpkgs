@@ -9,22 +9,31 @@ pkgconfig,
 hdf5-cpp, 
 zlib, 
 mvdtool,
+python,
+pythonPackages,
 doxygen }:
 
 stdenv.mkDerivation rec {
-  name = "brion-1.6.0-DEV";
-  buildInputs = [ stdenv pkgconfig boost cmake vmmlib servus lunchbox hdf5-cpp zlib doxygen ];
+  name = "brion-${version}";
+  version = "1.8";
+
+  buildInputs = [ stdenv pkgconfig 
+				  mvdtool boost 
+				  python pythonPackages.numpy 
+				  cmake vmmlib servus lunchbox hdf5-cpp zlib doxygen ];
 
   src = fetchgitExternal {
     url = "https://github.com/BlueBrain/Brion.git";
-    rev = "f936a450d6bdd56355f2752d9038fcc39ebb7943";
-    sha256 = "1cn6fcg9whjnq2344sw6mdj1xf7dsb7sp3m5csdxk421n5i2xlpm";
+    rev = "f9defb9eff8186dd2f05c7672a94e68a3ad9d23d";
+    sha256 = "1gpb1bkvw5w8iz7bf8amn9ny7167nmdk4kd70lds5ngxvki2np7g";
   };
 
 
   enableParallelBuilding = true;
 
-
+  ## horrible hack to disable the -WError maddness
+  ##
+  cmakeFlags = "-DXCODE_VERSION=1";
    
 }
 

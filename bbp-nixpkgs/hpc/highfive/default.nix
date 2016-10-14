@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "BlueBrain";
     repo = "HighFive";
-    rev = "ba0f864bbf1d1a7a217359fdc494053a4d8bd94e";
-    sha256 = "0hi4l9bmj9kvadvpn2mwlm871jk1ssdskfc48wmd9r3rjx6maczy";
+    rev = "25627b085c1ecc5ef84b01260108f9a044e8074e";
+    sha256 = "1var09mar1da30d1avxi8qc9ny3wya87npz5m2gvq10sx1j1lnnz";
   }; 
 
   enableParallelBuilding = true;
@@ -18,6 +18,9 @@ stdenv.mkDerivation rec {
   doCheck = true;
   
   checkTarget = "test";
+
+
+  propagatedBuildInputs = [ hdf5 ];
   
 }
 

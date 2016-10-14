@@ -11,7 +11,8 @@ mpiRuntime,
 }:
 
 stdenv.mkDerivation rec {
-  name = "bluebuilder-1.2.1";
+  name = "bluebuilder-${version}";
+  version = "1.2.1";
   buildInputs = [ stdenv pkgconfig boost hpctools hdf5 zlib cmake mpiRuntime libxml2];
 
   src = fetchgitExternal {
