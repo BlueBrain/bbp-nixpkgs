@@ -28,7 +28,7 @@ stdenv.mkDerivation rec {
                     "--with-munge"
                     "--enable-fast"
                     "--disable-mcast"
-                    "--enable-threads=runtime"
+                    "--enable-threads=multiple"
                     "--enable-smpcoll" ]
                     ++  (if (enableXrc == true) then [ "--enable-xrc" ] else [ "--disable-xrc" ])
                     ++ (stdenv.lib.optional) (hwloc != null) ["--with-hwloc"]                    

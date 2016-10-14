@@ -9,18 +9,23 @@ pkgconfig,
 hdf5-cpp, 
 zlib, 
 mvdtool,
+python,
+pythonPackages,
 doxygen }:
 
 stdenv.mkDerivation rec {
   name = "brion-${version}";
   version = "1.8";
 
-  buildInputs = [ stdenv pkgconfig boost cmake vmmlib servus lunchbox hdf5-cpp zlib doxygen ];
+  buildInputs = [ stdenv pkgconfig 
+				  mvdtool boost 
+				  python pythonPackages.numpy 
+				  cmake vmmlib servus lunchbox hdf5-cpp zlib doxygen ];
 
   src = fetchgitExternal {
     url = "https://github.com/BlueBrain/Brion.git";
-    rev = "2fccd3fb1de1056038d4e3cc6dd848c98754cec1";
-    sha256 = "1fmqmj6zvw9c4m9b0fpmwq45dsnqghmiaqzk00q3dmrsf0hfpr6b";
+    rev = "f9defb9eff8186dd2f05c7672a94e68a3ad9d23d";
+    sha256 = "1gpb1bkvw5w8iz7bf8amn9ny7167nmdk4kd70lds5ngxvki2np7g";
   };
 
 

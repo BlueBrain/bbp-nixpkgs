@@ -1,13 +1,21 @@
 { stdenv
 , coreutils
 , binutils
-, nativePrefix ? "/opt/ibmcmp/vacpp/bg/12.1"
-, nativePrefix_c ? "/opt/ibmcmp/vac/bg/12.1"
+, which
 , BGQLibc ? "/bgsys/drivers/ppcfloor/gnu-linux/powerpc64-bgq-linux/"
 } :
 
 
+let
+	xlcPrefix = if (builtins.pathExists "/soft/compilers/ibmcmp-aug2015" ) then 
+			"/soft/compilers/ibmcmp-aug2015" else "/opt/ibmcmp";
+	nativePrefix = "${xlcPrefix}/vacpp/bg/12.1";
+	nativePrefix_c = "${xlcPrefix}/vac/bg/12.1";
+
+in
 stdenv.mkDerivation {
+    inherit xlcPrefix nativePrefix nativePrefix_c;
+
     name = "xlc-bgq-12.1.0";
     
     preferLocalBuild = true;  
@@ -35,10 +43,10 @@ stdenv.mkDerivation {
       
       popd
       
-      cp ${./compiler-wrapper.sh} $out/bin/compiler-wrapper
+      substituteAll ${./compiler-wrapper.sh} $out/bin/compiler-wrapper
       sed -i 's@prefix@${nativePrefix_c}@g' $out/bin/compiler-wrapper   
 
-      cp ${./compiler-wrapper.sh} $out/bin/compiler-wrapper-c++
+      substituteAll ${./compiler-wrapper.sh} $out/bin/compiler-wrapper-c++
       sed -i 's@prefix@${nativePrefix}@g' $out/bin/compiler-wrapper-c++
       
       chmod a+x $out/bin/compiler-wrapper* 
@@ -75,7 +83,7 @@ stdenv.mkDerivation {
       
       '';
       
-
+  propagatedBuildInputs = [ which ];
 
 }
 

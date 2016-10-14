@@ -2,15 +2,15 @@
 
 stdenv.mkDerivation rec {
   name = "mod2c-${version}";
-  version = "1.1.1";
+  version = "2.1.0";
   
   buildInputs = [ stdenv cmake pkgconfig bison flex python];
 
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/sim/mod2c";
-    rev = "1b7adb0ed4b10b0187a505b64768329008f822c5";
-    sha256 = "1r710f1lqf7b9wk1wdf0f2asxms157s4y8xcfcfhv611rq5m1835";
+    rev = "15dcfee880b7e79f0741c86bb7bc3a3b2515b85c";
+    sha256 = "09fzjcfhyc6n5jgmbd221xwz72fzmg5xxrsdzs09x1fa4i1cycy6";
   };
    
   

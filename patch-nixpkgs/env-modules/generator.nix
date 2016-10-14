@@ -4,18 +4,17 @@ buildEnv,
 name,
 version ? "",
 moduleFilePrefix ? "nix",
+moduleFileSuffix ? "",
 conflicts ? [] ,
-packages,
+dependencies ? [],
+packages ? [],
 setRoot ? "",
 isLibrary ? false,
 isDefault ? false,
-prefixDir ? "",
 description ? "" ,
 extraContent ? ""
 }:
 
-assert builtins.isList packages;
-assert builtins.length packages > 0;
 
  let
     pathSuffixExist = suffix:
@@ -30,7 +29,7 @@ assert builtins.length packages > 0;
                     else "default";
                     
     
-    moduleFileSuffix = "${name}/${versionString}";
+    moduleFilePath = ''${name}/${if (moduleFileSuffix != "") then "${moduleFileSuffix}/" else ""}${versionString}'';
                         
     depBuilder = depPrefixString: depList:  
                                           let 
@@ -75,7 +74,7 @@ stdenv.mkDerivation rec {
 cat > modulefile << EOF
 #%Module1.0#####################################################################
 ##
-## ${moduleFileSuffix}
+## ${moduleFilePath}
 ##
 ## modulefiles ${name}/${versionString} ${description}
 ##
@@ -90,7 +89,7 @@ set     root        ${targetEnv}
 
 
 ${depBuilder "conflict" conflicts}
-
+${depBuilder "module load" dependencies}
 ## check if any binaries are available
 if { [file exists ${targetEnvBin} ] } {
         prepend-path PATH ${targetEnvBin}
@@ -176,7 +175,7 @@ EOF
     installPhase = 
     ''
         mkdir -p $out/share/modulefiles/${moduleFilePrefix}
-        install -D modulefile $out/share/modulefiles/${moduleFilePrefix}/${moduleFileSuffix}
+        install -D modulefile $out/share/modulefiles/${moduleFilePrefix}/${moduleFilePath}
     ''
     + (if isDefault then 
     ''
@@ -184,7 +183,7 @@ EOF
     '' else '''');
     
     passthru = { 
-        modulename = "${moduleFilePrefix}/${moduleFileSuffix}";
+        modulename = "${moduleFilePrefix}/${moduleFilePath}";
     };
 
 }

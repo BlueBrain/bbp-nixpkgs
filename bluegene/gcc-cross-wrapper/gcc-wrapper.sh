@@ -66,6 +66,13 @@ fi
 extraAfter=($NIX_CROSS_CFLAGS_COMPILE)
 extraBefore=()
 
+## On BlueGene/Q
+## non-static stdc++ triggers problems with C++ exception support
+##force it by default
+if [[ "${DONT_USE_STATIC_STDCPP}x" == "x" ]]; then
+	extraBefore=('-static-libstdc++' '-static-libgcc')
+fi
+
 if test "$dontLink" != "1"; then
 
     # Add the flags that should only be passed to the compiler when

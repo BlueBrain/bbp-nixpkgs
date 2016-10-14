@@ -6,9 +6,14 @@
 
 
 let
-    MergePkgs = with MergePkgs;  pkgs // bgq-override;
-    bgq-override = with bgq-override; with MergePkgs; { 
+    bgq-driver = if (builtins.pathExists "/bgsys/drivers/V1R2M4") then "V1R2M4"
+		 else "V1R2M2";
 
+    MergePkgs = with MergePkgs;  pkgs // bgq-override;
+
+    bgq-override = with bgq-override; with MergePkgs; rec { 
+
+	inherit bgq-driver;
 
 	makeCrossSetupHook = { deps ? [], substitutions ? {} }: script:
 	    runCommand "hook" substitutions
@@ -32,7 +37,6 @@ let
     
 	# specific stdenv properties for BGQ cross compilation for stripping
 	bg-dontFixPath = { 
-		dontFixup = true; 
 		dontCrossStrip = true; 
 		dontStrip = true;		# avoid strip, same reason than before and we want to keep debug infos
 	};
@@ -74,15 +78,19 @@ let
 	    cross = crossBGQSystem;
 	  });
 
-
+	cnk-spi = callPackage ./cnk-spi { 
+		inherit bgq-driver;
+	};
 
 	xlc = callPackage ./xlc { };
 
 
-	bgq-glibc = callPackage ./bgq-glibc-native { } ;
+	bgq-glibc = callPackage ./bgq-glibc-native {
+		inherit bgq-driver;
+	 } ;
   
  
-  	gcc-bgq =   (callPackage ./gcc-bgq { }) // { target = crossBGQSystem; } ;
+  	gcc-bgq =   (callPackage ./gcc-bgq { inherit bgq-driver; }) // { target = crossBGQSystem; } ;
  
 
 	mpi-bgq = callPackage ./mpi-bgq {  
@@ -175,8 +183,8 @@ let
       bg-gccgo = bg-wrapGCCCross {
            gcc = forceNativeDrv (gcc47-proto.cc.override {
 	      stdenv = stdenv;
-              cross = crossBGQSystem;
-	      langC= true;
+          	 cross = crossBGQSystem;
+	      	  langC= true;
               langCC = true;
 	      langGo = true;
               langFortran = false;
@@ -194,9 +202,10 @@ let
 
 	## special MPICH 3.2 patched by Rob for BGQ
 	#
-       bg-mpich2 = (callPackage ./mpich2 {
+    bg-mpich = (callPackage ./mpich2 {
 		stdenv = bgq-stdenv-gcc47;
 		libc = bglibc;
+		cnk-spi = cnk-spi;
        });
 
 
@@ -248,7 +257,7 @@ let
 
 									hdf5 = bgq-hdf5-gcc47;
 
-									bbp-mpi = bg-mpich2;
+									bbp-mpi = bg-mpich;
 
 
 								 }
@@ -306,7 +315,7 @@ let
 	};
 
         bgq-pythonPackages-gcc47 = (import ./bg-pythonPackages { 
-								 mpiRuntime = bg-mpich2;
+								 mpiRuntime = bg-mpich;
 								 stdenv = bgq-stdenv-gcc47-nofix; 
 								 python = bgq-python27-gcc47; 
 								 bg-hdf5 = bgq-hdf5-gcc47;
@@ -359,12 +368,13 @@ let
 
 
 	bgq-boost-gcc47 = (all-pkgs-bgq-gcc47.boost.overrideDerivation (oldAttrs:  {
-                        patches = [ boost/boost-bgq.patch ];
-			disableLibraries= "context";
+                    patches = [ boost/boost-bgq.patch ];
+					disableLibraries= "context";
 	                dontFixup = false;
         	        dontCrossStrip = false;
 	                dontStrip = false; 
-        }));
+					DONT_USE_STATIC_STDCPP = "1";
+    }));
 
 
 	bgq-clapack = all-pkgs-bgq-gcc47.clapack.override {
@@ -383,13 +393,13 @@ let
 	
 
 	bgq-petsc-gcc47 = all-pkgs-bgq-gcc47.petsc.override {
-		inherit fetchgit;
-		stdenv = bgq-stdenv-gcc47;
+		fetchgit = fetchgit;
+		stdenv = enableDebugInfo bgq-stdenv-gcc47;
 		liblapack = bgq-openblas;
 		liblapackLibName = "openblas";
 		blas = bgq-openblas;
 		blasLibName = "openblas";
-		mpiRuntime = bg-mpich2;
+		mpiRuntime = bg-mpich;
 
 	};
 
@@ -402,28 +412,28 @@ let
 		bzip2 = bgq-bzip2;
 		libxml2 = bgq-libxml2;
 		mpiRuntime = mpi-bgq;
-		mpich2-gcc47 = bg-mpich2;
+		mpich2-gcc47 = bg-mpich;
 		stdenv = bgq-stdenv;
 		stdenv-gcc47 = bgq-stdenv-gcc47;
 		boost = bgq-boost;
-		python = bgq-python27-gcc47;
-		pythonPackages = bgq-pythonPackages-gcc47;
-		blas = MergePkgs.blis;
+		blas = bgq-openblas;
 	};
 
 
 	bgq-map-gcc47 = with MergePkgs; {
-         	cmake = bgq-cmake;
+        cmake = bgq-cmake;
 		hdf5 = bgq-hdf5-gcc47;
 	 	xz = bgq-xz-gcc47;
 		zlib = bgq-zlib-gcc47;
 		bzip2 = bgq-bzip2-gcc47;
 		stdenv = bgq-stdenv-gcc47;
-		mpiRuntime = bg-mpich2;
-		bbp-mpi = bg-mpich2;
-		blas = all-pkgs-bgq-gcc47.blis;
+		boost = bgq-boost-gcc47;
+		mpiRuntime = bg-mpich;
+		bbp-mpi = bg-mpich;
+		blas = bgq-openblas;
 		python = bgq-python27-gcc47;
 		petsc = bgq-petsc-gcc47;
+		cnk-spi = cnk-spi;
 
 	};
 	

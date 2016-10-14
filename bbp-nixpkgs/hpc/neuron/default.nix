@@ -63,10 +63,10 @@ EOF
                     '';
 
 
-    modlOnlyFlags = " --with-nmodl-only --without-x --without-memacs ";
+    modlOnlyFlags = "--with-nmodl-only --without-x --without-memacs ";
 
-    nrnOnlyFlags = "${if isBGQ then " --enable-bluegeneQ --without-iv --without-memacs --with-paranrn --without-nmodl --host=powerpc64 "
-             else " --with-paranrn --without-iv --without-nmodl --with-nrnpython=${python}/bin/python" }";
+    nrnOnlyFlags =  ("${if isBGQ then " --enable-bluegeneQ --without-iv --without-memacs --with-paranrn --without-nmodl --host=powerpc64 "
+             else " --with-paranrn --without-iv --without-nmodl --with-nrnpython=${python}/bin/python" }");
 
 
     configureFlags =   (if modlOnly then modlOnlyFlags

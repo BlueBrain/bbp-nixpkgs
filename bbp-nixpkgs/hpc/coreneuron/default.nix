@@ -1,28 +1,19 @@
-{ stdenv, fetchgitPrivate, perl, cmake, boost, pkgconfig, mpiRuntime, mod2c, mods-src}:
+{ stdenv, fetchgitPrivate, python, perl, cmake, boost, pkgconfig, mpiRuntime, mod2c, neurodamus-coreneuron}:
 
 stdenv.mkDerivation rec {
   name = "coreneuron-${version}";
-  version = "0.8.1-201608";
-  
-  buildInputs = [ stdenv perl cmake boost pkgconfig mpiRuntime mod2c];
+  version = "0.8.1-201609";
 
+  buildInputs = [ boost mpiRuntime mod2c ];
+
+  nativeBuildInputs= [ python perl pkgconfig cmake ];
+
+  cmakeFlags= ["-DADDITIONAL_MECHPATH=${neurodamus-coreneuron}/lib/modlib/" "-DADDITIONAL_MECHS=${neurodamus-coreneuron}/lib/modlib/coreneuron_modlist.txt"];
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/sim/coreneuron";
-    rev =  "06c9f07bb12d6f0d60da1eb64025d183e9c205d3";
-    sha256 = "10frfgjgfarbrbwfz4h9jiwycvh8crk441wwdafycdhd069wcq93";   
+    rev =  "6614b86b8756a30dc9b6e1ce3b6506556ec5d53c";
+    sha256 = "0rynlpypa03a55zw0w7aji95dw6a4c22nwhjwhpxwhp49jm568kk";
   };
 
-
-
-#   patchPhase=''
-#		mkdir -p coreneuron/mech;
-#		cp -r ${mods-src} coreneuron/mech/neurodamus;
-#		chmod -R 755 coreneuron/mech/neurodamus;
-#	'';
- 
-  
 }
-
-
-
