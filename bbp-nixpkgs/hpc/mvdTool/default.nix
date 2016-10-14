@@ -1,22 +1,29 @@
-{ stdenv, fetchgit, pkgconfig, boost, cmake, zlib, hdf5 }:
+{ stdenv, fetchgit, pkgconfig, boost, cmake, zlib, hdf5, highfive }:
 
 stdenv.mkDerivation rec {
-  name = "mvdTool-1.0";
+  name = "mvd-tool-${version}";
+  version = "1.1";
+  
   buildInputs = [ stdenv pkgconfig boost zlib cmake hdf5];
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/MVDTool.git";
-    rev = "f4acff6237f8768e660dd3dcf9d192316eac22bf";
-    sha256 = "0x92r782ig2irs04x4snz309hpa3gsx6rbfppwr9pnppz1mz22i4";
+    rev = "fa7523e24df0bd5e2db5997cdd666295693a8fc2";
+    sha256 = "1fpjz9zfn5slfmdsa92zkxbkx7amziq8wa64ic49i22ccg19ymj5";
   };
   
-  cmakeFlags="-DUNIT_TESTS=TRUE";   
+  cmakeFlags=[ 
+			   "-DUNIT_TESTS=ON"
+			   "-DMVDTOOL_INSTALL_HIGHFIVE=OFF"
+			 ];   
 
   enableParallelBuilding = true;
   
   doCheck = true;
   
   checkTarget = "test";
+
+  propagatedBuildInputs = [ highfive ];
   
 }
 

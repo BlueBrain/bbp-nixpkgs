@@ -1,6 +1,7 @@
 { stdenv
 , coreutils
 , binutils
+, which 
 , cc 
 , commBGQPrefix ? "/bgsys/drivers/ppcfloor/comm"
 } :
@@ -42,8 +43,8 @@ stdenv.mkDerivation {
       ln -s $out/bin-all/xl $out/bin
       
       
-      echo "${cc}" >> $out/nix-support/propagated-user-env-packages
-      echo "${cc}" >> $out/nix-support/propagated-native-build-inputs
+      echo "${cc} ${which}" >> $out/nix-support/propagated-user-env-packages
+      echo "${cc} ${which}" >> $out/nix-support/propagated-native-build-inputs
       
       '';
       
