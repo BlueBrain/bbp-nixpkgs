@@ -165,18 +165,23 @@ let
             extraConfigureFlags = [ "--with-device=ch3:nemesis"];
         };
 
+        ## mvapich2 with clang wrapper
         mvapich2-clang = mvapich2.override {
             stdenv = ( overrideCC stdenv clang);
         };
 
 
 
-
-
+        ## MVAPICH 2 support with RDMA / Infiniband
         mvapich2-rdma =  if (builtins.pathExists "/usr/include/infiniband/") then (mvapich2.override {
             librdmacm = ibverbs-local;
             libibverbs = ibverbs-local;
             extraConfigureFlags = [];
+            
+            ## InfiniBand driver ABI / API is not stable nor portable
+            ## We need to compile both IB and mvapich2 locally
+            ##              
+			enforceLocalBuild = true;
         }) else mvapich2;
 
 

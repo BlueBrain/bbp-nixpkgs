@@ -10,6 +10,7 @@ libibverbs ? null,
 librdmacm ? null,
 enableXrc ? false,
 debugInfo ? true,
+enforceLocalBuild ? false,
 extraConfigureFlags ? [] }:
 
 stdenv.mkDerivation rec {
@@ -37,7 +38,7 @@ stdenv.mkDerivation rec {
                     ++ (stdenv.lib.optional)  (libibverbs != null) [ "--with-ibverbs-include=${libibverbs}/include" "--with-ibverbs-lib=${libibverbs}/lib" ]
                     ++ (stdenv.lib.optional)  (debugInfo != null) [ "--enable-g=dbg" "--enable-debuginfo"]
                     ++ (stdenv.lib.optional) (librdmacm != null) [ "--with-mpe" "--enable-rdma-cm" "--with-rdma=gen2"
-                          "--with-ib-libpath=${librdmacm}/lib" "--with-ib-include=${librdmacm}/include" ]                  
+                    "--with-ib-libpath=${librdmacm}/lib" "--with-ib-include=${librdmacm}/include" ]                  
                     ++ extraConfigureFlags; 
 
 
@@ -48,6 +49,9 @@ stdenv.mkDerivation rec {
 
   # unsafe build script, cannot be built in parallel
   enableParallelBuilding = false;
+
+
+  preferLocalBuild = enforceLocalBuild;
 
 
   postInstall = ''
