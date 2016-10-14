@@ -135,7 +135,7 @@ let
         };
 
         rtneuron = callPackage ./viz/rtneuron {   
-        
+
         };  
 
         ospray = callPackage ./viz/ospray {
@@ -144,7 +144,6 @@ let
         };
 
         brayns = callPackage ./viz/brayns {
-
 
         };
 
