@@ -19,8 +19,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
-    rev = "e38ea3b7b94ef73e538d0c6da59b827f24f40c55";
-    sha256 = "1ml6dkmz0cyy06f2kzl4xhy0mn57riqjdhc00p6dhi3r6b9gq5j0";
+    rev = "9743218314bb6f8b245fc60893d508f4ecacd402";
+    sha256 = "0iyiqqicma93l2risnn2xh5yyqz3sqydhidd3j13yvb9fn8w4kas";
   };
   
 
