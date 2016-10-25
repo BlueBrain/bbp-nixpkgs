@@ -26,9 +26,15 @@ let
         };
 
         ##httpxx, http protocol parser for C++ 
-            httpxx = callPackage ./httpxx {
+        httpxx = callPackage ./httpxx {
 
         };
+
+        gmsh = callPackage ./gmsh {
+			fltk = fltk13;
+			opencascade = null;
+        };
+
 
 
         ## new virtualGL verison for viz team
