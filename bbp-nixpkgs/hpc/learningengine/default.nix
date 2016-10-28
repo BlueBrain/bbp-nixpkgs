@@ -7,7 +7,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ stdenv boost cmake clang-format];
 
   src = fetchgitExternal {
-    url = "https://bbpcode.epfl.ch/code/a/hpc/learning_engine.git";
+    url = "https://bbpcode.epfl.ch/code/hpc/learning_engine.git";
     rev = "g8c3708ae10a85706ac487400da75e8e03c0b5b9";
     sha256 = "0ycnfy4gjg5blmyj1zh8ymw76kdica7pq5l2dlvrrgb73lhkkrp3";
   };
