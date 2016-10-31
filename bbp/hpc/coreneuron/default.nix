@@ -12,8 +12,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/sim/coreneuron";
-    rev =  "b1e5e60ee9954081e15c44da7d2ee28c802d13e1";
-    sha256 = "1vdq0b2nn476c9w73l25jbqi7vi24pfgqd2hjx8zg786l9cs3bry";
+    rev =  "f86ea002df6d65deeffce22823acde0867e487a1";
+    sha256 = "0fr7jykssb6da4jvf7h0bfbc9zxy74swqn8sf86gkpji54wxi32m";
   };
 
 }
