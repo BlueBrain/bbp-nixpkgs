@@ -31,8 +31,12 @@ let
         };
 
         gmsh = callPackage ./gmsh {
-			fltk = fltk13;
-			opencascade = null;
+            fltk = fltk13;
+            opencascade = null;
+        };
+        
+        intel-mpi-bench = callPackage ./intel-mpi-bench {
+            mpi = mvapich2-rdma;
         };
 
 
@@ -187,7 +191,7 @@ let
             ## InfiniBand driver ABI / API is not stable nor portable
             ## We need to compile both IB and mvapich2 locally
             ##              
-			enforceLocalBuild = true;
+            enforceLocalBuild = true;
         }) else mvapich2;
 
 
