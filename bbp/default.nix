@@ -204,6 +204,9 @@ let
 
         };
 
+        learningengine = callPackage ./hpc/learningengine {
+
+        };
 
         mod2c = callPackage ./hpc/mod2c {
 
