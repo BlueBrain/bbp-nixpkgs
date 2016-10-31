@@ -246,8 +246,8 @@ let
 
         neurodamus-coreneuron = fetchgitExternal {
             url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
-            rev = "d2b246b3598dd7f87ed2f589900938b67a315a97";
-            sha256 = "1gz4g2r1j2l1w9myqpl6bf81h2ww3p1ammzxlrsfzvs5y3rk94d5";
+            rev = "0c0398f0db1ecf4d7747c33585ba1051d67fa614";
+            sha256 = "13j6wvn9g5gha4v0w3qsf14dwgxbapb4rc60zq6vlmdn8wb9ib4d";
          };
 
         neuromapp = enableBGQ callPackage ./hpc/neuromapp {
