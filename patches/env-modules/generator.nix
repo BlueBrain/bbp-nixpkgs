@@ -151,7 +151,7 @@ if { [file exists ${targetEnvHoc} ] } {
 
 ## check if any MODLUNIT export path is needed
 if { [file exists ${targetModlUnit} ] } {
-        prepend-path MODLUNIT ${targetModlUnit}
+        setenv MODLUNIT ${targetModlUnit}
 }
 
 

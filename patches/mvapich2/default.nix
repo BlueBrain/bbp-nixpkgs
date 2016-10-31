@@ -10,15 +10,16 @@ libibverbs ? null,
 librdmacm ? null,
 enableXrc ? false,
 debugInfo ? true,
+enforceLocalBuild ? false,
 extraConfigureFlags ? [] }:
 
 stdenv.mkDerivation rec {
   name = "mvapich2-${version}";
-  version = "2.2rc1";
+  version = "2.2";
 
   src = fetchurl {
     url = "http://mvapich.cse.ohio-state.edu/download/mvapich/mv2/mvapich2-${version}.tar.gz";
-    sha256 = "1rp93aw9f3bf40hq36kks0r3474smyvpmm073q6hv0bgmij4cqs8";
+    sha256 = "0cdi7cxmkfl1zhi0czmzm0mvh98vbgq8nn9y1d1kprixnb16y6kr";
   };
 
   configureFlags = [ "--enable-shared" 
@@ -37,7 +38,7 @@ stdenv.mkDerivation rec {
                     ++ (stdenv.lib.optional)  (libibverbs != null) [ "--with-ibverbs-include=${libibverbs}/include" "--with-ibverbs-lib=${libibverbs}/lib" ]
                     ++ (stdenv.lib.optional)  (debugInfo != null) [ "--enable-g=dbg" "--enable-debuginfo"]
                     ++ (stdenv.lib.optional) (librdmacm != null) [ "--with-mpe" "--enable-rdma-cm" "--with-rdma=gen2"
-                          "--with-ib-libpath=${librdmacm}/lib" "--with-ib-include=${librdmacm}/include" ]                  
+                    "--with-ib-libpath=${librdmacm}/lib" "--with-ib-include=${librdmacm}/include" ]                  
                     ++ extraConfigureFlags; 
 
 
@@ -48,6 +49,9 @@ stdenv.mkDerivation rec {
 
   # unsafe build script, cannot be built in parallel
   enableParallelBuilding = false;
+
+
+  preferLocalBuild = enforceLocalBuild;
 
 
   postInstall = ''
