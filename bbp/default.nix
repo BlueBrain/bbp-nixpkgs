@@ -204,7 +204,7 @@ let
 
         };
 
-        learningengine = callPackage ./hpc/learninengine {
+        learningengine = callPackage ./hpc/learningengine {
 
         };
 
