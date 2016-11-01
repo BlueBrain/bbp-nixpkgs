@@ -9,7 +9,6 @@ slurm-llnl ? null,
 libibverbs ? null,
 librdmacm ? null,
 enableXrc ? false,
-debugInfo ? true,
 enforceLocalBuild ? false,
 extraConfigureFlags ? [] }:
 
@@ -25,9 +24,11 @@ stdenv.mkDerivation rec {
   configureFlags = [ "--enable-shared" 
                     "--enable-sharedlibs=gcc"
                     "--disable-fc" "--disable-f77" "--disable-fortran"
-                    "--enable-cxx" 
+                    "--enable-cxx"
+					"--enable-g=dbg"
+					"--enable-debuginfo"
+                    "--enable-fast=O2"
                     "--with-munge"
-                    "--enable-fast"
                     "--disable-mcast"
                     "--enable-threads=multiple"
                     "--enable-smpcoll" ]
@@ -36,7 +37,6 @@ stdenv.mkDerivation rec {
                     ++ (stdenv.lib.optional) (slurm-llnl != null)  ["--with-slurm" "--with-slurm-include=${slurm-llnl}/include"
                           "--with-slurm-lib=${slurm-llnl}/lib" "--with-pm=none" "--with-pmi=slurm" ]
                     ++ (stdenv.lib.optional)  (libibverbs != null) [ "--with-ibverbs-include=${libibverbs}/include" "--with-ibverbs-lib=${libibverbs}/lib" ]
-                    ++ (stdenv.lib.optional)  (debugInfo != null) [ "--enable-g=dbg" "--enable-debuginfo"]
                     ++ (stdenv.lib.optional) (librdmacm != null) [ "--with-mpe" "--enable-rdma-cm" "--with-rdma=gen2"
                     "--with-ib-libpath=${librdmacm}/lib" "--with-ib-include=${librdmacm}/include" ]                  
                     ++ extraConfigureFlags; 
@@ -58,6 +58,9 @@ stdenv.mkDerivation rec {
 	## add pmi directly in the libmvapich2 path to avoid 
         ## modules incompatibilities
 	${if (slurm-llnl!= null) then ''cp ${slurm-llnl}/lib/libpmi* $out/lib/'' else '' ''}
+
+
+	rm -f $out/lib/*.la;
 	'';
 
   meta = with stdenv.lib; {
