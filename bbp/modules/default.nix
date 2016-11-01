@@ -107,6 +107,8 @@ let
             extraContent = "setenv BBP_HOME $targetEnv/";
             
             conflicts = conflicts-modules;
+
+			dependencies = [ gcc ];
         };
 
         coreneuron = pkgs.envModuleGen rec {
@@ -202,18 +204,14 @@ let
 
                             #utils
                             pkgs.bbp-mpi
-                            
-                            #python env for scientists
-                            pkgs.python27Full                            
-                            pkgs.python27Packages.numpy
-                            pkgs.python27Packages.matplotlib
-                            pkgs.python27Packages.six
-                            pkgs.python27Packages.pandas
-                                                        
+                                                         
                        ];
             extraContent = "setenv BBP_HOME $targetEnv/"; 
             
             conflicts = conflicts-modules;                      
+
+
+			dependencies = [ python27-full gcc ];
         };
         
         
@@ -377,7 +375,8 @@ let
                             pythonPkgs.pip
                             pythonPkgs.virtualenv
                        ];
-            conflicts = [ python34-full python34-light ] ++ conflicts-modules;                           
+            conflicts = [ python34-full python34-light ] ++ conflicts-modules;
+			dependencies = [ nss-wrapper gcc ];
         };
 
         python27-full = with pkgs; envModuleGen rec {
@@ -404,6 +403,7 @@ let
                             pythonPkgs.h5py
                        ];
             conflicts = [ python34-full python34-light ] ++ conflicts-modules;                           
+			dependencies = [ nss-wrapper gcc ];
         };      
 
         python34-light = pkgs.envModuleGen rec {
@@ -418,6 +418,8 @@ let
                             pythonPkgs.virtualenv
                        ];
             conflicts = [ python27-light python27-full ] ++ conflicts-modules;                          
+            dependencies = [ nss-wrapper gcc ];
+
         };
 
 
@@ -437,7 +439,9 @@ let
                             pythonPkgs.pycurl
                             pythonPkgs.h5py
                        ];
-            conflicts = [ python27-light python27-full ] ++ conflicts-modules;                          
+            conflicts = [ python27-light python27-full ] ++ conflicts-modules; 
+            dependencies = [ nss-wrapper gcc ];
+
         };
 
         cython = pkgs.envModuleGen rec {
@@ -833,6 +837,9 @@ let
             cmake readline ncurses
             python27-light python27-full 
             cython
+
+			# wrapper for auth
+			nss-wrapper 
             
             # default mpi
             mvapich2
@@ -856,6 +863,23 @@ let
             dev-env-gcc
         ];
         };
+
+		## utilities
+
+		## map libnss plugins in your LD_PATH to solve auth issues
+		nss-wrapper = pkgs.envModuleGen rec {
+            name = "nss-wrapper";
+			version = "1.0";
+            isLibrary = true;
+            description = "nss-wrapper, map local authentication plugins in your environment";
+            packages = [
+                            pkgs.libnss-native-plugins
+                       ];
+            conflicts = conflicts-modules;
+			extraContent = "prepend-path LD_LIBRARY_PATH $targetEnv/lib/";
+        };
+
+
 
         ## extra not portable softwares
         papi = pkgs.envModuleGen rec {
@@ -1135,6 +1159,7 @@ with generic-modules; rec {
                 pkgs.ncurses      
             ];
             extraContent = "prepend-path BBP_HOME $targetEnv/";
+
      };
 
 
