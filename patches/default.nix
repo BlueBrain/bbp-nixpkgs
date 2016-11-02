@@ -150,7 +150,7 @@ let
         };
 
 
-		numactl = numactl.overrideDerivation (oldAttr: rec {
+		numactl = std-pkgs.numactl.overrideDerivation (oldAttr: rec {
 
 			postInstall = ''
 						## strip libtool bullshit files 
