@@ -14,6 +14,18 @@ stdpkgs.blender.overrideDerivation (oldAttr: rec {
     };
 
 
+	cmakeFlags= [
+	  "-DWITH_MOD_OCEANSIM=ON"
+      "-DWITH_CODEC_FFMPEG=ON"
+      "-DWITH_CODEC_SNDFILE=ON"
+      "-DWITH_INSTALL_PORTABLE=OFF"
+      "-DWITH_FFTW3=ON"
+      "-DWITH_SDL=ON"
+      "-DWITH_GAMEENGINE=ON"
+      "-DWITH_OPENCOLORIO=ON"
+      "-DWITH_PLAYER=ON"
+	  "-DWITH_OPENCOLLADA=ON" ];
+
     enableParallelBuilding = true;
 
 

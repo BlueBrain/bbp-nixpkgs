@@ -41,8 +41,15 @@ let
  
         
         intel-mpi-bench = callPackage ./intel-mpi-bench {
+            mpi = mvapich2;
+        };
+
+
+        
+        intel-mpi-bench-rdma = intel-mpi-bench.override {
             mpi = mvapich2-rdma;
         };
+
 
 
 
@@ -136,42 +143,32 @@ let
             lua = lua5_1;
         };
 
-        ## IB VERBs is not binary portable and
-        #  is ABI specific to the OFed kernel module
-        #  need to be recompiled locally 
-        #  This is dirty and impure, but it is all we can do for IB support now
-        #  due to its unstable kernel ABI 
-        ibverbs-local = stdenv.mkDerivation {
-            name = "local-ibverb-wrapper-0.1";
-
-            preferLocalBuild = true;
 
 
+		ibverbs-upstream = callPackage ./ibverbs {
 
-            buildCommand = ''
-                mkdir -p $out/{bin,lib,include}
-                cp -r /usr/include/infiniband $out/include/ ||true
-                cp -r /usr/include/rdma $out/include/ ||true 
+		};
 
-                cp -r /usr/lib64/libibverbs* $out/lib/ || true
-                cp -r /usr/lib64/libmlx*.so $out/lib/ || true 
-                cp -r /usr/lib64/librdma*       $out/lib/ || true
-                cp -r /usr/lib64/libibumad*     $out/lib/ || true 
-
-                cp -r /lib64/libnl* $out/lib || true 
-                cp -r /usr/bin/ibv_* $out/bin/ ||true 
-
-                for i in $out/lib/lib*.so*
-                do
-                patchelf --set-rpath "$out/lib" $i
-                done
-            '';
+		rdmacm-upstream = callPackage ./rdmacm {
+			libibverbs = ibverbs-upstream;
         };
+
+
+		numactl = std-pkgs.numactl.overrideDerivation (oldAttr: rec {
+
+			postInstall = ''
+						## strip libtool bullshit files 
+						rm -f $out/lib/*.la
+			'';
+
+		});
+
 
         ## 
         # mvapich2 mpi implementation
         #
         mvapich2 = callPackage ./mvapich2 {
+			stdenv = enableDebugInfo stdenv;
             # libibverbs needs a recompilation and a sync
             # on viz cluster lx/viz1 due to InfiniBand OFed ABI maddness 
             libibverbs = null;
@@ -188,10 +185,21 @@ let
 
 
         ## MVAPICH 2 support with RDMA / Infiniband
-        mvapich2-rdma =  if (builtins.pathExists "/usr/include/infiniband/") then (mvapich2.override {
-            librdmacm = ibverbs-local;
-            libibverbs = ibverbs-local;
-            extraConfigureFlags = [];
+        mvapich2-rdma =  if (builtins.pathExists "/usr/include/infiniband/") then ((mvapich2.overrideDerivation (oldAttr: rec {
+	  
+		name = "mvapich2-rdma-${version}";
+		version = "2.2b";
+ 
+	   src = fetchurl {
+    	 url = "http://mvapich.cse.ohio-state.edu/download/mvapich/mv2/mvapich2-${version}.tar.gz";
+	   	 sha256 = "18nn9lcwd6g44rl3y6b5n25d1k4l2ksh1xjzw84r639q2hd6ki45";
+	   };
+
+	 })).override {
+			stdenv = enableDebugInfo stdenv;
+            librdmacm = ibverbs-upstream;
+            libibverbs = rdmacm-upstream;
+            extraConfigureFlags = [ ];
             
             ## InfiniBand driver ABI / API is not stable nor portable
             ## We need to compile both IB and mvapich2 locally
