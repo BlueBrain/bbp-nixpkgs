@@ -35,7 +35,11 @@ let
             opencascade = null;
         };
 
-
+        blender = callPackage ./blender {
+			stdpkgs = std-pkgs;
+        };
+ 
+        
         intel-mpi-bench = callPackage ./intel-mpi-bench {
             mpi = mvapich2;
         };
