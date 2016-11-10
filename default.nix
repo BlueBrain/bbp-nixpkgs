@@ -7,6 +7,9 @@
 #
 
 let 
+	##auto config
+	generic-config = (import ./config/all_config.nix);
+
     ## system
     configSystem =
     let
@@ -27,8 +30,9 @@ let
     in
         configExpr // { allowUnfree = true; };
 
+
     ## import all config: blue gene override and others 
-    all-config = (import ./bluegene/config.nix) // configSystem // config ;
+    all-config = (import ./bluegene/config.nix) // generic-config // configSystem // config ;
 
     ## all standard upstream packages
     std-pkgs = args: (if builtins.pathExists ./std-nixpkgs/default.nix
