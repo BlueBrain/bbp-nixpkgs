@@ -50,8 +50,19 @@ let
             mpi = mvapich2-rdma;
         };
 
+		icc-native = callPackage ./icc-native {
 
+		};
 
+		WrappedICC = (import ./cc-wrapper  {
+				inherit stdenv binutils coreutils ;
+				libc = glibc;
+				nativeTools = false;
+				nativeLibc = false;
+				cc = icc-native;
+		});
+
+		stdenvICC = overrideCC stdenv WrappedICC;
 
         ## new virtualGL verison for viz team
         virtualgl = std-pkgs.virtualgl.overrideDerivation ( oldAttr: rec {
