@@ -1,4 +1,4 @@
-{ stdenv, fetchgitPrivate, boost, cmake, clang-analyzer}:
+{ stdenv, fetchgitPrivate, boost, cmake, clang-analyzer, gsl}:
 
 stdenv.mkDerivation rec {
   name = "learningengine-${version}";
