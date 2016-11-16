@@ -1,10 +1,13 @@
 { stdenv
-, bgq-driver
-, releaseBGQPrefix ? "/bgsys/drivers/${bgq-driver}/ppc64"
+, config
 } :
 
 
+let 
+
+ releaseBGQPrefix = if (config ? ibm_bgq_driver) then "${config.ibm_bgq_driver}/ppc64" else "/xxxxxxxxxxxxxxxx-do-not-xist";
  
+in 
 stdenv.mkDerivation rec {
 	name = "bgq-pami-spi-libs";
 
