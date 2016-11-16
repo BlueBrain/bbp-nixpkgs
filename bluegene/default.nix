@@ -6,8 +6,7 @@
 
 
 let
-    bgq-driver = if (builtins.pathExists "/bgsys/drivers/V1R2M4") then "V1R2M4"
-                 else "V1R2M2";
+    bgq-driver = if (config ? ibm_bgq_driver_name) then config.ibm_bgq_driver_name else null;
 
     MergePkgs = with MergePkgs;  pkgs // bgq-override;
 
@@ -79,7 +78,7 @@ let
           });
 
         cnk-spi = callPackage ./cnk-spi { 
-            inherit bgq-driver;
+
         };
 
         xlc = callPackage ./xlc { };
@@ -95,7 +94,14 @@ let
 
         mpi-bgq = callPackage ./mpi-bgq {  
             cc = xlc;
-        };    
+        };   
+
+		ibm-mpi = callPackage ./ibm-mpi {
+			stdenv = bgq-stdenv-gcc47;
+			cc = bg-gcc47;
+			libc = bglibc;
+			inherit cnk-spi;
+		}; 
 
 
         stdenv = pkgs.stdenv // rec { isBlueGene = true; };
