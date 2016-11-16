@@ -37,10 +37,13 @@ extraContent ? ""
                                                                 else dep.modulename;
                                           in
                                             if depList == [] then ''''
-                                              else ''
+											else if ((builtins.head (depList)) == null) then (''
+																							${depBuilder depPrefixString (builtins.tail depList)}
+																							'')
+											else ''
                                                     ${depPrefixString} ${(extractName (builtins.head (depList)))}
                                                     ${depBuilder depPrefixString (builtins.tail depList)}
-                                                    '';
+                                                 '';
             
                             
  in

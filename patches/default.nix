@@ -54,13 +54,13 @@ let
 
 		};
 
-		WrappedICC = (import ./cc-wrapper  {
+		WrappedICC = if (icc-native != null) then (import ./cc-wrapper  {
 				inherit stdenv binutils coreutils ;
 				libc = glibc;
 				nativeTools = false;
 				nativeLibc = false;
 				cc = icc-native;
-		});
+		}) else null;
 
 		stdenvICC = overrideCC stdenv WrappedICC;
 
