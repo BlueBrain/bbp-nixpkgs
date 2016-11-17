@@ -174,6 +174,11 @@ let
 
 		});
 
+		## mpich2 implementation
+		#
+		mpich2 = callPackage ./mpich{
+
+		};
 
         ## 
         # mvapich2 mpi implementation
