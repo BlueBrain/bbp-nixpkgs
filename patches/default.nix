@@ -128,7 +128,6 @@ let
         ##  slurm BBP configuration
         #    Add support for Kerberos plugin and allow it to run
         #    with system configuration
-
         slurm-llnl-minimal = callPackage ./slurm {
             inherit config;
             lua = null;

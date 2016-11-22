@@ -41,6 +41,10 @@ let
 
         inherit bbp-mpi;
 
+	intel-mpi-bench = pkgs.intel-mpi-bench.override {
+		mpi = bbp-mpi;
+	};
+
         ## override component that need bbp-mpi
         petsc = pkgs.petsc.override {
             stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;

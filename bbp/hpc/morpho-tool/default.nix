@@ -8,8 +8,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/hpc/morpho-tool";
-    rev = "63526730427ca51e1e2dd73564996a8e3042011f";
-    sha256 = "1zazhf9878gh00f689yaac9jyalnz589b7cd4p50a0p5yxv21lvf";
+    rev = "03b5c1b5714287dfba6dd89a4323ff651006440d";
+    sha256 = "0hnynzkg3q43iacjab806sq2klhn6bhisrx9849ks7lpg8wbvbga";
   };
   
   cmakeFlags=[ 
