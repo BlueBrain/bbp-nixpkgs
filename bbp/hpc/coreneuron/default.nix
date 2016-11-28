@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   name = "coreneuron-${version}";
-  version = "0.8.1-201610";
+  version = "0.8.1-201611";
 
   buildInputs = [ boost mpiRuntime mod2c ];
 
@@ -12,8 +12,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/sim/coreneuron";
-    rev =  "f86ea002df6d65deeffce22823acde0867e487a1";
-    sha256 = "0fr7jykssb6da4jvf7h0bfbc9zxy74swqn8sf86gkpji54wxi32m";
+    rev =  "5e46d06d5c6965532ee44eebc6d8a7063bb1b680";
+    sha256 = "198r0p0gi4frx28ds2n20z7bg7cwq1i89hcnjs4n68lrc3by5xlm";
   };
 
 }
