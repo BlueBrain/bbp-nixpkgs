@@ -2,14 +2,14 @@
 
 stdenv.mkDerivation rec {
   name = "mvd-tool-${version}";
-  version = "1.1";
+  version = "1.2";
   
   buildInputs = [ stdenv pkgconfig boost zlib cmake hdf5];
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/MVDTool.git";
-    rev = "2ce29f258cf47893885feec3450366bb4e5b08b0";
-    sha256 = "0hii11avf7c3cx0j65fvgmwjy6igv7ndcjp7wm6hbq5ixvwb0mca";
+    rev = "c786dd41977bef10b0cf3e3668812d42e72fa131";
+    sha256 = "0qzkrrbijbpihgw8334slsp824b5lfmaa2fzx8hiajalc5389wva";
   };
   
   cmakeFlags=[ 
