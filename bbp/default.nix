@@ -39,11 +39,17 @@ let
 
         mergePkgs = pkgs // rec { 
 
-        inherit bbp-mpi;
+        inherit bbp-mpi bbp-mpi-rdma;
 
 	intel-mpi-bench = pkgs.intel-mpi-bench.override {
 		mpi = bbp-mpi;
 	};
+
+	intel-mpi-bench-rdma = pkgs.intel-mpi-bench.override {
+		mpi = bbp-mpi-rdma;
+	};
+
+
 
         ## override component that need bbp-mpi
         petsc = pkgs.petsc.override {

@@ -21,6 +21,9 @@ let
 	default_mpi = if (pkgs.bbp-mpi == pkgs.mvapich2) then mvapich2
 		      else mpich2;
 
+	default_mpi_rdma = if (pkgs.bbp-mpi-rdma == pkgs.mvapich2-rdma) then mvapich2-rdma
+                      else null;
+
 
         ## hpc components
         mvdtool = pkgs.envModuleGen rec {
@@ -977,7 +980,7 @@ let
             python34-light python34-full 
 
             #rdma local specific
-            mvapich2-rdma
+            default_mpi_rdma
 	    steps 
 
         ];

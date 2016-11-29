@@ -46,11 +46,7 @@ let
 
 
         
-        intel-mpi-bench-rdma = intel-mpi-bench.override {
-            mpi = mvapich2-rdma;
-        };
-
-		icc-native = callPackage ./icc-native {
+        		icc-native = callPackage ./icc-native {
 
 		};
 
