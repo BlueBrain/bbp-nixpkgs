@@ -4,7 +4,11 @@
 export NIXPKG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
 
 # setup SSH for gerrit access
-export NIX_PATH="ssh-config-file=$HOME/.ssh/config:$NIX_PATH"
+
+if [[ "${NIX_PATH}"  != *"ssh-config-file"* ]]; then
+	export NIX_PATH="ssh-config-file=$HOME/.ssh/config:$NIX_PATH"
+fi
+
 
 # setup SSH agent forwarding
 if [[ "${SSH_AUTH_SOCK}x" != "x" ]]; then
