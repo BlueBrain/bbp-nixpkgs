@@ -44,6 +44,11 @@ let
             mpi = mvapich2;
         };
 
+		osu-mpi-bench = callPackage ./osu-mpi-bench {
+            mpi = mvapich2;
+        };
+
+
 
         
         		icc-native = callPackage ./icc-native {
