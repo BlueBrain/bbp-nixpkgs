@@ -41,9 +41,13 @@ let
 
         inherit bbp-mpi bbp-mpi-rdma;
 
-	intel-mpi-bench = pkgs.intel-mpi-bench.override {
-		mpi = bbp-mpi;
-	};
+		intel-mpi-bench = pkgs.intel-mpi-bench.override {
+			mpi = bbp-mpi;
+		};
+
+		osu-mpi-bench = pkgs.osu-mpi-bench.override {
+			mpi = bbp-mpi;
+		};
 
 	intel-mpi-bench-rdma = pkgs.intel-mpi-bench.override {
 		mpi = bbp-mpi-rdma;
