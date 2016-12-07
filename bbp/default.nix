@@ -49,9 +49,9 @@ let
 			mpi = bbp-mpi;
 		};
 
-	intel-mpi-bench-rdma = pkgs.intel-mpi-bench.override {
-		mpi = bbp-mpi-rdma;
-	};
+		intel-mpi-bench-rdma = pkgs.intel-mpi-bench.override {
+			mpi = bbp-mpi-rdma;
+		};
 
 
 
@@ -59,6 +59,11 @@ let
         petsc = pkgs.petsc.override {
             stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
             mpiRuntime = bbp-mpi-rdma;
+        };
+
+
+        scorec = pkgs.scorec.override {
+            mpi = bbp-mpi-rdma;
         };
 
     
