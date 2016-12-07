@@ -49,9 +49,12 @@ let
         };
 
 
+		scorec = callPackage ./scorec {
+            mpi = mvapich2-rdma;
+        };
 
         
-        		icc-native = callPackage ./icc-native {
+   		icc-native = callPackage ./icc-native {
 
 		};
 
