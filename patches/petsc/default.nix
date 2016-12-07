@@ -6,7 +6,8 @@ blasLibName ? "openblas",
 liblapack,
 liblapackLibName ? "lapack",
 pkgconfig,
-python 
+python,
+with64bits ? true
 }:
 
 
@@ -43,8 +44,9 @@ stdenv.mkDerivation rec {
 
   configureFlags = configureOpts  
 		   ++ [ "--with-mpi-dir=${mpiRuntime}" ]
-	   ++ [  "--with-blas-lib=${blas}/lib/lib${blasLibName}.so" ]
-		   ++ stdenv.lib.optional (liblapack != null) [	 "--with-lapack-lib=${liblapack}/lib/lib${liblapackLibName}.so" ];
+		   ++ [  "--with-blas-lib=${blas}/lib/lib${blasLibName}.so" ]
+		   ++ stdenv.lib.optional (liblapack != null) [	 "--with-lapack-lib=${liblapack}/lib/lib${liblapackLibName}.so" ]
+		   ++ stdenv.lib.optional (with64bits) [ "--with-64-bit-indices" ];
 
 
   nativeBuildInputs = [ pkgconfig python ];
@@ -76,7 +78,7 @@ stdenv.mkDerivation rec {
                         --replace "@liblapackLibName@" "${liblapackLibName}" \
                         --replace "@blas_path@" "${blas.crossDrv}" \
                         --replace "@blasLibName@" "${blasLibName}" \
-			--replace "@python_interpreter@" "${python}/bin/python"
+						--replace "@python_interpreter@" "${python}/bin/python"
 
                         chmod a+x ./reconfigure-arch-linux2-c-debug.py
                        '';

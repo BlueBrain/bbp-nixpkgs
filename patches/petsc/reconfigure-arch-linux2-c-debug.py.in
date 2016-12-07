@@ -28,6 +28,7 @@ configure_options = [
   '--with-mpi-dir=@mpi_path@',
   '--with-batch',
   '--known-mpi-shared-libraries=0',
+  '--with-64-bit-indices',
   '--with-blas-lib=@blas_path@/lib/lib@blasLibName@.a',
   '--with-lapack-lib=@liblapack_path@/lib/lib@liblapackLibName@.a',
 ]
