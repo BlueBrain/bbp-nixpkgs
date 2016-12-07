@@ -404,9 +404,17 @@ let
             liblapackLibName = "openblas";
             blas = bgq-openblas;
             blasLibName = "openblas";
-            mpiRuntime = bg-mpich;
+            mpiRuntime = ibm-mpi;
 
         };
+
+        bgq-scorec-gcc47 = all-pkgs-bgq-gcc47.scorec.override {
+            stdenv = enableDebugInfo bgq-stdenv-gcc47;
+            mpi = ibm-mpi;
+            cmake = bgq-cmake;
+        };
+
+
 
 
         bgq-map = with MergePkgs; {

@@ -38,8 +38,8 @@ libdir=${prefix}/lib
 # configure (e.g., determining whehter -lsocket is needee)
 export PATH="@compiler_dir@/bin:${PATH}"
 CC="@cxx_compiler_path@"
-CFLAGS=" -I@out@/include"
-CPPFLAGS="  -I@out@/include"
+CFLAGS=" -I@out@/include -I@cnk_spi_path@/include -I@cnk_spi_path@ -I@cnk_spi_path@/include/kernel/cnk"
+CPPFLAGS="  -I@out@/include -I@cnk_spi_path@/include -I@cnk_spi_path@ -I@cnk_spi_path@/include/kernel/cnk"
 LDFLAGS=" -L@out@/lib -L@cnk_spi_path@/lib -L@glibc_path@/lib"
 LIBS="-lopa-gcc -lmpl-gcc  -lpami-gcc -lmpich-gcc -lSPI -lSPI_cnk -lrt -lpthread -lstdc++ -lpthread  "
 MPICH2_VERSION="1.5"

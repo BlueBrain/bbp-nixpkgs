@@ -2,6 +2,7 @@
 , fetchFromGitHub
 , cmake
 , mpi
+, which
 }:
 
 
@@ -26,11 +27,21 @@ stdenv.mkDerivation rec {
 					"-DIS_TESTING=FALSE"					
 				 ];
 
-    buildInputs = [ cmake mpi ];
+    buildInputs = [ mpi ];
+    nativeBuildInputs = [ cmake which ];
 
 	buildFlags = [ "VERBOSE=1" ];
 
     enableParallelBuilding = true;
 
+
+    crossAttrs = {
+        preConfigure = '' '';
+
+        cmakeFlags = [ "-DSCOREC_CXX_WARNINGS=OFF" "-DSCOREC_CXX_WARNINGS=OFF" 
+                       "-DCMAKE_C_COMPILER=${mpi.crossDrv}/bin/mpicc" "-DCMAKE_CXX_COMPILER=${mpi.crossDrv}/bin/mpic++" ];
+
+
+    };
 
 }
