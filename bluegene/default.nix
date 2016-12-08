@@ -294,12 +294,25 @@ let
 
         bgq-hdf5-gcc47 = (hdf5.overrideDerivation (oldAttrs: {
                 dontSetConfigureCross = true;
-
         })).override {
                 stdenv = bgq-stdenv-gcc47;
                 enableShared = false;
                 zlib = bgq-zlib-gcc47;
-        };    
+        };
+
+        bgq-phdf5-gcc47 = (hdf5.overrideDerivation (oldAttrs: {
+                dontSetConfigureCross = true;
+                preConfigure = ''
+                    export LDFLAGS="-Wl,-Bstatic -lmpich-gcc"
+                '';
+                configureFlags = "--enable-parallel";
+        })).override {
+                stdenv = bgq-stdenv-gcc47;
+                enableShared = false;
+                zlib = bgq-zlib-gcc47;
+                mpi = ibm-mpi;
+        };
+
   
 
         bgq-zlib = ( zlib.override {

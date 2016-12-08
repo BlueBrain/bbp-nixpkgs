@@ -41,7 +41,7 @@ CC="@cc_compiler_path@"
 CFLAGS=" -I@out@/include -I@cnk_spi_path@/include -I@cnk_spi_path@ -I@cnk_spi_path@/include/kernel/cnk"
 CPPFLAGS="  -I@out@/include -I@cnk_spi_path@/include -I@cnk_spi_path@ -I@cnk_spi_path@/include/kernel/cnk"
 LDFLAGS=" -L@out@/lib -L@cnk_spi_path@/lib -L@glibc_path@/lib"
-LIBS="-lopa-gcc -lmpl-gcc  -lpami-gcc -lmpich-gcc -lSPI -lSPI_cnk -lrt -lpthread -lstdc++ -lpthread  "
+LIBS=" -Wl,-Bstatic -lopa-gcc -lmpl-gcc  -lpami-gcc -lmpich-gcc -lSPI -lSPI_cnk -Wl,-Bdynamic -lrt -lpthread -lstdc++ -lpthread -ldl -Wl,-Bdynamic"
 MPICH2_VERSION="1.5"
 
 enable_wrapper_rpath="no"
