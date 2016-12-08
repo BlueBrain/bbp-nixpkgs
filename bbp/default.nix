@@ -113,6 +113,10 @@ let
 
         }; 
 
+		keyv = callPackage ./viz/keyv {
+
+		};
+
         zerobuf = callPackage ./viz/zerobuf {
 
         };
