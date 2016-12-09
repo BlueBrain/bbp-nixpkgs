@@ -1,4 +1,4 @@
-{ stdenv, fetchgitPrivate, python, perl, cmake, boost, pkgconfig, mpiRuntime, mod2c, neurodamus-coreneuron}:
+{ stdenv, fetchgitPrivate, python, perl, cmake, boost, pkgconfig, mpiRuntime, mod2c, neurodamus}:
 
 stdenv.mkDerivation rec {
   name = "coreneuron-${version}";
@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs= [ python perl pkgconfig cmake ];
 
-  cmakeFlags= ["-DADDITIONAL_MECHPATH=${neurodamus-coreneuron}/lib/modlib/" "-DADDITIONAL_MECHS=${neurodamus-coreneuron}/lib/modlib/coreneuron_modlist.txt"];
+  cmakeFlags= ["-DADDITIONAL_MECHPATH=${neurodamus.src}/lib/modlib/" "-DADDITIONAL_MECHS=${neurodamus.src}/lib/modlib/coreneuron_modlist.txt"];
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/sim/coreneuron";
