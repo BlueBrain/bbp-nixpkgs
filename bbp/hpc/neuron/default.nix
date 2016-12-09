@@ -26,7 +26,10 @@ stdenv.mkDerivation rec {
 
     buildInputs = [ automake autoconf libtool mpiRuntime ncurses readline flex bison python which nrnModl];
 
-        src = fetchhg {
+
+	patches = [ ./nrn.patch ];
+
+    src = fetchhg {
         url = "http://www.neuron.yale.edu/hg/neuron/nrn";
         rev = "60a58922f20e";
         sha256 = "1s7fx97znc4h9qx1x5jhg2i4bp478afkfhi6h36na219g8xkw2jx"; 
