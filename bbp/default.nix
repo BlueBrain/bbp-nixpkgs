@@ -236,7 +236,8 @@ let
         };
 
         coreneuron = enableBGQ callPackage ./hpc/coreneuron {
-            mpiRuntime = bbp-mpi;      
+            mpiRuntime = bbp-mpi;
+            neurodamus = neurodamus-coreneuron; 
         };
 
         bluron = enableBGQ callPackage ./hpc/bluron/cmake-build.nix {
@@ -267,10 +268,8 @@ let
             nrnEnv = mergePkgs.neuron;    
         };
 
-        neurodamus-coreneuron = fetchgitExternal {
-            url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
-            rev = "93e3a8683527ef4dd986d2779dc98c2d44106bb7";
-            sha256 = "10g0rm3l0qbgk7ylqsa38bpylnz4329ckr7yx2rax586ay7zp51g";
+        neurodamus-coreneuron = neurodamus.override {
+            coreNeuronMode = true;
          };
 
         neuromapp = enableBGQ callPackage ./hpc/neuromapp {
