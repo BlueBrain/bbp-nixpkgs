@@ -10,6 +10,7 @@ readline,
 flex,
 bison,
 python,
+pythonVersion ? "2.7",
 which,
 modlOnly ? false,
 nrnOnly ? false,
@@ -35,12 +36,31 @@ let
                             "--with-paranrn"
                             "--without-nmodl"
                             "--host=powerpc64"
+                            "--with-nrnpython"
                         ]
                      else [ 
                             "--with-paranrn" 
                             "--without-iv" "--without-nmodl" 
                             "--with-nrnpython=${python}/bin/python"
                           ];
+
+    platformPreConfigure = if (isBGQ && nrnOnly) then ''
+                                        ## BGQ specific neuron preconfiguration 
+                                        export CC=mpixlc_r_dl
+                                        export CXX=mpixlcxx_r_dl
+
+                                        export NEURON_PYTHON_VERSION="2.7"
+                                        export ALL_FLAGS="-qnostaticlink -DLAYOUT=0 -DDISABLE_HOC_EXP -DDISABLE_TIMEOUT -O3 -g -DCORENEURON_BUILD -qlist -qsource -qreport -qsmp=noauto -qthreaded";
+                                        export CXXFLAGS="$ALL_FLAGS $CXXFLAGS"
+                                        export CFLAGS="$ALL_FLAGS  $CFLAGS";
+
+                                        export PYINCDIR="${python}/include/python${pythonVersion}" 
+                                        export PYLIB="-L${python}/lib -lpython${pythonVersion}"
+                                        export PYLIBDIR="${python}/lib"
+                                        export PYLIBLINK="-L${python}/lib -lpython${pythonVersion}"
+                                        export NIX_DEBUG=1
+                                   ''
+                                    else '''';
 
 in 
 stdenv.mkDerivation rec {
@@ -84,7 +104,8 @@ EOF
 
     ## run the pre-configure neuron script
     ## and force the exec prefix to the absolute install dir
-    preConfigure = ''
+    preConfigure = platformPreConfigure +
+                    ''
                     ./build.sh
                     export configureFlags="''${configureFlags} --exec-prefix=''${out}"
                     '';
