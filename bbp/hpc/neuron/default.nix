@@ -20,9 +20,37 @@ assert modlOnly -> (nrnOnly == false);
 assert nrnOnly -> (modlOnly == false);
 assert nrnOnly -> (nrnModl != null);
 
+
+let 
+    isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
+            then builtins.getAttr "isBlueGene" stdenv else false;
+
+    modlOnlyFlags = "--with-nmodl-only --without-x --without-memacs ";
+
+    nrnOnlyFlags =  if isBGQ then 
+                        [ 
+                            "--enable-bluegeneQ" 
+                            "--without-iv" 
+                            "--without-memacs" 
+                            "--with-paranrn"
+                            "--without-nmodl"
+                            "--host=powerpc64"
+                        ]
+                     else [ 
+                            "--with-paranrn" 
+                            "--without-iv" "--without-nmodl" 
+                            "--with-nrnpython=${python}/bin/python"
+                          ];
+
+in 
 stdenv.mkDerivation rec {
     name = "neuron-${version}-BBP-${if modlOnly then "modl" else if nrnOnly then "nrn" else "all"}";
-    version = "7.5-201610";
+
+    versionMajor = "7";
+    versionMinor = "5";
+    versionDate= "201610";
+
+    version = "${versionMajor}.${versionMinor}-${versionDate}";
 
     buildInputs = [ automake autoconf libtool mpiRuntime ncurses readline flex bison python which nrnModl];
 
@@ -36,19 +64,15 @@ stdenv.mkDerivation rec {
     };
 
 
-    isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
-            then builtins.getAttr "isBlueGene" stdenv else false;
-
-
 
 ## neuron configure its version number from commit number.
 ## Consequently it fails to build if no VCS have been used
 ## to checkout the source. This need to be fixed
 patchPhase = ''
 cat  > src/nrnoc/nrnversion.h << EOF
-#define NRN_MAJOR_VERSION "7"
-#define NRN_MINOR_VERSION "4"
-#define GIT_DATE "2015-07-21"
+#define NRN_MAJOR_VERSION "${versionMajor}"
+#define NRN_MINOR_VERSION "${versionMinor}"
+#define GIT_DATE "${versionDate}"
 #define GIT_BRANCH "master"
 #define GIT_CHANGESET "NO_GIT"
 #define GIT_TREESET "NO_GIT"
@@ -65,11 +89,6 @@ EOF
                     export configureFlags="''${configureFlags} --exec-prefix=''${out}"
                     '';
 
-
-    modlOnlyFlags = "--with-nmodl-only --without-x --without-memacs ";
-
-    nrnOnlyFlags =  ("${if isBGQ then " --enable-bluegeneQ --without-iv --without-memacs --with-paranrn --without-nmodl --host=powerpc64 "
-             else " --with-paranrn --without-iv --without-nmodl --with-nrnpython=${python}/bin/python" }");
 
 
     configureFlags =   (if modlOnly then modlOnlyFlags
