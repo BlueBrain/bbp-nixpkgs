@@ -40,6 +40,10 @@ stdenv.mkDerivation rec {
     src = if (coreNeuronMode) then src-coreneuron else src-neuron;
 
 
+
+    CFLAGS="-O2 -g";
+    CXXFLAGS="-O2 -g";
+
     buildPhase = ''
         mkdir -p $out
 
@@ -49,11 +53,9 @@ stdenv.mkDerivation rec {
         cd lib
         
         # add additional flags
-        export CXXFLAGS="-O2 -g"
-        export CFLAGS="-O2 -g"
         
-        ${if (isBGQ == true) then ''export CXXFLAGS="-qsmp ''${CXXFLAGS}'' else ''''}
-        ${if (isBGQ == true) then ''export CFLAGS="-qsmp ''${CFLAGS}'' else ''''}        
+        ${if (isBGQ == true) then ''export CXXFLAGS="-qsmp ''${CXXFLAGS}" '' else ''''}
+        ${if (isBGQ == true) then ''export CFLAGS="-qsmp ''${CFLAGS}" '' else ''''}        
         
         # build
         echo "build using nrnivmodl $(which nrnivmodl) ..."
