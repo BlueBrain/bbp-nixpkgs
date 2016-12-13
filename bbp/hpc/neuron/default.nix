@@ -58,7 +58,6 @@ let
                                         export PYLIB="-L${python}/lib -lpython${pythonVersion}"
                                         export PYLIBDIR="${python}/lib"
                                         export PYLIBLINK="-L${python}/lib -lpython${pythonVersion}"
-                                        export NIX_DEBUG=1
                                    ''
                                     else '''';
 
@@ -88,7 +87,7 @@ stdenv.mkDerivation rec {
 ## neuron configure its version number from commit number.
 ## Consequently it fails to build if no VCS have been used
 ## to checkout the source. This need to be fixed
-patchPhase = ''
+postPatch = ''
 cat  > src/nrnoc/nrnversion.h << EOF
 #define NRN_MAJOR_VERSION "${versionMajor}"
 #define NRN_MINOR_VERSION "${versionMinor}"

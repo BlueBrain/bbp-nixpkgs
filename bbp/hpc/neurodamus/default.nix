@@ -72,15 +72,16 @@ stdenv.mkDerivation rec {
         mv */.libs/*.so* $out/lib/ || true
         mv */.libs/*.a $out/lib/ || true    
         
-        
+       
+    '' + (if (isBGQ == false) then ''        
         ## rename accordingly special mech path
         grep -v "\-dll" $out/bin/special > ./special.tmp
         cp ./special.tmp $out/bin/special
         echo " \"\''${NRNIV}\" -dll \"$out/lib/libnrnmech.so\" \"\$@\" " >> $out/bin/special
+    '' else '' '');
         
         
-        
-    '';
+ 
 
 
     passthru = {
