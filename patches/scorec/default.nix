@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
 
 	cmakeFlags = [ 
 					"-DSCOREC_CXX_WARNINGS=OFF" "-DSCOREC_CXX_WARNINGS=OFF" 
-					"-DIS_TESTING=FALSE"					
+					"-DIS_TESTING=FALSE"  # "-DENABLE_ZOLTAN=TRUE"
 				 ];
 
     buildInputs = [ mpi ];

@@ -53,6 +53,10 @@ let
             mpi = mvapich2-rdma;
         };
 
+        parmetis = callPackage ./parmetis {
+            mpi = mvapich2;
+        };
+
         
    		icc-native = callPackage ./icc-native {
 
