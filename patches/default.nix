@@ -51,6 +51,7 @@ let
 
 		scorec = callPackage ./scorec {
             mpi = mvapich2-rdma;
+            parmetis  = parmetis;
         };
 
         parmetis = callPackage ./parmetis {
@@ -262,6 +263,11 @@ let
             blasLibName = "openblas";
             liblapack = openblasCompat;
             liblapackLibName = "openblas";
+        };
+
+        trilinos = callPackage ./trilinos {
+            mpi = pkgs.openmpi;
+            parmetis = parmetis;
         };
 
         ## profiling tools        

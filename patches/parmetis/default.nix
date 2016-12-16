@@ -15,10 +15,24 @@ stdenv.mkDerivation rec {
         sha256 = "0pvfpvb36djvqlcc3lq7si0c5xpb2cqndjg8wvzg35ygnwqs5ngj";
     };
 
+
+
     configurePhase = ''
-        make config prefix=$out
+        make config prefix=$out cc=mpicc cxx=mpic++ 
     '';
 
-    buildInputs = [ cmake mpi ];
+    preBuild = ''
+        #build sublib metis
+        pushd metis
+        make config prefix=$out cc=mpicc cxx=mpic++
+        make 
+        make install
+        popd
+    '';
+
+
+    buildInputs = [ mpi ];
+    
+    nativeBuildInputs = [ cmake ];
 
 }

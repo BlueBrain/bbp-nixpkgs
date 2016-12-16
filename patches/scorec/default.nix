@@ -3,8 +3,11 @@
 , cmake
 , mpi
 , which
+, parmetis ? null
+, zoltan ? null
 }:
 
+assert (zoltan != null ) -> (parmetis != null);
 
 stdenv.mkDerivation rec {
     name = "scorec-${version}";
@@ -24,10 +27,11 @@ stdenv.mkDerivation rec {
 
 	cmakeFlags = [ 
 					"-DSCOREC_CXX_WARNINGS=OFF" "-DSCOREC_CXX_WARNINGS=OFF" 
-					"-DIS_TESTING=FALSE"  # "-DENABLE_ZOLTAN=TRUE"
-				 ];
+					"-DIS_TESTING=FALSE"  
+				 ] 
+                 ++ (stdenv.lib.optional) ( zoltan != null ) [ "-DZOLTAN_PREFIX=${zoltan}" "-DENABLE_ZOLTAN=TRUE" "-DPARMETIS_PREFIX=${parmetis}" ] ;
 
-    buildInputs = [ mpi ];
+    buildInputs = [ mpi parmetis ];
     nativeBuildInputs = [ cmake which ];
 
 	buildFlags = [ "VERBOSE=1" ];
@@ -39,7 +43,8 @@ stdenv.mkDerivation rec {
         preConfigure = '' '';
 
         cmakeFlags = [ "-DSCOREC_CXX_WARNINGS=OFF" "-DSCOREC_CXX_WARNINGS=OFF" 
-                       "-DCMAKE_C_COMPILER=${mpi.crossDrv}/bin/mpicc" "-DCMAKE_CXX_COMPILER=${mpi.crossDrv}/bin/mpic++" ];
+                       "-DCMAKE_C_COMPILER=${mpi.crossDrv}/bin/mpicc" "-DCMAKE_CXX_COMPILER=${mpi.crossDrv}/bin/mpic++" ]
+                     ++ (stdenv.lib.optional) (zoltan != null ) [ "-DZOLTAN_PREFIX=${zoltan.crossDrv}" "-DENABLE_ZOLTAN=TRUE" "-DPARMETIS_PREFIX=${parmetis.crossDrv}" ];
 
 
     };

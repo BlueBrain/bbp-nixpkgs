@@ -264,7 +264,7 @@ let
 
                         hdf5 = bgq-hdf5-gcc47;
 
-                        bbp-mpi = bg-mpich;
+                        bbp-mpi = ibm-mpi;
 
 
                     }); 
@@ -425,9 +425,23 @@ let
             stdenv = enableDebugInfo bgq-stdenv-gcc47;
             mpi = ibm-mpi;
             cmake = bgq-cmake;
+            parmetis = bgq-parmetis-gcc47;
+            zoltan = bgq-zoltan-gcc47;
         };
 
+        bgq-parmetis-gcc47 = all-pkgs-bgq-gcc47.parmetis.override {
+            stdenv = enableDebugInfo bgq-stdenv-gcc47;
+            mpi = ibm-mpi;
+            cmake = bgq-cmake;
+        };
 
+        bgq-zoltan-gcc47 = all-pkgs-bgq-gcc47.trilinos.override {
+            stdenv = enableDebugInfo bgq-stdenv-gcc47;
+            mpi = ibm-mpi;
+            cmake = bgq-cmake;
+            parmetis = bgq-parmetis-gcc47;
+            boost = bgq-boost-gcc47;
+        };
 
 
         bgq-map = with MergePkgs; {
@@ -454,8 +468,8 @@ let
             bzip2 = bgq-bzip2-gcc47;
             stdenv = bgq-stdenv-gcc47;
             boost = bgq-boost-gcc47;
-            mpiRuntime = bg-mpich;
-            bbp-mpi = bg-mpich;
+            mpiRuntime = ibm-mpi;
+            bbp-mpi = ibm-mpi;
             blas = bgq-openblas;
             python = bgq-python27-gcc47;
             petsc = bgq-petsc-gcc47;
