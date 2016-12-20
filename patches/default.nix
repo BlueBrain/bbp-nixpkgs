@@ -292,39 +292,13 @@ let
 
     };
 
-    additionalPythonPackages = pythonPackages:  rec {
-
-        ## python packages
-        nose_xunitmp = pythonPackages.buildPythonPackage rec {
-            name = "nose_xunitmp-${version}";
-            version = "0.4";
-
-            src = MergePkgs.fetchurl {
-            url = "https://pypi.python.org/packages/86/cc/ab61fd10d25d090e80326e84dcde8d6526c45265b4cee242db3f792da80f/nose_xunitmp-0.4.0.tar.gz";
-            md5 = "c2d1854a9843d3171b42b64e66bbe54f";
-            };
-
-            buildInputs = with pythonPackages; [ nose ];
-
-        }; 
-
-        nose_testconfig = pythonPackages.buildPythonPackage rec {
-            name = "nose_testconfig-${version}";
-            version = "0.10";
-
-            src = MergePkgs.fetchurl {
-                url = "https://pypi.python.org/packages/a0/1a/9bb934f1274715083cfe8139d7af6fa78ca5437707781a1dcc39a21697b4/nose-testconfig-0.10.tar.gz";
-                md5 = "2ff0a26ca9eab962940fa9b1b8e97995";
-            };
-
-            buildInputs = with pythonPackages; [ nose ];
-
-        };           
-
-    };
+    additionalPythonPackages = MergePkgs.callPackage ./additionalPythonPackages ({
+		pkgs = MergePkgs;
+		pythonPackages = MergePkgs.pythonPackages;
+	});
        
 in
-  MergePkgs // { pythonPackages = MergePkgs.pythonPackages // (additionalPythonPackages (MergePkgs.pythonPackages)); }
+  MergePkgs // { pythonPackages = MergePkgs.pythonPackages // (additionalPythonPackages); }
 
 
 
