@@ -64,9 +64,22 @@ let
 
         scorec = pkgs.scorec.override {
             mpi = bbp-mpi-rdma;
+            parmetis = parmetis;
+            zoltan = zoltan;
         };
 
+        parmetis = pkgs.parmetis.override {
+            mpi = bbp-mpi-rdma;
+        };
     
+        trilinos = pkgs.trilinos.override {
+            mpi = bbp-mpi-rdma;
+            parmetis = parmetis;
+        };
+    
+        zoltan = trilinos;
+   
+ 
 
         ##
         ## git / cmake external for viz components

@@ -10,6 +10,7 @@ readline,
 flex,
 bison,
 python,
+pythonVersion ? "2.7",
 which,
 modlOnly ? false,
 nrnOnly ? false,
@@ -20,9 +21,55 @@ assert modlOnly -> (nrnOnly == false);
 assert nrnOnly -> (modlOnly == false);
 assert nrnOnly -> (nrnModl != null);
 
+
+let 
+    isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
+            then builtins.getAttr "isBlueGene" stdenv else false;
+
+    modlOnlyFlags = "--with-nmodl-only --without-x --without-memacs ";
+
+    nrnOnlyFlags =  if isBGQ then 
+                        [ 
+                            "--enable-bluegeneQ" 
+                            "--without-iv" 
+                            "--without-memacs" 
+                            "--with-paranrn"
+                            "--without-nmodl"
+                            "--host=powerpc64"
+                            "--with-nrnpython"
+                        ]
+                     else [ 
+                            "--with-paranrn" 
+                            "--without-iv" "--without-nmodl" 
+                            "--with-nrnpython=${python}/bin/python"
+                          ];
+
+    platformPreConfigure = if (isBGQ && nrnOnly) then ''
+                                        ## BGQ specific neuron preconfiguration 
+                                        export CC=mpixlc_r_dl
+                                        export CXX=mpixlcxx_r_dl
+
+                                        export NEURON_PYTHON_VERSION="2.7"
+                                        export ALL_FLAGS="-qnostaticlink -DLAYOUT=0 -DDISABLE_HOC_EXP -DDISABLE_TIMEOUT -O3 -g -DCORENEURON_BUILD -qlist -qsource -qreport -qsmp=noauto -qthreaded";
+                                        export CXXFLAGS="$ALL_FLAGS $CXXFLAGS"
+                                        export CFLAGS="$ALL_FLAGS  $CFLAGS";
+
+                                        export PYINCDIR="${python}/include/python${pythonVersion}" 
+                                        export PYLIB="-L${python}/lib -lpython${pythonVersion}"
+                                        export PYLIBDIR="${python}/lib"
+                                        export PYLIBLINK="-L${python}/lib -lpython${pythonVersion}"
+                                   ''
+                                    else '''';
+
+in 
 stdenv.mkDerivation rec {
     name = "neuron-${version}-BBP-${if modlOnly then "modl" else if nrnOnly then "nrn" else "all"}";
-    version = "7.5-201610";
+
+    versionMajor = "7";
+    versionMinor = "5";
+    versionDate= "201610";
+
+    version = "${versionMajor}.${versionMinor}-${versionDate}";
 
     buildInputs = [ automake autoconf libtool mpiRuntime ncurses readline flex bison python which nrnModl];
 
@@ -36,19 +83,15 @@ stdenv.mkDerivation rec {
     };
 
 
-    isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
-            then builtins.getAttr "isBlueGene" stdenv else false;
-
-
 
 ## neuron configure its version number from commit number.
 ## Consequently it fails to build if no VCS have been used
 ## to checkout the source. This need to be fixed
-patchPhase = ''
+postPatch = ''
 cat  > src/nrnoc/nrnversion.h << EOF
-#define NRN_MAJOR_VERSION "7"
-#define NRN_MINOR_VERSION "4"
-#define GIT_DATE "2015-07-21"
+#define NRN_MAJOR_VERSION "${versionMajor}"
+#define NRN_MINOR_VERSION "${versionMinor}"
+#define GIT_DATE "${versionDate}"
 #define GIT_BRANCH "master"
 #define GIT_CHANGESET "NO_GIT"
 #define GIT_TREESET "NO_GIT"
@@ -60,16 +103,12 @@ EOF
 
     ## run the pre-configure neuron script
     ## and force the exec prefix to the absolute install dir
-    preConfigure = ''
+    preConfigure = platformPreConfigure +
+                    ''
                     ./build.sh
                     export configureFlags="''${configureFlags} --exec-prefix=''${out}"
                     '';
 
-
-    modlOnlyFlags = "--with-nmodl-only --without-x --without-memacs ";
-
-    nrnOnlyFlags =  ("${if isBGQ then " --enable-bluegeneQ --without-iv --without-memacs --with-paranrn --without-nmodl --host=powerpc64 "
-             else " --with-paranrn --without-iv --without-nmodl --with-nrnpython=${python}/bin/python" }");
 
 
     configureFlags =   (if modlOnly then modlOnlyFlags
