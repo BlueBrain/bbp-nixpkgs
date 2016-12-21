@@ -1,7 +1,7 @@
 { stdenv
 , fetchurl
 , python
-, blis
+, bgq-openblas
 }:
 
 stdenv.mkDerivation rec {
@@ -50,8 +50,8 @@ stdenv.mkDerivation rec {
 
 
     nativeBuildInputs = [ python ];
-    buildInputs = [ blis ];
-    propagatedBuildInputs = [ blis ];
+    buildInputs = [ bgq-openblas ];
+    propagatedBuildInputs = [ bgq-openblas ];
 
     meta = {
       description = "Scientific tools for Python";
