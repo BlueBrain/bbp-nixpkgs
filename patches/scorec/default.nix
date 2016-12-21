@@ -26,8 +26,8 @@ stdenv.mkDerivation rec {
 	'';
 
 	cmakeFlags = [ 
-					"-DSCOREC_CXX_WARNINGS=OFF" "-DSCOREC_CXX_WARNINGS=OFF" 
-					"-DIS_TESTING=FALSE"  
+					"-DSCOREC_CXX_WARNINGS=OFF" "-DSCOREC_CXX_WARNINGS=OFF" "-DMDS_ID_TYPE=long"
+					"-DIS_TESTING=FALSE" 
 				 ] 
                  ++ (stdenv.lib.optional) ( zoltan != null ) [ "-DZOLTAN_PREFIX=${zoltan}" "-DENABLE_ZOLTAN=TRUE" "-DPARMETIS_PREFIX=${parmetis}" ] ;
 
@@ -42,7 +42,7 @@ stdenv.mkDerivation rec {
     crossAttrs = {
         preConfigure = '' '';
 
-        cmakeFlags = [ "-DSCOREC_CXX_WARNINGS=OFF" "-DSCOREC_CXX_WARNINGS=OFF" 
+        cmakeFlags = [ "-DSCOREC_CXX_WARNINGS=OFF" "-DSCOREC_CXX_WARNINGS=OFF"  "-DMDS_ID_TYPE=long"
                        "-DCMAKE_C_COMPILER=${mpi.crossDrv}/bin/mpicc" "-DCMAKE_CXX_COMPILER=${mpi.crossDrv}/bin/mpic++" ]
                      ++ (stdenv.lib.optional) (zoltan != null ) [ "-DZOLTAN_PREFIX=${zoltan.crossDrv}" "-DENABLE_ZOLTAN=TRUE" "-DPARMETIS_PREFIX=${parmetis.crossDrv}" ];
 
