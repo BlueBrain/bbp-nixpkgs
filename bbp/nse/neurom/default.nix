@@ -23,9 +23,6 @@ pythonPackages.buildPythonPackage rec {
 		# downgrade required version of scipy to 0.15
 		# will remove that whehn transition to Nixpkgs  16.09 will be done 
 		sed -i 's/scipy>=0.17.0/scipy>=0.15.0/g' requirements.txt
-
-		## replace a problem with import builtins and python2
-		sed -i 's/builtins/__builtin__/g' neurom/_compat.py
 	'';
 
 	buildInputs = [ pythonPackages.pip 
