@@ -14,20 +14,6 @@ let
 
         inherit bgq-driver;
 
-        makeCrossSetupHook = { deps ? [], substitutions ? {} }: script:
-            runCommand "hook" substitutions
-              (''
-                mkdir -p $out/nix-support
-                cp ${script} $out/nix-support/setup-hook
-              '' + lib.optionalString (deps != []) ''
-                echo ${toString deps} > $out/nix-support/propagated-build-inputs
-                echo ${toString deps} > $out/nix-support/propagated-native-build-inputs
-                '' + lib.optionalString (substitutions != {}) ''
-                substituteAll ${script} $out/nix-support/setup-hook
-              '');
-
-        makeCrossWrapper = makeCrossSetupHook { } ../std-nixpkgs/pkgs/build-support/setup-hooks/make-wrapper.sh;
-
 
         bg-basicSetup = {
             dontDisableStatic = true;       # Keep all static libraries for BGQ
@@ -259,13 +245,11 @@ let
                         openblas = bgq-openblas;
                         openblasCompat = bgq-openblas;
 
-
                         numpy = bgq-pythonPackages-gcc47.bg-numpy;
 
                         hdf5 = bgq-hdf5-gcc47;
 
                         bbp-mpi = ibm-mpi;
-
 
                     }); 
                 };
@@ -338,7 +322,8 @@ let
             stdenv = bgq-stdenv-gcc47-nofix; 
             python = bgq-python27-gcc47; 
             bg-hdf5 = bgq-hdf5-gcc47;
-            pkgs = all-pkgs-bgq-gcc47 // { makeWrapper = makeCrossWrapper; };
+            bgq-openblas = bgq-openblas;
+            pkgs = all-pkgs-bgq-gcc47;
         });
 
 
