@@ -22,8 +22,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/building/FLATIndex";
-    rev = "ab1727a301799d4c4c1b142c13ef56c965f94838";
-    sha256 = "03x2k583nlk0xcfpdh76q3fcdfv32dvpfypgaqaq3k0l8mn41f4k"; 
+    rev = "8bec30a23488bae6f9b8a0b40d53123e789a1904";
+    sha256 = "133if0a5xk7vq7ddlyfq87d1ybg2kr6468mrw4nyb5cbnkrjdq5x"; 
   };
   
  	
