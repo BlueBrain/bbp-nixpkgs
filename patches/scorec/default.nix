@@ -20,6 +20,9 @@ stdenv.mkDerivation rec {
         sha256 = "143pbq84lcikab4xk2ga5h99rsdvxscn5y9iri2s6217xw3jxnza";
     };
 
+    # apply francesco patch to default scorec iteration parameter
+    patches = [ ./core_refine_iterations.patch ];
+
 	preConfigure = ''
 			export CC=mpicc
 			export CXX=mpic++
