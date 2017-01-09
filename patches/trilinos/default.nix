@@ -42,6 +42,7 @@ stdenv.mkDerivation rec {
                     "-DTrilinos_ENABLE_ALL_PACKAGES=${if (defaultPackages) then "ON" else "OFF"}" 
                     "-DTPL_ENABLE_Netcdf=OFF"
                     "-DTPL_ENABLE_X11=OFF"
+                    "-DTPL_ENABLE_ParMETIS:BOOL=ON"
                 ] 
                 ++ (stdenv.lib.optional) (mpi != null) [ "-DTPL_ENABLE_MPI=ON" ]
                 ++ (stdenv.lib.optional) (withZoltan) [ "-DTrilinos_ENABLE_Zoltan=TRUE" ];
