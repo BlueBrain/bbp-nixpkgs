@@ -72,6 +72,22 @@ in
 
 	};           
 
+  cython = pythonPackages.buildPythonPackage rec {
+    name = "Cython-${version}";
+    version = "0.25.2";
+
+    src = pkgs.fetchurl {
+      url = "https://pypi.io/packages/source/C/Cython/${name}.tar.gz";
+      sha256 = "01h3lrf6d98j07iakifi81qjszh6faa37ibx7ylva1vsqbwx2hgi";
+    };
+
+    setupPyBuildFlags = ["--build-base=$out"];
+
+    buildInputs = with pythonPackages; [ pkgs.pkgconfig ];
+
+   };
+    
+
 
 }
 

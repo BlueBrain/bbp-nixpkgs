@@ -444,6 +444,8 @@ let
                             pythonPkgs.six
                             pythonPkgs.pycurl
                             pythonPkgs.h5py
+                            pythonPkgs.setuptools
+                            pythonPkgs.cython
                        ];
             conflicts = [ python34-full python34-light ] ++ conflicts-modules;                           
             dependencies = [ nss-wrapper gcc ];
@@ -481,6 +483,7 @@ let
                             pythonPkgs.pandas                            
                             pythonPkgs.pycurl
                             pythonPkgs.h5py
+                            pythonPkgs.setuptools
                        ];
             conflicts = [ python27-light python27-full ] ++ conflicts-modules; 
             dependencies = [ nss-wrapper gcc ];
@@ -1193,6 +1196,7 @@ with generic-modules; rec {
                             pkgs.bgq-python27-gcc47.crossDrv
                             pkgs.pythonPackages.pip
                             pkgs.pythonPackages.virtualenv
+                            pkgs.pythonPackages.cython
                        ];
             conflicts = [ bgq-python27-full  ] ++ conflicts-modules;
       };
@@ -1218,6 +1222,8 @@ with generic-modules; rec {
                     bgq-pythonPackages-gcc47.bg-h5py.crossDrv
                     pkgs.pythonPackages.pip
                     pkgs.pythonPackages.virtualenv 
+                    pkgs.pythonPackages.setuptools
+                    pkgs.pythonPackages.cython
                ];
             conflicts = [ bgq-python27-light ] ++ conflicts-modules;
       };
