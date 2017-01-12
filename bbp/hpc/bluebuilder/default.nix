@@ -12,13 +12,13 @@ mpiRuntime,
 
 stdenv.mkDerivation rec {
   name = "bluebuilder-${version}";
-  version = "1.2.1";
+  version = "1.2.1-201701";
   buildInputs = [ stdenv pkgconfig boost hpctools hdf5 zlib cmake mpiRuntime libxml2];
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/building/BlueBuilder";
-    rev = "731bf5694aba9cb433273beb9009c5fbe50ee3fa";
-    sha256 = "1vis3s3bbhd2836mch3cb29kr6ws8dpyxy7br1zc9zrxnlypzjx2";
+    rev = "9c5ac2fe7ff87c2e5a45f18508d3c92095fa856c";
+    sha256 = "1l3plrxirh7zsix82hl1wsy6r0zcm4199nqvzw9m6ds4vl16s0n2";
   };
   
   isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
