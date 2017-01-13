@@ -209,9 +209,13 @@ let
                             pkgs.mod2c
                             pkgs.neurodamus
                             pkgs.neuron
+
+							# nrnivmodl  
                             pkgs.reportinglib
                             pkgs.readline
                             pkgs.ncurses
+							pkgs.hdf5
+							pkgs.zlib 
 
                             # sub cellular sim
                             pkgs.steps-mpi
@@ -1367,8 +1371,12 @@ with generic-modules; rec {
                 pkgs.neurodamus
                 pkgs.neuron
                 pkgs.reportinglib
+
+				# required library for nrnivmdl
                 pkgs.readline
                 pkgs.ncurses      
+				pkgs.bgq-hdf5
+				pkgs.bgq-zlib
             ];
             extraContent = "setenv BBP_HOME $targetEnv/";
 
