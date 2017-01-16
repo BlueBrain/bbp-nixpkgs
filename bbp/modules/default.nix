@@ -1377,8 +1377,13 @@ with generic-modules; rec {
                 pkgs.ncurses      
 				pkgs.bgq-hdf5
 				pkgs.bgq-zlib
+
+				# default compiler
             ];
+
             extraContent = "setenv BBP_HOME $targetEnv/";
+
+			dependencies = [ bgq-mpi-xlc ];
 
      };
 
