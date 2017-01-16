@@ -17,8 +17,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/building/BlueBuilder";
-    rev = "731bf5694aba9cb433273beb9009c5fbe50ee3fa";
-    sha256 = "1vis3s3bbhd2836mch3cb29kr6ws8dpyxy7br1zc9zrxnlypzjx2";
+    rev = "e304808bd291803a8eab57b61a8cb72d85374006";
+    sha256 = "1c8k0s2g0p4b7myh56rq9j8bg1fjjgsdhszbfnsdfcx4nkm9fxkn";
   };
   
   isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
@@ -26,12 +26,6 @@ stdenv.mkDerivation rec {
   
   cmakeFlags="-DBoost_USE_STATIC_LIBS=${if isBGQ then "TRUE" else "FALSE"}";  
   
-  patchPhase= if isBGQ == false then
-    ''
-    sed -i 's@set(Boost_USE_STATIC_LIBS ON)@set(Boost_USE_STATIC_LIBS OFF)@g' CMakeLists.txt
-    ''
-    else '''';    
-
   enableParallelBuilding = true;
 }
 
