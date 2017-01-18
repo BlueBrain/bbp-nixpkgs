@@ -37,6 +37,7 @@ stdenv.mkDerivation rec {
 
   configureOpts = [
                          "--with-fc=0"
+                         "--with-shared-libraries=false"
 						 "COPTFLAGS='${optFlags}'"
 						 "CXXOPTFLAGS='${optFlags}'"
                   ];

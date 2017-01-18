@@ -24,6 +24,7 @@ configure_options = [
   '--known-snrm2-returns-double=0',
   '--known-has-attribute-aligned=1',
   '--prefix=@out@',
+  '--with-shared-libraries=false',
   '--with-fc=0',
   '--with-mpi-dir=@mpi_path@',
   '--with-batch',
