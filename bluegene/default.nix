@@ -393,6 +393,10 @@ let
             config =  crossBGQSystem;
         };
 
+        bgq-openblas-static = bgq-openblas.override {
+            sharedLibrary = false;
+        };
+
 
 
         bgq-petsc-gcc47 = all-pkgs-bgq-gcc47.petsc.override {
