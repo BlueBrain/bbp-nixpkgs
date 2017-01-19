@@ -12,7 +12,7 @@ with64bits ? true
 
 
 let 
-	optFlags = "-g -O2 -ftree-vectorize";
+	optFlags = "-fPIC -g -O2 -ftree-vectorize";
 
 in
 
@@ -31,6 +31,10 @@ stdenv.mkDerivation rec {
         # petsc python configure script want an existing HOME directory
         # we provide him a fake one
         export HOME=$(mktemp -d)
+
+        # like petsc non-standard cflags system does anyway NOT work
+        # force the usage of CFLAGS through nix variables 
+        export NIX_CFLAGS_COMPILE=" ${optFlags} ''${NIX_CFLAGS_COMPILE} "
   '';
 
  
@@ -38,8 +42,6 @@ stdenv.mkDerivation rec {
   configureOpts = [
                          "--with-fc=0"
                          "--with-shared-libraries=false"
-						 "COPTFLAGS='${optFlags}'"
-						 "CXXOPTFLAGS='${optFlags}'"
                   ];
 
 
