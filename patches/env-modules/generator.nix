@@ -138,13 +138,14 @@ if { [file exists ${targetEnvMan} ] } {
 ## check if any python interpreter is present
 if { [file exists ${targetEnvPythonInterpret} ] } {
         prepend-path PYTHONHOME ${targetEnv}
-}
+} else {
 
-## check if any python modules are available
-foreach pathname [ glob -nocomplain "${targetEnv}/lib*/python*/*-packages/" ]  {
-    
-    prepend-path PYTHONPATH \$pathname
+		## check if any python modules are available
+		foreach pathname [ glob -nocomplain "${targetEnv}/lib*/python*/*-packages/" ]  {
+			
+			prepend-path PYTHONPATH \$pathname
 
+		}
 }
 
 ## check if any hoc path is needed
