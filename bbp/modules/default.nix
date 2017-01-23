@@ -947,6 +947,19 @@ let
         ];
 
 
+		dev-env-python27pkgs = [
+								freetype
+								gldev
+								ncurses
+								readline
+								openblasCompat
+								libxml2
+								hdf5
+								default_mpi
+							];
+									
+
+
         dev-env-gcc = pkgs.envModuleGen rec {
             name = "dev-env-gcc";
             version = "09.2016";
@@ -979,6 +992,17 @@ let
                            ] ++ dev-env-pkgs;                            
             conflicts = conflicts-modules;
         } else null;
+
+
+		dev-env-python27 = pkgs.envModuleGen rec {
+            name = "dev-env-python27";
+            version = "2017";
+            description = "python development environment from nix";
+            dependencies = [
+                            # compiler
+                            python27-light ] ++ dev-env-python27pkgs ;
+           conflicts = conflicts-modules;
+        };
 
 
 
@@ -1021,6 +1045,7 @@ let
 
             #dev env
             dev-env-gcc
+			dev-env-python27
         ];
         };
 
