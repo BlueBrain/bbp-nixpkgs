@@ -2,14 +2,14 @@
 
 stdenv.mkDerivation rec {
   name = "morpho-tool-${version}";
-  version = "0.1-201611";
+  version = "0.1-201701";
   
   buildInputs = [ stdenv pkgconfig boost zlib cmake hdf5 cgal gmp mpfr ];
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/hpc/morpho-tool";
-    rev = "9d2dfee6b2c446dbe18be899190347c469e25566";
-    sha256 = "1s1k5bjyipz5vjchzhhjasdx6nkr6h0xvfmzjpxwzjdggp3smkwz";
+    rev = "49c795d0c0c4319129c8fe10b7338727263c5cd3";
+    sha256 = "1xknvcd7ggfcxs1451442gkdmkbl1l0s78smch6zg2s0qa0qlicq";
   };
   
   cmakeFlags=[ 
