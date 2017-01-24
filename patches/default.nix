@@ -290,6 +290,10 @@ let
 
         };
 
+        tbb = callPackage ./tbb {
+
+        };
+
     };
 
     additionalPythonPackages = MergePkgs.callPackage ./additionalPythonPackages ({

@@ -6,6 +6,8 @@
 , httpxx
 , zeromq
 , boost 
+, openssl
+, cppnetlib
 }:
 
 
@@ -13,14 +15,14 @@ stdenv.mkDerivation rec {
   name = "zeroeq-${version}";
   version = "0.6.0-2016-10";
 
-  buildInputs = [ stdenv pkgconfig servus cmake boost httpxx zeromq ];
+  buildInputs = [ stdenv pkgconfig servus cmake boost httpxx zeromq openssl cppnetlib ];
 
 
 
   src = fetchgitExternal{
-    url = "https://github.com/HBPVIS/ZeroEQ.git";
-    rev = "1ff42dc1441260615ae93e89f254f5a40077b7df";
-    sha256 = "0lczv7baq5kmpb4naknvq0bgiwbapp1fdj9aqsn5zax9j6sxhjwd";
+    url = "https://github.com/adevress/ZeroEQ.git";
+    rev = "5248ae1af4add18dae496c80e20116714580c7f6";
+    sha256 = "0bynw78chq1ss8wg687q8ffb06pa1sbwv0i6f1g5q5al6jzd6wxi";
   };
   
   preConfigure = ''
@@ -28,6 +30,9 @@ stdenv.mkDerivation rec {
 			export CPPFLAGS="-fPIC $CPPFLAGS"
 			export CXXFLAGS="-fPIC $CXXFLAGS"
   '';
+
+  
+  cmakeFlags = [ "-DZEROEQ_USE_EXTERNAL_CPPNETLIB=TRUE" ];
 
   makeFlags = [ "VERBOSE=1" ];
 

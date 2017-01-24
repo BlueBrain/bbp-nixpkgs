@@ -5,6 +5,7 @@
 , boost
 , assimp ? null
 , ospray
+, embree 
 , freeglut
 , libXmu
 , libXi
@@ -35,14 +36,15 @@ stdenv.mkDerivation rec {
 
 	src = fetchgitExternal {
 		url  = "https://github.com/BlueBrain/Brayns.git";
-		rev = "8e7bad24202163a7073f8c5a4530eb79c82b68c3";
-		sha256 = "08nwgmb23imfgp1a2yv5nbc15rihjmjbbcrr3q8y4fjp0pd3420a";
+		rev = "80b143251c4b8b366e2e959b8b73e124d6e1d314";
+		sha256 = "18v4lk3rinvdh63xjpcm32kc22nljp8y9mzbd1cgmbpx1742j9bh";
 	};
 
 
 	cmakeFlags = [ 
 				"-DOSPRAY_ROOT=${ospray}"
 				"-DBRAYNS_REST_ENABLED=${if restInterface then "TRUE" else "FALSE"}" 
+                "-DEMBREE_ROOT=${embree}"
 				## horrible hack to solve
 				## this idiotic -WError at release time....
 				"-DXCODE_VERSION=1" ];
