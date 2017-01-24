@@ -845,7 +845,18 @@ let
             conflicts = conflicts-modules;
         };
 
+        tbb = pkgs.envModuleGen rec {
+            name = "tbb";
+            isLibrary = true;
+            setRoot = "TBB";
+            description = "TBB (Thread Building Block) Library ";
+            packages = [
+                            pkgs.tbb 
 
+                        ];
+            conflicts = conflicts-modules;
+    
+        };
 
 
         gcc52 = pkgs.envModuleGen rec {
@@ -943,6 +954,7 @@ let
                             ncurses
                             gldev
                             freetype
+                            tbb 
 
         ];
 
@@ -1018,6 +1030,9 @@ let
             cmake readline ncurses
             python27-light python27-full 
             cython 
+
+            # parallel
+            tbb 
 
             # wrapper for auth
             nss-wrapper 
@@ -1381,6 +1396,7 @@ with generic-modules; rec {
 
       bgq-dev-env-pkgs-gcc = [
         hdf5 libxml2 bison flex boost zlib openblas bgq-ibm-mpi bgq-cmake 
+        
       ];
 
       bgq-dev-env-gcc = pkgs.envModuleGen rec {

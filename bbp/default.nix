@@ -134,6 +134,10 @@ let
 
         };
 
+        cppnetlib = callPackage ./viz/cppnetlib {
+
+        };
+
         zeroeq = callPackage ./viz/zeroeq {
 
         };
@@ -173,6 +177,10 @@ let
         rtneuron = callPackage ./viz/rtneuron {   
 
         };  
+
+        embree = callPackage ./viz/embree {
+
+        };
 
         ospray = callPackage ./viz/ospray {
 
