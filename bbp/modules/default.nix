@@ -515,12 +515,12 @@ let
                             gcc
                             stdenv
                             # python and module collection
-                            pkgs.python 
+                            pkgs.python27Full
                             pythonPkgs.pip
                             pythonPkgs.virtualenv
                        ];
             conflicts = [ python34-full python34-light ] ++ conflicts-modules;
-            dependencies = [ nss-wrapper gcc ];
+            dependencies = [ nss-wrapper ];
         };
 
         python27-full = with pkgs; envModuleGen rec {
@@ -1080,6 +1080,7 @@ let
 								libxml2
 								hdf5
 								default_mpi
+                                gcc 
 							];
 									
 
