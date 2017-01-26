@@ -969,6 +969,20 @@ let
     
         };
 
+        llvm = pkgs.envModuleGen rec {
+            name = "llvm";
+            isLibrary = true;
+            version = "3.6.2";
+            setRoot = "LLVM";
+            description = "Low level Virtual Machine ";
+            packages = [
+                            pkgs.llvm
+
+                        ];
+            conflicts = conflicts-modules;
+
+        };
+
 
         gcc52 = pkgs.envModuleGen rec {
             name = "gcc";
@@ -1225,7 +1239,8 @@ let
             hpctoolkit
             dev-env-clang dev-env-icc
             clang icc
-            
+            llvm        
+    
             #gmsh
             blender 
             intel-mpi-bench-rdma
