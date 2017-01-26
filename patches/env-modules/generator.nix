@@ -9,6 +9,7 @@ conflicts ? [] ,
 dependencies ? [],
 packages ? [],
 setRoot ? "",
+nixCompileFlags ? true,
 isLibrary ? false,
 isDefault ? false,
 description ? "" ,
@@ -106,6 +107,15 @@ ${if isLibrary == true then
 prepend-path CMAKE_PREFIX_PATH ${targetEnv}
 '' 
 else 
+'' ''
+}
+
+${if (isLibrary == true && nixCompileFlags == true) then
+''
+    prepend-path --delim " " NIX_CFLAGS_COMPILE "-I$targetEnv/include"
+    prepend-path --delim " " NIX_LDFLAGS "-L$targetEnv/lib"
+''
+else
 '' ''
 }
 

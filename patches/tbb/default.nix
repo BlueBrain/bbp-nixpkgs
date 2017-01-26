@@ -1,7 +1,8 @@
 { stdenv, fetchurl }:
 
-stdenv.mkDerivation {
-  name = "tbb-2017";
+stdenv.mkDerivation rec {
+  name = "tbb-${version}";
+  version = "2017";
 
   src = fetchurl {
     url = "https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb2017_20161128oss_src.tgz";
