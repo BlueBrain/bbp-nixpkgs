@@ -10,8 +10,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/sim/reportinglib/bbp";
-    rev = "a5cd8467b439342252147ff6f35cb1ab726b1006";
-    sha256 = "0hwq7l64zlha34gzfm6844qgra7n68ckv1nnfhma9avajhnxa38y";
+    rev = "98f5b5869ad3a2c741e847a658d2bb75986ed05f";
+    sha256 = "1a3p7rl2ic1x3g0xhzxh8psbq6z97qvxs60r3zlsc08y83fink4f";
   };
   
   
