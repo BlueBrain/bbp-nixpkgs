@@ -9,6 +9,7 @@
 , openssl
 , mysql
 , lua 
+, lz4
 , hwloc
 , numactl
 , extraDeps ? []
@@ -26,7 +27,7 @@ let
 				     ''
 				     + copyPlugins (builtins.tail list_plugins)
                                ;
- default-slurm-version = "15.08.12";
+ default-slurm-version = "16.05.9";
 
  # pickup slurm version configure in config.nix
 
@@ -34,8 +35,10 @@ let
 
  slurm-src-sha256 = if (slurm-version == "14.03.11" ) then 
 		"1plxy8hsdk8xc2n1sih2q0avyjzqz5y36iwf43aqf0iv6r2c7ajq"
-	   else # 15.04.12
- 		"1jf3gazr4pv27hf8p52rli0n3yppxcypw60632wrc6glgb0qadyp";
+	   else if(slurm-version == "15.04.12" ) then 
+ 		"1jf3gazr4pv27hf8p52rli0n3yppxcypw60632wrc6glgb0qadyp"
+       else
+        "0x6mysq0kiva29mx52913wxq6agspnfkyx1llsh1rybap258pjig";
 	   
 
 
@@ -47,11 +50,12 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = [ "http://www.schedmd.com/download/archive/slurm-${version}.tar.bz2"
-	    "http://www.schedmd.com/download/latest/slurm-${version}.tar.bz2" ];
+	    "http://www.schedmd.com/downloads/latest/slurm-${version}.tar.bz2" ];
     sha256 = slurm-src-sha256;
   };
 
-  buildInputs = [ python pkgconfig munge perl pam openssl mysql.lib lua hwloc numactl ] 
+  buildInputs = [ python pkgconfig munge perl pam openssl 
+                    mysql.lib lua hwloc numactl lz4 ] 
 		++ extraDeps;
 
   configureFlags = [
