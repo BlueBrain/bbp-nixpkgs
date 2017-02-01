@@ -18,14 +18,14 @@ let
             
   src-neuron = fetchgitPrivate {
         url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
-        rev = "b85d0085c978d54e3de0a88bb460e8e187f0847d";
-        sha256 = "03g683v243dzj6q9hcxc7m04l07v499xw12pn3jb4wg1l3fy8frr";
+        rev = "3bb1ab99a46369be2c9b456b67267ac370e9f0aa";
+        sha256 = "1wqwwyp1yfwp0506qvlvmpgzi55xxma6b4f9svfbz9gkmhl65d2b";
     };
 
   src-coreneuron = fetchgitPrivate {
         url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
-        rev = "93e3a8683527ef4dd986d2779dc98c2d44106bb7";
-        sha256 = "10g0rm3l0qbgk7ylqsa38bpylnz4329ckr7yx2rax586ay7zp51g";
+        rev = "fb5c1b5c08a1aba4396624d3db8a46bea68aff4b";
+        sha256 = "1m87s31wjyv5kz33pv9s139mbyn3j1bxgj2ivgy1dgcmcc7lr1xq";
   };
 
 in 
