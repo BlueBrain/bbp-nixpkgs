@@ -14,6 +14,9 @@ stdenv.mkDerivation {
   buildInputs = [ python perl gfortran ];
   propagatedBuildInputs = stdenv.lib.optional (stdenv ? glibc) stdenv.glibc;
 
+
+  outputs = [ "out" "doc" ];
+
   meta = {
     description = "Implementation of the Message Passing Interface (MPI) standard";
 
