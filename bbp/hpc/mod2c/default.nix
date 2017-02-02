@@ -9,8 +9,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/sim/mod2c";
-    rev = "babfe2cafaa5961b56d7515e88752d8f9607e11f";
-    sha256 = "1qqml8d7h9q3wv089qcpqkjn25rwdxligm6zd48bk7cqlh9lnsc6";
+    rev = "7f2ca8ee1fcba245ad1f7d43ae744851c5915920";
+    sha256 = "0byar5xglcilg3n29y8cfsajpvv0fla5z009gwxw2yhiaasyyzp8";
   };
    
   
