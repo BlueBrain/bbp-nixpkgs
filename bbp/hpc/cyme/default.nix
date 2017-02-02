@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   name = "cyme-${version}";
-  version = "0.1";
+  version = "1.5.0-2017";
   
   buildInputs = [ stdenv boost cmake ];
 
