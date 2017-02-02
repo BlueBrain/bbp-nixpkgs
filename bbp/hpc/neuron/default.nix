@@ -67,7 +67,7 @@ stdenv.mkDerivation rec {
 
     versionMajor = "7";
     versionMinor = "5";
-    versionDate= "201610";
+    versionDate= "201701";
 
     version = "${versionMajor}.${versionMinor}-${versionDate}";
 
@@ -78,8 +78,8 @@ stdenv.mkDerivation rec {
 
     src = fetchhg {
         url = "http://www.neuron.yale.edu/hg/neuron/nrn";
-        rev = "60a58922f20e";
-        sha256 = "1s7fx97znc4h9qx1x5jhg2i4bp478afkfhi6h36na219g8xkw2jx"; 
+        rev = "e0bd0137f04c";
+        sha256 = "07ld7x226mnfajnbkpx8k94jq19601xmfyfw4jjpp98f0cxgk9mj"; 
     };
 
 
