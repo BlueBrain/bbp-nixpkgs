@@ -17,11 +17,11 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "BlueBrain";
     repo = "neuromapp";
-    rev = "c2d8f4609ba80f1f905996f716800c82af15e88a";
-    sha256 = "0apfybi9zz3dnlxkqmvlj2l750n8i122jxjmgss418przjad85mg";
+    rev = "51b3008bb2927c8a408fe1b7242ad1634b4aa1d0";
+    sha256 = "0mlfbgz319pgqqsapk543ma3j5jn5251bs4inz5xfvna5xcilgzh";
   };
 
-  cmakeFlags= "-DBoost_NO_BOOST_CMAKE=TRUE -DBoost_USE_STATIC_LIBS=FALSE ";
+  cmakeFlags= [ "-DBoost_NO_BOOST_CMAKE=TRUE" "-DBoost_USE_STATIC_LIBS=FALSE"];
 
   enableParallelBuilding = true;
 }
