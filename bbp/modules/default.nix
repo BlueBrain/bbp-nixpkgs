@@ -277,6 +277,10 @@ let
                        ];
 
             conflicts = conflicts-modules;
+
+			dependencies = [
+						virtualgl
+						];
         };
 
 
