@@ -198,6 +198,7 @@ let
         };
 
         morphsyn = callPackage ./nse/morphsyn {
+		vtk = vtk7;
         };
 
         ##
