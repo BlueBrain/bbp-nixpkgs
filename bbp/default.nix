@@ -190,13 +190,15 @@ let
         brayns = callPackage ./viz/brayns {
 
         };
-	
-		##
-		## BBP NSE components
-		##
-		neurom = callPackage ./nse/neurom {
 
-		};
+        ##
+        ## BBP NSE components
+        ##
+        neurom = callPackage ./nse/neurom {
+        };
+
+        morphsyn = callPackage ./nse/morphsyn {
+        };
 
         ##
         ## BBP HPC components
