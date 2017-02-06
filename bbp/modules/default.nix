@@ -1196,7 +1196,7 @@ let
             git mercurial
 
             # nse team
-            neurom
+            neurom morphsyn
 
             # viz team
             lunchbox brion zeroeq zerobuf lexis vmmlib
