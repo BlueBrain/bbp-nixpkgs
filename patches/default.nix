@@ -311,6 +311,11 @@ let
 
         };
 
+        # vtk 7.0 backport
+        vtk7 = callPackage ./vtk {
+        
+        };
+
     };
 
     additionalPythonPackages = MergePkgs.callPackage ./additionalPythonPackages ({
