@@ -316,6 +316,8 @@ let
         
         };
 
+        cython = additionalPythonPackages.cython;
+
     };
 
     additionalPythonPackages = MergePkgs.callPackage ./additionalPythonPackages ({
