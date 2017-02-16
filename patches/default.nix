@@ -35,10 +35,21 @@ let
             opencascade = null;
         };
 
+        ## opencollada compiled in shared library for blender python modules
+        opencollada-shared = opencollada.overrideDerivation ( oldAttr: {
+            name = oldAttr.name + "-shared";
+
+            cmakeFlags = [ "-DUSE_STATIC=OFF" "-DUSE_SHARED=ON" ];
+        });
+
         blender = callPackage ./blender {
 			stdpkgs = std-pkgs;
         };
- 
+
+        blender-python = blender.override {
+            pythonModule = true;
+            opencollada = opencollada-shared;
+        }; 
         
         intel-mpi-bench = callPackage ./intel-mpi-bench {
             mpi = mvapich2;
@@ -216,14 +227,14 @@ let
 
         ## MVAPICH 2 support with RDMA / Infiniband
         mvapich2-rdma =  if (builtins.pathExists "/usr/include/infiniband/") then ((mvapich2.overrideDerivation (oldAttr: rec {
-	  
-		name = "mvapich2-rdma-${version}";
-		version = "2.2b";
- 
-	   src = fetchurl {
-    	 url = "http://mvapich.cse.ohio-state.edu/download/mvapich/mv2/mvapich2-${version}.tar.gz";
-	   	 sha256 = "18nn9lcwd6g44rl3y6b5n25d1k4l2ksh1xjzw84r639q2hd6ki45";
-	   };
+          
+            name = "mvapich2-rdma-${version}";
+            version = "2.2b";
+     
+           src = fetchurl {
+             url = "http://mvapich.cse.ohio-state.edu/download/mvapich/mv2/mvapich2-${version}.tar.gz";
+             sha256 = "18nn9lcwd6g44rl3y6b5n25d1k4l2ksh1xjzw84r639q2hd6ki45";
+           };
 
 	 })).override {
 			stdenv = enableDebugInfo stdenv;
@@ -299,6 +310,19 @@ let
         tbb = callPackage ./tbb {
 
         };
+
+
+        ## manylinux1 wrapper
+        manylinux1 = callPackage ./manylinux1 {
+
+        };
+
+        # vtk 7.0 backport
+        vtk7 = callPackage ./vtk {
+        
+        };
+
+        cython = additionalPythonPackages.cython;
 
     };
 
