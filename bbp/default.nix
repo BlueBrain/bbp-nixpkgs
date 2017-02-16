@@ -53,6 +53,11 @@ let
 			mpi = bbp-mpi-rdma;
 		};
 
+        ## parallel hdf5
+        phdf5 = pkgs.phdf5.override {
+         	mpi = bbp-mpi;
+        };        
+
 
 
         ## override component that need bbp-mpi

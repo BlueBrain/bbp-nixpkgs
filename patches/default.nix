@@ -136,6 +136,12 @@ let
         });        
 
 
+		phdf5 = std-pkgs.hdf5.override {
+			mpi = openmpi;
+
+		};
+
+
         blis = callPackage ./blis {
 
         };
