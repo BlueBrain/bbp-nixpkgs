@@ -410,6 +410,18 @@ let
 
         };
 
+
+        bgq-petsc-gcc47-nodebug = all-pkgs-bgq-gcc47.petsc.override {
+            fetchgit = fetchgit;
+            stdenv = enableDebugInfo bgq-stdenv-gcc47;
+            liblapack = bgq-openblas;
+            liblapackLibName = "openblas";
+            blas = bgq-openblas;
+            blasLibName = "openblas";
+            mpiRuntime = ibm-mpi;
+            withDebug = false;
+        };
+
         bgq-scorec-gcc47 = all-pkgs-bgq-gcc47.scorec.override {
             stdenv = enableDebugInfo bgq-stdenv-gcc47;
             mpi = ibm-mpi;
