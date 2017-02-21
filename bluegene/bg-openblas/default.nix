@@ -23,7 +23,8 @@ stdenv.mkDerivation rec {
       # Note that clang is available through the stdenv on OSX and
       # thus is not an explicit dependency.
       ''PREFIX="''$(out)"''
-      "USE_OPENMP=1"
+      "USE_OPENMP=0"
+      "USE_THREAD=0"
       "INTERFACE64=0"
     ] ++ (stdenv.lib.optional) (sharedLibrary == false) [ "NO_SHARED=1" ];
 
