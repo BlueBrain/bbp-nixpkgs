@@ -30,8 +30,6 @@ stdenv.mkDerivation rec {
 
 	cc_compiler_path = "${cc}/bin/${ccName}";
 
-	cxx_compiler_path = "${cc}/bin/${cxxName}";
-
 	cnk_spi_path = "${cnk-spi}";
 
 	glibc_path = "${libc}";
@@ -55,7 +53,9 @@ stdenv.mkDerivation rec {
 	  cp -r ${commBGQPrefix}/lib/lib*gcc* $out/lib
      
       substituteAll ${./mpicc.in} $out/bin/mpicc
-	  substituteAll ${./mpic++.in} $out/bin/mpic++
+    
+      export cc_compiler_path="$cxx_compiler_path"
+	  substituteAll ${./mpicc.in} $out/bin/mpic++
 	  
 	  chmod a+x $out/bin/mpicc
 	  chmod a+x $out/bin/mpic++    

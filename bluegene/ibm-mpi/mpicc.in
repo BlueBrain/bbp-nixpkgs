@@ -33,6 +33,9 @@ sysconfdir=@out@/etc/gcc
 includedir=${prefix}/include
 libdir=${prefix}/lib
 
+
+
+
 # Default settings for compiler, flags, and libraries.
 # Determined by a combination of environment variables and tests within
 # configure (e.g., determining whehter -lsocket is needee)
@@ -41,7 +44,7 @@ CC="@cc_compiler_path@"
 CFLAGS=" -I@out@/include -I@cnk_spi_path@/include -I@cnk_spi_path@ -I@cnk_spi_path@/include/kernel/cnk"
 CPPFLAGS="  -I@out@/include -I@cnk_spi_path@/include -I@cnk_spi_path@ -I@cnk_spi_path@/include/kernel/cnk"
 LDFLAGS=" -L@out@/lib -L@cnk_spi_path@/lib -L@glibc_path@/lib"
-LIBS=" -Wl,-Bstatic -lopa-gcc -lmpl-gcc  -lpami-gcc -lmpich-gcc -lSPI -lSPI_cnk -Wl,-Bdynamic -lrt -lpthread -lstdc++ -lpthread -ldl -Wl,-Bdynamic"
+LIBS="-lopa-gcc -lmpl-gcc  -lpami-gcc -lSPI -lSPI_cnk -lstdc++ -Wl,-Bdynamic -lrt -lpthread -ldl "
 MPICH2_VERSION="1.5"
 
 enable_wrapper_rpath="no"
@@ -232,7 +235,7 @@ fi
 # Derived variables.  These are assembled from variables set from the
 # default, environment, configuration file (if any) and command-line
 # options (if any)
-mpilibs=" -lmpich-gcc"
+mpilibs="-Wl,-Bstatic -lmpich-gcc "
 
 # Handle the case of a profile switch
 if [ -n "$profConf" ] ; then
