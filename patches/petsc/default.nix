@@ -7,13 +7,14 @@ liblapack,
 liblapackLibName ? "lapack",
 pkgconfig,
 python,
+withDebug ? true,
 with64bits ? true
 }:
 
 
 let 
 	optFlags = "-fPIC -g -O2 -ftree-vectorize";
-
+    
 in
 
 stdenv.mkDerivation rec {
@@ -49,7 +50,8 @@ stdenv.mkDerivation rec {
 		   ++ [ "--with-mpi-dir=${mpiRuntime}" ]
 		   ++ [  "--with-blas-lib=${blas}/lib/lib${blasLibName}.so" ]
 		   ++ stdenv.lib.optional (liblapack != null) [	 "--with-lapack-lib=${liblapack}/lib/lib${liblapackLibName}.so" ]
-		   ++ stdenv.lib.optional (with64bits) [ "--with-64-bit-indices" ];
+		   ++ stdenv.lib.optional (with64bits) [ "--with-64-bit-indices" ]
+           ++ stdenv.lib.optional (withDebug == false) [ "--with-debugging=0" ];
 
 
   nativeBuildInputs = [ pkgconfig python ];
@@ -61,7 +63,7 @@ stdenv.mkDerivation rec {
 
   ## cross compilation for Super-computer environments
   ##
-  crossAttrs = {
+  crossAttrs = rec {
         ## FixPETSc cross compilation bullshit
         ##
         ## PETSC need three steps configure steps to be configured in crossCompiled environment
@@ -71,11 +73,13 @@ stdenv.mkDerivation rec {
         ##
         ## we fake this behavior by using an already generated script that we reconfigure manually
 
+        reconfigure_script = if withDebug then ./reconfigure-arch-linux2-c-debug.py.in else ./reconfigure-arch-linux2-c.py.in;
+
         preConfigure = ''
                         export HOME=$(mktemp -d)
 
                         ## reconfigure script for cross compile
-                        substitute ${./reconfigure-arch-linux2-c-debug.py.in} reconfigure-arch-linux2-c-debug.py \
+                        substitute ${reconfigure_script} reconfigure-arch-linux2-c-debug.py \
                         --replace "@mpi_path@" "${mpiRuntime.crossDrv}" \
                         --replace "@liblapack_path@" "${liblapack.crossDrv}" \
                         --replace "@liblapackLibName@" "${liblapackLibName}" \
