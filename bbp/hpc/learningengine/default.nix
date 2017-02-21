@@ -1,10 +1,10 @@
-{ stdenv, fetchgitPrivate, boost, cmake, clang-analyzer, gsl}:
+{ stdenv, fetchgitPrivate, boost, cmake, clang-analyzer, gsl, mpi, python, cuda, cython}:
 
 stdenv.mkDerivation rec {
   name = "learningengine-${version}";
   version = "0.1";
 
-  buildInputs = [ stdenv boost cmake clang-analyzer gsl];
+  buildInputs = [ stdenv boost cmake clang-analyzer gsl mpi python cuda cython];
 
   src = fetchgitPrivate{
     url = "https://bbpcode.epfl.ch/code/hpc/learning_engine.git";

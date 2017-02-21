@@ -51,7 +51,7 @@ stdenv.mkDerivation rec {
 		   ++ [  "--with-blas-lib=${blas}/lib/lib${blasLibName}.so" ]
 		   ++ stdenv.lib.optional (liblapack != null) [	 "--with-lapack-lib=${liblapack}/lib/lib${liblapackLibName}.so" ]
 		   ++ stdenv.lib.optional (with64bits) [ "--with-64-bit-indices" ]
-           ++ stdenv.libLoptional (withDebug == false) [ "--with-debugging=0" ];
+       ++ stdenv.lib.optional (withDebug == false) [ "--with-debugging=0" ];
 
 
   nativeBuildInputs = [ pkgconfig python ];
