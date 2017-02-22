@@ -67,7 +67,10 @@ let
 
         };
 
-        xlc = callPackage ./xlc { };
+        xlc = callPackage ./xlc {
+            ## pass the stdc++.so path to use for the rpath 
+            bgqstdcpp = "${bg-gcc47.gcc}/powerpc64-bgq-linux";
+         };
 
 
         bgq-glibc = callPackage ./bgq-glibc-native {
@@ -90,10 +93,22 @@ let
 		}; 
 
 
+        ibm-mpi-xlc = callPackage ./ibm-mpi {
+            stdenv = bgq-stdenv-gcc47;
+            cc = xlc;
+            ccName = "bgxlc_r";
+            mpiCompilerCAlias = [ "mpixlc" "mpixlc_r" ];
+            mpiCompilerCxxAlias = [ "mpixlcxx_r" "mpixlcxx" "mpixlC" "mpixlC_r" ];
+            cxxName = "bgxlc++_r";
+            libc = bglibc;
+            inherit cnk-spi;
+        };
+
+
         stdenv = pkgs.stdenv // rec { isBlueGene = true; };
 
 
-        bgq-stdenv-origin = (overrideCC stdenv mpi-bgq)
+        bgq-stdenv-origin = (overrideCC stdenv ibm-mpi-xlc)
                     //  { isBlueGene = true;
                           glibc = bgq-glibc; };
 
@@ -269,11 +284,16 @@ let
         });
 
 
-        bgq-hdf5 = (hdf5.override {
+        bgq-hdf5 = (hdf5.overrideDerivation ( oldAttr: {         
+            preConfigure = ''
+                export RUNPARALLEL="mpiexec"
+            '';
+            configureFlags = "--disable-parallel ";
+        })).override {
                 stdenv = bgq-stdenv-mpixlc-static;
                 enableShared = false;
                 zlib = bgq-zlib;
-        });
+        };
 
 
         bgq-hdf5-gcc47 = (hdf5.overrideDerivation (oldAttrs: {
@@ -349,11 +369,17 @@ let
 
 
 
-        bgq-libxml2 = ( libxml2.override { 
+        bgq-libxml2 = ( libxml2.overrideDerivation ( oldAttrs: {
+            configureFlags = [ 
+                                "--host=powerpc64-unknown-linux-gnu"
+                                "--build=powerpc64-bgq-linux"
+                            ] ++ [ oldAttrs.configureFlags ];
+
+        })).override { 
             stdenv = bgq-stdenv-mpixlc-static;
             zlib = null;
             xz = null;
-        });
+        };
 
         bgq-libxml2-gcc47 = all-pkgs-bgq-gcc47.libxml2;
               
