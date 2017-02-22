@@ -562,6 +562,7 @@ let
                             pythonPkgs.h5py
                             pythonPkgs.setuptools
                             pythonPkgs.cython
+							pythonPkgs.enum
                        ];
             conflicts = [ python34-full python34-light ] ++ conflicts-modules;                           
             dependencies = [ nss-wrapper gcc ];
@@ -1513,6 +1514,7 @@ with generic-modules; rec {
                     pkgs.bgq-pythonPackages-gcc47.bg-numpy.crossDrv
                     bgq-pythonPackages-gcc47.bg-mpi4py.crossDrv
                     bgq-pythonPackages-gcc47.bg-h5py.crossDrv
+					pkgs.pythonPackages.enum
                     pkgs.pythonPackages.pip
                     pkgs.pythonPackages.virtualenv 
                     pkgs.pythonPackages.setuptools
