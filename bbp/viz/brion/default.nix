@@ -35,6 +35,8 @@ stdenv.mkDerivation rec {
   ## horrible hack to disable the -WError maddness
   ##
   cmakeFlags = "-DXCODE_VERSION=1";
+
+  propagatedBuildInputs = [ lunchbox vmmlib boost ];
    
 }
 
