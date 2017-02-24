@@ -81,9 +81,9 @@ let
         gcc-bgq =   (callPackage ./gcc-bgq { inherit bgq-driver; }) // { target = crossBGQSystem; } ;
  
 
-        mpi-bgq = callPackage ./mpi-bgq {  
-            cc = xlc;
-        };   
+        #mpi-bgq = callPackage ./mpi-bgq {  
+        #    cc = xlc;
+        #};   
 
 		ibm-mpi = callPackage ./ibm-mpi {
 			stdenv = bgq-stdenv-gcc47;
@@ -478,7 +478,7 @@ let
             zlib = bgq-zlib;
             bzip2 = bgq-bzip2;
             libxml2 = bgq-libxml2;
-            mpiRuntime = mpi-bgq;
+            mpiRuntime = ibm-mpi-xlc;
             mpich2-gcc47 = bg-mpich;
             stdenv = bgq-stdenv;
             stdenv-gcc47 = bgq-stdenv-gcc47;
