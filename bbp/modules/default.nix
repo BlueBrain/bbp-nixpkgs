@@ -1654,7 +1654,7 @@ with generic-modules; rec {
 
       bgq-dev-env-gcc = pkgs.envModuleGen rec {
             name = "dev-env-gcc";
-            version = "09.2016";
+            version = "02.2017";
             description = "GCC development environment from nix";
             dependencies = [
                             # compiler
