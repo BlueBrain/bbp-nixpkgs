@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
   
-  doCheck = true;
+  doCheck = false;
   
   checkTarget = "test";
 

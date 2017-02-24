@@ -46,8 +46,8 @@ let
 
     platformPreConfigure = if (isBGQ && nrnOnly) then ''
                                         ## BGQ specific neuron preconfiguration 
-                                        export CC=mpixlc_r_dl
-                                        export CXX=mpixlcxx_r_dl
+                                        export CC=mpixlc_r
+                                        export CXX=mpixlcxx_r
 
                                         export NEURON_PYTHON_VERSION="2.7"
                                         export ALL_FLAGS="-qnostaticlink -DLAYOUT=0 -DDISABLE_HOC_EXP -DDISABLE_TIMEOUT -O3 -g -DCORENEURON_BUILD -qlist -qsource -qreport -qsmp=noauto -qthreaded";

@@ -11,13 +11,13 @@ let
       with pkgs;
       let 
         has_slurm = builtins.pathExists "/usr/bin/srun";
-        bbp-mpi = if pkgs.isBlueGene == true then mpi-bgq
+        bbp-mpi = if pkgs.isBlueGene == true then ibm-mpi-xlc
                 else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2
                 else mpich2;
-        bbp-mpi-rdma = if pkgs.isBlueGene == true then mpi-bgq
+        bbp-mpi-rdma = if pkgs.isBlueGene == true then ibm-mpi-xlc
                 else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2-rdma 
                 else mpich2;
-        bbp-mpi-gcc = if pkgs.isBlueGene == true then bg-mpich
+        bbp-mpi-gcc = if pkgs.isBlueGene == true then ibm-mpi
                                 else bbp-mpi;
 
         callPackage = newScope mergePkgs;
