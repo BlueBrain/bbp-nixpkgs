@@ -3,6 +3,7 @@
 , binutils
 , which
 , BGQLibc ? "/bgsys/drivers/ppcfloor/gnu-linux/powerpc64-bgq-linux/"
+, bgqstdcpp 
 } :
 
 
@@ -11,6 +12,7 @@ let
 			"/soft/compilers/ibmcmp-aug2015" else "/opt/ibmcmp";
 	nativePrefix = "${xlcPrefix}/vacpp/bg/12.1";
 	nativePrefix_c = "${xlcPrefix}/vac/bg/12.1";
+	nativePrefix_fortran = "${xlcPrefix}/xlf/bg/14.1";
 
 in
 stdenv.mkDerivation {
@@ -23,6 +25,8 @@ stdenv.mkDerivation {
     default_libc_path = "${BGQLibc}/lib" ;  
     
     default_cxx_stdlib_include_path = "/usr/include/c++/4.4.7/";
+
+    prefix_stdcpplib = "${bgqstdcpp}";
     
     buildCommand = ''
     
@@ -34,6 +38,11 @@ stdenv.mkDerivation {
     
       mkdir -p $out/nix-support
       substituteAll "${./setup-hook.sh}" "$out/nix-support/setup-hook"
+
+      pushd ${nativePrefix_fortran}
+        cp -r ${nativePrefix_fortran}/{bin,lib,lib64,include} $out/
+      popd
+
 
       pushd ${nativePrefix}
       
@@ -48,6 +57,10 @@ stdenv.mkDerivation {
 
       substituteAll ${./compiler-wrapper.sh} $out/bin/compiler-wrapper-c++
       sed -i 's@prefix@${nativePrefix}@g' $out/bin/compiler-wrapper-c++
+
+      substituteAll ${./compiler-wrapper.sh} $out/bin/compiler-wrapper-fortran
+      sed -i 's@prefix@${nativePrefix_fortran}@g' $out/bin/compiler-wrapper-fortran
+ 
       
       chmod a+x $out/bin/compiler-wrapper* 
 
@@ -55,17 +68,29 @@ stdenv.mkDerivation {
 # by new ones
 
     pushd $out/bin
+    
+    # C
     for i in $(ls {*lc,*lc_r,c89*,c99*,cc,cc_r})
     do
         rm -f $i
         ln -s compiler-wrapper $i
     done
- 
+
+    #C++ 
     for i in $(ls {*lC,*lC_r,*lc++*})
     do
         rm -f $i
         ln -s compiler-wrapper-c++ $i
     done 
+
+
+    #fortran
+    for i in $(ls {bgxlf*,*lf,f90*,f77*,f2003*,f2008*,f95*,fort77*})
+    do
+        rm -f $i
+        ln -s compiler-wrapper-fortran $i
+    done
+
     
 	# let's add the linker and the bin utils 
 	# like xlc use the GNU native ones    
@@ -84,6 +109,11 @@ stdenv.mkDerivation {
       '';
       
   propagatedBuildInputs = [ which ];
+
+  passthru = {
+        isXLC = true;
+
+  };
 
 }
 
