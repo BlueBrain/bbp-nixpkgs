@@ -27,6 +27,9 @@ stdenv.mkDerivation rec {
   # BBPSDK boost.python bindings take more than 1G mem per core to compile
   # with recent GCC, disable parallel buildings or GCC SIGBUS
   enableParallelBuilding = false;
+
+
+  propagatedBuildInputs = [ brion lunchbox ];
   
 }
 

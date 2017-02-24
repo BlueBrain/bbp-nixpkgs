@@ -203,8 +203,12 @@ let
         };
 
         morphsyn = callPackage ./nse/morphsyn {
-		vtk = vtk7;
+			vtk = vtk7;
         };
+
+        bluejittersdk = callPackage ./nse/bluejittersdk {
+        };
+
 
         ##
         ## BBP HPC components
