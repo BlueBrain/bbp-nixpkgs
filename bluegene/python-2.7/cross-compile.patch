@@ -1,0 +1,45 @@
+diff -ur Python-2.7.11.old/Makefile.pre.in Python-2.7.11/Makefile.pre.in
+--- Python-2.7.11.old/Makefile.pre.in	2015-12-05 20:47:10.000000000 +0100
++++ Python-2.7.11/Makefile.pre.in	2016-07-28 13:55:35.039278919 +0200
+@@ -237,7 +237,7 @@
+ 
+ ##########################################################################
+ # Parser
+-PGEN=		Parser/pgen$(EXE)
++PGEN=		@BUILD_PGEN@
+ 
+ PSRCS=		\
+ 		Parser/acceler.c \
+@@ -287,8 +287,6 @@
+ 		Parser/parser.h \
+ 		Parser/tokenizer.h
+ 
+-PGENSRCS=	$(PSRCS) $(PGSRCS)
+-PGENOBJS=	$(POBJS) $(PGOBJS)
+ 
+ ##########################################################################
+ # AST
+@@ -635,14 +633,11 @@
+ 
+ $(GRAMMAR_H): $(GRAMMAR_INPUT) $(PGENSRCS)
+ 		@$(MKDIR_P) Include
+-		$(MAKE) $(PGEN)
+ 		$(PGEN) $(GRAMMAR_INPUT) $(GRAMMAR_H) $(GRAMMAR_C)
+ $(GRAMMAR_C): $(GRAMMAR_H) $(GRAMMAR_INPUT) $(PGENSRCS)
+ 		$(MAKE) $(GRAMMAR_H)
+ 		touch $(GRAMMAR_C)
+ 
+-$(PGEN):	$(PGENOBJS)
+-		$(CC) $(OPT) $(LDFLAGS) $(PGENOBJS) $(LIBS) -o $(PGEN)
+ 
+ Parser/grammar.o:	$(srcdir)/Parser/grammar.c \
+ 				$(srcdir)/Include/token.h \
+@@ -1352,7 +1347,7 @@
+ 	find . -name '*.profclang?' -exec rm -f {} ';'
+ 
+ clobber: clean profile-removal
+-	-rm -f $(BUILDPYTHON) $(PGEN) $(LIBRARY) $(LDLIBRARY) $(DLLLIBRARY) \
++	-rm -f $(BUILDPYTHON) $(LIBRARY) $(LDLIBRARY) $(DLLLIBRARY) \
+ 		tags TAGS \
+ 		config.cache config.log pyconfig.h Modules/config.c
+ 	-rm -rf build platform

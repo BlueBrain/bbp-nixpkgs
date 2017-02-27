@@ -1,0 +1,704 @@
+# =============================================================== #
+#                                                                 #
+# Licensed Materials - Property of IBM                            #
+# Blue Gene/Q                                                     #
+#                                                                 #
+# (C) Copyright IBM Corp. 2012 All Rights Reserved                #
+#                                                                 #
+# US Government Users Restricted Rights - Use, duplication        #
+# or disclosure restricted by GSA ADP Schedule                    #
+# Contract with IBM Corp.                                         #
+#                                                                 #
+# This software is available to you under                         #
+# Berkeley Software Distribution (BSD)                            #
+Index: configure
+===================================================================
+--- a/configure	(.../tags/PY_BASE/src/Python-2.7.5gnu)	(revision 60890)
++++ b/configure	(.../bgq/tools/python/src/Python-2.7.5gnu)	(revision 60890)
+@@ -573,7 +573,7 @@
+ ac_clean_files=
+ ac_config_libobj_dir=.
+ LIBOBJS=
+-cross_compiling=no
++cross_compiling=yes
+ subdirs=
+ MFLAGS=
+ MAKEFLAGS=
+@@ -2848,8 +2848,8 @@
+ 
+ 
+ 
+-
+-if test "$cross_compiling" = yes; then
++# BGQ uses itself as the build compiler.
++if test "$cross_compiling" = no; then
+     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for python interpreter for cross build" >&5
+ $as_echo_n "checking for python interpreter for cross build... " >&6; }
+     if test -z "$PYTHON_FOR_BUILD"; then
+@@ -3311,6 +3311,9 @@
+   QNX/6.3.2)
+     define_xopen_source=no
+     ;;
++  Linux*|linux*|GNU*)
++    define_xopen_source=no
++    ;;
+ 
+ esac
+ 
+@@ -8354,7 +8357,7 @@
+ 	    LINKFORSHARED="-Wl,-E -Wl,+s";;
+ #	    LINKFORSHARED="-Wl,-E -Wl,+s -Wl,+b\$(BINLIBDEST)/lib-dynload";;
+ 	BSD/OS/4*) LINKFORSHARED="-Xlinker -export-dynamic";;
+-	Linux*|GNU*) LINKFORSHARED="-Xlinker -export-dynamic";;
++	Linux*|GNU*) LINKFORSHARED="-Xlinker -export-dynamic -dynamic";;
+ 	# -u libsys_s pulls in all symbols in libsys
+ 	Darwin/*)
+ 		# -u _PyMac_Error is needed to pull in the mac toolbox glue,
+@@ -9575,7 +9578,7 @@
+   $as_echo_n "(cached) " >&6
+ else
+   if test "$cross_compiling" = yes; then :
+-  ac_cv_pthread_system_supported=no
++  ac_cv_pthread_system_supported=yes
+ else
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+@@ -14230,36 +14233,36 @@
+ { $as_echo "$as_me:${as_lineno-$LINENO}: checking for device files" >&5
+ $as_echo "$as_me: checking for device files" >&6;}
+ 
+-if test "x$cross_compiling" = xyes; then
+-  if test "${ac_cv_file__dev_ptmx+set}" != set; then
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for /dev/ptmx" >&5
+-$as_echo_n "checking for /dev/ptmx... " >&6; }
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not set" >&5
+-$as_echo "not set" >&6; }
+-    as_fn_error $? "set ac_cv_file__dev_ptmx to yes/no in your CONFIG_SITE file when cross compiling" "$LINENO" 5
+-  fi
+-  if test "${ac_cv_file__dev_ptc+set}" != set; then
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for /dev/ptc" >&5
+-$as_echo_n "checking for /dev/ptc... " >&6; }
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not set" >&5
+-$as_echo "not set" >&6; }
+-    as_fn_error $? "set ac_cv_file__dev_ptc to yes/no in your CONFIG_SITE file when cross compiling" "$LINENO" 5
+-  fi
+-fi
++#if test "x$cross_compiling" = xyes; then
++#  if test "${ac_cv_file__dev_ptmx+set}" != set; then
++#    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for /dev/ptmx" >&5
++#$as_echo_n "checking for /dev/ptmx... " >&6; }
++#    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not set" >&5
++#$as_echo "not set" >&6; }
++#    as_fn_error $? "set ac_cv_file__dev_ptmx to yes/no in your CONFIG_SITE file when cross compiling" "$LINENO" 5
++#  fi
++#  if test "${ac_cv_file__dev_ptc+set}" != set; then
++#    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for /dev/ptc" >&5
++#$as_echo_n "checking for /dev/ptc... " >&6; }
++#    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not set" >&5
++#$as_echo "not set" >&6; }
++#    as_fn_error $? "set ac_cv_file__dev_ptc to yes/no in your CONFIG_SITE file when cross compiling" "$LINENO" 5
++#  fi
++#fi
+ 
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for /dev/ptmx" >&5
+-$as_echo_n "checking for /dev/ptmx... " >&6; }
+-if ${ac_cv_file__dev_ptmx+:} false; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-  test "$cross_compiling" = yes &&
+-  as_fn_error $? "cannot check for file existence when cross compiling" "$LINENO" 5
+-if test -r "/dev/ptmx"; then
+-  ac_cv_file__dev_ptmx=yes
+-else
+-  ac_cv_file__dev_ptmx=no
+-fi
+-fi
++#{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for /dev/ptmx" >&5
++#$as_echo_n "checking for /dev/ptmx... " >&6; }
++#if ${ac_cv_file__dev_ptmx+:} false; then :
++#  $as_echo_n "(cached) " >&6
++#else
++#  test "$cross_compiling" = yes &&
++#  as_fn_error $? "cannot check for file existence when cross compiling" "$LINENO" 5
++#if test -r "/dev/ptmx"; then
++#  ac_cv_file__dev_ptmx=yes
++#else
++ac_cv_file__dev_ptmx=no
++#fi
++#fi
+ { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_file__dev_ptmx" >&5
+ $as_echo "$ac_cv_file__dev_ptmx" >&6; }
+ if test "x$ac_cv_file__dev_ptmx" = xyes; then :
+@@ -14271,19 +14274,19 @@
+ $as_echo "#define HAVE_DEV_PTMX 1" >>confdefs.h
+ 
+ fi
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for /dev/ptc" >&5
+-$as_echo_n "checking for /dev/ptc... " >&6; }
+-if ${ac_cv_file__dev_ptc+:} false; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-  test "$cross_compiling" = yes &&
+-  as_fn_error $? "cannot check for file existence when cross compiling" "$LINENO" 5
+-if test -r "/dev/ptc"; then
+-  ac_cv_file__dev_ptc=yes
+-else
+-  ac_cv_file__dev_ptc=no
+-fi
+-fi
++#{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for /dev/ptc" >&5
++#$as_echo_n "checking for /dev/ptc... " >&6; }
++#if ${ac_cv_file__dev_ptc+:} false; then :
++#  $as_echo_n "(cached) " >&6
++#else
++#  test "$cross_compiling" = yes &&
++#  as_fn_error $? "cannot check for file existence when cross compiling" "$LINENO" 5
++#if test -r "/dev/ptc"; then
++#  ac_cv_file__dev_ptc=yes
++#else
++ac_cv_file__dev_ptc=no
++#fi
++#fi
+ { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_file__dev_ptc" >&5
+ $as_echo "$ac_cv_file__dev_ptc" >&6; }
+ if test "x$ac_cv_file__dev_ptc" = xyes; then :
+Index: Include/pyport.h
+===================================================================
+--- a/Include/pyport.h	(.../tags/PY_BASE/src/Python-2.7.5gnu)	(revision 60890)
++++ b/Include/pyport.h	(.../bgq/tools/python/src/Python-2.7.5gnu)	(revision 60890)
+@@ -248,16 +248,8 @@
+  * functions listed above will interpret "lld" or "llu" correctly on
+  * all platforms.
+  */
+-#ifdef HAVE_LONG_LONG
+-#   ifndef PY_FORMAT_LONG_LONG
+-#       if defined(MS_WIN64) || defined(MS_WINDOWS)
+-#           define PY_FORMAT_LONG_LONG "I64"
+-#       else
+-#           error "This platform's pyconfig.h needs to define PY_FORMAT_LONG_LONG"
+-#       endif
+-#   endif
+-#endif
+-
++#undef PY_FORMAT_LONG_LONG
++#define PY_FORMAT_LONG_LONG "I64"
+ /* Py_LOCAL can be used instead of static to get the fastest possible calling
+  * convention for functions that are local to a given module.
+  *
+Index: Lib/distutils/sysconfig.py
+===================================================================
+--- a/Lib/distutils/sysconfig.py	(.../tags/PY_BASE/src/Python-2.7.5gnu)	(revision 60890)
++++ b/Lib/distutils/sysconfig.py	(.../bgq/tools/python/src/Python-2.7.5gnu)	(revision 60890)
+@@ -120,7 +120,7 @@
+ 
+     if os.name == "posix":
+         libpython = os.path.join(prefix,
+-                                 "lib", "python" + get_python_version())
++                                 "lib64", "python" + get_python_version())
+         if standard_lib:
+             return libpython
+         else:
+Index: Lib/distutils/command/install.py
+===================================================================
+--- a/Lib/distutils/command/install.py	(.../tags/PY_BASE/src/Python-2.7.5gnu)	(revision 60890)
++++ b/Lib/distutils/command/install.py	(.../bgq/tools/python/src/Python-2.7.5gnu)	(revision 60890)
+@@ -41,15 +41,15 @@
+ 
+ INSTALL_SCHEMES = {
+     'unix_prefix': {
+-        'purelib': '$base/lib/python$py_version_short/site-packages',
+-        'platlib': '$platbase/lib/python$py_version_short/site-packages',
++        'purelib': '$base/lib64/python$py_version_short/site-packages',
++        'platlib': '$platbase/lib64/python$py_version_short/site-packages',
+         'headers': '$base/include/python$py_version_short/$dist_name',
+         'scripts': '$base/bin',
+         'data'   : '$base',
+         },
+     'unix_home': {
+-        'purelib': '$base/lib/python',
+-        'platlib': '$base/lib/python',
++        'purelib': '$base/lib64/python',
++        'platlib': '$base/lib64/python',
+         'headers': '$base/include/python/$dist_name',
+         'scripts': '$base/bin',
+         'data'   : '$base',
+Index: Lib/posixpath.py
+===================================================================
+--- a/Lib/posixpath.py	(.../tags/PY_BASE/src/Python-2.7.5gnu)	(revision 60890)
++++ b/Lib/posixpath.py	(.../bgq/tools/python/src/Python-2.7.5gnu)	(revision 60890)
+@@ -266,7 +266,10 @@
+     if i == 1:
+         if 'HOME' not in os.environ:
+             import pwd
+-            userhome = pwd.getpwuid(os.getuid()).pw_dir
++            try:
++                userhome = pwd.getpwuid(os.getuid()).pw_dir
++            except KeyError:
++                return path
+         else:
+             userhome = os.environ['HOME']
+     else:
+Index: Lib/site.py
+===================================================================
+--- a/Lib/site.py	(.../tags/PY_BASE/src/Python-2.7.5gnu)	(revision 60890)
++++ b/Lib/site.py	(.../bgq/tools/python/src/Python-2.7.5gnu)	(revision 60890)
+@@ -288,13 +288,13 @@
+         if sys.platform in ('os2emx', 'riscos'):
+             sitepackages.append(os.path.join(prefix, "Lib", "site-packages"))
+         elif os.sep == '/':
+-            sitepackages.append(os.path.join(prefix, "lib",
++            sitepackages.append(os.path.join(prefix, "lib64",
+                                         "python" + sys.version[:3],
+                                         "site-packages"))
+-            sitepackages.append(os.path.join(prefix, "lib", "site-python"))
++            sitepackages.append(os.path.join(prefix, "lib64", "site-python"))
+         else:
+             sitepackages.append(prefix)
+-            sitepackages.append(os.path.join(prefix, "lib", "site-packages"))
++            sitepackages.append(os.path.join(prefix, "lib64", "site-packages"))
+         if sys.platform == "darwin":
+             # for framework builds *only* we add the standard Apple
+             # locations.
+Index: Lib/sysconfig.py
+===================================================================
+--- a/Lib/sysconfig.py	(.../tags/PY_BASE/src/Python-2.7.5gnu)	(revision 60890)
++++ b/Lib/sysconfig.py	(.../bgq/tools/python/src/Python-2.7.5gnu)	(revision 60890)
+@@ -7,20 +7,20 @@
+ 
+ _INSTALL_SCHEMES = {
+     'posix_prefix': {
+-        'stdlib': '{base}/lib/python{py_version_short}',
+-        'platstdlib': '{platbase}/lib/python{py_version_short}',
+-        'purelib': '{base}/lib/python{py_version_short}/site-packages',
+-        'platlib': '{platbase}/lib/python{py_version_short}/site-packages',
++        'stdlib': '{base}/lib64/python{py_version_short}',
++        'platstdlib': '{platbase}/lib64/python{py_version_short}',
++        'purelib': '{base}/lib64/python{py_version_short}/site-packages',
++        'platlib': '{platbase}/lib64/python{py_version_short}/site-packages',
+         'include': '{base}/include/python{py_version_short}',
+         'platinclude': '{platbase}/include/python{py_version_short}',
+         'scripts': '{base}/bin',
+         'data': '{base}',
+         },
+     'posix_home': {
+-        'stdlib': '{base}/lib/python',
+-        'platstdlib': '{base}/lib/python',
+-        'purelib': '{base}/lib/python',
+-        'platlib': '{base}/lib/python',
++        'stdlib': '{base}/lib64/python',
++        'platstdlib': '{base}/lib64/python',
++        'purelib': '{base}/lib64/python',
++        'platlib': '{base}/lib64/python',
+         'include': '{base}/include/python',
+         'platinclude': '{base}/include/python',
+         'scripts': '{base}/bin',
+@@ -47,10 +47,10 @@
+         'data'   : '{base}',
+         },
+     'os2_home': {
+-        'stdlib': '{userbase}/lib/python{py_version_short}',
+-        'platstdlib': '{userbase}/lib/python{py_version_short}',
+-        'purelib': '{userbase}/lib/python{py_version_short}/site-packages',
+-        'platlib': '{userbase}/lib/python{py_version_short}/site-packages',
++        'stdlib': '{userbase}/lib64/python{py_version_short}',
++        'platstdlib': '{userbase}/lib64/python{py_version_short}',
++        'purelib': '{userbase}/lib64/python{py_version_short}/site-packages',
++        'platlib': '{userbase}/lib64/python{py_version_short}/site-packages',
+         'include': '{userbase}/include/python{py_version_short}',
+         'scripts': '{userbase}/bin',
+         'data'   : '{userbase}',
+@@ -65,10 +65,10 @@
+         'data'   : '{userbase}',
+         },
+     'posix_user': {
+-        'stdlib': '{userbase}/lib/python{py_version_short}',
+-        'platstdlib': '{userbase}/lib/python{py_version_short}',
+-        'purelib': '{userbase}/lib/python{py_version_short}/site-packages',
+-        'platlib': '{userbase}/lib/python{py_version_short}/site-packages',
++        'stdlib': '{userbase}/lib64/python{py_version_short}',
++        'platstdlib': '{userbase}/lib64/python{py_version_short}',
++        'purelib': '{userbase}/lib64/python{py_version_short}/site-packages',
++        'platlib': '{userbase}/lib64/python{py_version_short}/site-packages',
+         'include': '{userbase}/include/python{py_version_short}',
+         'scripts': '{userbase}/bin',
+         'data'   : '{userbase}',
+Index: Makefile.pre.in
+===================================================================
+--- a/Makefile.pre.in	(.../tags/PY_BASE/src/Python-2.7.5gnu)	(revision 60890)
++++ b/Makefile.pre.in	(.../bgq/tools/python/src/Python-2.7.5gnu)	(revision 60890)
+@@ -31,7 +31,7 @@
+ abs_builddir=	@abs_builddir@
+ build=		@build@
+ host=		@host@
+-
++PCC=           gcc
+ CC=		@CC@
+ CXX=		@CXX@
+ MAINCC=		@MAINCC@
+@@ -102,11 +102,11 @@
+ 
+ # Expanded directories
+ BINDIR=		@bindir@
+-LIBDIR=		@libdir@
++LIBDIR=		$(exec_prefix)/lib64
+ MANDIR=		@mandir@
+ INCLUDEDIR=	@includedir@
+ CONFINCLUDEDIR=	$(exec_prefix)/include
+-SCRIPTDIR=	$(prefix)/lib
++SCRIPTDIR=	$(prefix)/lib64
+ 
+ # Detailed destination directories
+ BINLIBDEST=	$(LIBDIR)/python$(VERSION)
+@@ -191,7 +191,7 @@
+ 
+ PYTHON=		python$(EXE)
+ BUILDPYTHON=	python$(BUILDEXE)
+-
++HOSTPYTHON=	hostpython$(BUILDEXE)
+ PYTHON_FOR_BUILD=@PYTHON_FOR_BUILD@
+ _PYTHON_HOST_PLATFORM=@_PYTHON_HOST_PLATFORM@
+ HOST_GNU_TYPE=  @host@
+@@ -401,7 +401,7 @@
+ 
+ # Default target
+ all:		build_all
+-build_all:	$(BUILDPYTHON) oldsharedmods sharedmods gdbhooks
++build_all:	$(BUILDPYTHON) $(HOSTPYTHON) oldsharedmods sharedmods gdbhooks
+ 
+ # Compile a binary with gcc profile guided optimization.
+ profile-opt:
+@@ -436,27 +436,34 @@
+ 		$(LINKCC) $(LDFLAGS) $(LINKFORSHARED) -o $@ \
+ 			Modules/python.o \
+ 			$(BLDLIBRARY) $(LIBS) $(MODLIBS) $(SYSLIBS) $(LDLAST)
++# Build the interpreter for use on the host (cross-compile environment)
++$(HOSTPYTHON): Modules/python.o $(LIBRARY) $(LDLIBRARY)
++		$(LINKCC) $(LDFLAGS) $(LINKFORSHARED) -o $@ \
++		Modules/python.o  \
++		-Wl,--rpath=$(LIBDIR) \
++		-Wl,--rpath=$(LIBDIR) \
++		$(BLDLIBRARY) $(LIBS) $(MODLIBS) $(SYSLIBS) $(LDLAST)
+ 
+ platform: $(BUILDPYTHON) pybuilddir.txt
+-	$(RUNSHARED) $(PYTHON_FOR_BUILD) -c 'import sys ; from sysconfig import get_platform ; print get_platform()+"-"+sys.version[0:3]' >platform
++	$(RUNSHARED) $(HOSTPYTHON) -c 'import sys ; from sysconfig import get_platform ; print get_platform()+"-"+sys.version[0:3]' >platform
+ 
+ # Create build directory and generate the sysconfig build-time data there.
+ # pybuilddir.txt contains the name of the build dir and is used for
+ # sys.path fixup -- see Modules/getpath.c.
+ pybuilddir.txt: $(BUILDPYTHON)
+-		$(RUNSHARED) $(PYTHON_FOR_BUILD) -S -m sysconfig --generate-posix-vars
++		$(RUNSHARED) ./$(HOSTPYTHON) -S -m sysconfig --generate-posix-vars
+ 
+ # Build the shared modules
+ # Under GNU make, MAKEFLAGS are sorted and normalized; the 's' for
+ # -s, --silent or --quiet is always the first char.
+ # Under BSD make, MAKEFLAGS might be " -s -v x=y".
+-sharedmods: $(BUILDPYTHON) pybuilddir.txt
++sharedmods: $(BUILDPYTHON)  pybuilddir.txt
+ 	@case "$$MAKEFLAGS" in \
+ 	    *\ -s*|s*) quiet="-q";; \
+ 	    *) quiet="";; \
+ 	esac; \
+ 	$(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' \
+-		$(PYTHON_FOR_BUILD) $(srcdir)/setup.py $$quiet build
++		chmod a+x ./$(HOSTPYTHON) && ./$(HOSTPYTHON) $(srcdir)/setup.py $$quiet build
+ 
+ # Build static library
+ # avoid long command lines, same as LIBRARY_OBJS
+@@ -599,7 +606,7 @@
+ 		touch $(GRAMMAR_C)
+ 
+ $(PGEN):	$(PGENOBJS)
+-		$(CC) $(OPT) $(LDFLAGS) $(PGENOBJS) $(LIBS) -o $(PGEN)
++		$(PCC) $(OPT) $(LDFLAGS) $(PGENOBJS) $(LIBS) -o $(PGEN)
+ 
+ Parser/grammar.o:	$(srcdir)/Parser/grammar.c \
+ 				$(srcdir)/Include/token.h \
+@@ -762,7 +769,7 @@
+ 
+ TESTOPTS=	-l $(EXTRATESTOPTS)
+ TESTPROG=	$(srcdir)/Lib/test/regrtest.py
+-TESTPYTHON=	$(RUNSHARED) ./$(BUILDPYTHON) -Wd -3 -E -tt $(TESTPYTHONOPTS)
++TESTPYTHON=	$(RUNSHARED) ./$(HOSTPYTHON) -Wd -3 -E -tt $(TESTPYTHONOPTS)
+ test:		all platform
+ 		-find $(srcdir)/Lib -name '*.py[co]' -print | xargs rm -f
+ 		-$(TESTPYTHON) $(TESTPROG) $(TESTOPTS)
+@@ -813,7 +820,7 @@
+ 		$(TESTPYTHON) $(TESTPROG) $(MEMTESTOPTS)
+ 
+ # Install everything
+-install:	@FRAMEWORKINSTALLFIRST@ altinstall bininstall maninstall @FRAMEWORKINSTALLLAST@
++install:	@FRAMEWORKINSTALLFIRST@ altinstall bininstall bgfstarinstall maninstall @FRAMEWORKINSTALLLAST@
+ 
+ # Install almost everything without disturbing previous versions
+ altinstall:	@FRAMEWORKALTINSTALLFIRST@ altbininstall libinstall inclinstall \
+@@ -865,7 +872,7 @@
+ 
+ # Install the interpreter with $(VERSION) affixed
+ # This goes into $(exec_prefix)
+-altbininstall:	$(BUILDPYTHON)
++altbininstall:	$(BUILDPYTHON) $(HOSTPYTHON)
+ 	@for i in $(BINDIR) $(LIBDIR); \
+ 	do \
+ 		if test ! -d $(DESTDIR)$$i; then \
+@@ -875,6 +882,7 @@
+ 		fi; \
+ 	done
+ 	$(INSTALL_PROGRAM) $(BUILDPYTHON) $(DESTDIR)$(BINDIR)/python$(VERSION)$(EXE)
++	$(INSTALL_PROGRAM) $(HOSTPYTHON) $(DESTDIR)$(BINDIR)/$(HOSTPYTHON)
+ 	if test -f $(LDLIBRARY); then \
+ 		if test -n "$(DLLLIBRARY)" ; then \
+ 			$(INSTALL_SHARED) $(DLLLIBRARY) $(DESTDIR)$(BINDIR); \
+@@ -899,7 +907,82 @@
+ 	done
+ 	$(INSTALL_DATA) $(srcdir)/Misc/python.man \
+ 		$(DESTDIR)$(MANDIR)/man1/python$(VERSION).1
++# Build a tar file to be expanded on the ramdisk on the booted I/O node for BGQ.  This method will improve start up performance. 
++# Only the .pyc files in non-test directories under lib64/python2.7 are copied to the tar file.
++#
++bgqtarinstall:  $(BUILDPYTHON)
++	echo "Installing bgqpython.tar.gz into: $(exec_prefix)"
++	rm -fr $(exec_prefix)/bgqpython$(VERSION).tar.gz
++	rm -fr $(srcdir)/build/files-to-tar
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/lib-dynload
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/plat-linux2
++	cp $(LIBDIR)/python$(VERSION)/plat-linux2/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/plat-linux2/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/xml/dom
++	cp $(LIBDIR)/python$(VERSION)/xml/dom/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/xml/dom/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/xml/parsers
++	cp $(LIBDIR)/python$(VERSION)/xml/parsers/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/xml/parsers/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/xml/sax
++	cp $(LIBDIR)/python$(VERSION)/xml/sax/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/xml/sax/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/xml/etree
++	cp $(LIBDIR)/python$(VERSION)/xml/etree/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/xml/etree/.
++	cp $(LIBDIR)/python$(VERSION)/xml/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/xml/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/compiler
++	cp $(LIBDIR)/python$(VERSION)/compiler/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/compiler/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/curses
++	cp $(LIBDIR)/python$(VERSION)/curses/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/curses/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/sqlite3
++	cp $(LIBDIR)/python$(VERSION)/sqlite3/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/sqlite3/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/lib2to3/fixes
++	cp $(LIBDIR)/python$(VERSION)/lib2to3/fixes/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/lib2to3/fixes/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/lib2to3/pgen2
++	cp $(LIBDIR)/python$(VERSION)/lib2to3/pgen2/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/lib2to3/pgen2/.
++	cp $(LIBDIR)/python$(VERSION)/lib2to3/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/lib2to3/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/json
++	cp $(LIBDIR)/python$(VERSION)/json/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/json/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/encodings
++	cp $(LIBDIR)/python$(VERSION)/encodings/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/encodings/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/ctypes/macholib
++	cp $(LIBDIR)/python$(VERSION)/ctypes/macholib/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/ctypes/macholib/.
++	cp $(LIBDIR)/python$(VERSION)/ctypes/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/ctypes/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/idlelib
++	cp $(LIBDIR)/python$(VERSION)/idlelib/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/idlelib/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/multiprocessing/dummy
++	cp $(LIBDIR)/python$(VERSION)/multiprocessing/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/multiprocessing/.
++	cp $(LIBDIR)/python$(VERSION)/multiprocessing/dummy/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/multiprocessing/dummy/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/hotshot
++	cp $(LIBDIR)/python$(VERSION)/hotshot/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/hotshot/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/email/mime
++	cp $(LIBDIR)/python$(VERSION)/email/mime/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/email/mime/.
++	cp $(LIBDIR)/python$(VERSION)/email/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/email/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/wsgiref
++	cp $(LIBDIR)/python$(VERSION)/wsgiref/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/wsgiref/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/bsddb
++	cp $(LIBDIR)/python$(VERSION)/bsddb/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/bsddb/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/distutils/command
++	cp $(LIBDIR)/python$(VERSION)/distutils/command/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/distutils/command/.
++	cp $(LIBDIR)/python$(VERSION)/distutils/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/distutils/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/logging
++	cp $(LIBDIR)/python$(VERSION)/logging/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/logging/.
++	mkdir -p $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/lib-tk
++	cp $(LIBDIR)/python$(VERSION)/lib-tk/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/lib-tk
++	cp $(LIBDIR)/python$(VERSION)/*.pyc $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/.
++	cp -P $(srcdir)/libpy*.so* $(srcdir)/build/files-to-tar/usr/lib64/.
++	cp -R $(srcdir)/build/lib.linux-ppc64-2.7/*.so $(srcdir)/build/files-to-tar/usr/lib64/python$(VERSION)/lib-dynload/.
++	until tar -zcf $(exec_prefix)/bgqpython2.7.5gnu.tar.gz -C $(srcdir)/build/files-to-tar usr/ &> /dev/null; do sleep 2; done
+ 
++# Install the bgq tar file into /bgsys/linux/bgfs
++# This allows Python to be efficiently loaded onto the ramdisk and improves Python start up time
++#
++bgfstarinstall: bgqtarinstall
++	if test -w /bgsys/linux/bgfs; then \
++		rm -fr /bgsys/linux/bgfs/bgqpython2.7.*.tar.gz; \
++		cp $(exec_prefix)/bgqpython2.7.5gnu.tar.gz /bgsys/linux/bgfs/.;\
++		echo "bgqpython2.7.5gnu.tar.gz installed into /bgsys/linux/bgfs"; \
++	else \
++		echo "Unable to install bgqpython2.7.5gnu.tar.gz into /bgsys/linux/bgfs; must be copied from $(exec_prefix)"; \
++	fi; \
++
++
+ # Install the unversioned manual pages
+ maninstall:	altmaninstall
+ 	-rm -f $(DESTDIR)$(MANDIR)/man1/python2.1
+@@ -1001,27 +1084,27 @@
+ 			$(DESTDIR)$(LIBDEST)/distutils/tests ; \
+ 	fi
+ 	PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
+-		$(PYTHON_FOR_BUILD) -Wi -tt $(DESTDIR)$(LIBDEST)/compileall.py \
++		./$(HOSTPYTHON) -Wi -tt $(DESTDIR)$(LIBDEST)/compileall.py \
+ 		-d $(LIBDEST) -f \
+ 		-x 'bad_coding|badsyntax|site-packages|lib2to3/tests/data' \
+ 		$(DESTDIR)$(LIBDEST)
+ 	PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+-		$(PYTHON_FOR_BUILD) -Wi -tt -O $(DESTDIR)$(LIBDEST)/compileall.py \
++		./$(HOSTPYTHON) -Wi -tt -O $(DESTDIR)$(LIBDEST)/compileall.py \
+ 		-d $(LIBDEST) -f \
+ 		-x 'bad_coding|badsyntax|site-packages|lib2to3/tests/data' \
+ 		$(DESTDIR)$(LIBDEST)
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
+-		$(PYTHON_FOR_BUILD) -Wi -t $(DESTDIR)$(LIBDEST)/compileall.py \
++		./$(HOSTPYTHON) -Wi -t $(DESTDIR)$(LIBDEST)/compileall.py \
+ 		-d $(LIBDEST)/site-packages -f \
+ 		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+-		$(PYTHON_FOR_BUILD) -Wi -t -O $(DESTDIR)$(LIBDEST)/compileall.py \
++		./$(HOSTPYTHON) -Wi -t -O $(DESTDIR)$(LIBDEST)/compileall.py \
+ 		-d $(LIBDEST)/site-packages -f \
+ 		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+-		$(PYTHON_FOR_BUILD) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/Grammar.txt
++		./$(HOSTPYTHON) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/Grammar.txt
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+-		$(PYTHON_FOR_BUILD) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/PatternGrammar.txt
++		./$(HOSTPYTHON) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/PatternGrammar.txt
+ 
+ # Create the PLATDIR source directory, if one wasn't distributed..
+ $(srcdir)/Lib/$(PLATDIR):
+@@ -1043,7 +1126,7 @@
+ python-config: $(srcdir)/Misc/python-config.in
+ 	# Substitution happens here, as the completely-expanded BINDIR
+ 	# is not available in configure
+-	sed -e "s,@EXENAME@,$(BINDIR)/python$(VERSION)$(EXE)," < $(srcdir)/Misc/python-config.in >python-config
++	sed -e "s,@EXENAME@,$(BINDIR)/python$(VERSION)$(EXE)," < $(srcdir)/Misc/python-config.in >/tmp/python-config
+ 
+ # Install the include files
+ INCLDIRSTOMAKE=$(INCLUDEDIR) $(CONFINCLUDEDIR) $(INCLUDEPY) $(CONFINCLUDEPY)
+@@ -1101,8 +1184,8 @@
+ 	$(INSTALL_DATA) Misc/python.pc $(DESTDIR)$(LIBPC)/python-$(VERSION).pc
+ 	$(INSTALL_SCRIPT) $(srcdir)/Modules/makesetup $(DESTDIR)$(LIBPL)/makesetup
+ 	$(INSTALL_SCRIPT) $(srcdir)/install-sh $(DESTDIR)$(LIBPL)/install-sh
+-	$(INSTALL_SCRIPT) python-config $(DESTDIR)$(BINDIR)/python$(VERSION)-config
+-	rm python-config
++	$(INSTALL_SCRIPT) /tmp/python-config $(DESTDIR)$(BINDIR)/python$(VERSION)-config
++	rm /tmp/python-config
+ 	@if [ -s Modules/python.exp -a \
+ 		"`echo $(MACHDEP) | sed 's/^\(...\).*/\1/'`" = "aix" ]; then \
+ 		echo; echo "Installing support files for building shared extension modules on AIX:"; \
+@@ -1133,7 +1216,7 @@
+ # Install the dynamically loadable modules
+ # This goes into $(exec_prefix)
+ sharedinstall: sharedmods
+-	$(RUNSHARED) $(PYTHON_FOR_BUILD) $(srcdir)/setup.py install \
++	$(RUNSHARED) ./$(HOSTPYTHON) $(srcdir)/setup.py install \
+ 	   	--prefix=$(prefix) \
+ 		--install-scripts=$(BINDIR) \
+ 		--install-platlib=$(DESTSHARED) \
+@@ -1207,7 +1290,7 @@
+ # This installs a few of the useful scripts in Tools/scripts
+ scriptsinstall:
+ 	SRCDIR=$(srcdir) $(RUNSHARED) \
+-	$(PYTHON_FOR_BUILD) $(srcdir)/Tools/scripts/setup.py install \
++	./$(HOSTPYTHON) $(srcdir)/Tools/scripts/setup.py install \
+ 	--prefix=$(prefix) \
+ 	--install-scripts=$(BINDIR) \
+ 	--root=$(DESTDIR)/
+@@ -1221,7 +1304,7 @@
+ config.status:	$(srcdir)/configure
+ 	$(SHELL) $(srcdir)/configure $(CONFIG_ARGS)
+ 
+-.PRECIOUS: config.status $(BUILDPYTHON) Makefile Makefile.pre
++.PRECIOUS: config.status $(BUILDPYTHON) $(HOSTPYTHON) Makefile Makefile.pre
+ 
+ # Some make's put the object file in the current directory
+ .c.o:
+@@ -1229,7 +1312,7 @@
+ 
+ # Run reindent on the library
+ reindent:
+-	./$(BUILDPYTHON) $(srcdir)/Tools/scripts/reindent.py -r $(srcdir)/Lib
++	./$(HOSTPYTHON) $(srcdir)/Tools/scripts/reindent.py -r $(srcdir)/Lib
+ 
+ # Rerun configure with the same options as it was run last time,
+ # provided the config.status script exists
+@@ -1277,7 +1360,7 @@
+ 	find . -name '*.gc??' -exec rm -f {} ';'
+ 
+ clobber: clean profile-removal
+-	-rm -f $(BUILDPYTHON) $(PGEN) $(LIBRARY) $(LDLIBRARY) $(DLLLIBRARY) \
++	-rm -f $(BUILDPYTHON) $(HOSTPYTHON) $(PGEN) $(LIBRARY) $(LDLIBRARY) $(DLLLIBRARY) \
+ 		tags TAGS \
+ 		config.cache config.log pyconfig.h Modules/config.c
+ 	-rm -rf build platform
+@@ -1337,7 +1420,7 @@
+ 
+ # Perform some verification checks on any modified files.
+ patchcheck:
+-	$(RUNSHARED) ./$(BUILDPYTHON) $(srcdir)/Tools/scripts/patchcheck.py
++	$(RUNSHARED) ./$(HOSTPYTHON) $(srcdir)/Tools/scripts/patchcheck.py
+ 
+ # Dependencies
+ 
+Index: setup.py
+===================================================================
+--- a/setup.py	(.../tags/PY_BASE/src/Python-2.7.5gnu)	(revision 60890)
++++ b/setup.py	(.../bgq/tools/python/src/Python-2.7.5gnu)	(revision 60890)
+@@ -437,8 +437,8 @@
+ 
+     def detect_modules(self):
+         # Ensure that /usr/local is always used
+-        add_dir_to_list(self.compiler.library_dirs, '/usr/local/lib')
+-        add_dir_to_list(self.compiler.include_dirs, '/usr/local/include')
++        add_dir_to_list(self.compiler.library_dirs, '/usr/lib64')
++        add_dir_to_list(self.compiler.include_dirs, '/usr/include')
+         self.add_gcc_paths()
+         self.add_multiarch_paths()
+ 
+Index: Modules/_ctypes/libffi/configure
+===================================================================
+--- a/Modules/_ctypes/libffi/configure	(.../tags/PY_BASE/src/Python-2.7.5gnu)	(revision 60890)
++++ b/Modules/_ctypes/libffi/configure	(.../bgq/tools/python/src/Python-2.7.5gnu)	(revision 60890)
+@@ -582,7 +582,7 @@
+ ac_clean_files=
+ ac_config_libobj_dir=.
+ LIBOBJS=
+-cross_compiling=no
++cross_compiling=yes
+ subdirs=
+ MFLAGS=
+ MAKEFLAGS=
+Index: Modules/getpath.c
+===================================================================
+--- a/Modules/getpath.c	(.../tags/PY_BASE/src/Python-2.7.5gnu)	(revision 60890)
++++ b/Modules/getpath.c	(.../bgq/tools/python/src/Python-2.7.5gnu)	(revision 60890)
+@@ -117,8 +117,8 @@
+ #endif
+ 
+ #ifndef PYTHONPATH
+-#define PYTHONPATH PREFIX "/lib/python" VERSION ":" \
+-              EXEC_PREFIX "/lib/python" VERSION "/lib-dynload"
++#define PYTHONPATH PREFIX "/lib64/python" VERSION ":" \
++              EXEC_PREFIX "/lib64/python" VERSION "/lib-dynload"
+ #endif
+ 
+ #ifndef LANDMARK
+@@ -129,7 +129,7 @@
+ static char exec_prefix[MAXPATHLEN+1];
+ static char progpath[MAXPATHLEN+1];
+ static char *module_search_path = NULL;
+-static char lib_python[] = "lib/python" VERSION;
++static char lib_python[] = "lib64/python" VERSION;
+ 
+ static void
+ reduce(char *dir)
+@@ -543,7 +543,7 @@
+     }
+     else
+         strncpy(zip_path, PREFIX, MAXPATHLEN);
+-    joinpath(zip_path, "lib/python00.zip");
++    joinpath(zip_path, "lib64/python00.zip");
+     bufsz = strlen(zip_path);   /* Replace "00" with version */
+     zip_path[bufsz - 6] = VERSION[0];
+     zip_path[bufsz - 5] = VERSION[2];

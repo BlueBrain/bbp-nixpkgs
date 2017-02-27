@@ -1,0 +1,14 @@
+diff -ruN core/ma/maInput.cc core_new/ma/maInput.cc
+--- core/ma/maInput.cc  2017-01-09 10:03:34.318199681 +0100
++++ core_new/ma/maInput.cc  2017-01-09 10:09:10.319864322 +0100
+@@ -79,7 +79,7 @@
+     rejectInput("no solution transfer object");
+   if (in->maximumIterations < 0)
+     rejectInput("negative maximum iteration count");
+-  if (in->maximumIterations > 10)
++  if (in->maximumIterations > 30)
+     rejectInput("unusually high maximum iteration count");
+   if (in->shouldSnap
+     &&( ! in->mesh->canSnap()))
+
+
