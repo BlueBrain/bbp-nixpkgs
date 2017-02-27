@@ -39,6 +39,10 @@ pythonPackages.buildPythonPackage rec {
 						      pythonPackages.h5py
 							];
 
+    passthru = {
+        pythonDeps = propagatedBuildInputs;   
+    };
+
 }
 
 
