@@ -210,6 +210,17 @@ let
         };
 
 
+        bluepy = callPackage ./nse/bluepy {
+
+        };
+
+        ##
+        ## BBP INS components
+        ##
+        
+        
+
+
         ##
         ## BBP HPC components
         ##
