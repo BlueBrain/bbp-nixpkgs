@@ -1,7 +1,8 @@
 { stdenv
 , coreutils
 , binutils
-, nativePrefix ? "/bgsys/drivers/toolchain/V1R2M3/gnu-linux"
+, bgq-driver
+, nativePrefix ? "/bgsys/drivers/toolchain/${bgq-driver}/gnu-linux"
 } :
 
 
