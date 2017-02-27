@@ -88,6 +88,16 @@ in
    };
     
 
+  ordereddict = pythonPackages.buildPythonPackage rec {
+    name = "ordereddict-1.1";
+
+    src = pkgs.fetchurl {
+      url = "http://pypi.python.org/packages/source/o/ordereddict/${name}.tar.gz";
+      md5 = "a0ed854ee442051b249bfad0f638bbec";
+    };
+
+   };
+
 
 }
 
