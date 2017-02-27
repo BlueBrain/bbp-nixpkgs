@@ -64,6 +64,10 @@ stdenv.mkDerivation rec {
 	buildPhase = '' 
                 runHook preBuild
 
+		export BLAS=None
+		export LAPACK=None
+		export ATLAS=None 
+
                 ${python}/bin/${python.executable} setup.py build
 
                 runHook postBuild
