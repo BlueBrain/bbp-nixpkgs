@@ -34,7 +34,6 @@ stdenv.mkDerivation rec {
 	export LD_LIBRARY_PATH="''${PWD}/lib:''${LDLIBRARY_PATH}"
   '';
 
-#  patches = [ ./frame_data.patch ];
 
   enableParallelBuilding = true;
 
