@@ -16,6 +16,14 @@ let
     bluepy_version = "2017.02-c8255";
 
     bluepy_runtime_deps = [ 
+                            #  core
+                            pythonPackages.h5py
+                            pythonPackages.numpy
+                            pythonPackages.pandas
+                            pythonPackages.matplotlib
+                            pythonPackages.lxml
+
+                            #  others
                             pythonPackages.shapely
                             pythonPackages.jsonschema
                             pythonPackages.progressbar
