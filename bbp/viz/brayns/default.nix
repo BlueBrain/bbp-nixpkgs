@@ -43,11 +43,10 @@ stdenv.mkDerivation rec {
 
 	cmakeFlags = [ 
 				"-DOSPRAY_ROOT=${ospray}"
+				"-DOSPRAY_FOUND=TRUE"
 				"-DBRAYNS_REST_ENABLED=${if restInterface then "TRUE" else "FALSE"}" 
-                "-DEMBREE_ROOT=${embree}"
-				## horrible hack to solve
-				## this idiotic -WError at release time....
-				"-DXCODE_VERSION=1" ];
+		                "-DEMBREE_ROOT=${embree}"
+		    ];
 
   enableParallelBuilding = true;
 	
