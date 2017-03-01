@@ -13,6 +13,33 @@ in
 
 
 
+    # function able to gather recursively all the python dependencies of a nix python package
+    # it returns the depenrencies as a list [ a b c ] 
+    # used to generate module containing all the necessary python dependencies 
+    gatherPythonRecDep  = x: let
+                                isPythonModule = drv: if (drv.drvAttrs ? pythonPath) then true else false;
+            
+                                getPropDepNative = drv: if ( drv.drvAttrs ? propagatedNativeBuildInputs != null) 
+                                                    then  drv.drvAttrs.propagatedNativeBuildInputs 
+                                                    else [];
+                                getPropDepTarget = drv: if ( drv.drvAttrs ? propagatedBuildInputs != null) 
+                                                    then  drv.drvAttrs.propagatedBuildInputs 
+                                                    else [];
+
+                                getPropDep = drv: (getPropDepNative drv) ++ (getPropDepTarget drv);
+ 
+            
+                                recConcat = deps: if ( deps == [] ) then []
+                                                  else [ (builtins.head deps) ] ++ (recConcat (getPropDep (builtins.head deps) ) ) 
+                                                        ++ (recConcat (builtins.tail deps));
+
+                                allRecDep = recConcat ( getPropDep x);
+
+                                allPythonRecDep = builtins.filter isPythonModule allRecDep;
+
+                            in  allPythonRecDep;
+
+
 	future_0_16 = self.buildPythonPackage rec {
     	version = "v0.16.0";
 	    name = "future-${version}";
