@@ -14,8 +14,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal {
     url = "https://github.com/Eyescale/Pression.git";
-    rev = "9f50cf4b47f0606bc43c7128b15eb327bd73257e";
-    sha256 = "01wa4ymjik285wh5pxj9x48xp1a82c7g9345xxwlr179v86klv0i";
+    rev = "ae3dded3da8b5aded1f6193d3da08acaf210f944";
+    sha256 = "0sa23q4cwgnq4zv5zbaxfp13z99568ypzp37xwbdjcw1jgm3x03w";
   };
 
 
