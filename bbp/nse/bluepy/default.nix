@@ -27,7 +27,7 @@ let
                             pythonPackages.shapely
                             pythonPackages.jsonschema
                             pythonPackages.progressbar
-                            pythonPackages.sqlalchemy
+                            pythonPackages.sqlalchemy9
                             pythonPackages.pyyaml
                             pythonPackages.ordereddict
                           ];
@@ -43,10 +43,14 @@ let
             cd bluepy_configfile
         '';
 
+        pythonPath = [];
+
         buildInputs = [ 
                         pythonPackages.pip 
                         pythonPackages.ordereddict
 				      ];
+
+        propagatedBuildInputs = [ pythonPackages.ordereddict ];
     };
 
     bluepy_core = pythonPackages.buildPythonPackage rec {
@@ -75,10 +79,11 @@ let
                         bluepy_config
                       ] ++ bluepy_runtime_deps;
 
+        propagatedBuildInputs = bluepy_runtime_deps ++ [ bluepy_config ];
+
 
         passthru = {
-        
-            pythonDeps = [ bluepy_config ] ++ bluepy_runtime_deps;
+            pythonDeps =   (pythonPackages.gatherPythonRecDep bluepy_core);
         };
 
     };
