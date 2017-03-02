@@ -21,7 +21,7 @@ derivation ((fetchgitPrivate fetchgit_private_args).drvAttrs // {
     echo "*** GitExternal HACK ***"
     echo "pre-run CMake for GitExternal checkout"
     
-    ${if (cmake_external_subdir != "") then ''cd ${cmake_external_subdir};'' else ''''}
+    ${if (cmake_external_subdir != "") then ''pushd ${cmake_external_subdir};'' else ''''}
     
     mkdir -p build;
     cd build;
@@ -30,6 +30,9 @@ derivation ((fetchgitPrivate fetchgit_private_args).drvAttrs // {
     rm -rf CMake/common/.git;       # rip off git repo
     rm -rf build;
     echo "delete build directory, keep only sources";
+    
+    ${if (cmake_external_subdir != "") then ''popd'' else ''''}    
+    
     echo "*** End GitExternal HACK ***" 
   '';
 })
