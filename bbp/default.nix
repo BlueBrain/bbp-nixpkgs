@@ -214,6 +214,10 @@ let
 
         };
 
+        muk = callPackage ./nse/muk {
+
+        };
+
         ##
         ## BBP INS components
         ##
