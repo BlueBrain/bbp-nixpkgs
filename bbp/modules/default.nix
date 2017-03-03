@@ -838,7 +838,7 @@ let
         };
 
 
-    mpich2 = pkgs.envModuleGen rec {
+    	mpich2 = pkgs.envModuleGen rec {
             name = "mpich2";
             version = "3.2";
             isLibrary = true;
@@ -1210,18 +1210,18 @@ let
         ];
 
 
-		dev-env-python27pkgs = [
-								freetype
-								gldev
-								ncurses
-								readline
-								openblasCompat
-								libxml2
+	dev-env-python27pkgs = [
+				freetype
+				gldev
+				ncurses
+				readline
+				openblasCompat
+				libxml2
                                 zlib
-								hdf5
-								default_mpi
+				hdf5
+				default_mpi
                                 gcc 
-							];
+				];
 									
 
 
@@ -1299,7 +1299,7 @@ let
             git mercurial
 
             # nse team
-            neurom morphsyn bluejittersdk bluepy
+            neurom morphsyn bluejittersdk bluepy muk
 
             # viz team
             lunchbox brion zeroeq zerobuf lexis vmmlib
