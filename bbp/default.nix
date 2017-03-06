@@ -209,9 +209,10 @@ let
         bluejittersdk = callPackage ./nse/bluejittersdk {
         };
 
-
         bluepy = callPackage ./nse/bluepy {
+        };
 
+        bluerepairsdk = callPackage ./nse/bluerepairsdk {
         };
 
         muk = callPackage ./nse/muk {
