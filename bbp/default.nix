@@ -6,16 +6,16 @@
 
 
 let
-    pkgFun = 
+    pkgFun =
     pkgs:
       with pkgs;
-      let 
+      let
         has_slurm = builtins.pathExists "/usr/bin/srun";
         bbp-mpi = if pkgs.isBlueGene == true then ibm-mpi-xlc
                 else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2
                 else mpich2;
         bbp-mpi-rdma = if pkgs.isBlueGene == true then ibm-mpi-xlc
-                else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2-rdma 
+                else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2-rdma
                 else mpich2;
         bbp-mpi-gcc = if pkgs.isBlueGene == true then ibm-mpi
                                 else bbp-mpi;
@@ -37,7 +37,7 @@ let
 
         nativeAllPkgs = pkgs;
 
-        mergePkgs = pkgs // rec { 
+        mergePkgs = pkgs // rec {
 
         inherit bbp-mpi bbp-mpi-rdma;
 
@@ -56,7 +56,7 @@ let
         ## parallel hdf5
         phdf5 = pkgs.phdf5.override {
          	mpi = bbp-mpi;
-        };        
+        };
 
 
 
@@ -76,22 +76,22 @@ let
         parmetis = pkgs.parmetis.override {
             mpi = bbp-mpi-rdma;
         };
-    
+
         trilinos = pkgs.trilinos.override {
             mpi = bbp-mpi-rdma;
             parmetis = parmetis;
         };
-    
+
         zoltan = trilinos;
-   
- 
+
+
 
         ##
         ## git / cmake external for viz components
         ##
         fetchgitExternal = callPackage ./config/fetchGitExternal{
 
-        };   
+        };
 
         ##
         ## cmake externals for viz components
@@ -107,12 +107,12 @@ let
         ## BBP common components
         ##
         bbpsdk = callPackage ./common/bbpsdk {
- 
+
         };
 
-        vmmlib = callPackage ./common/vmmlib {   
+        vmmlib = callPackage ./common/vmmlib {
 
-        };         
+        };
 
         ##
         ## BBP viz components
@@ -123,13 +123,13 @@ let
 
         qt = qt53;
 
-        servus = callPackage ./viz/servus {   
+        servus = callPackage ./viz/servus {
 
         };
 
-        lunchbox = callPackage ./viz/lunchbox {   
+        lunchbox = callPackage ./viz/lunchbox {
 
-        }; 
+        };
 
 		keyv = callPackage ./viz/keyv {
 
@@ -151,9 +151,9 @@ let
 
         };
 
-        brion = callPackage ./viz/brion {   
+        brion = callPackage ./viz/brion {
 
-        }; 
+        };
 
         pression = callPackage ./viz/pression {
 
@@ -179,9 +179,9 @@ let
 
         };
 
-        rtneuron = callPackage ./viz/rtneuron {   
+        rtneuron = callPackage ./viz/rtneuron {
 
-        };  
+        };
 
         embree = callPackage ./viz/embree {
 
@@ -209,9 +209,10 @@ let
         bluejittersdk = callPackage ./nse/bluejittersdk {
         };
 
-
         bluepy = callPackage ./nse/bluepy {
+        };
 
+        bluerepairsdk = callPackage ./nse/bluerepairsdk {
         };
 
         muk = callPackage ./nse/muk {
@@ -221,31 +222,31 @@ let
         ##
         ## BBP INS components
         ##
-        
-        
+
+
 
 
         ##
         ## BBP HPC components
         ##
-        hpctools-xlc = enableBGQ callPackage ./hpc/hpctools { 
+        hpctools-xlc = enableBGQ callPackage ./hpc/hpctools {
             mpiRuntime = bbp-mpi;
-        }; 
+        };
 
-        hpctools = enableBGQ-gcc47 callPackage ./hpc/hpctools { 
+        hpctools = enableBGQ-gcc47 callPackage ./hpc/hpctools {
             stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
             mpiRuntime = bbp-mpi-gcc;
-        }; 
+        };
 
-        functionalizer = enableBGQ callPackage ./hpc/functionalizer { 
+        functionalizer = enableBGQ callPackage ./hpc/functionalizer {
              python = nativeAllPkgs.python;
              pythonPackages = nativeAllPkgs.pythonPackages;
-             mpiRuntime = bbp-mpi;                
+             mpiRuntime = bbp-mpi;
              hpctools = hpctools-xlc;
-        };  
+        };
 
-        touchdetector = enableBGQ callPackage ./hpc/touchdetector {  
-             mpiRuntime = bbp-mpi;  
+        touchdetector = enableBGQ callPackage ./hpc/touchdetector {
+             mpiRuntime = bbp-mpi;
              hpctools = hpctools-xlc; # impossible to use MPI 3.2 for now on BGQ
         };
 
@@ -254,7 +255,7 @@ let
             mpiRuntime = bbp-mpi;
         };
 
-        mvdtool = callPackage ./hpc/mvdTool { 
+        mvdtool = callPackage ./hpc/mvdTool {
 
         };
 
@@ -262,21 +263,21 @@ let
 
         };
 
-        highfive = callPackage ./hpc/highfive { 
-        
+        highfive = callPackage ./hpc/highfive {
+
         };
 
         flatindexer = callPackage ./hpc/FLATIndexer {
-            mpiRuntime = bbp-mpi; 
+            mpiRuntime = bbp-mpi;
             numpy = pythonPackages.numpy;
         };
-          
+
 
         bbptestdata = callPackage ./tests/BBPTestData {
 
         };
 
-        ### simulation     
+        ### simulation
 
         cyme = callPackage ./hpc/cyme {
 
@@ -293,7 +294,7 @@ let
 
         coreneuron = enableBGQ callPackage ./hpc/coreneuron {
             mpiRuntime = bbp-mpi;
-            neurodamus = neurodamus-coreneuron; 
+            neurodamus = neurodamus-coreneuron;
         };
 
         bluron = enableBGQ callPackage ./hpc/bluron/cmake-build.nix {
@@ -316,12 +317,12 @@ let
 
 
         reportinglib = enableBGQ callPackage ./hpc/reportinglib {
-            mpiRuntime = bbp-mpi;      
+            mpiRuntime = bbp-mpi;
         };
 
         neurodamus = enableBGQ callPackage ./hpc/neurodamus {
-            mpiRuntime = bbp-mpi;  
-            nrnEnv = mergePkgs.neuron;    
+            mpiRuntime = bbp-mpi;
+            nrnEnv = mergePkgs.neuron;
         };
 
         neurodamus-coreneuron = neurodamus.override {
@@ -342,7 +343,7 @@ let
             mpiRuntime = bbp-mpi;
         };
 
-        ## 
+        ##
         ## sub-cellular simulation
         ##
 
@@ -361,7 +362,7 @@ let
                   else liblapackWithoutAtlas;
         };
 
-        steps-mpi = steps; # enable mpi by default 
+        steps-mpi = steps; # enable mpi by default
 
 
         modules = (import ./modules) { pkgs = mergePkgs; };
