@@ -23,7 +23,7 @@ derivation ((fetchgitPrivate fetchgit_private_args).drvAttrs // {
 
     mkdir -p build;
     cd build;
-    ${cmake}/bin/cmake -DDISABLE_SUBPROJECTS=TRUE ${out}/${cmake_external_subdir} || true;
+    ${cmake}/bin/cmake -DDISABLE_SUBPROJECTS=TRUE $out/${cmake_external_subdir} || true;
     cd ..;
     rm -rf CMake/common/.git;       # rip off git repo
     rm -rf build;
