@@ -1,7 +1,7 @@
 { fetchgitExternal, stdenv, boost, cmake, pkgconfig, gsl, bbpsdk, hdf5-cpp, zlib }:
 
 stdenv.mkDerivation rec {
-  name = "BlueRepairSDK-${version}";
+  name = "bluerepairsdk-${version}";
   version = "1.0.0";
   buildInputs = [ stdenv boost cmake pkgconfig gsl bbpsdk hdf5-cpp zlib ];
 

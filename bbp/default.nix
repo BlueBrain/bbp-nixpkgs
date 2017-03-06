@@ -212,7 +212,7 @@ let
         bluepy = callPackage ./nse/bluepy {
         };
 
-        blue_repair_sdk = callPackage ./nse/blue_repair_sdk {
+        bluerepairsdk = callPackage ./nse/bluerepairsdk {
         };
 
         muk = callPackage ./nse/muk {
