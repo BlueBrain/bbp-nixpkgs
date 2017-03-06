@@ -1,7 +1,7 @@
 { fetchgitExternal, stdenv, boost, cmake, pkgconfig, bbpsdk, hdf5 }:
 
 stdenv.mkDerivation rec {
-  name = "MorphScale-${version}";
+  name = "morphscale-${version}";
   version = "0.0.1";
   buildInputs = [ stdenv boost cmake pkgconfig bbpsdk hdf5];
 
