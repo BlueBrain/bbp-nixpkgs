@@ -8,7 +8,17 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/sim/MUK";
-    rev = "e748e399b5e2203bbcd132cddd4df31dee7a4467";
-    sha256 = "0q1nrirp6n5v1r66zc21jbyvhfndkhm9hniycyl6gsbazwlrrnnp";
+    rev = "a0079a353f41a76dbd0483f73e60c486d54ea147";
+    sha256 = "1fvyy3js6hncgc3h6pnsjx7idj13q1v07lpfy6wrpfcbp3cwn0ff";
   };
+
+  enableParallelBuilding = true;
+
+  doCheck = true;
+  # tests don't find the .so, explicitly give the path to the library
+  # this was blessed by Adrien Devresse :)
+  preCheck = ''
+   export LD_LIBRARY_PATH=`readlink -f ./lib`
+  '';
+  checkTarget = "test";
 }
