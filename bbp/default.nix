@@ -219,6 +219,10 @@ let
 
         };
 
+        morphscale = callPackage ./nse/morphscale {
+
+        };
+
         ##
         ## BBP INS components
         ##
