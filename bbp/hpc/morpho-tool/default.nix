@@ -8,20 +8,24 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/hpc/morpho-tool";
-    rev = "bc695eb2f161da8174f8de4bed1c421610bd0ce8";
-    sha256 = "093cw108mfh0z9kk92315j8i8rpb64z8ff963kvhjvp3bz29x8p2";
+    rev = "c66db6bb7ee9fd7e1d51d20c12b50ae2c8536218";
+    sha256 = "07vxcv4q074fpah7m5k0wa2hpz27xa85rnhxhqn2kcbwvjq79lcp";
   };
   
   cmakeFlags=[ 
 			   "-DUNIT_TESTS=ON"
 			   "-DMORPHO_INSTALL_HIGHFIVE=OFF"
+               "-DENABLE_MESHER_CGAL=ON"
 			 ];   
 
   enableParallelBuilding = true;
   
-  doCheck = false;
+  doCheck = true;
   
-  checkTarget = "test";
+  checkPhase = ''
+    export LD_LIBRARY_PATH=$PWD/src/morpho:$LD_LIBRARY_PATH;
+    ctest -V
+  '';
 
   propagatedBuildInputs = [ highfive ];
   
