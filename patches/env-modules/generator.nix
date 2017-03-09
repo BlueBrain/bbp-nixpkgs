@@ -67,7 +67,7 @@ stdenv.mkDerivation rec {
     targetEnvMan = "${targetEnv}/share/man";
     targetEnvPython = "${targetEnv}/lib/python2.7";
     targetEnvPythonInterpret = "${targetEnv}/bin/python";    
-    targetEnvHoc = "${targetEnv}/hoc";
+    targetEnvHoc = "${targetEnv}/hoclib";
     targetModlUnit = "${targetEnv}/share/nrnunits.lib";
 
  
