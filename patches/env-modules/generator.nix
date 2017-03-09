@@ -38,10 +38,10 @@ extraContent ? ""
                                                                 else dep.modulename;
                                           in
                                             if depList == [] then ''''
-											else if ((builtins.head (depList)) == null) then (''
-																							${depBuilder depPrefixString (builtins.tail depList)}
-																							'')
-											else ''
+                                            else if ((builtins.head (depList)) == null) then (''
+                                                                                            ${depBuilder depPrefixString (builtins.tail depList)}
+                                                                                            '')
+                                            else ''
                                                     ${depPrefixString} ${(extractName (builtins.head (depList)))}
                                                     ${depBuilder depPrefixString (builtins.tail depList)}
                                                  '';
@@ -67,7 +67,7 @@ stdenv.mkDerivation rec {
     targetEnvMan = "${targetEnv}/share/man";
     targetEnvPython = "${targetEnv}/lib/python2.7";
     targetEnvPythonInterpret = "${targetEnv}/bin/python";    
-    targetEnvHoc = "${targetEnv}/hoc";
+    targetEnvHoc = "${targetEnv}/hoclib";
     targetModlUnit = "${targetEnv}/share/nrnunits.lib";
 
  
@@ -150,12 +150,12 @@ if { [file exists ${targetEnvPythonInterpret} ] } {
         prepend-path PYTHONHOME ${targetEnv}
 } else {
 
-		## check if any python modules are available
-		foreach pathname [ glob -nocomplain "${targetEnv}/lib*/python*/*-packages/" ]  {
-			
-			prepend-path PYTHONPATH \$pathname
+        ## check if any python modules are available
+        foreach pathname [ glob -nocomplain "${targetEnv}/lib*/python*/*-packages/" ]  {
+            
+            prepend-path PYTHONPATH \$pathname
 
-		}
+        }
 }
 
 ## check if any hoc path is needed
