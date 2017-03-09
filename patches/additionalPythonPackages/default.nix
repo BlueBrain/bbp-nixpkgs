@@ -159,6 +159,10 @@ in
       nosetests
     '';
 
+    passthru = {
+        pythonDeps = (gatherPythonRecDep ipython);
+    };
+
   };
 
 
@@ -386,6 +390,11 @@ in
     # Tests require backends.
     # I don't want to add all supported backends as propagatedBuildInputs
     doCheck = false;
+
+    passthru = {
+        pythonDeps = (gatherPythonRecDep ipykernel);
+    };
+
 
   };
 
