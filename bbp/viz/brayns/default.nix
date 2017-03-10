@@ -36,17 +36,18 @@ stdenv.mkDerivation rec {
 
 	src = fetchgitExternal {
 		url  = "https://github.com/BlueBrain/Brayns.git";
-		rev = "a163a81607089a2788c4a4560eca68b379a3d310";
-		sha256 = "1lbnadqjyd700p045na7y2zq901jvrrkr9s6gymqsw4nbd0d9dzf";
+		rev = "22ed0a8dd38df629a373c15a917e21e1ea4d87ba";
+		sha256 = "0mlnccbxydwrmici4lc8j49qrjrqgd32v68q4jcn57hd8wa1bghr";
 	};
 
+    patches = [ ./decouple_common.patch ];
 
 	cmakeFlags = [ 
+				"-DCOMMON_DISABLE_WERROR=TRUE"
 				"-DOSPRAY_ROOT=${ospray}"
-				"-DOSPRAY_FOUND=TRUE"
-				"-DBRAYNS_REST_ENABLED=${if restInterface then "TRUE" else "FALSE"}" 
-		                "-DEMBREE_ROOT=${embree}"
+		        "-DEMBREE_ROOT=${embree}"
 		    ];
+
 
   enableParallelBuilding = true;
 	
