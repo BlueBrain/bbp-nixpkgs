@@ -15,8 +15,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal {
     url = "https://github.com/Eyescale/Collage.git";
-    rev = "3f00a90b48f699b2ab4fa79df209c34c1bd34a38";
-    sha256 = "1lks7gargcynn2qjl3k9xs9yn9yz779534isfhx3llmhpir6v8xi";
+    rev = "206860e068a90acd1cd9942f984a35831b987919";
+    sha256 = "18nf47hlz8j59qyr3ph52pg6c4r11ibfhhp8xf92n3phlfv77hsr";
   };
 
 

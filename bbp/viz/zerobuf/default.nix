@@ -11,15 +11,15 @@ let
 in
 stdenv.mkDerivation rec {
   name = "zerobuf-${version}";
-  version = "0.4-2017";
+  version = "0.4-2017.02";
 
   buildInputs = [ stdenv pkgconfig servus cmake python-env boost ];
 
 
   src = fetchgitExternal{
     url = "https://github.com/HBPVIS/ZeroBuf.git";
-    rev = "f40a6e46fae17aa54f54f65047a227b37843c993";
-    sha256 = "06m1khj0pgl5ndfij8lfnk4nfncxppp5ns68ws68caaz5pf0zh4s";
+    rev = "136330e10c1b1e3b8a8eae4843fbc95c7e00d498";
+    sha256 = "0viy281k483nllvfp9q925xqr0c5ii8w8l9h3fpz62vhjr2j0yq2";
   };
   
   enableParallelBuilding = false;

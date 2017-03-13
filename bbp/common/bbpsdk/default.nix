@@ -14,13 +14,13 @@
 
 stdenv.mkDerivation rec {
   name = "bbpsdk-${version}";
-  version = "0.25";
+  version = "0.26-2017.02";
   buildInputs = [ stdenv pkgconfig boost brion vmmlib servus mvdtool cmake lunchbox python hdf5 doxygen];
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/common/BBPSDK";
-    rev= "bbf564e45237573ce860bcc68d92fdd0f5e09930";
-    sha256 = "1zaiavabx5j2xqiwyybrr046v829wxkyi5k4adrr5inlzjgzm0n8";
+    rev= "d29ddfc872896d94da992f09ae90a7e422f95cda";
+    sha256 = "0v4qrkk2dz2byxvbdp2dyi3jsqs0j99q39vydb3890q95z61jqvx";
   };
 
 

@@ -16,7 +16,7 @@ doxygen }:
 
 stdenv.mkDerivation rec {
   name = "brion-${version}";
-  version = "1.9.0";
+  version = "2.0-2017.02";
 
   buildInputs = [ stdenv pkgconfig 
 				  mvdtool boost 
@@ -25,16 +25,13 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal {
     url = "https://github.com/BlueBrain/Brion.git";
-    rev = "e9ab6bf1c7458562ad126142a2761faff73a2e41";
-    sha256 = "0hfipsjfl17a4x0mwalyzyddmfxb5z4fazahawzw6rid21r5h193";
+    rev = "8b0c1f1acf56cd03f889390f3c57cb845d68bee2";
+    sha256 = "18w98yylan1frvbc38s12isffm765i8jd6zfv72hqmxaw1nmjaaq";
   };
 
 
   enableParallelBuilding = true;
 
-  ## horrible hack to disable the -WError maddness
-  ##
-  cmakeFlags = "-DXCODE_VERSION=1";
 
   propagatedBuildInputs = [ lunchbox vmmlib boost ];
    
