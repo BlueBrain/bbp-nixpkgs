@@ -1,7 +1,9 @@
 { stdenv, fetchgitExternal, cmake, doxygen, python, blas  }:
 
 stdenv.mkDerivation rec {
-  name = "vmmlib-1.11.0";
+  name = "vmmlib-${version}";
+  version = "1.12.0-201702";
+
   buildInputs = [ stdenv cmake doxygen python blas];
 
   src = fetchgitExternal {

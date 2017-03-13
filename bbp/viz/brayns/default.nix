@@ -28,7 +28,7 @@ assert restInterface -> (zeroeq != null && zerobuf != null && lexis != null );
 
 stdenv.mkDerivation rec {
 	name = "brayns-${version}";
-	version = "0.1.0";
+	version = "0.2.0-201702";
 
 	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi
 					glew vmmlib lunchbox brion hdf5-cpp imagemagick deflect ]
