@@ -1,0 +1,33 @@
+diff -ur '--exclude=CMake' RTNeuron-78dca3d/rtneuron/rtneuron/RTNeuron.cpp RTNeuron-78dca3d.new/rtneuron/rtneuron/RTNeuron.cpp
+--- RTNeuron-78dca3d/rtneuron/rtneuron/RTNeuron.cpp	2017-02-28 16:52:52.968028000 +0000
++++ RTNeuron-78dca3d.new/rtneuron/rtneuron/RTNeuron.cpp	2017-02-28 16:31:57.744028000 +0000
+@@ -9,6 +9,7 @@
+ //////////////////////////////////////////////////////////////////////
+ 
+ #include <eq/gl.h>
++#include <co/dataOStream.h>
+ 
+ #include "InitData.h"
+ #include "RTNeuron.h"
+diff -ur '--exclude=CMake' RTNeuron-78dca3d/rtneuron/rtneuron/viewer/osgEq/Channel.h RTNeuron-78dca3d.new/rtneuron/rtneuron/viewer/osgEq/Channel.h
+--- RTNeuron-78dca3d/rtneuron/rtneuron/viewer/osgEq/Channel.h	2017-02-28 16:52:53.516028000 +0000
++++ RTNeuron-78dca3d.new/rtneuron/rtneuron/viewer/osgEq/Channel.h	2017-02-28 16:48:34.168028000 +0000
+@@ -16,7 +16,18 @@
+ #include "Compositor.h"
+ #include "render/DepthOfField.h"
+ 
++
++
+ #include <eq/eq.h>
++#include <eq/channel.h>
++#include <eq/frame.h>
++#include <eq/client.h>
++#include <eq/config.h>
++#include <eq/layout.h>
++#include <eq/node.h>
++#include <eq/nodeFactory.h>
++#include <eq/global.h>
++#include <eq/server.h>
+ 
+ #include <osg/ref_ptr>
+ #include <boost/scoped_ptr.hpp>

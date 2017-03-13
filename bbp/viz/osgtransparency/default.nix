@@ -15,8 +15,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/viz/osgTransparency";
-    rev = "6cdf6f6e8025ed91d512e079879e13017a8b3db3";
-    sha256 = "1h62zvh2168gwhp1lj6284zs9vhxg1p5016qhf9s3gbn7n3q1867";
+    rev = "ef4fa3effeae11c717073bf088a9b5dabd22f779";
+    sha256 = "11yg34fnh0f2yfpr471b4c5v4clqkg9a6sy760l9silabh9mmyxj";
   };
 
 

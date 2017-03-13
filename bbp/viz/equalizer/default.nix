@@ -24,16 +24,16 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal {
     url = "https://github.com/Eyescale/Equalizer.git";
-    rev = "0f893002e2283d3aa87d1b94024624e6040dbf95";
-    sha256 = "088ii06lr0m1x2a9c6ahx78jn7s6y79dclq3bxp2l094wqmjg8wm";
+    rev = "7fbb0449aed2988c3806bc2b5d75070680ee7dbe";
+    sha256 = "0d1han5l8a6sw9imk2s83khrrl6lawsl27sh6cbijkgagjafix8h";
   };
 
-#  patches  = [ ./qt.patch ];
 
   # need to have the lib directory in LDPATH for binary creation 
   preBuild = ''
 	export LD_LIBRARY_PATH="''${PWD}/lib:''${LDLIBRARY_PATH}"
   '';
+
 
   enableParallelBuilding = true;
 

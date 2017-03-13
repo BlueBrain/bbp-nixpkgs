@@ -1,0 +1,11 @@
+diff -ur '--exclude=common' '--exclude=spinLock.h' Lunchbox-f05b9c6/lunchbox/CMakeLists.txt Lunchbox-f05b9c6.new/lunchbox/CMakeLists.txt
+--- Lunchbox-f05b9c6/lunchbox/CMakeLists.txt	2017-02-28 14:29:14.592028000 +0000
++++ Lunchbox-f05b9c6.new/lunchbox/CMakeLists.txt	2017-02-28 14:28:14.664028000 +0000
+@@ -55,6 +55,7 @@
+   serializable.h
+   sleep.h
+   spinLock.h
++  string.h
+   term.h
+   thread.h
+   threadID.h
