@@ -16,8 +16,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal {
     url = "https://github.com/Eyescale/hwsd.git";
-    rev = "334e191618678c74767b6228a7db5a8c520aec54";
-    sha256 = "06l4vzxy0fs51psksgfdzmhfw1qkc77cpxga4hsw2xd5k02l9qb4";
+    rev = "03b11b572a291f641adb6e5e8fa980121933b387";
+    sha256 = "029b70r0py193abp741xk17k7dq1j8br3qs83vwcw7c8dmq0nrwj";
   };
 
 

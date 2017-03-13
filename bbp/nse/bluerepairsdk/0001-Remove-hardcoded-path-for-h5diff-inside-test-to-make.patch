@@ -1,0 +1,27 @@
+From 5d2901ecd163fd6f1100eb2d4585dfa56ba642b3 Mon Sep 17 00:00:00 2001
+From: devresse <adrien.devresse@epfl.ch>
+Date: Fri, 10 Mar 2017 15:26:33 +0000
+Subject: [PATCH] Remove hardcoded path for h5diff inside test to make it run
+ in any environment with hdf5 installed under prefix
+
+Change-Id: I25424d84a68914a0a7f0929e2ba5843d561fedef
+---
+ functional_tests/run.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/functional_tests/run.sh b/functional_tests/run.sh
+index 435e9bd..0fda23f 100755
+--- a/functional_tests/run.sh
++++ b/functional_tests/run.sh
+@@ -4,7 +4,7 @@ set -e
+ 
+ REPAIR=../BlueRepairSDK/build/bin/repair
+ 
+-H5DIFF=/usr/bin/h5diff
++H5DIFF=`which h5diff`
+ REPAIR_CONF=repair.conf
+ #tolerance for the h5diff tool
+ TOLERANCE=0.001
+-- 
+1.9.1
+

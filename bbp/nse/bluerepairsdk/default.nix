@@ -1,9 +1,9 @@
-{ fetchgitExternal, stdenv, boost, cmake, pkgconfig, gsl, bbpsdk, hdf5-cpp, zlib }:
+{ fetchgitExternal, stdenv, boost, cmake, pkgconfig, gsl, bbpsdk, hdf5-cpp, zlib, which }:
 
 stdenv.mkDerivation rec {
   name = "bluerepairsdk-${version}";
   version = "1.0.0";
-  buildInputs = [ stdenv boost cmake pkgconfig gsl bbpsdk hdf5-cpp zlib ];
+  buildInputs = [ stdenv boost cmake pkgconfig gsl bbpsdk hdf5-cpp zlib which ];
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/platform/BlueRepairSDK";
@@ -17,7 +17,12 @@ stdenv.mkDerivation rec {
     export NIX_CFLAGS_COMPILE=" $NIX_CFLAGS_COMPILE -Wno-error"
   '';
 
-  doCheck = true;
+  patches = [ 
+        ./0001-Fix-API-break-issue-with-last-version-of-vmmlib.patch
+        ./0001-Remove-hardcoded-path-for-h5diff-inside-test-to-make.patch
+        ];
+
+  doCheck = false;
   preCheck = ''
     cd ../..
   '';
