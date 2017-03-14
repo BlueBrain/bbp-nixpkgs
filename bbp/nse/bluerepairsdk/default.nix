@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal {
     url = "ssh://bbpcode.epfl.ch/platform/BlueRepairSDK";
-    rev = "c47a778bd8f6b55dbb646ba14f0ab283e138b6cd";
-    sha256 = "15l4wzkx5d07wm0g0x0bdhq1m5xrsjl9d2yyq1y119r4r9ipj4k8";
+    rev = "58cf1c9e37226142fbc214f6a4fa3f8e35a8385a";
+    sha256 = "132q3zyjb4aaz244j2qarpwg6xv3jqq5mfsl1qniy4s7fdj9axqd";
     subdir = "BlueRepairSDK";
   };
 
@@ -17,12 +17,7 @@ stdenv.mkDerivation rec {
     export NIX_CFLAGS_COMPILE=" $NIX_CFLAGS_COMPILE -Wno-error"
   '';
 
-  patches = [ 
-        ./0001-Fix-API-break-issue-with-last-version-of-vmmlib.patch
-        ./0001-Remove-hardcoded-path-for-h5diff-inside-test-to-make.patch
-        ];
-
-  doCheck = false;
+  doCheck = true;
   preCheck = ''
     cd ../..
   '';
