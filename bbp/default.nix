@@ -233,6 +233,11 @@ let
         ##
         ## BBP HPC components
         ##
+		helloworld = enableBGQ callPackage ./common/helloworld {
+            mpi = bbp-mpi;
+        };
+
+
         hpctools-xlc = enableBGQ callPackage ./hpc/hpctools {
             mpiRuntime = bbp-mpi;
         };
