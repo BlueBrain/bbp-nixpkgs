@@ -37,11 +37,11 @@ stdenv.mkDerivation rec {
 
   src = fetchgitExternal{
     url = "ssh://bbpcode.epfl.ch/viz/RTNeuron";
-    rev = "78dca3d08052a0e2739a63e2e88721fb43120d02";
-    sha256 = "1d44nkrn1y8gyygmvjwp52bx320alrhblh1d1fnv6yx8s0s6dl2l";
+    rev = "984c9f7fddff9ccc05d0e4c91244e6bd2d5fe206";
+    sha256 = "07djb48kcp6dz5p2x9mz4c3ax1z2jq0hiairk169p7qyhpx4b4sp";
   };
 
-  patches = [ ./missing_headers.patch  ./cpp14_revert.patch ];
+#  patches = [ ./missing_headers.patch  ./cpp14_revert.patch ];
 
   enableParallelBuilding = true;
 
