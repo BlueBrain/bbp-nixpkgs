@@ -120,6 +120,10 @@ let
             kernel = null;
         };
 
+        nvidia-x11-36757 = callPackage ./nvidia-driver/nvidia-viz-default.nix {
+            libsOnly = true;
+            kernel = null;
+        };
 
 
         ## patch version of HDF5 with 

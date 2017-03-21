@@ -1,6 +1,8 @@
 
 { stdenv, fetchurl, fetchpatch, cmake, mesa, libX11, xproto, libXt
 , qtLib ? null
+, python
+, withPython ? true
 }:
 
 with stdenv.lib;
@@ -14,12 +16,15 @@ in
 
 stdenv.mkDerivation rec {
   name = "vtk-${os (qtLib != null) "qvtk-"}${version}";
+
+  inherit version;
+
   src = fetchurl {
     url = "${meta.homepage}files/release/${majorVersion}/VTK-${version}.tar.gz";
     sha256 = "1hrjxkcvs3ap0bdhk90vymz5pgvxmg7q6sz8ab3wsyddbshr1abq";
   };
 
-  buildInputs = [ cmake mesa libX11 xproto libXt ] ++ optional (qtLib != null) qtLib;  
+  buildInputs = [ cmake mesa libX11 xproto libXt python ] ++ optional (qtLib != null) qtLib;  
 
   preBuild = ''
     export LD_LIBRARY_PATH="$(pwd)/lib";
@@ -30,8 +35,9 @@ stdenv.mkDerivation rec {
   # built and requiring one of the shared objects.
   # At least, we use -fPIC for other packages to be able to use this in shared
   # objects.
-  cmakeFlags = [ "-DCMAKE_C_FLAGS=-fPIC" "-DCMAKE_CXX_FLAGS=-fPIC" ]
-    ++ optional (qtLib != null) [ "-DVTK_USE_QT:BOOL=ON" ];
+  cmakeFlags = [ "-DCMAKE_C_FLAGS=-fPIC" "-DCMAKE_CXX_FLAGS=-fPIC"  ]
+    ++ optional (qtLib != null) [ "-DVTK_USE_QT:BOOL=ON" ]
+    ++ optional (withPython) [ "-DVTK_WRAP_PYTHON:BOOL=ON" ];
 
   postPatch = stdenv.lib.optionalString stdenv.isDarwin ''
     sed -i 's|COMMAND vtkHashSource|COMMAND "DYLD_LIBRARY_PATH=''${VTK_BINARY_DIR}/lib" ''${VTK_BINARY_DIR}/bin/vtkHashSource-7.0|' ./Parallel/Core/CMakeLists.txt
