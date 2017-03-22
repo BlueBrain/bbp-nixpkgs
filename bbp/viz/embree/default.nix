@@ -19,8 +19,8 @@ stdenv.mkDerivation rec {
     src = fetchFromGitHub {
         owner = "embree";
         repo = "embree";
-        rev = "c24bc5500e40f43195e443d6499c465af4994bdf";
-        sha256 = "0n8alajfz86n80ybgdhd016m56ib0m8ncjbrgjc8lanx16xdyl2v";
+        rev = "f8b4b464d6d0380cf45b64ae78d9e1c9d9a9beab";
+        sha256 = "1nykv2bliaha00fpis26ar0llda84k9xqbysp53q0a2fav38y1y7";
     };
     
 
