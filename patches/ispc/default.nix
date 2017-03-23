@@ -8,8 +8,6 @@
 , ncurses
 , zlib
 , which
-, cmake
-, cmake36
 , python
 , automake
 , autoconf
@@ -26,31 +24,8 @@ let
                             ];
 
         llvm-ispc = llvm;
-#			stdenv.mkDerivation rec {
-#            name = "llvm-ipsc-${version}";
-#            version = "3.8.0";
-#
-#            src = fetchurl  {
-#                    url = "http://llvm.org/releases/${version}/llvm-${version}.src.tar.xz";
-#                    sha256 = "0ikfq0gxac8xpvxj23l4hk8f12ydx48fljgrz1gl9xp0ks704nsm";
-#            };
-#
-#
-#            patches = ispc-llvm-patches;
-#    
-#            patchFlags = [ "-p0" ];
-#            
-#            buildInputs = [ cmake36 pkgconfig python ];
-#
-#
-#            cmakeFlags = [ 
-#                            "-DLLVM_TARGETS_TO_BUILD=NVPTX\;X86"
-#                            "-DLLVM_ENABLE_ASSERTIONS=ON"
-#                         ];
-#
-#        };
-#
-        ispc = clangStdenv.mkDerivation rec {
+
+        ispc = stdenv.mkDerivation rec {
             name = "ipsc-${version}";
             version = "1.9.0";
 
