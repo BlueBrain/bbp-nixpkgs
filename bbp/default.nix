@@ -233,7 +233,7 @@ let
         ##
         ## BBP HPC components
         ##
-		helloworld = enableBGQ callPackage ./common/helloworld {
+		helloworld = enableBGQ-gcc47 callPackage ./common/helloworld {
             mpi = bbp-mpi;
         };
 
