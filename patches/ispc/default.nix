@@ -8,13 +8,12 @@
 , ncurses
 , zlib
 , which
-, cmake
-, cmake36
 , python
 , automake
 , autoconf
 , bison
 , flex
+, glibc_multi
 }:
 
 
@@ -26,35 +25,12 @@ let
                             ];
 
         llvm-ispc = llvm;
-#			stdenv.mkDerivation rec {
-#            name = "llvm-ipsc-${version}";
-#            version = "3.8.0";
-#
-#            src = fetchurl  {
-#                    url = "http://llvm.org/releases/${version}/llvm-${version}.src.tar.xz";
-#                    sha256 = "0ikfq0gxac8xpvxj23l4hk8f12ydx48fljgrz1gl9xp0ks704nsm";
-#            };
-#
-#
-#            patches = ispc-llvm-patches;
-#    
-#            patchFlags = [ "-p0" ];
-#            
-#            buildInputs = [ cmake36 pkgconfig python ];
-#
-#
-#            cmakeFlags = [ 
-#                            "-DLLVM_TARGETS_TO_BUILD=NVPTX\;X86"
-#                            "-DLLVM_ENABLE_ASSERTIONS=ON"
-#                         ];
-#
-#        };
-#
+
         ispc = clangStdenv.mkDerivation rec {
             name = "ipsc-${version}";
-            version = "1.9.0";
+            version = "1.9.1";
 
-            buildInputs = [ pkgconfig llvm-ispc ncurses zlib ];
+            buildInputs = [ pkgconfig llvm-ispc ncurses zlib glibc_multi ];
 		
 			nativeBuildInputs = [ automake autoconf bison flex python which ];
 
@@ -68,7 +44,7 @@ let
             configurePhase = ''
                     export LLVM_HOME=${llvm-ispc}
 					export NIX_CFLAGS_COMPILE="-I ${clangUnwrapped}/include $NIX_CFLAGS_COMPILE";
-					sed -i 's/^LLVM_VERSION=.*/LLVM_VERSION=LLVM_3_6/g' Makefile 
+					sed -i 's/^LLVM_VERSION=.*/LLVM_VERSION=LLVM_3_9/g' Makefile 
 					sed -i 's/\-lcurses//g' Makefile 
             '';
 

@@ -19,6 +19,7 @@ let
             });
         };
 
+		ccWrapperFun = callPackage ../std-nixpkgs/pkgs/build-support/cc-wrapper;
 
         ##open scene graph, for viz software
         openscenegraph = callPackage ./openscenegraph {
@@ -103,13 +104,27 @@ let
 
         });
 
+		# llvm 4 backport 
+		llvmPackages_4 = callPackage ./llvm/4 {
+			  newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
+			  inherit ccWrapperFun;
+  			  inherit (stdenvAdapters) overrideCC;
+		};
+
+
+		# llvm 4 backport 
+		llvmPackages_3_9 = callPackage ./llvm/3.9 {
+			  newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
+			  inherit ccWrapperFun;
+  			  inherit (stdenvAdapters) overrideCC;
+		};
+
         # ispc compiler for brayns
         ispc = callPackage ./ispc {
             # require clang compiler
-            inherit clangStdenv;
-            clangUnwrapped = llvmPackages.clang-unwrapped;
-            #require cmake 3.6
-            inherit cmake36;
+            clangStdenv = llvmPackages_3_9.stdenv;
+			llvm = llvmPackages_3_9.llvm;
+            clangUnwrapped = llvmPackages_3_9.clang-unwrapped;
         };
 
         ## nvidia openGL implementation
