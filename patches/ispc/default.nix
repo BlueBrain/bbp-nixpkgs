@@ -27,7 +27,7 @@ let
 
         ispc = clangStdenv.mkDerivation rec {
             name = "ipsc-${version}";
-            version = "1.9.0";
+            version = "1.9.1-dev-201703";
 
             buildInputs = [ pkgconfig llvm-ispc ncurses zlib ];
 		
@@ -36,8 +36,8 @@ let
             src = fetchFromGitHub  {
                     owner = "ispc";
                     repo = "ispc";
-                    rev = "87d0c9a2ed7c9d0eb40303a040abba709280f1ac";
-                    sha256 = "1wwsyvn44hd5iyi5779l5378x096307slpyl29wrsmfp66796693";
+                    rev = "a618ad45bf6a83e0f4a82378c62b5621c6719983";
+                    sha256 = "1k7j8x8p5ks1dxdidk24mkyh3p6bfjv7nsnz0crq0sxn0szi6xbn";
             };
 
             configurePhase = ''
