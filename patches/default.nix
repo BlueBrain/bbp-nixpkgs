@@ -114,7 +114,7 @@ let
         # ispc compiler for brayns
         ispc = callPackage ./ispc {
             # require clang compiler
-            inherit clangStdenv;
+            clangStdenv = llvmPackages_4.stdenv;
 			llvm = llvmPackages_4.llvm;
             clangUnwrapped = llvmPackages_4.clang-unwrapped;
         };

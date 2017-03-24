@@ -25,7 +25,7 @@ let
 
         llvm-ispc = llvm;
 
-        ispc = stdenv.mkDerivation rec {
+        ispc = clangStdenv.mkDerivation rec {
             name = "ipsc-${version}";
             version = "1.9.0";
 
