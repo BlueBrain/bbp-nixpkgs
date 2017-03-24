@@ -27,7 +27,7 @@ let
 
         ispc = clangStdenv.mkDerivation rec {
             name = "ipsc-${version}";
-            version = "1.9.0";
+            version = "1.9.1";
 
             buildInputs = [ pkgconfig llvm-ispc ncurses zlib ];
 		
