@@ -38,7 +38,7 @@ in stdenv.mkDerivation rec {
     mv compiler-rt-* $sourceRoot/projects/compiler-rt
   '';
 
-  outputs = [ "out" ] ++ stdenv.lib.optional enableSharedLibraries "lib";
+  outputs = [ "out" ];
 
   buildInputs = [ perl groff cmake libxml2 python libffi ]
     ++ stdenv.lib.optionals stdenv.isDarwin [ libcxxabi ];
@@ -105,11 +105,7 @@ in stdenv.mkDerivation rec {
 
   postInstall = ""
   + stdenv.lib.optionalString (enableSharedLibraries) ''
-    mkdir -p $lib/lib
-    mv "lib/libLLVM-*" "$lib/lib"
-    mv "lib/libLLVM.${shlib}" "$lib/lib"
-    substituteInPlace "$out/lib/cmake/llvm/LLVMExports-release.cmake" \
-      --replace "\''${_IMPORT_PREFIX}/lib/libLLVM-" "$lib/lib/libLLVM-"
+ 
   ''
   + stdenv.lib.optionalString (stdenv.isDarwin && enableSharedLibraries) ''
     substituteInPlace "$out/lib/cmake/llvm/LLVMExports-release.cmake" \
