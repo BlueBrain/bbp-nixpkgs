@@ -61,9 +61,8 @@ in stdenv.mkDerivation rec {
   ''
   # Patch llvm-config to return correct library path based on --link-{shared,static}.
   + stdenv.lib.optionalString (enableSharedLibraries) ''
-    substitute '${./llvm-outputs.patch}' ./llvm-outputs.patch --subst-var lib
-    patch -p1 < ./llvm-outputs.patch
-  '';
+	# remove lib fix  
+'';
 
   # hacky fix: created binaries need to be run before installation
   preBuild = ''

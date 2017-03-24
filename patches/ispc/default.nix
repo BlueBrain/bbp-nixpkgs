@@ -13,6 +13,7 @@
 , autoconf
 , bison
 , flex
+, glibc_multi
 }:
 
 
@@ -29,7 +30,7 @@ let
             name = "ipsc-${version}";
             version = "1.9.1";
 
-            buildInputs = [ pkgconfig llvm-ispc ncurses zlib ];
+            buildInputs = [ pkgconfig llvm-ispc ncurses zlib glibc_multi ];
 		
 			nativeBuildInputs = [ automake autoconf bison flex python which ];
 
