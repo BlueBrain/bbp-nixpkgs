@@ -43,7 +43,7 @@ let
             configurePhase = ''
                     export LLVM_HOME=${llvm-ispc}
 					export NIX_CFLAGS_COMPILE="-I ${clangUnwrapped}/include $NIX_CFLAGS_COMPILE";
-					sed -i 's/^LLVM_VERSION=.*/LLVM_VERSION=LLVM_3_6/g' Makefile 
+					sed -i 's/^LLVM_VERSION=.*/LLVM_VERSION=LLVM_3_9/g' Makefile 
 					sed -i 's/\-lcurses//g' Makefile 
             '';
 
