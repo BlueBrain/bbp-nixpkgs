@@ -15,7 +15,7 @@
 
 stdenv.mkDerivation rec {
 	name = "ospray-${version}";
-	version = "1.2.0";
+	version = "1.2.1";
 
 	buildInputs = [ pkgconfig embree tbb ispc mesa freeglut readline qt4 ];
 
@@ -24,8 +24,8 @@ stdenv.mkDerivation rec {
 	src = fetchFromGitHub {
 		owner = "ospray";
 		repo  = "ospray";
-		rev = "a6798efceb752d4b992449f50cc931a44b33baea";
-		sha256 = "0jabi1j09py1g0c5czil5swwx0r8153hhymdp2a9l78z738jrz6b";
+		rev = "be966e3454bbb386a7dd95a5003da536fcb334f6";
+		sha256 = "097d01cfqmwdb4zrrfvvlv246xfwc4b2vhgpm7xdcr3rvn09dcfk";
 	};
 
 
