@@ -1,4 +1,4 @@
-{ stdenv
+{ clangStdenv
 , fetchFromGitHub
 , cmake
 , pkgconfig
@@ -13,7 +13,7 @@
 }:
 
 
-stdenv.mkDerivation rec {
+clangStdenv.mkDerivation rec {
 	name = "ospray-${version}";
 	version = "1.2.1";
 
@@ -33,16 +33,16 @@ stdenv.mkDerivation rec {
     cmakeFlags = [ "-DOSPRAY_USE_EXTERNAL_EMBREE=TRUE"      # disable bundle embree
                    "-DOSPRAY_ZIP_MODE=OFF"                   #disable bundle dependencies
                    "-Dembree_DIR=${embree}" 
-                   "-DEMBREE_MAX_ISA=AVX2"
+                   "-DEMBREE_MAX_ISA=${embree.instruction_set}"
                    "-DTBB_ROOT=${tbb}"
                    ];
 
 
 	outputs = [ "out" "doc" ];
 
-    propagatedBuildInputs = [ ispc  embree ];
+	propagatedBuildInputs = [ ispc  embree ];
 
-    enableParallelBuilding = true;
+	enableParallelBuilding = true;
 
 
 }

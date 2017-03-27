@@ -7,7 +7,7 @@ in
 } 
 // 
 (if (builtins.pathExists knl_platform_path) then 
-	{ isKNL = true; }
+	{  }
 else 
 	{ }
 )
