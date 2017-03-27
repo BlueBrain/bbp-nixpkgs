@@ -341,6 +341,12 @@ let
         
         };
 
+        # itk 4.40
+        itk = callPackage ./itk {
+            
+        };
+
+
         cython = additionalPythonPackages.cython;
 
     };
