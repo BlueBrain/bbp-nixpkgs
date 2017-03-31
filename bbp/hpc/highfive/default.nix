@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "BlueBrain";
     repo = "HighFive";
-    rev = "07133a1e336bc7ca5e14a81edacbf69060ad9f81";
-    sha256 = "0w7gwcj1wlm4mndjs3yk5s9yqhwvy7b5gpr4ysbss2jim1whggvv";
+    rev = "1f5b18c0d62602492339d6a11fb2e5cddfdb7bb9";
+    sha256 = "18493v741qqmj4my0q7ppp2chhgjnczhpajsh4dz30m6h3aqzicf";
   }; 
 
   enableParallelBuilding = true;
