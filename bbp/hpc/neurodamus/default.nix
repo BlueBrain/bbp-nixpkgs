@@ -9,8 +9,11 @@
 , reportinglib
 , nrnEnv
 , coreNeuronMode ? false
+, saveStateBranch ? false
 }:
 
+assert coreNeuronMode -> (saveStateBranch == false);
+assert saveStateBranch -> (coreNeuronMode == false);
 
 let 
   isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
@@ -18,21 +21,28 @@ let
             
   src-neuron = fetchgitPrivate {
         url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
-        rev = "3bb1ab99a46369be2c9b456b67267ac370e9f0aa";
-        sha256 = "1wqwwyp1yfwp0506qvlvmpgzi55xxma6b4f9svfbz9gkmhl65d2b";
+        rev = "8b111ecbaa81fc2395c503062d5c509d2f0b78b4";
+        sha256 = "17b1n4k1bbd1h23qmxg5livqxjxa089i976d57xk67aqdr5wx73z";
     };
+
+  src-neuron-savestate = fetchgitPrivate {
+        url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
+        rev = "f428f461e3a875f5d4110c470a4df95e4c8636a2";
+        sha256 = "27b1n4k1bbd1h23qmxg5livqxjxa089i976d57xk67aqdr5wx73z";
+  };
 
   src-coreneuron = fetchgitPrivate {
         url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
-        rev = "fb5c1b5c08a1aba4396624d3db8a46bea68aff4b";
-        sha256 = "1m87s31wjyv5kz33pv9s139mbyn3j1bxgj2ivgy1dgcmcc7lr1xq";
+        rev = "d81f169f32aab8ba57fd87ea82597fbb614b9c16";
+        sha256 = "0fvwd9kpkfp05w6kvsnj98p4c3hgv8w0ycn9wf4gn211yxb72nsb";
   };
+
 
 in 
 
 stdenv.mkDerivation rec {
     name = "neurodamus${if coreNeuronMode then "-coreneuron" else ""}-${version}";
-    version = "1.9.0-201612";
+    version = "1.9.0-201703";
 
     buildInputs = [ stdenv which pkgconfig hdf5 ncurses zlib mpiRuntime reportinglib nrnEnv ];
 
