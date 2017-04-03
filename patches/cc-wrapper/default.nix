@@ -195,7 +195,7 @@ stdenv.mkDerivation {
         wrap g++ ${./cc-wrapper.sh} $ccPath/g++
         ln -s g++ $out/bin/c++
       elif [ -e $ccPath/icpc ]; then
-        wrap icpc ${./cc-wrapper.sh} $ccPath/icc
+        wrap icpc ${./cc-wrapper.sh} $ccPath/icpc
         ln -s icpc $out/bin/c++
       elif [ -e $ccPath/clang++ ]; then
         wrap clang++ ${./cc-wrapper.sh} $ccPath/clang++
