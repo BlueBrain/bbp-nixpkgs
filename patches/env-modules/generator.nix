@@ -12,6 +12,7 @@ setRoot ? "",
 nixCompileFlags ? true,
 isLibrary ? false,
 isDefault ? false,
+isCompiler ? false,
 description ? "" ,
 extraContent ? ""
 }:
@@ -125,6 +126,20 @@ setenv ${setRoot}_ROOT ${targetEnv}
 ''
 else
 '' ''
+}
+
+##
+## add libc path to compiler modules 
+##
+${if (isCompiler == true) then
+''
+    prepend-path --delim " " NIX_CFLAGS_COMPILE "-I${targetEnv.stdenv.cc.libc}/include"
+    prepend-path --delim " " NIX_LDFLAGS "-L${targetEnv.stdenv.cc.libc}/lib"
+
+    prepend-path CMAKE_PREFIX_PATH "${targetEnv.stdenv.cc.libc}"
+''
+else
+''''
 }
 
 ## check if any pkgs config are available
