@@ -1,6 +1,6 @@
 {
 stdenv,
-fetchhg,
+fetchFromGitHub,
 autoconf,
 automake,
 libtool,
@@ -67,7 +67,7 @@ stdenv.mkDerivation rec {
 
     versionMajor = "7";
     versionMinor = "5";
-    versionDate= "201701";
+    versionDate= "201703";
 
     version = "${versionMajor}.${versionMinor}-${versionDate}";
 
@@ -76,10 +76,11 @@ stdenv.mkDerivation rec {
 
 	patches = [ ./nrn.patch ];
 
-    src = fetchhg {
-        url = "http://www.neuron.yale.edu/hg/neuron/nrn";
-        rev = "e0bd0137f04c";
-        sha256 = "07ld7x226mnfajnbkpx8k94jq19601xmfyfw4jjpp98f0cxgk9mj"; 
+    src = fetchFromGitHub {
+		owner = "nrnhines";
+		repo = "nrn";
+        rev = "b044489afd45bfba6fb82a2a7d51afb3a09369df";
+        sha256 = "03m54irndjzyhr50g142hs3qidgg6rn56gp6i819qlz27yh4cvfb"; 
     };
 
 
