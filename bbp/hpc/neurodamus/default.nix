@@ -9,8 +9,11 @@
 , reportinglib
 , nrnEnv
 , coreNeuronMode ? false
+, saveStateBranch ? false
 }:
 
+assert coreNeuronMode -> (saveStateBranch == false);
+assert saveStateBranch -> (coreNeuronMode == false);
 
 let 
   isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
@@ -22,11 +25,18 @@ let
         sha256 = "17b1n4k1bbd1h23qmxg5livqxjxa089i976d57xk67aqdr5wx73z";
     };
 
+  src-neuron-savestate = fetchgitPrivate {
+        url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
+        rev = "f428f461e3a875f5d4110c470a4df95e4c8636a2";
+        sha256 = "27b1n4k1bbd1h23qmxg5livqxjxa089i976d57xk67aqdr5wx73z";
+  };
+
   src-coreneuron = fetchgitPrivate {
         url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
         rev = "d81f169f32aab8ba57fd87ea82597fbb614b9c16";
         sha256 = "0fvwd9kpkfp05w6kvsnj98p4c3hgv8w0ycn9wf4gn211yxb72nsb";
   };
+
 
 in 
 

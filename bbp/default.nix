@@ -338,6 +338,12 @@ let
             coreNeuronMode = true;
          };
 
+
+        neurodamus-savestate = neurodamus.override {
+            saveStateBranch = true;
+         };
+
+
         neuromapp = enableBGQ callPackage ./hpc/neuromapp {
             mpiRuntime = bbp-mpi;
         };
