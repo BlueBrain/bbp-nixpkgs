@@ -219,7 +219,7 @@ let
                             pkgs.mvdtool
                             pkgs.highfive
                             pkgs.bluebuilder
-                            pkgs.flatindexer
+                            # pkgs.flatindexer -> broken by viz changes
 
                             # cellular sim
                             pkgs.coreneuron
