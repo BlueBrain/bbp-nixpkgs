@@ -184,11 +184,11 @@ let
         };
 
         embree = callPackage ./viz/embree {
-
+		clangStdenv = llvmPackages_3_9.stdenv;
         };
 
         ospray = callPackage ./viz/ospray {
-
+		clangStdenv = llvmPackages_3_9.stdenv;
 
         };
 

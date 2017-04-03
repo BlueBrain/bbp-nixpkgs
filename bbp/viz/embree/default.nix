@@ -1,4 +1,4 @@
-{ stdenv
+{ clangStdenv
 , fetchFromGitHub
 , cmake
 , ispc
@@ -9,10 +9,15 @@
 , libXmu
 , libXi
 , imagemagick
+, config
 }:
 
-
-stdenv.mkDerivation rec {
+let 
+	# determine instruction set for ispc kernels
+	# TODO: skylake 
+	embree_instruction_set = "AVX512KNL";
+in
+clangStdenv.mkDerivation rec {
     name = "embree-${version}";
     version = "2.14.0";
 
@@ -28,6 +33,17 @@ stdenv.mkDerivation rec {
                     mesa libpng libXmu libXi imagemagick ];
 
 
+#    preConfigure = ''
+#	export NIX_CFLAGS_COMPILE="-mavx512f -mavx512pf -mavx512er -mavx512cd $NIX_CFLAGS_COMPILE"
+#    '';
+
+    cmakeFlags = [ "-DEMBREE_MAX_ISA=${embree_instruction_set}"];
+
+    buildFlags = [ "VERBOSE=1" ];
+
+    passthru = {
+	instruction_set = embree_instruction_set;
+    };
 
 }
 
