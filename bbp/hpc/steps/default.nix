@@ -1,4 +1,16 @@
-{ stdenv, fetchgitPrivate, cmake, blas, liblapack, python, swig, numpy, petsc, mpiRuntime, gtest }:
+{ stdenv
+, fetchgitPrivate
+, cmake
+, blas
+, liblapack
+, python
+, pythonPackages
+, libxslt
+, swig
+, numpy
+, petsc
+, mpiRuntime
+, gtest }:
 
 stdenv.mkDerivation rec {
   name = "steps-${version}";
@@ -6,7 +18,8 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ cmake swig ];
   
-  buildInputs = [ stdenv blas liblapack mpiRuntime petsc python numpy gtest ];
+  buildInputs = [ stdenv blas liblapack mpiRuntime petsc python numpy gtest pythonPackages.unittest2 pythonPackages.nose
+                pythonPackages.nose_xunitmp pythonPackages.nose_testconfig libxslt ];
 
   src = fetchgitPrivate {
     url = "ssh://git@github.com/BlueBrain/HBP_STEPS.git";
