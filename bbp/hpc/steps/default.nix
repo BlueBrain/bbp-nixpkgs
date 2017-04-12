@@ -8,6 +8,7 @@
 , libxslt
 , swig
 , numpy
+, cython
 , petsc
 , mpiRuntime
 , gtest }:
@@ -18,7 +19,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ cmake swig ];
   
-  buildInputs = [ stdenv blas liblapack mpiRuntime petsc python numpy gtest pythonPackages.unittest2 pythonPackages.nose
+  buildInputs = [ stdenv blas cython liblapack mpiRuntime petsc python numpy gtest pythonPackages.unittest2 pythonPackages.nose
                 pythonPackages.nose_xunitmp pythonPackages.nose_testconfig libxslt ];
 
   src = fetchgitPrivate {
