@@ -429,6 +429,7 @@ let
                             pkgs.xorg.xproto
                             pkgs.xorg.libXpm
                             pkgs.xorg.libX11
+							pkgs.xorg.libXext
                             pkgs.xorg.libXt
                             pkgs.xorg.libXft
                             pkgs.xorg.libXmu
