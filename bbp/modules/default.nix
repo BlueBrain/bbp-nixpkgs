@@ -1546,6 +1546,7 @@ let
             papi
             hpctoolkit
             dev-env-clang dev-env-icc
+			qt4 
             clang icc
             llvm
 
