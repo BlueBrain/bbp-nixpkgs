@@ -13,14 +13,19 @@
 , mpiRuntime
 , gtest }:
 
+let 
+	steps-python-env = python.buildEnv.override {
+		extraLibs = [ pythonPackages.unittest2 pythonPackages.numpy pythonPackages.nose
+                pythonPackages.nose_xunitmp pythonPackages.nose_testconfig libxslt  ];
+	};
+in
 stdenv.mkDerivation rec {
   name = "steps-${version}";
   version = "2.2.1";
 
   nativeBuildInputs = [ cmake swig ];
   
-  buildInputs = [ stdenv blas cython liblapack mpiRuntime petsc python numpy gtest pythonPackages.unittest2 pythonPackages.nose
-                pythonPackages.nose_xunitmp pythonPackages.nose_testconfig libxslt ];
+  buildInputs = [ stdenv blas cython liblapack mpiRuntime petsc steps-python-env gtest ];
 
   src = fetchgitPrivate {
     url = "ssh://git@github.com/BlueBrain/HBP_STEPS.git";
@@ -41,6 +46,11 @@ stdenv.mkDerivation rec {
 		export CC=mpicc
 		export CXX=mpicxx
   ''; 
+
+  passthru = {
+	python-env = steps-python-env;
+
+  };
 }
 
 
