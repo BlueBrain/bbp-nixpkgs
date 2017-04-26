@@ -369,12 +369,16 @@ let
 
         steps = enableBGQ-gcc47 callPackage ./hpc/steps {
             mpiRuntime = if(mergePkgs.isBlueGene) then bbp-mpi-gcc else bbp-mpi-rdma;
+
             stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
+
             numpy = if (mergePkgs.isBlueGene) then  mergePkgs.bgq-pythonPackages-gcc47.bg-numpy
                 else pythonPackages.numpy;
 
             liblapack = if (mergePkgs.isBlueGene) then null
-                  else liblapackWithoutAtlas;
+                  else openblasCompat;
+
+            blas = openblasCompat;
         };
 
         steps-mpi = steps; # enable mpi by default
