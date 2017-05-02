@@ -15,22 +15,24 @@
 
 let 
 	steps-python-env = python.buildEnv.override {
-		extraLibs = [ pythonPackages.unittest2 pythonPackages.numpy pythonPackages.nose
-                pythonPackages.nose_xunitmp pythonPackages.nose_testconfig libxslt  ];
+		extraLibs = [ 	pythonPackages.unittest2 pythonPackages.numpy pythonPackages.nose
+                		pythonPackages.nose_xunitmp pythonPackages.nose_testconfig
+						pythonPackages.pandas 
+						libxslt  ];
 	};
 in
 stdenv.mkDerivation rec {
   name = "steps-${version}";
-  version = "2.2.1";
+  version = "3.0-releasepreview";
 
   nativeBuildInputs = [ cmake swig ];
   
   buildInputs = [ stdenv blas cython liblapack mpiRuntime petsc steps-python-env gtest ];
 
   src = fetchgitPrivate {
-    url = "ssh://git@github.com/BlueBrain/HBP_STEPS.git";
-    rev = "85eb9104b985ddee8621f75c87ab5fd0c443b8bf";
-    sha256 = "16pszr7wcy1x6fhx9pdkwb2ailclm469vzq43dxd7khvsqydxi74";
+    url = "ssh://git@github.com/CNS-OIST/HBP_STEPS.git";
+    rev = "eaf2f5210e47aef0caae0d6038f6358aebff65c7";
+    sha256 = "0a431chsqklgkxsgd0glppgdkq41v1912sn7i2qwz9jrw0hbzbzr";
   };
   
 
