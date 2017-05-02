@@ -27,8 +27,8 @@ let
 
   src-neuron-savestate = fetchgitPrivate {
         url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
-        rev = "f428f461e3a875f5d4110c470a4df95e4c8636a2";
-        sha256 = "27b1n4k1bbd1h23qmxg5livqxjxa089i976d57xk67aqdr5wx73z";
+        rev = "63c204b7cb7020d1ffe7c02787717e6361f017f1";
+        sha256 = "030y8mrfp45prlp5gwbb2b3q7s5klddagxqg95c9gzr31gajf2s0";
   };
 
   src-coreneuron = fetchgitPrivate {
@@ -42,12 +42,14 @@ in
 
 stdenv.mkDerivation rec {
     name = "neurodamus${if coreNeuronMode then "-coreneuron" else ""}-${version}";
-    version = "1.9.0-201703";
+    version = "1.9.0-201704";
 
     buildInputs = [ stdenv which pkgconfig hdf5 ncurses zlib mpiRuntime reportinglib nrnEnv ];
 
 
-    src = if (coreNeuronMode) then src-coreneuron else src-neuron;
+    src = if (coreNeuronMode) then src-coreneuron
+		  else if (saveStateBranch) then src-neuron-savestate
+		  else src-neuron;
 
 
 

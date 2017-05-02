@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   name = "coreneuron-${version}";
-  version = "0.8.1-201703";
+  version = "0.8.1-201704";
 
   buildInputs = [ boost mpiRuntime mod2c ];
 
@@ -11,9 +11,9 @@ stdenv.mkDerivation rec {
   cmakeFlags= ["-DADDITIONAL_MECHPATH=${neurodamus.src}/lib/modlib/" "-DADDITIONAL_MECHS=${neurodamus.src}/lib/modlib/coreneuron_modlist.txt"];
 
   src = fetchgitPrivate {
-    url = "ssh://bbpcode.epfl.ch/sim/coreneuron";
-    rev =  "11a244dbd0b76c458e0ac95b11b3a7c6ae860f30";
-    sha256 = "06zfdmq1zd8l1cy6az3z4kxnvzi7zbf21mb61cjkbji5kmv3z210";
+    url = "ssh://git@github.com/BlueBrain/CoreNeuron.git";
+    rev =  "46ca23d052e87ead4067339c9fbbd01f9c943be7";
+    sha256 = "125n4vx31s271kh7xf5iya7cwfjr74wzrph8q6k1afp7rk1aa6b2";
   };
 
 }
