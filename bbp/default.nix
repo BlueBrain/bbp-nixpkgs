@@ -294,7 +294,6 @@ let
 
         learningengine = callPackage ./hpc/learningengine {
             mpi = bbp-mpi;
-            cuda = cudatoolkit7;
         };
 
         mod2c = callPackage ./hpc/mod2c {

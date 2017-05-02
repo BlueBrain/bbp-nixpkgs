@@ -1,15 +1,24 @@
-{ stdenv, fetchgitPrivate, boost, cmake, clang-analyzer, gsl, mpi, python, cuda, cython}:
+{ stdenv
+, fetchgitPrivate
+, boost
+, cmake
+, gsl
+, mpi
+, tbb
+, pkgconfig
+, python
+, cython}:
 
 stdenv.mkDerivation rec {
   name = "learningengine-${version}";
-  version = "0.1";
+  version = "1.0-201704";
 
-  buildInputs = [ stdenv boost cmake clang-analyzer gsl mpi python cuda cython];
+  buildInputs = [ stdenv boost cmake gsl mpi python cython tbb pkgconfig ];
 
   src = fetchgitPrivate{
-    url = "https://bbpcode.epfl.ch/code/hpc/learning_engine.git";
-    rev = "5a036f08053980309108da0eddc91856652f38b0";
-    sha256 = "0ycnfy4gjg5blmyj1zh8ymw76kdica7pq5l2dlvrrgb73lhkkrp3";
+    url = "ssh://bbpcode.epfl.ch/hpc/learning_engine.git";
+    rev = "fea49f4b5f817275b9a56785e641a2f13e89a088";
+    sha256 = "1yxbms76n9gzz9y45zmjykkdv9z64mpj0gf4h2hl7klymvwz5g3s";
   };
 
   enableParallelBuilding = true;
