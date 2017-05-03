@@ -67,7 +67,7 @@ stdenv.mkDerivation rec {
 
     versionMajor = "7";
     versionMinor = "5";
-    versionDate= "201703";
+    versionDate= "201704";
 
     version = "${versionMajor}.${versionMinor}-${versionDate}";
 
