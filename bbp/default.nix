@@ -374,10 +374,11 @@ let
             numpy = if (mergePkgs.isBlueGene) then  mergePkgs.bgq-pythonPackages-gcc47.bg-numpy
                 else pythonPackages.numpy;
 
-            liblapack = if (mergePkgs.isBlueGene) then null
+            liblapack = if (mergePkgs.isBlueGene) then bgq-openblas
                   else openblasCompat;
 
-            blas = openblasCompat;
+            blas =  if (mergePkgs.isBlueGene) then bgq-openblas
+                  else openblasCompat;
         };
 
         steps-mpi = steps; # enable mpi by default
