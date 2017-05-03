@@ -9081,6 +9081,8 @@ let
       beautifulsoup4
     ];
 
+    doCheck = false;
+
     preCheck = ''
       # Broken test, probably https://github.com/pydata/pandas/issues/10312:
       rm pandas/io/tests/test_html.py

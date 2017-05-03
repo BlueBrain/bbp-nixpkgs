@@ -23,7 +23,7 @@ let
 in
 stdenv.mkDerivation rec {
   name = "steps-${version}";
-  version = "3.0-releasepreview";
+  version = "3.1-releasepreview";
 
   nativeBuildInputs = [ cmake swig ];
   
@@ -31,22 +31,22 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://git@github.com/CNS-OIST/HBP_STEPS.git";
-    rev = "eaf2f5210e47aef0caae0d6038f6358aebff65c7";
-    sha256 = "0a431chsqklgkxsgd0glppgdkq41v1912sn7i2qwz9jrw0hbzbzr";
+    rev = "5d8f5f86fb0f27cf5fb2ca4da5f5ff15e53bfa27";
+    sha256 = "1gv6drcpwya4qhiryxx7bf2gvm0k9lp57kgg35ihq931fzrk5isj";
   };
   
 
   enableParallelBuilding = true;
 
-  CXXFLAGS="-pthread ";
   
-  cmakeFlags = [ "-DGTEST_USE_EXTERNAL=TRUE" "-DPETSC_EXECUTABLE_RUNS=TRUE" 
+  cmakeFlags = [ "-DPETSC_EXECUTABLE_RUNS=TRUE" 
 		 "-DCMAKE_CXX_COMPILER=mpic++" "-DCMAKE_C_COMPILER=mpicc" ];
  
   preConfigure = ''
 		# 42 dude !
 		export CC=mpicc
 		export CXX=mpicxx
+        export CXXFLAGS="-pthread -D__STDC_CONSTANT_MACROS"
   ''; 
 
   passthru = {
