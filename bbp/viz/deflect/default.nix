@@ -13,16 +13,14 @@
 
 stdenv.mkDerivation rec {
   name = "deflect-${version}";
-  version = "0.11.1-2016.10";
+  version = "0.12.1-2017.04";
 
-  buildInputs = [ stdenv boost freeglut mesa libjpeg_turbo libXi libXmu qt servus ];
-  nativeBuildInputs = [ cmake ];
-
+  buildInputs = [ stdenv cmake boost freeglut mesa libjpeg_turbo libXi libXmu qt servus ];
 
   src = fetchgitExternal {
     url = "https://github.com/rdumusc/Deflect";
-    rev = "ac9f9439e04c07f849dba88e24d18311614f6e8e";
-    sha256 = "152kyw4jid5h1lhrf2cxbcld41ir0zjd5pj1yw2pk8fy5i4mvnsq";
+    rev = "bc258e8f6711b520f837ab525f895c292313cb2f";
+    sha256 = "06f5bn39bpkvnf2g9zfd7c7s000s0cql87y1v3q7cjx99hmk2agm";
   };
   
   enableParallelBuilding = true;
