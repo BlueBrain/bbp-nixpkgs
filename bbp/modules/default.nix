@@ -1896,7 +1896,7 @@ with generic-modules; rec {
 
 
       bgq-dev-env-pkgs-xlc = [
-        bgq-hdf5 bgq-libxml2 boost bgq-zlib bgq-mpi-xlc bgq-cmake 
+        bgq-hdf5 bgq-libxml2 bgq-boost bgq-zlib bgq-mpi-xlc bgq-cmake 
 
       ];
 
