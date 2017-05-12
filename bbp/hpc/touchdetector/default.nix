@@ -18,7 +18,7 @@
 
 stdenv.mkDerivation rec {
   name = "touchdetector-${version}";
-  version = "4.3.0";
+  version = "4.3.0-2017.05";
 
   nativeBuildInputs = [pkgconfig cmake ]
         ++ stdenv.lib.optional (generateDoc == true) [ asciidoc xmlto docbook_xsl libxslt ];
@@ -29,8 +29,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/building/TouchDetector";
-    rev = "80ed9fac1de0c566c9c599bb08fbf9dc7ef66202";
-    sha256 = "0b6dl4vhi90jh36qlyahl3s89v0fby5mm2imilv91dsz0jc6xm8r";
+    rev = "d3e0989d738c74fe13b103f3a1994c4b5b9b93c6";
+    sha256 = "00bb4dwxmkpm9z4qbd8aaab9fj5m8nvsdjkhs2504kg03ivhv38l";
   };
 
   cmakeFlags =  [ "-DLIB_SUFFIX=" ] ++ stdenv.lib.optional (generateDoc == true) [ "-DTOUCHDETECTOR_DOCUMENTATION=TRUE" ]; 
