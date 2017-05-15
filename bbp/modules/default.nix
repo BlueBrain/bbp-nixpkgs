@@ -438,6 +438,7 @@ let
                             pkgs.glxinfo
                             pkgs.freeglut
                             pkgs.glew
+                            pkgs.cairo
                        ];
 
             conflicts = conflicts-modules;
