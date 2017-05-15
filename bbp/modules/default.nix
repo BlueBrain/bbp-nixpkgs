@@ -1255,6 +1255,20 @@ let
 
         };
 
+        gmp = pkgs.envModuleGen rec {
+            name = "gmp";
+            isLibrary = true;
+            version = "5.1.3";
+            setRoot = "GMP";
+            description = "libgmp module";
+            packages = [
+                            pkgs.gmp
+
+                        ];
+            conflicts = conflicts-modules;
+
+        };
+
 
         gcc52 = pkgs.envModuleGen rec {
             name = "gcc";
@@ -1375,6 +1389,7 @@ let
                             gldev
                             freetype
                             tbb
+                            gmp
 
         ];
 
@@ -1446,7 +1461,7 @@ let
         [
             boost  hdf5 libxml2 zlib phdf5 hdf5-cpp assimp libjpeg-turbo
             openblas openblas64ABI openssl petsc folly scorec
-            bison flex swig gcc gsl freetype
+            bison flex swig gcc gsl freetype gmp
 
 
             cmake vtk itk readline ncurses
