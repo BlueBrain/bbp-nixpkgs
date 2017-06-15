@@ -61,7 +61,7 @@ let
         };
 
 
-		scorec = callPackage ./scorec {
+	scorec = callPackage ./scorec {
             mpi = mvapich2-rdma;
             parmetis  = parmetis;
         };
@@ -70,20 +70,20 @@ let
             mpi = mvapich2;
         };
 
-        
-   		icc-native = callPackage ./icc-native {
 
-		};
+	icc-native = callPackage ./icc-native {
 
-		WrappedICC = if (icc-native != null) then (import ./cc-wrapper  {
-				inherit stdenv binutils coreutils ;
-				libc = glibc;
-				nativeTools = false;
-				nativeLibc = false;
-				cc = icc-native;
-		}) else null;
+	};
 
-		stdenvICC = overrideCC stdenv WrappedICC;
+	WrappedICC = if (icc-native != null) then (import ./cc-wrapper  {
+			inherit stdenv binutils coreutils ;
+			libc = glibc;
+			nativeTools = false;
+			nativeLibc = false;
+			cc = icc-native;
+	}) else null;
+
+	stdenvICC = overrideCC stdenv WrappedICC;
 
         ## new virtualGL verison for viz team
         virtualgl = std-pkgs.virtualgl.overrideDerivation ( oldAttr: rec {
@@ -104,20 +104,20 @@ let
 
         });
 
-		# llvm 4 backport 
-		llvmPackages_4 = callPackage ./llvm/4 {
-			  newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
-			  inherit ccWrapperFun;
-  			  inherit (stdenvAdapters) overrideCC;
-		};
+	# llvm 4 backport 
+	llvmPackages_4 = callPackage ./llvm/4 {
+		  newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
+		  inherit ccWrapperFun;
+		  inherit (stdenvAdapters) overrideCC;
+	};
 
 
-		# llvm 4 backport 
-		llvmPackages_3_9 = callPackage ./llvm/3.9 {
-			  newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
-			  inherit ccWrapperFun;
-  			  inherit (stdenvAdapters) overrideCC;
-		};
+	# llvm 4 backport 
+	llvmPackages_3_9 = callPackage ./llvm/3.9 {
+		  newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
+		  inherit ccWrapperFun;
+		  inherit (stdenvAdapters) overrideCC;
+	};
 
         # ispc compiler for brayns
         ispc = callPackage ./ispc {
@@ -200,29 +200,29 @@ let
 
 
 
-		ibverbs-upstream = callPackage ./ibverbs {
+	ibverbs-upstream = callPackage ./ibverbs {
 
-		};
+	};
 
-		rdmacm-upstream = callPackage ./rdmacm {
-			libibverbs = ibverbs-upstream;
-        };
+	rdmacm-upstream = callPackage ./rdmacm {
+		libibverbs = ibverbs-upstream;
+	};
 
 
-		numactl = std-pkgs.numactl.overrideDerivation (oldAttr: rec {
+	numactl = std-pkgs.numactl.overrideDerivation (oldAttr: rec {
 
-			postInstall = ''
-						## strip libtool bullshit files 
-						rm -f $out/lib/*.la
-			'';
+		postInstall = ''
+					## strip libtool bullshit files 
+					rm -f $out/lib/*.la
+		'';
 
-		});
+	});
 
-		## mpich2 implementation
-		#
-		mpich2 = callPackage ./mpich{
+	## mpich2 implementation
+	#
+	mpich2 = callPackage ./mpich{
 
-		};
+	};
 
         ## 
         # mvapich2 mpi implementation
