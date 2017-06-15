@@ -9,11 +9,11 @@
 , reportinglib
 , nrnEnv
 , coreNeuronMode ? false
-, saveStateBranch ? false
+, branchName ? "default"
 }:
 
-assert coreNeuronMode -> (saveStateBranch == false);
-assert saveStateBranch -> (coreNeuronMode == false);
+assert coreNeuronMode -> (branchName == "default");
+assert ( branchName != "default" ) -> (coreNeuronMode == false);
 
 let 
   isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
@@ -30,6 +30,14 @@ let
         rev = "63c204b7cb7020d1ffe7c02787717e6361f017f1";
         sha256 = "030y8mrfp45prlp5gwbb2b3q7s5klddagxqg95c9gzr31gajf2s0";
   };
+
+  src-neuron-hippocampus = fetchgitPrivate {
+        url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
+        rev = "90b3f4211d559b8719e51f738153b22058d81c1e";
+        sha256 = "1n89i13axvrq91iplif1vmi43bpfx3v09v45yb32yl3k27nf3xdx";
+  };
+
+
 
   src-coreneuron = fetchgitPrivate {
         url = "ssh://bbpcode.epfl.ch/sim/neurodamus/bbp";
@@ -48,8 +56,10 @@ stdenv.mkDerivation rec {
 
 
     src = if (coreNeuronMode) then src-coreneuron
-		  else if (saveStateBranch) then src-neuron-savestate
-		  else src-neuron;
+		  else if ( branchName == "savestate" ) then src-neuron-savestate
+          else if ( branchName == "hippocampus" ) then src-neuron-hippocampus
+		  else if ( branchName == "default" ) then src-neuron
+          else throw ( "neurodamus : not a valid branchName name " + branchName ) ;
 
 
 

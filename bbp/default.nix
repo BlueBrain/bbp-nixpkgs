@@ -339,7 +339,11 @@ let
 
 
         neurodamus-savestate = neurodamus.override {
-            saveStateBranch = true;
+            branchName = "savestate";
+         };
+
+        neurodamus-hippocampus = neurodamus.override {
+            branchName = "hippocampus";
          };
 
 
