@@ -5,7 +5,8 @@ let
 			// (import ./intel_config.nix) 
 			// (import ./cray_config.nix) 
 			// (import ./allinea_config.nix)
-			// (import ./shared_config.nix);
+			// (import ./shared_config.nix)
+			// (import ./slurm_config.nix);
 
   packages_override = (import ./apply_override.nix { config = all_config_mods;} );
 in
