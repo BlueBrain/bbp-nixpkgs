@@ -1,5 +1,5 @@
 { stdenv, 
-fetchgitExternal, 
+fetchgit, 
 boost, 
 cmake, 
 bison,
@@ -18,14 +18,14 @@ qt
 
 stdenv.mkDerivation rec {
   name = "equalizer-${version}";
-  version = "1.13.0";
+  version = "2.1.0";
 
   buildInputs = [ stdenv pkgconfig boost bison flex hwloc x11 cmake lunchbox pression collage opengl hwsd vmmlib qt ];
 
-  src = fetchgitExternal {
+  src = fetchgit {
     url = "https://github.com/Eyescale/Equalizer.git";
-    rev = "7fbb0449aed2988c3806bc2b5d75070680ee7dbe";
-    sha256 = "0d1han5l8a6sw9imk2s83khrrl6lawsl27sh6cbijkgagjafix8h";
+    rev = "a3affbd";
+    sha256 = "0hn8p3mng9d9m8ba5qcq8b97lhr1l0f2xh0pdpkm3g4k4saaf370";
   };
 
 

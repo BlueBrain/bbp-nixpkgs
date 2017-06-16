@@ -1,4 +1,4 @@
-{ stdenv, fetchgitExternal, cmake, servus, pkgconfig, python, pythonPackages, boost }:
+{ stdenv, fetchgit, cmake, servus, pkgconfig, python, pythonPackages, boost }:
 
 
 let 
@@ -11,15 +11,15 @@ let
 in
 stdenv.mkDerivation rec {
   name = "zerobuf-${version}";
-  version = "0.4-2017.02";
+  version = "0.5-2017.06";
 
   buildInputs = [ stdenv pkgconfig servus cmake python-env boost ];
 
 
-  src = fetchgitExternal{
+  src = fetchgit {
     url = "https://github.com/HBPVIS/ZeroBuf.git";
-    rev = "136330e10c1b1e3b8a8eae4843fbc95c7e00d498";
-    sha256 = "0viy281k483nllvfp9q925xqr0c5ii8w8l9h3fpz62vhjr2j0yq2";
+    rev = "85e8d86";
+    sha256 = "1w95584smfgg926yklgjrpm3xlc7fblj910a0ddszqj94vb366k3";
   };
   
   enableParallelBuilding = false;

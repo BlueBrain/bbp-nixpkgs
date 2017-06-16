@@ -1,5 +1,5 @@
 { stdenv, 
-fetchgitExternal, 
+fetchgit, 
 boost, 
 cmake, 
 pkgconfig, 
@@ -9,14 +9,14 @@ pression
 
 stdenv.mkDerivation rec {
   name = "collage-${version}";
-  version = "1.6";
+  version = "1.7";
 
   buildInputs = [ stdenv pkgconfig boost cmake lunchbox pression ];
 
-  src = fetchgitExternal {
+  src = fetchgit {
     url = "https://github.com/Eyescale/Collage.git";
-    rev = "206860e068a90acd1cd9942f984a35831b987919";
-    sha256 = "18nf47hlz8j59qyr3ph52pg6c4r11ibfhhp8xf92n3phlfv77hsr";
+    rev = "f320324";
+    sha256 = "19i6rx0i893vrkaxjczk2s0zarx09saz6qpjvx1b2hfimp8nn8jb";
   };
 
 

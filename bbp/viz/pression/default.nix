@@ -1,5 +1,5 @@
 { stdenv, 
-fetchgitExternal, 
+fetchgit, 
 boost, 
 cmake, 
 pkgconfig, 
@@ -7,15 +7,15 @@ lunchbox
  }:
 
 stdenv.mkDerivation rec {
-  name = "collage-${version}";
-  version = "1.8";
+  name = "pression-${version}";
+  version = "2.0.0";
 
   buildInputs = [ stdenv pkgconfig boost cmake lunchbox];
 
-  src = fetchgitExternal {
+  src = fetchgit {
     url = "https://github.com/Eyescale/Pression.git";
-    rev = "ae3dded3da8b5aded1f6193d3da08acaf210f944";
-    sha256 = "0sa23q4cwgnq4zv5zbaxfp13z99568ypzp37xwbdjcw1jgm3x03w";
+    rev = "08cd4bf";
+    sha256 = "1yskpxkzvcv8vxdklg83qhdbwkxdvighcxidx1940aq0p2iwgz61";
   };
 
 
