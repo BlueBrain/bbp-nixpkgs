@@ -1,5 +1,5 @@
 { stdenv
-, fetchgitExternal 
+, fetchgitPrivate
 , boost 
 , pkgconfig 
 , cmake 
@@ -29,16 +29,16 @@ let
 in
 stdenv.mkDerivation rec {
   name = "rtneuron-${version}";
-  version = "2.12.0-201705";
+  version = "2.12.0-201706";
 
   buildInputs = [ stdenv pkgconfig boost cmake openscenegraph 
 				  lunchbox brion bbpsdk collage osgtransparency
 				  equalizer pythonEnv-rtneuron qt ]  ;
 
-  src = fetchgitExternal{
+  src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/viz/RTNeuron";
-    rev = "50fec448ef9aa4d24a54c188c0931affdf63b2b4";
-    sha256 = "03zvlxqr7b79fz1224vi0nc2iqhnrrfy1zfsa5lnwa0msx0brnky";
+    rev = "eb11426548ff3a423c15309c948e76053d8908b4";
+    sha256 = "0aa5iqhpihq4xmnj1bc4n9q87v792s29gy1vmd04qna2nz0b07fj";
   };
 
 
