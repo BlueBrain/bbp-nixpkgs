@@ -285,6 +285,11 @@ let
             outputs = [ "out" "doc" ];
         });
 
+        # cmake 3.8.2
+        cmake38 = callPackage ./cmake {
+            ps = if stdenv.isDarwin then darwin.adv_cmds else null;
+        };
+
         ##
         #
         folly = callPackage ./folly {
