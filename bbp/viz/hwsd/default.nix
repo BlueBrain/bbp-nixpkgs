@@ -1,5 +1,5 @@
 { stdenv, 
-fetchgitExternal, 
+fetchgit, 
 boost, 
 cmake, 
 pkgconfig, 
@@ -10,14 +10,14 @@ x11
 
 stdenv.mkDerivation rec {
   name = "hwsd-${version}";
-  version = "1.4.0";
+  version = "2.0.1";
 
   buildInputs = [ stdenv pkgconfig boost cmake lunchbox opengl x11 ];
 
-  src = fetchgitExternal {
+  src = fetchgit {
     url = "https://github.com/Eyescale/hwsd.git";
-    rev = "03b11b572a291f641adb6e5e8fa980121933b387";
-    sha256 = "029b70r0py193abp741xk17k7dq1j8br3qs83vwcw7c8dmq0nrwj";
+    rev = "03b6581";
+    sha256 = "0r421a4bl4ib529xqj2xvsa91c3zjy857plfv02akwz13ihsrfv0";
   };
 
 

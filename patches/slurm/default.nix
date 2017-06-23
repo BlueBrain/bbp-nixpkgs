@@ -27,7 +27,7 @@ let
 				     ''
 				     + copyPlugins (builtins.tail list_plugins)
                                ;
- default-slurm-version = "16.05.9";
+ default-slurm-version = "17.02.3";
 
  # pickup slurm version configure in config.nix
 
@@ -37,8 +37,10 @@ let
 		"1plxy8hsdk8xc2n1sih2q0avyjzqz5y36iwf43aqf0iv6r2c7ajq"
 	   else if(slurm-version == "15.04.12" ) then 
  		"1jf3gazr4pv27hf8p52rli0n3yppxcypw60632wrc6glgb0qadyp"
-       else
-        "0x6mysq0kiva29mx52913wxq6agspnfkyx1llsh1rybap258pjig";
+	   else if (slurm-version == "16.05.9" ) then
+		"0x6mysq0kiva29mx52913wxq6agspnfkyx1llsh1rybap258pjig"
+	   else # 17 -> most recent version 
+		"1311n10ndhhdd5l9lblj2dfl8wldib3axdwisz3sxxn6df1fpj38";
 	   
 
 

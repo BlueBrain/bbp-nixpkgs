@@ -1,5 +1,5 @@
 { stdenv
-, fetchgitExternal
+, fetchgitPrivate
 , boost
 , lunchbox
 , brion
@@ -14,13 +14,13 @@
 
 stdenv.mkDerivation rec {
   name = "bbpsdk-${version}";
-  version = "0.26-2017.02";
+  version = "0.26-2017.06";
   buildInputs = [ stdenv pkgconfig boost brion vmmlib servus mvdtool cmake lunchbox python hdf5 doxygen];
 
-  src = fetchgitExternal {
+  src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/common/BBPSDK";
-    rev= "d29ddfc872896d94da992f09ae90a7e422f95cda";
-    sha256 = "0v4qrkk2dz2byxvbdp2dyi3jsqs0j99q39vydb3890q95z61jqvx";
+    rev= "f78b366";
+    sha256 = "0lx5xgv0q18ib0zj84px0cfs582b0wivai69rdpww53krvbhmicb";
   };
 
 

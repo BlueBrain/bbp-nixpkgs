@@ -1,6 +1,6 @@
 { stdenv
 , boost
-, fetchgitExternal
+, fetchgit
 , cmake
 , zeroeq
 , zerobuf 
@@ -9,21 +9,21 @@
 
 stdenv.mkDerivation rec {
   name = "lexis-${version}";
-  version = "1.1.0-2017.02";
+  version = "1.2.0-2017.06";
 
   buildInputs = [ stdenv boost zeroeq zerobuf vmmlib ];
   nativeBuildInputs = [ cmake zerobuf.python ];
 
 
-  src = fetchgitExternal {
+  src = fetchgit {
     url = "https://github.com/HBPVIS/Lexis.git";
-    rev = "0059c513e01ec9581b56f892a00ec4216c4ad5d2";
-    sha256 = "1cc5bdcgkr01nzr7yyncp35gck4zgj74mn0fbinfxz0yisgaazl4";
+    rev = "a4e458a";
+    sha256 = "15z390z3pip43bhd2a0wmqcnzlqqhw857ghrxaf5i49xzhyy4qam";
   };
   
   enableParallelBuilding = true;
 
-  propagatedBuildInputs = [ zeroeq zerobuf  ];
+  propagatedBuildInputs = [ vmmlib zerobuf ];
   
 }
 

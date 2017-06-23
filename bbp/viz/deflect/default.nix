@@ -1,5 +1,5 @@
 { stdenv
-, fetchgitExternal
+, fetchgit
 , cmake
 , boost
 , freeglut
@@ -8,19 +8,18 @@
 , mesa
 , libjpeg_turbo
 , qt
-, servus
 }:
 
 stdenv.mkDerivation rec {
   name = "deflect-${version}";
-  version = "0.12.1-2017.04";
+  version = "0.13.0-2017.06";
 
-  buildInputs = [ stdenv cmake boost freeglut mesa libjpeg_turbo libXi libXmu qt servus ];
+  buildInputs = [ stdenv cmake boost freeglut mesa libjpeg_turbo libXi libXmu qt ];
 
-  src = fetchgitExternal {
-    url = "https://github.com/rdumusc/Deflect";
-    rev = "bc258e8f6711b520f837ab525f895c292313cb2f";
-    sha256 = "06f5bn39bpkvnf2g9zfd7c7s000s0cql87y1v3q7cjx99hmk2agm";
+  src = fetchgit {
+    url = "https://github.com/BlueBrain/Deflect";
+    rev = "5875621";
+    sha256 = "13krgg3ggywbmhxkcvgm87ydwwwfq0dgjhjfbsnlvl83ihcrjxbd";
   };
   
   enableParallelBuilding = true;
