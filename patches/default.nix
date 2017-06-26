@@ -19,7 +19,7 @@ let
             });
         };
 
-		ccWrapperFun = callPackage ../std-nixpkgs/pkgs/build-support/cc-wrapper;
+        ccWrapperFun = callPackage ../std-nixpkgs/pkgs/build-support/cc-wrapper;
 
         ##open scene graph, for viz software
         openscenegraph = callPackage ./openscenegraph {
@@ -44,7 +44,7 @@ let
         });
 
         blender = callPackage ./blender {
-			stdpkgs = std-pkgs;
+            stdpkgs = std-pkgs;
         };
 
         blender-python = blender.override {
@@ -56,12 +56,12 @@ let
             mpi = mvapich2;
         };
 
-		osu-mpi-bench = callPackage ./osu-mpi-bench {
+        osu-mpi-bench = callPackage ./osu-mpi-bench {
             mpi = mvapich2;
         };
 
 
-	scorec = callPackage ./scorec {
+        scorec = callPackage ./scorec {
             mpi = mvapich2-rdma;
             parmetis  = parmetis;
         };
@@ -71,19 +71,19 @@ let
         };
 
 
-	icc-native = callPackage ./icc-native {
+        icc-native = callPackage ./icc-native {
 
-	};
+        };
 
-	WrappedICC = if (icc-native != null) then (import ./cc-wrapper  {
-			inherit stdenv binutils coreutils ;
-			libc = glibc;
-			nativeTools = false;
-			nativeLibc = false;
-			cc = icc-native;
-	}) else null;
+        WrappedICC = if (icc-native != null) then (import ./cc-wrapper  {
+            inherit stdenv binutils coreutils ;
+            libc = glibc;
+            nativeTools = false;
+            nativeLibc = false;
+            cc = icc-native;
+        }) else null;
 
-	stdenvICC = overrideCC stdenv WrappedICC;
+        stdenvICC = overrideCC stdenv WrappedICC;
 
         ## new virtualGL verison for viz team
         virtualgl = std-pkgs.virtualgl.overrideDerivation ( oldAttr: rec {
@@ -104,26 +104,26 @@ let
 
         });
 
-	# llvm 4 backport
-	llvmPackages_4 = callPackage ./llvm/4 {
-		  newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
-		  inherit ccWrapperFun;
-		  inherit (stdenvAdapters) overrideCC;
-	};
+        # llvm 4 backport
+        llvmPackages_4 = callPackage ./llvm/4 {
+              newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
+              inherit ccWrapperFun;
+              inherit (stdenvAdapters) overrideCC;
+        };
 
 
-	# llvm 4 backport
-	llvmPackages_3_9 = callPackage ./llvm/3.9 {
-		  newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
-		  inherit ccWrapperFun;
-		  inherit (stdenvAdapters) overrideCC;
-	};
+        # llvm 4 backport
+        llvmPackages_3_9 = callPackage ./llvm/3.9 {
+              newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
+              inherit ccWrapperFun;
+              inherit (stdenvAdapters) overrideCC;
+        };
 
         # ispc compiler for brayns
         ispc = callPackage ./ispc {
             # require clang compiler
             clangStdenv = llvmPackages_3_9.stdenv;
-			llvm = llvmPackages_3_9.llvm;
+            llvm = llvmPackages_3_9.llvm;
             clangUnwrapped = llvmPackages_3_9.clang-unwrapped;
         };
 
@@ -155,10 +155,10 @@ let
         });
 
 
-		phdf5 = std-pkgs.hdf5.override {
-			mpi = openmpi;
+        phdf5 = std-pkgs.hdf5.override {
+            mpi = openmpi;
 
-		};
+        };
 
 
         blis = callPackage ./blis {
@@ -200,35 +200,35 @@ let
 
 
 
-	ibverbs-upstream = callPackage ./ibverbs {
+        ibverbs-upstream = callPackage ./ibverbs {
 
-	};
+        };
 
-	rdmacm-upstream = callPackage ./rdmacm {
-		libibverbs = ibverbs-upstream;
-	};
+        rdmacm-upstream = callPackage ./rdmacm {
+            libibverbs = ibverbs-upstream;
+        };
 
 
-	numactl = std-pkgs.numactl.overrideDerivation (oldAttr: rec {
+        numactl = std-pkgs.numactl.overrideDerivation (oldAttr: rec {
 
-		postInstall = ''
-					## strip libtool bullshit files
-					rm -f $out/lib/*.la
-		'';
+            postInstall = ''
+                        ## strip libtool bullshit files
+                        rm -f $out/lib/*.la
+            '';
 
-	});
+        });
 
-	## mpich2 implementation
-	#
-	mpich2 = callPackage ./mpich{
+        ## mpich2 implementation
+        #
+        mpich2 = callPackage ./mpich{
 
-	};
+        };
 
         ##
         # mvapich2 mpi implementation
         #
         mvapich2 = callPackage ./mvapich2 {
-			stdenv = enableDebugInfo stdenv;
+            stdenv = enableDebugInfo stdenv;
             # libibverbs needs a recompilation and a sync
             # on viz cluster lx/viz1 due to InfiniBand OFed ABI maddness
             libibverbs = null;
@@ -255,8 +255,8 @@ let
              sha256 = "18nn9lcwd6g44rl3y6b5n25d1k4l2ksh1xjzw84r639q2hd6ki45";
            };
 
-	 })).override {
-			stdenv = enableDebugInfo stdenv;
+        })).override {
+            stdenv = enableDebugInfo stdenv;
             librdmacm = ibverbs-upstream;
             libibverbs = rdmacm-upstream;
             extraConfigureFlags = [ ];
@@ -356,9 +356,9 @@ let
     };
 
     additionalPythonPackages = MergePkgs.callPackage ./additionalPythonPackages ({
-		pkgs = MergePkgs;
-		pythonPackages = MergePkgs.pythonPackages;
-	});
+        pkgs = MergePkgs;
+        pythonPackages = MergePkgs.pythonPackages;
+    });
 
 in
   MergePkgs // { pythonPackages = MergePkgs.pythonPackages // (additionalPythonPackages); }
