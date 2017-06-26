@@ -58,7 +58,9 @@ let
             mpi = bbp-mpi;
         };
 
-
+        adios = pkgs.adios.override {
+            mpi = bbp-mpi;
+        };
 
         ## override component that need bbp-mpi
         petsc = pkgs.petsc.override {
