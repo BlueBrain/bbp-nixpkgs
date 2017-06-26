@@ -160,6 +160,11 @@ let
 
         };
 
+        adios = callPackage ./adios {
+            hdf5 = hdf5;
+            mpi = openmpi;
+        };
+
 
         blis = callPackage ./blis {
 
