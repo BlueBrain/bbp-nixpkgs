@@ -67,7 +67,7 @@ stdenv.mkDerivation rec {
 
     versionMajor = "7";
     versionMinor = "5";
-    versionDate= "201704";
+    versionDate= "201706";
 
     version = "${versionMajor}.${versionMinor}-${versionDate}";
 
@@ -79,8 +79,8 @@ stdenv.mkDerivation rec {
     src = fetchFromGitHub {
 		owner = "nrnhines";
 		repo = "nrn";
-        rev = "b044489afd45bfba6fb82a2a7d51afb3a09369df";
-        sha256 = "03m54irndjzyhr50g142hs3qidgg6rn56gp6i819qlz27yh4cvfb"; 
+        rev = "720143f0cbb7409e4b18abd85284db1f6f8fbd95";
+        sha256 = "1y47d7d76jr0rah2br9wccbssa327vlhzcsc6djx72fjnw9dqv15"; 
     };
 
 

@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   name = "reportinglib-${version}";
-  version = "2.4.2-2017.04";
+  version = "2.4.2-2017.06";
 
 
   buildInputs = [ stdenv cmake boost pkgconfig  mpiRuntime];
@@ -10,8 +10,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/sim/reportinglib/bbp";
-    rev = "69c0739f21e0c6cf218e4179db243bde8f7ad55a";
-    sha256 = "18slska48i2bf2vc2iclm54qd0cabjd49fhz0s8q0b9sklpbvdq8";
+    rev = "b421d92a22cd2bd92e66768f9fb2691ca62d722d";
+    sha256 = "07f7067h6iialbv6la01i6civhfdv1md9bn7lfdd7hkmszbd9psw";
   };
   
   
