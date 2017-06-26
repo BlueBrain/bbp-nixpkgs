@@ -6,7 +6,7 @@
 
 let
     MergePkgs = with MergePkgs;  std-pkgs // patches;
-    patches = 
+    patches =
     with patches; with MergePkgs; rec {
 
         ##utility for debug info
@@ -26,7 +26,7 @@ let
 
         };
 
-        ##httpxx, http protocol parser for C++ 
+        ##httpxx, http protocol parser for C++
         httpxx = callPackage ./httpxx {
 
         };
@@ -50,8 +50,8 @@ let
         blender-python = blender.override {
             pythonModule = true;
             opencollada = opencollada-shared;
-        }; 
-        
+        };
+
         intel-mpi-bench = callPackage ./intel-mpi-bench {
             mpi = mvapich2;
         };
@@ -104,7 +104,7 @@ let
 
         });
 
-	# llvm 4 backport 
+	# llvm 4 backport
 	llvmPackages_4 = callPackage ./llvm/4 {
 		  newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
 		  inherit ccWrapperFun;
@@ -112,7 +112,7 @@ let
 	};
 
 
-	# llvm 4 backport 
+	# llvm 4 backport
 	llvmPackages_3_9 = callPackage ./llvm/3.9 {
 		  newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
 		  inherit ccWrapperFun;
@@ -129,7 +129,7 @@ let
 
         ## nvidia openGL implementation
         # required on viz cluster with nvidia hardware
-        # where the native library are not usable ( too old ) 
+        # where the native library are not usable ( too old )
         nvidia-x11-34032 = callPackage ./nvidia-driver/legacy340-32-kernel26.nix {
             libsOnly = true;
             kernel = null;
@@ -141,8 +141,8 @@ let
         };
 
 
-        ## patch version of HDF5 with 
-        # cpp bindigns enabled        
+        ## patch version of HDF5 with
+        # cpp bindigns enabled
         hdf5-cpp = callPackage ./hdf5 {
             szip = null;
             mpi = null;
@@ -152,7 +152,7 @@ let
         ## enforce thread safety
         hdf5 =  std-pkgs.hdf5.overrideDerivation  ( oldAttrs:{
             configureFlags = oldAttrs.configureFlags + " --enable-threadsafe ";
-        });        
+        });
 
 
 		phdf5 = std-pkgs.hdf5.override {
@@ -188,7 +188,7 @@ let
         ## slurm auks plugin
         #
         auks = callPackage ./auks {
-            slurm-llnl= slurm-llnl-minimal; 
+            slurm-llnl= slurm-llnl-minimal;
             nss-plugins = libnss-native-plugins;
         };
 
@@ -212,7 +212,7 @@ let
 	numactl = std-pkgs.numactl.overrideDerivation (oldAttr: rec {
 
 		postInstall = ''
-					## strip libtool bullshit files 
+					## strip libtool bullshit files
 					rm -f $out/lib/*.la
 		'';
 
@@ -224,13 +224,13 @@ let
 
 	};
 
-        ## 
+        ##
         # mvapich2 mpi implementation
         #
         mvapich2 = callPackage ./mvapich2 {
 			stdenv = enableDebugInfo stdenv;
             # libibverbs needs a recompilation and a sync
-            # on viz cluster lx/viz1 due to InfiniBand OFed ABI maddness 
+            # on viz cluster lx/viz1 due to InfiniBand OFed ABI maddness
             libibverbs = null;
             librdmacm =  null;
             slurm-llnl = slurm-llnl-full;
@@ -246,10 +246,10 @@ let
 
         ## MVAPICH 2 support with RDMA / Infiniband
         mvapich2-rdma =  if (builtins.pathExists "/usr/include/infiniband/") then ((mvapich2.overrideDerivation (oldAttr: rec {
-          
+
             name = "mvapich2-rdma-${version}";
             version = "2.2b";
-     
+
            src = fetchurl {
              url = "http://mvapich.cse.ohio-state.edu/download/mvapich/mv2/mvapich2-${version}.tar.gz";
              sha256 = "18nn9lcwd6g44rl3y6b5n25d1k4l2ksh1xjzw84r639q2hd6ki45";
@@ -260,10 +260,10 @@ let
             librdmacm = ibverbs-upstream;
             libibverbs = rdmacm-upstream;
             extraConfigureFlags = [ ];
-            
+
             ## InfiniBand driver ABI / API is not stable nor portable
             ## We need to compile both IB and mvapich2 locally
-            ##              
+            ##
             enforceLocalBuild = true;
         }) else mvapich2;
 
@@ -275,7 +275,7 @@ let
         cmake36 = std-pkgs.cmake.overrideDerivation ( oldAttr: rec {
             majorVersion = "3.6";
             minorVersion = "1";
-            version = "${majorVersion}.${minorVersion}";            
+            version = "${majorVersion}.${minorVersion}";
 
             src = fetchurl {
                 url = "${oldAttr.meta.homepage}files/v${majorVersion}/cmake-${version}.tar.gz";
@@ -284,6 +284,11 @@ let
 
             outputs = [ "out" "doc" ];
         });
+
+        # cmake 3.8.2
+        cmake38 = callPackage ./cmake {
+            ps = if stdenv.isDarwin then darwin.adv_cmds else null;
+        };
 
         ##
         #
@@ -306,17 +311,17 @@ let
             parmetis = parmetis;
         };
 
-        ## profiling tools        
+        ## profiling tools
         papi = callPackage ./papi {
 
-        };        
+        };
 
         hpctoolkit = callPackage ./hpctoolkit {
             papi = papi;
         };
 
         ## env modules
-        environment-modules =  callPackage ./env-modules { 
+        environment-modules =  callPackage ./env-modules {
             tcl = tcl-8_5;
         };
 
@@ -338,14 +343,13 @@ let
 
         # vtk 7.0 backport
         vtk7 = callPackage ./vtk {
-        
+
         };
 
         # itk 4.40
         itk = callPackage ./itk {
-            
-        };
 
+        };
 
         cython = additionalPythonPackages.cython;
 
@@ -355,7 +359,7 @@ let
 		pkgs = MergePkgs;
 		pythonPackages = MergePkgs.pythonPackages;
 	});
-       
+
 in
   MergePkgs // { pythonPackages = MergePkgs.pythonPackages // (additionalPythonPackages); }
 
