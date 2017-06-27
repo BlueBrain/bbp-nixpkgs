@@ -41,24 +41,26 @@ let
 
         inherit bbp-mpi bbp-mpi-rdma;
 
-		intel-mpi-bench = pkgs.intel-mpi-bench.override {
-			mpi = bbp-mpi;
-		};
+        intel-mpi-bench = pkgs.intel-mpi-bench.override {
+            mpi = bbp-mpi;
+        };
 
-		osu-mpi-bench = pkgs.osu-mpi-bench.override {
-			mpi = bbp-mpi;
-		};
+        osu-mpi-bench = pkgs.osu-mpi-bench.override {
+            mpi = bbp-mpi;
+        };
 
-		intel-mpi-bench-rdma = pkgs.intel-mpi-bench.override {
-			mpi = bbp-mpi-rdma;
-		};
+        intel-mpi-bench-rdma = pkgs.intel-mpi-bench.override {
+            mpi = bbp-mpi-rdma;
+        };
 
         ## parallel hdf5
         phdf5 = pkgs.phdf5.override {
-         	mpi = bbp-mpi;
+            mpi = bbp-mpi;
         };
 
-
+        adios = pkgs.adios.override {
+            mpi = bbp-mpi;
+        };
 
         ## override component that need bbp-mpi
         petsc = pkgs.petsc.override {
@@ -131,9 +133,9 @@ let
 
         };
 
-		keyv = callPackage ./viz/keyv {
+        keyv = callPackage ./viz/keyv {
 
-		};
+        };
 
         zerobuf = callPackage ./viz/zerobuf {
 
@@ -203,7 +205,7 @@ let
         };
 
         morphsyn = callPackage ./nse/morphsyn {
-			vtk = vtk7;
+            vtk = vtk7;
         };
 
         bluejittersdk = callPackage ./nse/bluejittersdk {
@@ -233,7 +235,7 @@ let
         ##
         ## BBP HPC components
         ##
-		helloworld = enableBGQ-gcc47 callPackage ./common/helloworld {
+        helloworld = enableBGQ-gcc47 callPackage ./common/helloworld {
             mpi = bbp-mpi;
         };
 

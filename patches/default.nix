@@ -6,7 +6,7 @@
 
 let
     MergePkgs = with MergePkgs;  std-pkgs // patches;
-    patches = 
+    patches =
     with patches; with MergePkgs; rec {
 
         ##utility for debug info
@@ -19,14 +19,14 @@ let
             });
         };
 
-		ccWrapperFun = callPackage ../std-nixpkgs/pkgs/build-support/cc-wrapper;
+        ccWrapperFun = callPackage ../std-nixpkgs/pkgs/build-support/cc-wrapper;
 
         ##open scene graph, for viz software
         openscenegraph = callPackage ./openscenegraph {
 
         };
 
-        ##httpxx, http protocol parser for C++ 
+        ##httpxx, http protocol parser for C++
         httpxx = callPackage ./httpxx {
 
         };
@@ -44,24 +44,24 @@ let
         });
 
         blender = callPackage ./blender {
-			stdpkgs = std-pkgs;
+            stdpkgs = std-pkgs;
         };
 
         blender-python = blender.override {
             pythonModule = true;
             opencollada = opencollada-shared;
-        }; 
-        
+        };
+
         intel-mpi-bench = callPackage ./intel-mpi-bench {
             mpi = mvapich2;
         };
 
-		osu-mpi-bench = callPackage ./osu-mpi-bench {
+        osu-mpi-bench = callPackage ./osu-mpi-bench {
             mpi = mvapich2;
         };
 
 
-	scorec = callPackage ./scorec {
+        scorec = callPackage ./scorec {
             mpi = mvapich2-rdma;
             parmetis  = parmetis;
         };
@@ -71,19 +71,19 @@ let
         };
 
 
-	icc-native = callPackage ./icc-native {
+        icc-native = callPackage ./icc-native {
 
-	};
+        };
 
-	WrappedICC = if (icc-native != null) then (import ./cc-wrapper  {
-			inherit stdenv binutils coreutils ;
-			libc = glibc;
-			nativeTools = false;
-			nativeLibc = false;
-			cc = icc-native;
-	}) else null;
+        WrappedICC = if (icc-native != null) then (import ./cc-wrapper  {
+            inherit stdenv binutils coreutils ;
+            libc = glibc;
+            nativeTools = false;
+            nativeLibc = false;
+            cc = icc-native;
+        }) else null;
 
-	stdenvICC = overrideCC stdenv WrappedICC;
+        stdenvICC = overrideCC stdenv WrappedICC;
 
         ## new virtualGL verison for viz team
         virtualgl = std-pkgs.virtualgl.overrideDerivation ( oldAttr: rec {
@@ -104,32 +104,32 @@ let
 
         });
 
-	# llvm 4 backport 
-	llvmPackages_4 = callPackage ./llvm/4 {
-		  newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
-		  inherit ccWrapperFun;
-		  inherit (stdenvAdapters) overrideCC;
-	};
+        # llvm 4 backport
+        llvmPackages_4 = callPackage ./llvm/4 {
+              newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
+              inherit ccWrapperFun;
+              inherit (stdenvAdapters) overrideCC;
+        };
 
 
-	# llvm 4 backport 
-	llvmPackages_3_9 = callPackage ./llvm/3.9 {
-		  newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
-		  inherit ccWrapperFun;
-		  inherit (stdenvAdapters) overrideCC;
-	};
+        # llvm 4 backport
+        llvmPackages_3_9 = callPackage ./llvm/3.9 {
+              newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
+              inherit ccWrapperFun;
+              inherit (stdenvAdapters) overrideCC;
+        };
 
         # ispc compiler for brayns
         ispc = callPackage ./ispc {
             # require clang compiler
             clangStdenv = llvmPackages_3_9.stdenv;
-			llvm = llvmPackages_3_9.llvm;
+            llvm = llvmPackages_3_9.llvm;
             clangUnwrapped = llvmPackages_3_9.clang-unwrapped;
         };
 
         ## nvidia openGL implementation
         # required on viz cluster with nvidia hardware
-        # where the native library are not usable ( too old ) 
+        # where the native library are not usable ( too old )
         nvidia-x11-34032 = callPackage ./nvidia-driver/legacy340-32-kernel26.nix {
             libsOnly = true;
             kernel = null;
@@ -141,8 +141,8 @@ let
         };
 
 
-        ## patch version of HDF5 with 
-        # cpp bindigns enabled        
+        ## patch version of HDF5 with
+        # cpp bindigns enabled
         hdf5-cpp = callPackage ./hdf5 {
             szip = null;
             mpi = null;
@@ -152,13 +152,18 @@ let
         ## enforce thread safety
         hdf5 =  std-pkgs.hdf5.overrideDerivation  ( oldAttrs:{
             configureFlags = oldAttrs.configureFlags + " --enable-threadsafe ";
-        });        
+        });
 
 
-		phdf5 = std-pkgs.hdf5.override {
-			mpi = openmpi;
+        phdf5 = std-pkgs.hdf5.override {
+            mpi = openmpi;
 
-		};
+        };
+
+        adios = callPackage ./adios {
+            hdf5 = hdf5;
+            mpi = openmpi;
+        };
 
 
         blis = callPackage ./blis {
@@ -188,7 +193,7 @@ let
         ## slurm auks plugin
         #
         auks = callPackage ./auks {
-            slurm-llnl= slurm-llnl-minimal; 
+            slurm-llnl= slurm-llnl-minimal;
             nss-plugins = libnss-native-plugins;
         };
 
@@ -200,37 +205,37 @@ let
 
 
 
-	ibverbs-upstream = callPackage ./ibverbs {
+        ibverbs-upstream = callPackage ./ibverbs {
 
-	};
+        };
 
-	rdmacm-upstream = callPackage ./rdmacm {
-		libibverbs = ibverbs-upstream;
-	};
+        rdmacm-upstream = callPackage ./rdmacm {
+            libibverbs = ibverbs-upstream;
+        };
 
 
-	numactl = std-pkgs.numactl.overrideDerivation (oldAttr: rec {
+        numactl = std-pkgs.numactl.overrideDerivation (oldAttr: rec {
 
-		postInstall = ''
-					## strip libtool bullshit files 
-					rm -f $out/lib/*.la
-		'';
+            postInstall = ''
+                        ## strip libtool bullshit files
+                        rm -f $out/lib/*.la
+            '';
 
-	});
+        });
 
-	## mpich2 implementation
-	#
-	mpich2 = callPackage ./mpich{
+        ## mpich2 implementation
+        #
+        mpich2 = callPackage ./mpich{
 
-	};
+        };
 
-        ## 
+        ##
         # mvapich2 mpi implementation
         #
         mvapich2 = callPackage ./mvapich2 {
-			stdenv = enableDebugInfo stdenv;
+            stdenv = enableDebugInfo stdenv;
             # libibverbs needs a recompilation and a sync
-            # on viz cluster lx/viz1 due to InfiniBand OFed ABI maddness 
+            # on viz cluster lx/viz1 due to InfiniBand OFed ABI maddness
             libibverbs = null;
             librdmacm =  null;
             slurm-llnl = slurm-llnl-full;
@@ -246,24 +251,24 @@ let
 
         ## MVAPICH 2 support with RDMA / Infiniband
         mvapich2-rdma =  if (builtins.pathExists "/usr/include/infiniband/") then ((mvapich2.overrideDerivation (oldAttr: rec {
-          
+
             name = "mvapich2-rdma-${version}";
             version = "2.2b";
-     
+
            src = fetchurl {
              url = "http://mvapich.cse.ohio-state.edu/download/mvapich/mv2/mvapich2-${version}.tar.gz";
              sha256 = "18nn9lcwd6g44rl3y6b5n25d1k4l2ksh1xjzw84r639q2hd6ki45";
            };
 
-	 })).override {
-			stdenv = enableDebugInfo stdenv;
+        })).override {
+            stdenv = enableDebugInfo stdenv;
             librdmacm = ibverbs-upstream;
             libibverbs = rdmacm-upstream;
             extraConfigureFlags = [ ];
-            
+
             ## InfiniBand driver ABI / API is not stable nor portable
             ## We need to compile both IB and mvapich2 locally
-            ##              
+            ##
             enforceLocalBuild = true;
         }) else mvapich2;
 
@@ -275,7 +280,7 @@ let
         cmake36 = std-pkgs.cmake.overrideDerivation ( oldAttr: rec {
             majorVersion = "3.6";
             minorVersion = "1";
-            version = "${majorVersion}.${minorVersion}";            
+            version = "${majorVersion}.${minorVersion}";
 
             src = fetchurl {
                 url = "${oldAttr.meta.homepage}files/v${majorVersion}/cmake-${version}.tar.gz";
@@ -284,6 +289,11 @@ let
 
             outputs = [ "out" "doc" ];
         });
+
+        # cmake 3.8.2
+        cmake38 = callPackage ./cmake {
+            ps = if stdenv.isDarwin then darwin.adv_cmds else null;
+        };
 
         ##
         #
@@ -306,17 +316,17 @@ let
             parmetis = parmetis;
         };
 
-        ## profiling tools        
+        ## profiling tools
         papi = callPackage ./papi {
 
-        };        
+        };
 
         hpctoolkit = callPackage ./hpctoolkit {
             papi = papi;
         };
 
         ## env modules
-        environment-modules =  callPackage ./env-modules { 
+        environment-modules =  callPackage ./env-modules {
             tcl = tcl-8_5;
         };
 
@@ -338,24 +348,23 @@ let
 
         # vtk 7.0 backport
         vtk7 = callPackage ./vtk {
-        
+
         };
 
         # itk 4.40
         itk = callPackage ./itk {
-            
-        };
 
+        };
 
         cython = additionalPythonPackages.cython;
 
     };
 
     additionalPythonPackages = MergePkgs.callPackage ./additionalPythonPackages ({
-		pkgs = MergePkgs;
-		pythonPackages = MergePkgs.pythonPackages;
-	});
-       
+        pkgs = MergePkgs;
+        pythonPackages = MergePkgs.pythonPackages;
+    });
+
 in
   MergePkgs // { pythonPackages = MergePkgs.pythonPackages // (additionalPythonPackages); }
 
