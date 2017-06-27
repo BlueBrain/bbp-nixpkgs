@@ -29,7 +29,7 @@ stdenv.mkDerivation rec {
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/building/TouchDetector";
     rev = "ae7cb236b99a3a9a7af894e47c5cbbd95f675cb3";
-    sha256 = "10bb4dwxmkpm9z4qbd8aaab9fj5m8nvsdjkhs2504kg03ivhv38l";
+    sha256 = "0pnwx265mm2mmywyi3shn11gi5fvh4s56vlg1v4g7ll881ck5ag7";
   };
 
   cmakeFlags =  [ "-DLIB_SUFFIX=" ] ++ stdenv.lib.optional (generateDoc == true) [ "-DTOUCHDETECTOR_DOCUMENTATION=TRUE" ]; 
