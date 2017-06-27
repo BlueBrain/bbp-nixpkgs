@@ -270,9 +270,14 @@ let
 
         };
 
-        morpho-tool = callPackage ./hpc/morpho-tool {
+        morphotool = callPackage ./hpc/morphotool {
 
         };
+
+        syntool = callPackage ./hpc/syntool {
+
+        };
+
 
         highfive = callPackage ./hpc/highfive {
 

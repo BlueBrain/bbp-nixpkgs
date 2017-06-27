@@ -165,6 +165,9 @@ let
             mpi = openmpi;
         };
 
+        uftrace = callPackage ./uftrace {
+
+        };
 
         blis = callPackage ./blis {
 
