@@ -6,14 +6,15 @@
 , zlib
 , hdf5
 , highfive
-, python }:
+, pythonPackages
+ }:
 
 stdenv.mkDerivation rec {
   name = "mvd-tool-${version}";
   version = "1.2";
   
   buildInputs = [ stdenv pkgconfig boost zlib cmake hdf5 ];
-  nativeBuildInputs = [ python ];
+  nativeBuildInputs = [ pythonPackages.python pythonPackages.numpy ];
 
   src = fetchFromGitHub {
     owner = "BlueBrain";
@@ -31,7 +32,9 @@ stdenv.mkDerivation rec {
   
   doCheck = true;
   
-  checkTarget = "test";
+  checkPhase = ''
+    ctest -V
+  '';
 
   propagatedBuildInputs = [ highfive ];
   
