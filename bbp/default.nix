@@ -270,7 +270,7 @@ let
 
         };
 
-        morpho-tool = callPackage ./hpc/morpho-tool {
+        morphotool = callPackage ./hpc/morphotool {
 
         };
 
