@@ -274,6 +274,11 @@ let
 
         };
 
+        syntool = callPackage ./hpc/syntool {
+
+        };
+
+
         highfive = callPackage ./hpc/highfive {
 
         };
