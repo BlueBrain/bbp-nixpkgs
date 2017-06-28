@@ -13,8 +13,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgitPrivate {
         url = "ssh://bbpcode.epfl.ch/hpc/synapse-tool";
-        rev = "fa0c1b7f1e938ad2630dc473261bccddb88a3043";
-        sha256 = "0n2mpll3ar5ah0hk12cv3bf7q13f85nlb6b2702myl6gagxxj4ax";
+        rev = "55570c9196dfc5ee87b5270e7c181fa6b88ee54c";
+        sha256 = "1mw047xds18dmmiyd0n2xjpbnh2i1w5d43b0m0l75msddfwzp59m";
     };
 
 
