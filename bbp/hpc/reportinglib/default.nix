@@ -1,4 +1,10 @@
-{ stdenv, fetchgitPrivate, cmake, boost, pkgconfig, mpiRuntime}:
+{ stdenv
+, config
+, fetchgitPrivate
+, cmake
+, boost
+, pkgconfig
+, mpiRuntime}:
 
 stdenv.mkDerivation rec {
   name = "reportinglib-${version}";
@@ -9,13 +15,13 @@ stdenv.mkDerivation rec {
 
 
   src = fetchgitPrivate {
-    url = "ssh://bbpcode.epfl.ch/sim/reportinglib/bbp";
+    url = config.bbp_git_ssh + "/sim/reportinglib/bbp";
     rev = "b421d92a22cd2bd92e66768f9fb2691ca62d722d";
     sha256 = "07f7067h6iialbv6la01i6civhfdv1md9bn7lfdd7hkmszbd9psw";
   };
-  
-  
- 
+
+
+
 }
 
 

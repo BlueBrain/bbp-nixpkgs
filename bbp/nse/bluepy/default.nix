@@ -1,21 +1,22 @@
 { stdenv
+, config
 , fetchgitPrivate
 , pythonPackages
 , buildEnv
 }:
 
 
-let 
+let
 
     bluepy_sources = fetchgitPrivate {
-        url = "ssh://bbpcode.epfl.ch/analysis/BluePy";
+        url = config.bbp_git_ssh + "/analysis/BluePy";
         rev = "c825534e9cc59e7016ad6edeb16f657403da5c32";
         sha256 = "1kcy8cjzj64d7zvr79mvqnj4ykhbia0zg640vpvzjrgsjjf3zd61";
     };
 
     bluepy_version = "2017.02-c8255";
 
-    bluepy_runtime_deps = [ 
+    bluepy_runtime_deps = [
                             #  core
                             pythonPackages.h5py
                             pythonPackages.numpy
@@ -38,15 +39,15 @@ let
     	version = bluepy_version;
 
         src = bluepy_sources;
-    
+
         preConfigure = ''
             cd bluepy_configfile
         '';
 
         pythonPath = [];
 
-        buildInputs = [ 
-                        pythonPackages.pip 
+        buildInputs = [
+                        pythonPackages.pip
                         pythonPackages.ordereddict
 				      ];
 
@@ -64,7 +65,7 @@ let
 
             # remove useless requirements
 
-    
+
             # downgrade the shapely version requirement
             sed 's@Shapely==1.3.2@Shapely==1.3.1@g' -i requirements.txt
             sed 's@jsonschema==@jsonschema>=@g' -i requirements.txt
