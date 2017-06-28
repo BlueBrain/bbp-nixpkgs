@@ -9,12 +9,20 @@
 , pythonPackages
  }:
 
+let
+    # create a python environment with numpy for numpy bindings tests
+    python_test_env = pythonPackages.python.buildEnv.override {
+        extraLibs = [ pythonPackages.numpy ];
+    };
+
+in
+
 stdenv.mkDerivation rec {
   name = "mvd-tool-${version}";
   version = "1.2";
   
   buildInputs = [ stdenv pkgconfig boost zlib cmake hdf5 ];
-  nativeBuildInputs = [ pythonPackages.python pythonPackages.numpy ];
+  nativeBuildInputs = [ python_test_env ];
 
   src = fetchFromGitHub {
     owner = "BlueBrain";
