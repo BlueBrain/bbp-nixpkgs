@@ -4,7 +4,7 @@
 export NIX_CHANNEL="http://bbpcf011.epfl.ch/bbp-pkgs/unstable"
 export NIX_CACHE_HOST="bbpnixcache.epfl.ch"
 
-
+export BBP_NETWORK_PROXY="http://bbpproxy.epfl.ch:80/"
 
 ## number of cores for -j
 ## use ncore if present
@@ -37,7 +37,6 @@ function installNixMonoUser {
 
 function setupProxyVM {
 	## VM are proxyfied
-	export BBP_NETWORK_PROXY=http://bbpfe08.epfl.ch:80/
 	echo "### configure Proxy to ${BBP_NETWORK_PROXY} "
 	export ALL_PROXY=$BBP_NETWORK_PROXY
 	export http_proxy=$BBP_NETWORK_PROXY
@@ -46,8 +45,9 @@ function setupProxyVM {
 }
 
 function collectAllGarbage {
-	nix-collect-garbage -d || true
-	nix-collect-garbage || true
+	if [[ "${NODE_IS_BGQ}x" == "x" ]]; then
+		nix-collect-garbage --delete-older-than 30d || true
+	fi
 } 
 
 
@@ -140,6 +140,8 @@ echo "## Start build for the derivations: $@"
 
 	buildDerivationList $@
 
-	copyClosuresToCache 
+	copyClosuresToCache
+	
+	collectAllGarbage	
 
 }
