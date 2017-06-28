@@ -20,7 +20,8 @@ stdenv.mkDerivation rec {
 	buildInputs = [ stdenv tcl tcllib ];
 	
 	configureFlags = [ "--with-tcl-lib=${tcl}" 
-					   "--with-tcl-inc=${tcl}" ];
+			   "--with-tcl-inc=${tcl}" 
+			   "--without-x" ];
 
 
 	enableParallelBuild = true;
