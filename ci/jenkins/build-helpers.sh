@@ -46,8 +46,7 @@ function setupProxyVM {
 
 function collectAllGarbage {
 	if [[ "${NODE_IS_BGQ}x" == "x" ]]; then
-		nix-collect-garbage -d || true
-		nix-collect-garbage || true
+		nix-collect-garbage --delete-older-than 30d || true
 	fi
 } 
 
