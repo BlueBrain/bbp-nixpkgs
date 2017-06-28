@@ -140,6 +140,8 @@ echo "## Start build for the derivations: $@"
 
 	buildDerivationList $@
 
-	copyClosuresToCache 
+	copyClosuresToCache
+	
+	collectAllGarbage	
 
 }
