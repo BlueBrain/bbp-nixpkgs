@@ -4,7 +4,7 @@
 export NIX_CHANNEL="http://bbpcf011.epfl.ch/bbp-pkgs/unstable"
 export NIX_CACHE_HOST="bbpnixcache.epfl.ch"
 
-export BBP_NETWORK_PROXY=http://bbpfe08.epfl.ch:80/
+export BBP_NETWORK_PROXY="http://bbpproxy.epfl.ch:80/"
 
 ## number of cores for -j
 ## use ncore if present
