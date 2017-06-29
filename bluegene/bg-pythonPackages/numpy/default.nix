@@ -4,6 +4,19 @@
 , bgq-openblas
 }:
 
+
+let
+	blas_config = ''
+		export LAPACK="${bgq-openblas.crossDrv}/lib/libopenblas.so"
+		export BLAS="${bgq-openblas.crossDrv}/lib/libopenblas.so"
+		export OPENBLAS="${bgq-openblas.crossDrv}/lib/libopenblas.so"
+		export MKL=None
+		export PTATLAS=None
+		export ATLAS=None
+		'';
+
+
+in 
 stdenv.mkDerivation rec {
 
     name = "numpy-${version}";
@@ -28,6 +41,8 @@ stdenv.mkDerivation rec {
     buildPhase = ''
 		runHook preBuild
 
+		'' + blas_config + ''
+		
     	        ${python}/bin/${python.executable} setup.py build
 
 		runHook postBuild
@@ -63,6 +78,8 @@ stdenv.mkDerivation rec {
 
 	buildPhase = '' 
                 runHook preBuild
+
+                '' + blas_config + ''
 
                 ${python}/bin/${python.executable} setup.py build
 
