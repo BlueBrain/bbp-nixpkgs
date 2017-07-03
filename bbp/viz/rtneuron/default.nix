@@ -2,7 +2,7 @@
 , fetchgitPrivate
 , boost 
 , pkgconfig 
-, cmake 
+, cmake
 , openscenegraph
 , lunchbox 
 , brion 
@@ -10,14 +10,14 @@
 , collage
 , equalizer
 , osgtransparency
-, python
 , pythonPackages
 , qt
 , virtualgl
 }:
 
 let 
-  pythonEnv-rtneuron = python.buildEnv.override { 
+
+  pythonEnv-rtneuron = pythonPackages.python.buildEnv.override { 
 	extraLibs = [ pythonPackages.h5py 
 				  pythonPackages.decorator 
 				  pythonPackages.numpy
@@ -33,7 +33,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ stdenv pkgconfig boost cmake openscenegraph 
 				  lunchbox brion bbpsdk collage osgtransparency
-				  equalizer pythonEnv-rtneuron qt ]  ;
+				  equalizer pythonEnv-rtneuron qt.base ]  ;
 
   src = fetchgitPrivate {
     url = "ssh://bbpcode.epfl.ch/viz/RTNeuron";
