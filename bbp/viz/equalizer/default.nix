@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
   name = "equalizer-${version}";
   version = "2.1.0";
 
-  buildInputs = [ stdenv pkgconfig boost bison flex hwloc x11 cmake lunchbox pression collage opengl hwsd vmmlib qt ];
+  buildInputs = [ stdenv pkgconfig boost bison flex hwloc x11 cmake lunchbox pression collage opengl hwsd vmmlib qt.base ];
 
   src = fetchgit {
     url = "https://github.com/Eyescale/Equalizer.git";
