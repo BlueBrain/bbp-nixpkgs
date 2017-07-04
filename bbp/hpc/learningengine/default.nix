@@ -1,4 +1,5 @@
 { stdenv
+, config
 , fetchgitPrivate
 , boost
 , cmake
@@ -16,7 +17,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ stdenv boost cmake gsl mpi python cython tbb pkgconfig ];
 
   src = fetchgitPrivate{
-    url = "ssh://bbpcode.epfl.ch/hpc/learning_engine.git";
+    url = config.bbp_git_ssh + "/hpc/learning_engine.git";
     rev = "fea49f4b5f817275b9a56785e641a2f13e89a088";
     sha256 = "1yxbms76n9gzz9y45zmjykkdv9z64mpj0gf4h2hl7klymvwz5g3s";
   };

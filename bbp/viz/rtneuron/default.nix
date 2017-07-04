@@ -1,4 +1,5 @@
 { stdenv
+, config
 , fetchgitPrivate
 , boost
 , pkgconfig
@@ -37,7 +38,7 @@ stdenv.mkDerivation rec {
                   equalizer pythonEnv-rtneuron qt.base ];
 
   src = fetchgitPrivate {
-    url = "ssh://bbpcode.epfl.ch/viz/RTNeuron";
+    url = config.bbp_git_ssh + "/viz/RTNeuron";
     rev = "d60e5a30945a7a619ea9db83dad5a6e1119d07fd";
     sha256 = "1y0qd9y86aw82marv7kgjdhr0fs6wvhqcsgw9d3qpfasvhv4qsps";
   };

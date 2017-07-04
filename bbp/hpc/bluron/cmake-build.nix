@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
 
 
   src = fetchgitExternal {
-    url = "ssh://bbpcode.epfl.ch/sim/bluron/bbp";
+    url = config.bbp_git_ssh + "/sim/bluron/bbp";
     rev = "795debf91dfc5d33d6f0692357e0b2ff7353450c";
     sha256 = "0f3923bb6hnmwhzxkvbazka1zph29kwrz86bm33p00j859x9yriv";
   };

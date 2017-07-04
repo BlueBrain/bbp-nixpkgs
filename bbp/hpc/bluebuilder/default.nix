@@ -1,13 +1,14 @@
 { stdenv,
+config,
 fetchgitExternal,
 pkgconfig,
-boost, 
-hpctools, 
-libxml2, 
+boost,
+hpctools,
+libxml2,
 hdf5,
 zlib,
-cmake, 
-mpiRuntime, 
+cmake,
+mpiRuntime,
 }:
 
 stdenv.mkDerivation rec {
@@ -16,16 +17,16 @@ stdenv.mkDerivation rec {
   buildInputs = [ stdenv pkgconfig boost hpctools hdf5 zlib cmake mpiRuntime libxml2];
 
   src = fetchgitExternal {
-    url = "ssh://bbpcode.epfl.ch/building/BlueBuilder";
+    url = config.bbp_git_ssh + "/building/BlueBuilder";
     rev = "e304808bd291803a8eab57b61a8cb72d85374006";
     sha256 = "1c8k0s2g0p4b7myh56rq9j8bg1fjjgsdhszbfnsdfcx4nkm9fxkn";
   };
-  
+
   isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
         then builtins.getAttr "isBlueGene" stdenv else false;
-  
-  cmakeFlags="-DBoost_USE_STATIC_LIBS=${if isBGQ then "TRUE" else "FALSE"}";  
-  
+
+  cmakeFlags="-DBoost_USE_STATIC_LIBS=${if isBGQ then "TRUE" else "FALSE"}";
+
   enableParallelBuilding = true;
 }
 

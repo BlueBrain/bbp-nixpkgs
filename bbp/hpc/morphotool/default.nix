@@ -1,4 +1,15 @@
-{ stdenv, fetchgitPrivate, pkgconfig, boost, cmake38, zlib, hdf5, highfive, cgal, gmp, mpfr }:
+{ stdenv
+, config
+, fetchgitPrivate
+, pkgconfig
+, boost
+, cmake38
+, zlib
+, hdf5
+, highfive
+, cgal
+, gmp
+, mpfr }:
 
 stdenv.mkDerivation rec {
   name = "morpho-tool-${version}";
@@ -7,7 +18,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ stdenv pkgconfig boost zlib cmake38 hdf5 cgal gmp mpfr ];
 
   src = fetchgitPrivate {
-    url = "ssh://bbpcode.epfl.ch/hpc/morpho-tool";
+    url = config.bbp_git_ssh + "/hpc/morpho-tool";
     rev = "047cf3c5a47ac486b7e660e0630b50203c9ec6fc";
     sha256 = "0w2gyanfsidfysfz06djssflha9agzniagynqcpfch6jxglibn92";
   };
