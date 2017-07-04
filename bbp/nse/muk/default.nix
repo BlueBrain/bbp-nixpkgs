@@ -1,4 +1,14 @@
-{fetchgitExternal, stdenv, boost, cmake, bbpsdk, cairo, curl, libxml2, brion, pkgconfig}:
+{ fetchgitExternal
+, config
+, stdenv
+, boost
+, cmake
+, bbpsdk
+, cairo
+, curl
+, libxml2
+, brion
+, pkgconfig}:
 
 stdenv.mkDerivation rec {
   name = "muk-${version}";
@@ -7,7 +17,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ pkgconfig cmake ];
 
   src = fetchgitExternal {
-    url = "ssh://bbpcode.epfl.ch/sim/MUK";
+    url = config.bbp_git_ssh + "/sim/MUK";
     rev = "a0079a353f41a76dbd0483f73e60c486d54ea147";
     sha256 = "1fvyy3js6hncgc3h6pnsjx7idj13q1v07lpfy6wrpfcbp3cwn0ff";
   };
