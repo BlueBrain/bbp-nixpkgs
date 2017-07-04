@@ -1034,8 +1034,15 @@ let
             packages = [
                             pkgs.qt5.base
                             pkgs.qt5.declarative
-                       ];
+			    pkgs.qt5.quick1
+			    pkgs.qt5.quickcontrols
+                      ];
             conflicts = conflicts-modules ++ [ "qt" ];
+
+     	    extraContent = ''
+		prepend-path QML2_IMPORT_PATH $targetEnv/lib/qt5/qml
+
+	    '';
         };
 
 
@@ -1047,7 +1054,9 @@ let
                             pkgs.pythonPackages.pyqt5
                             pkgs.pythonPackages.sip_4_16
                        ];
-            conflicts = conflicts-modules ++ [ "qt" ];
+            conflicts = conflicts-modules ++ [ "qt" ];    
+	    dependencies = [ qt5 ];
+
         };
 
 
@@ -1621,7 +1630,7 @@ let
 
             cmake vtk itk readline ncurses 
             python27-light python27-full manylinux1-python
-            cython ipython ipykernel
+            cython ipython ipykernel pyqt5
 
             # parallel
             tbb
@@ -1648,7 +1657,7 @@ let
             bbpsdk rtneuron equalizer virtualgl glxinfo
             brayns embree ospray deflect
 
-            gldev
+            gldev qt5
 
             # hpc team
             helloworld mvdtool morphotool syntool hpctools functionalizer touchdetector bluebuilder
@@ -1721,10 +1730,8 @@ let
             papi
             hpctoolkit
             dev-env-clang dev-env-icc
-			qt5
             clang icc
             llvm
-            pyqt5
 
             #gmsh
             blender

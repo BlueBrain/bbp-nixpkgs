@@ -166,7 +166,7 @@ let
         };
 
         uftrace = callPackage ./uftrace {
-
+		pandoc = null;
         };
 
         blis = callPackage ./blis {
