@@ -39,8 +39,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/viz/RTNeuron";
-    rev = "d60e5a30945a7a619ea9db83dad5a6e1119d07fd";
-    sha256 = "1y0qd9y86aw82marv7kgjdhr0fs6wvhqcsgw9d3qpfasvhv4qsps";
+    rev = "06b1be979a6e013adfe722e47e6de5af4250fa47";
+    sha256 = "1sjg14rl0pl9irz9b095ndx85465858qc7mjmfbvdzi48fly03qb";
   };
 
 
