@@ -20,8 +20,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/common/BBPSDK";
-    rev= "f78b366";
-    sha256 = "0lx5xgv0q18ib0zj84px0cfs582b0wivai69rdpww53krvbhmicb";
+    rev= "7ccfd867b43746909ac3429cf44e2e4014431bbf";
+    sha256 = "0kxr69fkn9l3zf2xrs20jl15sifmvwaz7qchlgzkjjzx5r122qsm";
   };
 
 
