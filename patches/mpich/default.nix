@@ -1,12 +1,12 @@
 { stdenv, fetchurl, python, perl, gfortran }:
 
-let version = "3.2"; in
+let version = "3.1"; in
 stdenv.mkDerivation {
   name = "mpich2-${version}";
 
   src = fetchurl {
     url = "http://www.mpich.org/static/downloads/${version}/mpich-${version}.tar.gz";
-    sha256 = "1p537ljp9ylvhmrq7gqq2g2vzhkdhp9gjzzkmxy7ngb9dfd6fy07";
+    sha256 = "fcf96dbddb504a64d33833dc455be3dda1e71c7b3df411dfcf9df066d7c32c39";
   };
 
   configureFlags = "--enable-shared --enable-sharedlib";
