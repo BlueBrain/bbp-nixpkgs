@@ -73,7 +73,7 @@ function setupNixEnvironment {
 	fi
 
 	installNixMonoUser
-	if [[ "${NODE_NEED_PROXY}x" != "x" ]] || [[ "${HTTP_PROXY}x" != "x" || || [[ "${http_proxy}x" != "x"  ]]; then
+	if [[ "${NODE_NEED_PROXY}x" != "x" ]] || [[ "${HTTP_PROXY}x" != "x" || [[ "${http_proxy}x" != "x"  ]]; then
 		setupProxyVM
 	fi
 	initAllChannels
