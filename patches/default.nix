@@ -21,6 +21,10 @@ let
 
         ccWrapperFun = callPackage ../std-nixpkgs/pkgs/build-support/cc-wrapper;
 
+        cereal = callPackage ./cereal {
+
+        };
+
         ##open scene graph, for viz software
         openscenegraph = callPackage ./openscenegraph {
 
