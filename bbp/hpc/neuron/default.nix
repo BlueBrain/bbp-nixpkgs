@@ -34,12 +34,14 @@ let
                             "--without-iv" 
                             "--without-memacs" 
                             "--with-paranrn"
+                            "--with-multisend"
                             "--without-nmodl"
                             "--host=powerpc64"
                             "--with-nrnpython"
                         ]
                      else [ 
                             "--with-paranrn" 
+                            "--with-multisend"
                             "--without-iv" "--without-nmodl" 
                             "--with-nrnpython=${python}/bin/python"
                           ];
