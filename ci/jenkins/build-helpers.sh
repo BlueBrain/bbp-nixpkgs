@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-export NIX_CHANNEL="http://bbpcf011.epfl.ch/bbp-pkgs/unstable"
+export NIX_CHANNEL="https://bbpobjectstorage.epfl.ch/nix-channel"
 export NIX_CACHE_HOST="bbpnixcache.epfl.ch"
 
 export BBP_NETWORK_PROXY="http://bbpproxy.epfl.ch:80/"
