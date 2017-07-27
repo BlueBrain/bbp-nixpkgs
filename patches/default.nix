@@ -363,6 +363,12 @@ let
 
         };
 
+        # hadoken C++ toolkit
+        hadoken = callPackage ./hadoken {
+
+
+        };
+
         cython = additionalPythonPackages.cython;
 
     };
