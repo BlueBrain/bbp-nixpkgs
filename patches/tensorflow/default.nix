@@ -34,6 +34,8 @@ buildPythonPackage rec {
   format = "wheel";
   disabled = ! (isPy35 || isPy27);
 
+  unpackFile = '' '';
+
   src = let
       tfurl = sys: proc: pykind:
         let
