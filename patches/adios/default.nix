@@ -13,13 +13,13 @@
 
 stdenv.mkDerivation rec {
     name = "adios-${version}";
-    version = "1.12.0-201706";
+    version = "1.12.0-201707";
 
     src = fetchFromGitHub {
         owner = "ornladios";
         repo = "ADIOS";
-        rev = "61f7982bee4054be524ffaffa840cbca623dcbfe";
-        sha256 = "1gsp51q94z3v71a783zl9lp1qvqwb8j3h90vp7hdkg00a40v3iz8";
+        rev = "c653a9af19d71b0c8c4da173544b0c780cd21f58";
+        sha256 = "0fk4jk7ncv6dfmjmf9w2gmkldyz6kgh4myk02k5n7js20xcvvcqw";
     };
 
     buildInputs = [ stdenv hdf5 mpi ];

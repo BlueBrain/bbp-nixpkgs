@@ -21,6 +21,15 @@ let
 
         ccWrapperFun = callPackage ../std-nixpkgs/pkgs/build-support/cc-wrapper;
 
+        gtest1_8 = callPackage ./gtest {
+
+        };
+
+
+        protobuf3_2 = callPackage ./protobuf/3.2.nix {
+            gmock = gtest1_8;
+        };
+
         cereal = callPackage ./cereal {
 
         };
@@ -370,6 +379,9 @@ let
         };
 
         cython = additionalPythonPackages.cython;
+
+        ## machine learning tools
+        #tensorflow    
 
     };
 

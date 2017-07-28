@@ -39,6 +39,8 @@ in
 
                             in  allPythonRecDep;
 
+    callPackage = pkgs.newScope self;
+
 
 	future_0_16 = self.buildPythonPackage rec {
     	version = "v0.16.0";
@@ -98,6 +100,7 @@ in
 			buildInputs = with pythonPackages; [ nose ];
 
 	};           
+
 
   cython = pythonPackages.buildPythonPackage rec {
     name = "Cython-${version}";
@@ -396,6 +399,14 @@ in
     };
 
 
+ 
+
+  };
+
+
+  #machine learning python
+  tensorflowWithoutCuda = callPackage ../tensorflow {
+    protobuf3_2 = pkgs.protobuf3_2;
   };
 
 }
