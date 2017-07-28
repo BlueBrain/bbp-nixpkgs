@@ -28,8 +28,8 @@ let
 
   src-neuron-savestate = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "c074699559fdf3bb9b186e50e07e4ba4682b3fb8";
-        sha256 = "1b0cmyh4ls7q50z6rn6nrx66p0h22fp82di2wr3xkxz9n3hh60n5";
+        rev = "459425c22a627b906cc67c0a7ac616f73267fd0c";
+        sha256 = "1gkzp2131g779n1y2p4bp26gqgh1m4vq5hvb69pvq0jlrl3kvn2v";
   };
 
   src-neuron-hippocampus = fetchgitPrivate {
