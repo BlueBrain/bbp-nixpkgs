@@ -19,7 +19,7 @@ in
 
 stdenv.mkDerivation rec {
   name = "mvd-tool-${version}";
-  version = "1.2";
+  version = "1.3";
   
   buildInputs = [ stdenv pkgconfig boost zlib cmake hdf5 ];
   nativeBuildInputs = [ python_test_env ];
@@ -27,7 +27,7 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "BlueBrain";
     repo = "MVDTool";
-    rev = "bd061ec24b44cd3743879309ba127b27e4804b43";
+    rev = "f7517b0ef60172f8a904a2cb4af681635658246c";
     sha256 = "050lq9anfbqh36mhp66qsqpril2sn8jdp79xsymlc8dpgi7ii1sa";
   };
   
