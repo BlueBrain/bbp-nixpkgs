@@ -1,18 +1,18 @@
-{ stdenv, config, fetchgitPrivate, cmake, pkgconfig, bison, flex, python }:
+{ stdenv, fetchFromGitHub, cmake, pkgconfig, bison, flex, python }:
 
 stdenv.mkDerivation rec {
   name = "mod2c-${version}";
-  version = "2.1.0-201610";
+  version = "0.9-201707";
 
   buildInputs = [ stdenv cmake pkgconfig bison flex python];
 
 
-  src = fetchgitPrivate {
-    url = config.bbp_git_ssh + "/sim/mod2c";
-    rev = "7f2ca8ee1fcba245ad1f7d43ae744851c5915920";
-    sha256 = "0byar5xglcilg3n29y8cfsajpvv0fla5z009gwxw2yhiaasyyzp8";
+  src = fetchFromGitHub {
+    owner = "BlueBrain";
+    repo = "mod2c";
+    rev = "8604feb1f68d11f93b19e3b7019004f69f460861";
+    sha256 = "18cxcx2nf5vc5ivky23gq8yjagqhd7rxqvi477pbd6ai22wir1il";
   };
-
 
 }
 
