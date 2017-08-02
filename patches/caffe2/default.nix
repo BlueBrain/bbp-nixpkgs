@@ -50,8 +50,11 @@ stdenv.mkDerivation rec {
     doCheck = true;
 
     checkPhase = ''
-        ctest -V
+        export LD_LIBRARY_PATH=''${PWD}/caffe2:''${LD_LIBRARY_PATH}
+        export LD_LIBRARY_PATH=''${PWD}/third_party/googletest/:''${LD_LIBRARY_PATH}
+        export LD_LIBRARY_PATH=''${PWD}/third_party/googletest/googletest:''${LD_LIBRARY_PATH}
 
+        ctest -V
     '';
 
 }
