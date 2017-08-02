@@ -14,6 +14,10 @@ let
                 mpi = mvapich2;
             };
         };
+
+        stream = callPackage ./stream {
+          stdenv = stdenvICC;
+        };
     };
 in
   pkgs // benchmark_pkgs

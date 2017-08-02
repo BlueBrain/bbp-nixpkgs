@@ -100,6 +100,16 @@ let
             conflicts = conflicts-modules;
         };
 
+        stream = pkgs.envModuleGen rec {
+            name = "stream";
+            moduleFilePrefix = "nix/bench";
+            description = pkgs.stream.meta.description;
+            packages = [
+                pkgs.stream
+            ];
+            conflicts = conflicts-modules;
+        };
+
         hpctools = pkgs.envModuleGen rec {
             name = "hpctools";
             moduleFilePrefix = "nix/hpc";
@@ -1754,6 +1764,7 @@ let
             paths = [
                 mdtest
                 ior
+                stream
             ];
         };
 
