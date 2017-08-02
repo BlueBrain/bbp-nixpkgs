@@ -27,8 +27,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "BlueBrain";
     repo = "MVDTool";
-    rev = "c786dd41977bef10b0cf3e3668812d42e72fa131";
-    sha256 = "0m95ibhf6fjqjb9w7ryi8s15qwznd9ppi88fcwp8s35rl5vsz48h";
+    rev = "bd061ec24b44cd3743879309ba127b27e4804b43";
+    sha256 = "050lq9anfbqh36mhp66qsqpril2sn8jdp79xsymlc8dpgi7ii1sa";
   };
   
   cmakeFlags=[ 
