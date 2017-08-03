@@ -50,11 +50,13 @@ stdenv.mkDerivation rec {
     doCheck = true;
 
     checkPhase = ''
-        export LD_LIBRARY_PATH=''${PWD}/caffe2:''${LD_LIBRARY_PATH}
-        export LD_LIBRARY_PATH=''${PWD}/third_party/googletest/:''${LD_LIBRARY_PATH}
-        export LD_LIBRARY_PATH=''${PWD}/third_party/googletest/googletest:''${LD_LIBRARY_PATH}
-
+        export LD_LIBRARY_PATH="''${PWD}/caffe2:''${LD_LIBRARY_PATH}"
+        export LD_LIBRARY_PATH="''${PWD}/third_party/googletest/googlemock/:''${LD_LIBRARY_PATH}"
+        export LD_LIBRARY_PATH="''${PWD}/third_party/googletest/googlemock/gtest:''${LD_LIBRARY_PATH}"
+        export LD_LIBRARY_PATH="''${PWD}/third_party/benchmark/src/:''${LD_LIBRARY_PATH}"
         ctest -V
     '';
+
+    enableParallelBuilding = true;
 
 }
