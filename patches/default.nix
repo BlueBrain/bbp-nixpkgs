@@ -382,6 +382,9 @@ let
 
         ## machine learning tools
         #tensorflow    
+        caffe2 = callPackage ./caffe2 {
+
+        };
 
     };
 
