@@ -25,9 +25,19 @@ let
 
         };
 
+        
+        c-ares1_3 = callPackage ./c-ares-1.13 {
+
+        };
 
         protobuf3_2 = callPackage ./protobuf/3.2.nix {
             gmock = gtest1_8;
+        };
+
+        grpc = callPackage ./grpc {
+            protobuf = protobuf3_2;
+            gtest = gtest1_8;
+            c-ares = c-ares1_3;
         };
 
         cereal = callPackage ./cereal {
