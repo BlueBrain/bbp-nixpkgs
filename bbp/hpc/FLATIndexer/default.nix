@@ -1,6 +1,6 @@
 { stdenv,
 config,
-fetchgitExternal,
+fetchgitPrivate,
 pkgconfig,
 boost,
 bbpsdk,
@@ -18,19 +18,18 @@ doxygen }:
 
 stdenv.mkDerivation rec {
   name = "flatindexer-${version}";
-  version = "1.8.1";
+  version = "1.8.2";
   buildInputs = [ stdenv pkgconfig boost cmake  bbpsdk brion lunchbox vmmlib servus zlib python numpy hdf5 doxygen];
 
-  src = fetchgitExternal {
+  src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/FLATIndex";
-    rev = "8bec30a23488bae6f9b8a0b40d53123e789a1904";
-    sha256 = "133if0a5xk7vq7ddlyfq87d1ybg2kr6468mrw4nyb5cbnkrjdq5x";
+    rev = "d240ef9f83ea0d1acf099769e6df8fdbfeaa67b0";
+    sha256 = "1whfd96jh5d5cqzwc66yg4i2zc7mdi257k0lppljz0avsp93bgdx";
   };
 
 
-  cmakeFlags='' '';
+  cmakeFlags= [ "-DCOMMON_DISABLE_WERROR=TRUE" ];
 
-  CXXFLAGS=" -Wno-error";
 
   enableParallelBuilding = true;
 }
