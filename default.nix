@@ -48,8 +48,11 @@ please run "git submodule update --recursive --init" in your bbp-nixpkgs directo
     ## standard packages with generic patches
     patch-pkgs = args: (import ./patches { std-pkgs = std-pkgs args; } );
 
+    ## benchmarks utilities
+    benchmark-pkgs = args: (import ./benchmark { pkgs = patch-pkgs args; } );
+
     ## proprietary external packages from binaries
-    proprietary-pkgs = args: (import ./proprietary { pkgs = patch-pkgs args; config = all-config; });
+    proprietary-pkgs = args: (import ./proprietary { pkgs = benchmark-pkgs args; config = all-config; });
 
     ## import BG/Q specific packages
     bgq-pkgs = args: (import ./bluegene { pkgs = proprietary-pkgs args; config = all-config; });
