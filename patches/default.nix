@@ -83,6 +83,12 @@ let
             mpi = mvapich2;
         };
 
+        ior = callPackage ./ior {
+            mpi = mvapich2;
+            hdf5 = std-pkgs.hdf5.override {
+                mpi = mvapich2;
+            };
+        };
 
         scorec = callPackage ./scorec {
             mpi = mvapich2-rdma;
