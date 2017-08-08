@@ -90,6 +90,16 @@ let
             conflicts = conflicts-modules;
         };
 
+        ior = pkgs.envModuleGen rec {
+            name = "ior";
+            moduleFilePrefix = "nix/bench";
+            description = pkgs.ior.meta.description;
+            packages = [
+                pkgs.ior
+            ];
+            conflicts = conflicts-modules;
+        };
+
         hpctools = pkgs.envModuleGen rec {
             name = "hpctools";
             moduleFilePrefix = "nix/hpc";
@@ -1743,6 +1753,7 @@ let
             name = "all-benchs";
             paths = [
                 mdtest
+                ior
             ];
         };
 
