@@ -1,7 +1,8 @@
 { stdenv, fetchFromGitHub, boost, cmake, zlib, hdf5 }:
 
 stdenv.mkDerivation rec {
-  name = "highfive-1.2";
+  version = "1.3";
+  name = "highfive-${version}";
   buildInputs = [ stdenv boost cmake zlib hdf5];
 
   src = fetchFromGitHub {
