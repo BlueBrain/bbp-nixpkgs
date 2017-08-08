@@ -80,7 +80,15 @@ let
             conflicts = conflicts-modules;
         };
 
-
+        mdtest = pkgs.envModuleGen rec {
+            name = "mdtest";
+            moduleFilePrefix = "nix/bench";
+            description = pkgs.mdtest.meta.description;
+            packages = [
+                pkgs.mdtest
+            ];
+            conflicts = conflicts-modules;
+        };
 
         hpctools = pkgs.envModuleGen rec {
             name = "hpctools";
@@ -1727,6 +1735,15 @@ let
             dev-env-gcc
             dev-env-python27
         ];
+        };
+
+        ## benchmark utilities
+
+        benchs = pkgs.buildEnv {
+            name = "all-benchs";
+            paths = [
+                mdtest
+            ];
         };
 
         ## utilities
