@@ -82,7 +82,7 @@ stdenv.mkDerivation rec {
 		owner = "nrnhines";
 		repo = "nrn";
         rev = "35496703d638acf540928a029a975d250438a8ba";
-        sha256 = "zy47d7d76jr0rah2br9wccbssa327vlqopty6djx72fjnw9dqv95";
+        sha256 = "1zsl7g0b9ss1wqrwc42vfjylxb1sba9c5zq16z4y1qg7km1n40za";
     };
 
 
