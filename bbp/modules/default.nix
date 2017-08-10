@@ -80,6 +80,16 @@ let
             conflicts = conflicts-modules;
         };
 
+        mdtest = pkgs.envModuleGen rec {
+            name = "mdtest";
+            moduleFilePrefix = "nix/bench";
+            description = pkgs.mdtest.meta.description;
+            packages = [
+                pkgs.mdtest
+            ];
+            conflicts = conflicts-modules;
+        };
+
         highfive = pkgs.envModuleGen rec {
             name = "highfive";
             moduleFilePrefix = "nix/hpc";
@@ -91,6 +101,25 @@ let
             conflicts = conflicts-modules;
         };
 
+        ior = pkgs.envModuleGen rec {
+            name = "ior";
+            moduleFilePrefix = "nix/bench";
+            description = pkgs.ior.meta.description;
+            packages = [
+                pkgs.ior
+            ];
+            conflicts = conflicts-modules;
+        };
+
+        stream = pkgs.envModuleGen rec {
+            name = "stream";
+            moduleFilePrefix = "nix/bench";
+            description = pkgs.stream.meta.description;
+            packages = [
+                pkgs.stream
+            ];
+            conflicts = conflicts-modules;
+        };
 
         hpctools = pkgs.envModuleGen rec {
             name = "hpctools";
@@ -306,8 +335,7 @@ let
             packages = [
                             pkgs.mod2c
                        ];
-
-            conflicts = conflicts-modules;
+           conflicts = conflicts-modules;
         };
 
         hpc = pkgs.envModuleGen {
@@ -1739,6 +1767,17 @@ let
         ];
         };
 
+        ## benchmark utilities
+
+        benchs = pkgs.buildEnv {
+            name = "all-benchs";
+            paths = [
+                mdtest
+                ior
+                stream
+            ];
+        };
+
         ## utilities
 
         ## map libnss plugins in your LD_PATH to solve auth issues
@@ -2242,6 +2281,8 @@ with generic-modules; rec {
       };
 
       extra = all;
+
+      benchs = all;
 
       hpc = pkgs.envModuleGen {
             name = "HPCrelease_BGQ";
