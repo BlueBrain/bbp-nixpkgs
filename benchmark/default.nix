@@ -15,9 +15,18 @@ let
             };
         };
 
-        stream = callPackage ./stream {
-          stdenv = stdenvICC;
-        };
+        stream = callPackage ./stream (
+            if (icc-native != null) then {
+                stdenv = stdenvICC;
+                extra_cflags = [
+                    "-mcmodel medium"
+                    "-shared-intel"
+                    "-qopenmp"
+                    "-qopt-streaming-stores always"
+                ];
+            }
+            else {}
+        );
     };
 in
   pkgs // benchmark_pkgs

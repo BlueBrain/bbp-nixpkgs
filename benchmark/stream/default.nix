@@ -1,5 +1,6 @@
 { stdenv
 , fetchFromGitHub
+, extra_cflags ? [ ]
 }:
 
 stdenv.mkDerivation rec {
@@ -33,9 +34,19 @@ stdenv.mkDerivation rec {
   #              -qaltive=be automat \
   #              -DN=134217728 -DOFFSET=0 -DNTIMES=10
 
+  cflags = [
+    "-O3"
+    "-DN=134217728"
+    "-DOFFSET=0"
+    "-DNTIMES=10"
+  ];
+  cflags_str = builtins.concatStringsSep
+    " "
+    (builtins.concatLists [cflags extra_cflags]);
+
   postPatch = ''
     sed -e "/^CC =/d" -i Makefile
-    sed -e "s/^CFLAGS =.*/CFLAGS = -mcmodel medium -shared-intel -O3 -DN=134217728 -DOFFSET=0 -DNTIMES=10 -qopenmp -qopt-streaming-stores always/" -i Makefile
+    sed -e "s/^CFLAGS =.*/CFLAGS = ${cflags_str}/" -i Makefile
   '';
 
   buildFlags = "stream_c.exe";
