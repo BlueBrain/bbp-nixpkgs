@@ -173,6 +173,13 @@ let
 
         };
 
+        ior = callPackage ./benchmark/ior {
+            mpi = bbp-mpi;
+            hdf5 = phdf5.override {
+                mpi = bbp-mpi;
+            };
+        };
+
         osgtransparency = callPackage ./viz/osgtransparency {
 
         };
@@ -264,6 +271,10 @@ let
         bluebuilder = enableBGQ callPackage ./hpc/bluebuilder {
             hpctools = hpctools-xlc;
             mpiRuntime = bbp-mpi;
+        };
+
+        mdtest = callPackage ./benchmark/mdtest {
+            mpi = bbp-mpi;
         };
 
         mvdtool = callPackage ./hpc/mvdTool {
@@ -394,6 +405,18 @@ let
 
         steps-mpi = steps; # enable mpi by default
 
+        stream = callPackage ./benchmark/stream (
+            if (icc-native != null) then {
+                stdenv = stdenvICC;
+                extra_cflags = [
+                    "-mcmodel medium"
+                    "-shared-intel"
+                    "-qopenmp"
+                    "-qopt-streaming-stores always"
+                ];
+            }
+            else {}
+        );
 
         modules = (import ./modules) { pkgs = mergePkgs; };
 
