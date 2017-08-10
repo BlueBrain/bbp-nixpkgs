@@ -83,7 +83,6 @@ let
             mpi = mvapich2;
         };
 
-
         scorec = callPackage ./scorec {
             mpi = mvapich2-rdma;
             parmetis  = parmetis;
