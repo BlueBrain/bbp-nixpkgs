@@ -81,8 +81,8 @@ stdenv.mkDerivation rec {
     src = fetchFromGitHub {
 		owner = "nrnhines";
 		repo = "nrn";
-        rev = "35496703d638acf540928a029a975d250438a8ba";
-        sha256 = "1jg9h28s998bdm45m0hjl67f5cqwgm72wp6r9v5qab9py1cwjavc";
+        rev = "9406f1c67c627c2f23fd2ea78f1445d3c4ae9877";
+        sha256 = "04g2pcayln0c9g5gykkmkrzby58n65cb8gd2bwl4vc76a4nm2nwi";
     };
 
 
