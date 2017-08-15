@@ -47,6 +47,7 @@ stdenv.mkDerivation rec {
 			"-DEMBREE_ROOT=${embree}"
 			"-DBRAYNS_USE_OPTIONAL_DEPENDENCY=ON"
 			"-DBRAYNS_LIVRE_ENABLED=OFF"
+			"-DBRAYNS_NETWORKING_ENABLED=ON"
 		    ];
 
 

@@ -44,7 +44,7 @@ stdenv.mkDerivation rec {
     postInstall = ''
         PYTHON_VERSION="${pythonPackages.python.libPrefix}"
         mkdir -p $out/lib/$PYTHON_VERSION/
-        ln -s $out/python $out/lib/$PYTHON_VERSION/site-packages
+        ln -s $out/ $out/lib/$PYTHON_VERSION/site-packages
     '';                
                     
     doCheck = true;
