@@ -5,6 +5,7 @@ pkgconfig,
 boost,
 bbpsdk,
 brion,
+sparsehash,
 lunchbox,
 vmmlib,
 servus,
@@ -19,7 +20,23 @@ doxygen }:
 stdenv.mkDerivation rec {
   name = "flatindexer-${version}";
   version = "1.8.2";
-  buildInputs = [ stdenv pkgconfig boost cmake  bbpsdk brion lunchbox vmmlib servus zlib python numpy hdf5 doxygen];
+  buildInputs = [
+    bbpsdk
+    boost
+    brion
+    cmake
+    doxygen
+    hdf5
+    lunchbox
+    numpy
+    pkgconfig
+    python
+    servus
+    sparsehash
+    stdenv
+    vmmlib
+    zlib
+  ];
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/FLATIndex";
