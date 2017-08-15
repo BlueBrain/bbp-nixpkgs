@@ -10,7 +10,6 @@ readline,
 flex,
 bison,
 python,
-pythonVersion ? "2.7",
 which,
 modlOnly ? false,
 nrnOnly ? false,
@@ -27,6 +26,7 @@ let
             then builtins.getAttr "isBlueGene" stdenv else false;
 
     modlOnlyFlags = "--with-nmodl-only --without-x --without-memacs ";
+    pythonExecutable = "${python}/bin/python${builtins.substring 0 1 python.majorVersion}";
 
     nrnOnlyFlags =  if isBGQ then 
                         [ 
@@ -43,7 +43,7 @@ let
                             "--with-paranrn" 
                             "--with-multisend"
                             "--without-iv" "--without-nmodl" 
-                            "--with-nrnpython=${python}/bin/python"
+                            "--with-nrnpython=${pythonExecutable}"
                           ];
 
     platformPreConfigure = if (isBGQ && nrnOnly) then ''
@@ -56,10 +56,10 @@ let
                                         export CXXFLAGS="$ALL_FLAGS $CXXFLAGS"
                                         export CFLAGS="$ALL_FLAGS  $CFLAGS";
 
-                                        export PYINCDIR="${python}/include/python${pythonVersion}" 
-                                        export PYLIB="-L${python}/lib -lpython${pythonVersion}"
+                                        export PYINCDIR="${python}/include/python${python.majorVersion}"
+                                        export PYLIB="-L${python}/lib -lpython${python.majorVersion}"
                                         export PYLIBDIR="${python}/lib"
-                                        export PYLIBLINK="-L${python}/lib -lpython${pythonVersion}"
+                                        export PYLIBLINK="-L${python}/lib -lpython${python.majorVersion}"
                                    ''
                                     else '''';
 
@@ -76,7 +76,10 @@ stdenv.mkDerivation rec {
     buildInputs = [ automake autoconf libtool mpiRuntime ncurses readline flex bison python which nrnModl];
 
 
-	patches = [ ./nrn.patch ];
+	patches = [
+        ./nrn.patch
+        ./python3.patch
+    ];
 
     src = fetchFromGitHub {
 		owner = "nrnhines";
@@ -156,7 +159,7 @@ ln -s ${nrnModl}/bin/nocmodl $out/bin/nocmodl
 
 ## standardise python neuron install dir if any
 if [[ -d $out/lib/python ]]; then
-    LOCAL_PYTHONVER="$(python -c "from distutils.sysconfig import get_python_version; print(get_python_version())")"
+    LOCAL_PYTHONVER="$(${pythonExecutable} -c "from distutils.sysconfig import get_python_version; print(get_python_version())")"
     LOCAL_PYTHONDIR="$out/lib/python''${LOCAL_PYTHONVER}"
     mkdir -p ''${LOCAL_PYTHONDIR}
     mv ''${out}/lib/python ''${LOCAL_PYTHONDIR}/site-packages

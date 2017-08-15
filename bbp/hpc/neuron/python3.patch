@@ -1,0 +1,13 @@
+diff --git a/configure.ac b/configure.ac
+index dcfd116..2861d52 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -239,7 +239,7 @@ dnl What to do about Python
+ AC_NRN_PYTHON
+ 
+ dnl Python that runs on the build machine needed to create hocusr.h
+-AC_CHECK_PROG(PYTHON_BLD, python, python)
++AC_CHECK_PROGS(PYTHON_BLD, python python3)
+ 
+ dnl Only needed if making a distribution. In that case cython must work.
+ dnl Otherwise, to make a distribution, need to modify
