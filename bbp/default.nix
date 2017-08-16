@@ -382,6 +382,10 @@ let
             branchName = "hippocampus";
          };
 
+        neurodamus-simplification = neurodamus.override {
+            branchName = "simplification";
+         };
+
 
         neuromapp = enableBGQ callPackage ./hpc/neuromapp {
             mpiRuntime = bbp-mpi;

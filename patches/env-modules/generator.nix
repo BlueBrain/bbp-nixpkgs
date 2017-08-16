@@ -68,6 +68,7 @@ stdenv.mkDerivation rec {
     targetEnvMan = "${targetEnv}/share/man";
     targetEnvPython = "${targetEnv}/lib/python2.7";
     targetEnvPythonInterpret = "${targetEnv}/bin/python";    
+    targetEnvPython3Interpret = "${targetEnv}/bin/python3";
     targetEnvHoc = "${targetEnv}/hoclib";
     targetModlUnit = "${targetEnv}/share/nrnunits.lib";
 
@@ -161,8 +162,10 @@ if { [file exists ${targetEnvMan} ] } {
 
 
 ## check if any python interpreter is present
-if { [file exists ${targetEnvPythonInterpret} ] } {
-        prepend-path PYTHONHOME ${targetEnv}
+if { [file exists ${targetEnvPythonInterpret} ] 
+     || [file exists ${targetEnvPython3Interpret} ] } {
+        setenv PYTHONHOME ${targetEnv}
+
 } else {
 
         ## check if any python modules are available

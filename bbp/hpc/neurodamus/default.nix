@@ -20,24 +20,29 @@ let
   isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
             then builtins.getAttr "isBlueGene" stdenv else false;
 
-  src-neuron = fetchgitPrivate {
+  src-master = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
         rev = "aff82c903a16439c8bfdb1e9fa8b4d43bc59c512";
         sha256 = "1vdklpc7494jnnm7z4a1194rw02z43iji0mlc1pjfz3j8i3yv5pq";
     };
 
-  src-neuron-savestate = fetchgitPrivate {
+  src-savestate = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
         rev = "459425c22a627b906cc67c0a7ac616f73267fd0c";
         sha256 = "1gkzp2131g779n1y2p4bp26gqgh1m4vq5hvb69pvq0jlrl3kvn2v";
   };
 
-  src-neuron-hippocampus = fetchgitPrivate {
+  src-hippocampus = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
         rev = "864c435eba776f450492509dc491c7201fcd03ad";
         sha256 = "12qlkzdq1gj5661mdsgbq4vpsxmi9zqqwm0rjp6pfnch4hsx2433";
   };
 
+  src-simplification = fetchgitPrivate {
+        url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
+        rev = "6722e912201ad156712a057f0c57d1985234a8f9";
+        sha256 = "13gx9gdjjgqa6i61i2581hzrca8skv2ls81klz7l1sal5kkcf6mw";
+  };
 
 
   src-coreneuron = fetchgitPrivate {
@@ -57,9 +62,10 @@ stdenv.mkDerivation rec {
 
 
     src = if (coreNeuronMode) then src-coreneuron
-		  else if ( branchName == "savestate" ) then src-neuron-savestate
-          else if ( branchName == "hippocampus" ) then src-neuron-hippocampus
-		  else if ( branchName == "default" ) then src-neuron
+		  else if ( branchName == "savestate" ) then src-savestate
+          else if ( branchName == "hippocampus" ) then src-hippocampus
+          else if ( branchName == "simplification" ) then src-simplification
+		  else if ( branchName == "default" ) then src-master
           else throw ( "neurodamus : not a valid branchName name " + branchName ) ;
 
 
