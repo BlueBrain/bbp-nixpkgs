@@ -341,11 +341,7 @@ let
             nrnModl = mergePkgs.neuron-modl;
         };
 
-        neuron-py3 = enableBGQ callPackage ./hpc/neuron {
-            stdenv = (enableDebugInfo pkgsWithBGQXLC.stdenv);
-            mpiRuntime = bbp-mpi;
-            nrnOnly = true;
-            nrnModl = mergePkgs.neuron-modl;
+        neuron-py3 = neuron.override {
             python = python34;
         };
 
@@ -358,8 +354,7 @@ let
             nrnEnv = mergePkgs.neuron;
         };
 
-        neurodamus-py3 = enableBGQ callPackage ./hpc/neurodamus {
-            mpiRuntime = bbp-mpi;
+        neurodamus-py3 = neurodamus.override {
             nrnEnv = mergePkgs.neuron-py3;
         };
 
