@@ -5,7 +5,7 @@
 export PATCHELF_BIN=@patchelf@/bin/patchelf
 export LD_SO_PATH=@glibc_path@/lib/ld-linux-x86-64.so.2
 
-export SITE_PACKAGE_DIR=${VIRTUAL_ENV}/lib/python2.7/site-packages
+export SITE_PACKAGE_DIR=${VIRTUAL_ENV}/lib/python*/site-packages
 export MANYLINUX_LIBDIR=@manylinux_path@/lib
 
 
