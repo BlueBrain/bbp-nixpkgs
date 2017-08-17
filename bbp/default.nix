@@ -250,6 +250,16 @@ let
 
         workflow-cell-collection = callPackage ./nse/workflow/cell-collection {};
 
+        nse-allpkgs = pkgs.buildEnv {
+            name = "all-modules";
+            paths =
+                [
+                    morphsyn bluejittersdk
+                    bluepy_0_11_2 bluerepairsdk muk morphscale voxcell
+                    brain-builder bluerecipe workflow-cell-collection 
+                ];
+        };
+
         ##
         ## BBP INS components
         ##
