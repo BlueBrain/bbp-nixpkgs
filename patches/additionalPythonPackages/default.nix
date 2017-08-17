@@ -264,6 +264,43 @@ in
 
   };
 
+  cov_core = pythonPackages.buildPythonPackage rec {
+    pname = "cov-core";
+    version = "1.15.0";
+    name = "${pname}-${version}";
+
+    src = pkgs.fetchurl {
+        url = "mirror://pypi/${builtins.substring 0 1 pname}/${pname}/${name}.tar.gz";
+        sha256 = "0k3np9ymh06yv1ib96sb6wfsxjkqhmik8qfsn119vnhga9ywc52a";
+      };
+
+    buildInputs = with self; [ coverage ];
+  };
+
+  # backport from NixOS master (plus added cov_core dependency)
+  wheel = pythonPackages.buildPythonPackage rec {
+    pname = "wheel";
+    version = "0.29.0";
+    name = "${pname}-${version}";
+
+    src = pkgs.fetchurl {
+        url = "mirror://pypi/${builtins.substring 0 1 pname}/${pname}/${name}.tar.gz";
+        sha256 = "1ebb8ad7e26b448e9caa4773d2357849bf80ff9e313964bcaf79cbf0201a1648";
+      };
+
+    buildInputs = with self; [ pytest pytestcov coverage cov_core ];
+
+    propagatedBuildInputs = with self; [ jsonschema ];
+
+    # We add this flag to ignore the copy installed by bootstrapped-pip
+    installFlags = [ "--ignore-installed" ];
+
+    meta = {
+      description = "A built-package format for Python";
+      license = with stdenv.lib.licenses; [ mit ];
+      homepage = https://bitbucket.org/pypa/wheel/;
+    };
+  };
 
   # backport from NixOS 16.09
   backports_shutil_get_terminal_size = pythonPackages.buildPythonPackage rec {
