@@ -17,7 +17,7 @@ buildPythonPackage rec {
 
   setupPyBuildFlags = ["--fcompiler='gnu95'"];
 
-  buildInputs = [ pkgs.gfortran pythonPackages.nose ];
+  buildInputs = [ pkgs.gfortran pythonPackages.nose pkgs.openblas ];
 
   meta = {
     description = "Scientific tools for Python";
