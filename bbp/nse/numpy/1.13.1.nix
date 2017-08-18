@@ -1,5 +1,8 @@
 { pkgs, fetchurl, pythonPackages, buildPythonPackage }:
 
+let
+    openblas = pkgs.openblasCompat;
+in
 buildPythonPackage rec {
   name = "numpy-1.13.1";
 
@@ -13,11 +16,18 @@ buildPythonPackage rec {
   preConfigure = ''
     sed -i 's/-faltivec//' numpy/distutils/system_info.py
     sed -i '0,/from numpy.distutils.core/s//import setuptools;from numpy.distutils.core/' setup.py
-  '';
+
+    export LAPACK="${openblas}/lib/libopenblas.so"
+    export BLAS="${openblas}/lib/libopenblas.so"
+    export OPENBLAS="${openblas}/lib/libopenblas.so"
+    export MKL=None
+    export PTATLAS=None
+    export ATLAS=None
+    '';
 
   setupPyBuildFlags = ["--fcompiler='gnu95'"];
 
-  buildInputs = [ pkgs.gfortran pythonPackages.nose pkgs.openblas ];
+  buildInputs = [ pkgs.gfortran pythonPackages.nose openblas ];
 
   meta = {
     description = "Scientific tools for Python";
