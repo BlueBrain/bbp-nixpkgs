@@ -28,6 +28,8 @@ let
 
         enableBGQ = caller: file: (enableBGQ-proto caller file mergePkgs.bgq-map);
 
+        noBGQ = argPkg: (if pkgs.isBlueGene then stdenv else argPkg);
+
         enableBGQ-gcc47 = caller: file: (enableBGQ-proto  caller file mergePkgs.bgq-map-gcc47);
 
         pkgsWithBGQGCC = if (pkgs.isBlueGene == true) then (pkgs // mergePkgs.bgq-map-gcc47) else pkgs;
@@ -250,7 +252,7 @@ let
 
         workflow-cell-collection = callPackage ./nse/workflow/cell-collection {};
 
-        nse-allpkgs = pkgs.buildEnv {
+        nse-allpkgs = noBGQ (pkgs.buildEnv {
             name = "all-modules";
             paths =
                 [
@@ -258,7 +260,7 @@ let
                     bluepy_0_11_2 bluerepairsdk muk morphscale voxcell
                     brain-builder bluerecipe workflow-cell-collection 
                 ];
-        };
+        });
 
         ##
         ## BBP INS components
