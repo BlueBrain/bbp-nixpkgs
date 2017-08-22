@@ -6,8 +6,8 @@ buildPythonPackage rec {
   
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/platform/BrainBuilder";
-    rev = "9fcb6cb21d1f05889a5b6ee656b61b499d558c94";
-    sha256 = "13ymvaacn80rgdjg8yjvcbkvzl9kd3x735amziw0agg2v21g65wg";
+    rev = "de701c438f71d12ff4de638ee8316ef0c8966f1b";
+    sha256 = "06djwhmn20zjr40k2ssm2i3q87kyp2h4qkbzxl4la16srrmz35nz";
   };
 
   propagatedBuildInputs = with pythonPackages; [ pyyaml numpy_1_13_1 six brain-builder voxcell ];
