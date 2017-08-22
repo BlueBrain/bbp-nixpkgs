@@ -49,13 +49,12 @@ in
     };
 
     cmakeFlags=[
-	    "-DUNIT_TESTS=ON"
-	    "-DMORPHO_INSTALL_HIGHFIVE=OFF"
+      "-DUNIT_TESTS=OFF"
       "-DENABLE_MESHER_CGAL=ON"
       "-DBUILD_PYTHON_MODULE:BOOL=ON"
       "-DBUILD_PYTHON_DISTRIBUTABLE:BOOL=ON"
       "-DREBUILD_PYTHON_BINDINGS:BOOL=ON"
-	  ];
+    ];
 
     enableParallelBuilding = true;
 

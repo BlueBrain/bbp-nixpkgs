@@ -9,8 +9,10 @@ slurm-llnl ? null,
 libibverbs ? null,
 librdmacm ? null,
 enableXrc ? false,
+gfortran ? null,
 enforceLocalBuild ? false,
-extraConfigureFlags ? [] }:
+extraConfigureFlags ? []
+ }:
 
 stdenv.mkDerivation rec {
   name = "mvapich2-${version}";
@@ -23,7 +25,6 @@ stdenv.mkDerivation rec {
 
   configureFlags = [ "--enable-shared" 
                     "--enable-sharedlibs=gcc"
-                    "--disable-fc" "--disable-f77" "--disable-fortran"
                     "--enable-cxx"
 					"--enable-g=dbg"
 					"--enable-debuginfo"
@@ -32,17 +33,18 @@ stdenv.mkDerivation rec {
                     "--disable-mcast"
                     "--enable-threads=multiple"
                     "--enable-smpcoll" ]
+                    ++ ( if (gfortran != null) then [ "--enable-fortran" ] else [ "--disable-fc" "--disable-f77" "--disable-fortran" ])
                     ++  (if (enableXrc == true) then [ "--enable-xrc" ] else [ "--disable-xrc" ])
                     ++ (stdenv.lib.optional) (hwloc != null) ["--with-hwloc"]                    
                     ++ (stdenv.lib.optional) (slurm-llnl != null)  ["--with-slurm" "--with-slurm-include=${slurm-llnl}/include"
                           "--with-slurm-lib=${slurm-llnl}/lib" "--with-pm=none" "--with-pmi=slurm" ]
                     ++ (stdenv.lib.optional)  (libibverbs != null) [ "--with-ibverbs-include=${libibverbs}/include" "--with-ibverbs-lib=${libibverbs}/lib" ]
                     ++ (stdenv.lib.optional) (librdmacm != null) [ "--with-mpe" "--enable-rdma-cm" "--with-rdma=gen2"
-                    "--with-ib-libpath=${librdmacm}/lib" "--with-ib-include=${librdmacm}/include" ]                  
+                    "--with-ib-libpath=${librdmacm}/lib" "--with-ib-include=${librdmacm}/include" ] 
                     ++ extraConfigureFlags; 
 
 
-  buildInputs = [ python perl pkgconfig slurm-llnl libibverbs librdmacm hwloc numactl ];
+  buildInputs = [ gfortran python perl pkgconfig slurm-llnl libibverbs librdmacm hwloc numactl ];
    
   propagatedBuildInputs = [slurm-llnl hwloc numactl librdmacm libibverbs ] 
         ++ stdenv.lib.optional (stdenv ? glibc) [ stdenv.glibc ] ;

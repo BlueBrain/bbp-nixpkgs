@@ -1,4 +1,4 @@
-# All BPP related pkgs
+# All BBP related pkgs
 {
  std-pkgs,
  config
@@ -27,6 +27,8 @@ let
             else caller file;
 
         enableBGQ = caller: file: (enableBGQ-proto caller file mergePkgs.bgq-map);
+
+        noBGQ = argPkg: (if pkgs.isBlueGene then stdenv else argPkg);
 
         enableBGQ-gcc47 = caller: file: (enableBGQ-proto  caller file mergePkgs.bgq-map-gcc47);
 
@@ -221,6 +223,12 @@ let
         bluepy = callPackage ./nse/bluepy {
         };
 
+        bluepy_0_11_2 = callPackage ./nse/bluepy {
+          bluepy_version = "0.11.2";
+          bluepy_rev = "53ca4cb72ce9d2a881089143acb8561c44b40b55";
+          bluepy_sha256 = "1d4jlar4m90h1dncfiw0m6z85vyiwx7kyphnnd0zjkmds4c2jva0";
+        };
+
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
         };
 
@@ -231,6 +239,28 @@ let
         morphscale = callPackage ./nse/morphscale {
 
         };
+
+        pynrrd = callPackage ./nse/pynrrd {};
+        equation = callPackage ./nse/equation {};
+        numpy_1_13_1 = callPackage ./nse/numpy/1.13.1.nix {};
+
+        brainbuilder = callPackage ./nse/brainbuilder {};
+        voxcell = brainbuilder.voxcell;
+        brain-builder = brainbuilder.brain-builder;
+
+        bluerecipe = callPackage ./nse/bluerecipe {};
+
+        workflow-cell-collection = callPackage ./nse/workflow/cell-collection {};
+
+        nse-allpkgs = noBGQ (pkgs.buildEnv {
+            name = "all-modules";
+            paths =
+                [
+                    morphsyn bluejittersdk
+                    bluepy_0_11_2 bluerepairsdk muk morphscale voxcell
+                    brain-builder bluerecipe workflow-cell-collection 
+                ];
+        });
 
         ##
         ## BBP INS components

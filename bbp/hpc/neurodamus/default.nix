@@ -34,8 +34,8 @@ let
 
   src-hippocampus = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "864c435eba776f450492509dc491c7201fcd03ad";
-        sha256 = "12qlkzdq1gj5661mdsgbq4vpsxmi9zqqwm0rjp6pfnch4hsx2433";
+        rev = "c428cb9e3ef17ff3a95c4e93a23b4fe6b16e440c";
+        sha256 = "0vkl4pk08nh3fxs8rrgbanl1p6m6l0kqm3yp25ih0j8xbzn2k2bv";
   };
 
   src-simplification = fetchgitPrivate {

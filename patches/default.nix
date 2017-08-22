@@ -92,6 +92,11 @@ let
             mpi = mvapich2;
         };
 
+        scalapack  = callPackage ./scalapack {
+            mpi = mvapich2;
+            blas = openblasCompat;
+            lapack = openblasCompat;
+        };
 
         icc-native = callPackage ./icc-native {
 
