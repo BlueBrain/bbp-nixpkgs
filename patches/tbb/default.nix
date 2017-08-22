@@ -14,7 +14,9 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     mkdir -p $out/{lib,share/doc}
+    mkdir -p $out/lib/pkgconfig
     cp "build/"*release*"/"*so* $out/lib/
+    substituteAll ${./tbb.pc.in} $out/lib/pkgconfig/tbb.pc
     mv include $out/
     rm $out/include/index.html
     mv doc/html $out/share/doc/tbb
