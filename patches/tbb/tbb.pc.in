@@ -8,4 +8,4 @@ Description: Intel's parallelism library for C++
 URL: http://www.threadingbuildingblocks.org/
 Version: @version@
 Libs: -ltbb -latomic
-Cflags:
+Cflags: -I${includedir}
