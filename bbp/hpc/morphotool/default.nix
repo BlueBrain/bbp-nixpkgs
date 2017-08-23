@@ -1,4 +1,5 @@
 { stdenv
+, cereal
 , config
 , pythonPackages
 , fetchgitPrivate
@@ -27,7 +28,18 @@ in
     name = "morpho-tool-${version}";
     version = "0.2-201704";
 
-    buildInputs = [ stdenv pkgconfig boost zlib cmake38 hdf5 cgal gmp mpfr ];
+    buildInputs = [
+      cereal
+      stdenv
+      pkgconfig
+      boost
+      zlib
+      cmake38
+      hdf5
+      cgal
+      gmp
+      mpfr
+    ];
     nativeBuildInputs = [ python_test_env ];
 
     src = fetchgitPrivate {
