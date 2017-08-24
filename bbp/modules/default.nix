@@ -69,6 +69,17 @@ let
             conflicts = conflicts-modules;
         };
 
+        morphomesher = pkgs.envModuleGen rec {
+            name = "morpho-mesher";
+            moduleFilePrefix = "nix/hpc";
+            isLibrary = true;
+            description = pkgs.morphomesher.meta.description;
+            packages = [
+              pkgs.morphomesher
+            ];
+            conflicts = conflicts-modules;
+        };
+
         syntool = pkgs.envModuleGen rec {
             name = "syn-tool";
             moduleFilePrefix = "nix/hpc";
@@ -1778,7 +1789,7 @@ let
             # hpc team
             helloworld mvdtool morphotool syntool hpctools functionalizer touchdetector bluebuilder
             neuron neuron-savestate neuron-hippocampus neuron-simplification 
-            nest mod2c coreneuron flatindexer highfive
+            nest mod2c coreneuron flatindexer highfive morphomesher
 
             # machine learning
             caffe2
