@@ -6,7 +6,6 @@ Contains all the nix expressions for the Blue Brain Project.
 
 * See pkgs/bbp/* for the list of the specific BBP softwares.
 
-
 For any information about nix usage in the BBP, please check https://bbpteam.epfl.ch/project/spaces/display/BBPHPC/Nix+Package+Manager
 
 
@@ -36,7 +35,7 @@ Replace `rev` with new `commit-id`. You have to also update `sha256` (just updat
 Now execute below command to get correct SHA :
 ```
 cd bbp-nixpkgs
-nix-build ./ -A reportinglib
+nix-build ./ -A reportinglib.src
 ```
 
 You will get an error message like :
