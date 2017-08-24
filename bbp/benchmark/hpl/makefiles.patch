@@ -1,0 +1,563 @@
+diff --git a/setup/Make.FreeBSD_PIV_CBLAS b/setup/Make.FreeBSD_PIV_CBLAS
+index 5a703a3..56fbe6b 100644
+--- a/setup/Make.FreeBSD_PIV_CBLAS
++++ b/setup/Make.FreeBSD_PIV_CBLAS
+@@ -67,7 +67,7 @@ ARCH         = FreeBSD_PIV_CBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = /usr/bin/gcc
++CC           ?= /usr/bin/gcc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O3 -funroll-loops
+ #
+diff --git a/setup/Make.HPUX_FBLAS b/setup/Make.HPUX_FBLAS
+index a1b61b6..0c2ba74 100644
+--- a/setup/Make.HPUX_FBLAS
++++ b/setup/Make.HPUX_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = HPUX
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -162,7 +162,7 @@ HPL_DEFS     = $(HPL_INCLUDES) $(F2CDEFS) $(HPL_OPTS)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = cc
++CC           ?= cc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -D_INCLUDE_POSIX_SOURCE -DUseTimes -Aa +O4
+ #
+diff --git a/setup/Make.I860_FBLAS b/setup/Make.I860_FBLAS
+index da5ab5c..f9d908a 100644
+--- a/setup/Make.I860_FBLAS
++++ b/setup/Make.I860_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = I860_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = cc
++CC           ?= cc
+ CCNOOPT      = $(HPL_DEFS) -nx
+ CCFLAGS      = $(HPL_DEFS) -O4 -nx
+ #
+diff --git a/setup/Make.IRIX_FBLAS b/setup/Make.IRIX_FBLAS
+index 234d19a..f7777ec 100644
+--- a/setup/Make.IRIX_FBLAS
++++ b/setup/Make.IRIX_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = IRIX_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = cc
++CC           ?= cc
+ CCNOOPT      = $(HPL_DEFS) -64
+ CCFLAGS      = $(HPL_DEFS) -O3 -64 -OPT:Olimit=15000 -TARG:platform=IP30 \
+                -LNO:blocking=OFF -LOPT:alias=typed
+diff --git a/setup/Make.Linux_ATHLON_CBLAS b/setup/Make.Linux_ATHLON_CBLAS
+index 74b9db0..98f546e 100644
+--- a/setup/Make.Linux_ATHLON_CBLAS
++++ b/setup/Make.Linux_ATHLON_CBLAS
+@@ -67,7 +67,7 @@ ARCH         = Linux_ATHLON_CBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = /usr/bin/gcc
++CC           ?= /usr/bin/gcc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O3 -funroll-loops -W -Wall
+ #
+diff --git a/setup/Make.Linux_ATHLON_FBLAS b/setup/Make.Linux_ATHLON_FBLAS
+index 0b9cee1..5445e27 100644
+--- a/setup/Make.Linux_ATHLON_FBLAS
++++ b/setup/Make.Linux_ATHLON_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = Linux_ATHLON_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = /usr/bin/gcc
++CC           ?= /usr/bin/gcc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O3 -funroll-loops -W -Wall
+ #
+diff --git a/setup/Make.Linux_ATHLON_VSIPL b/setup/Make.Linux_ATHLON_VSIPL
+index 868769a..c6a6dd2 100644
+--- a/setup/Make.Linux_ATHLON_VSIPL
++++ b/setup/Make.Linux_ATHLON_VSIPL
+@@ -67,7 +67,7 @@ ARCH         = Linux_ATHLON_VSIPL
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = /usr/bin/gcc
++CC           ?= /usr/bin/gcc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O3 -funroll-loops -W -Wall
+ #
+diff --git a/setup/Make.Linux_Intel64 b/setup/Make.Linux_Intel64
+index 34695bd..3841d14 100644
+--- a/setup/Make.Linux_Intel64
++++ b/setup/Make.Linux_Intel64
+@@ -67,7 +67,7 @@ ARCH         = Linux_Intel64
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -175,16 +175,18 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC       = mpiicc
++CC       ?= mpiicc
+ CCNOOPT  = $(HPL_DEFS)
+ OMP_DEFS = -openmp
+-CCFLAGS  = $(HPL_DEFS) -O3 -w -ansi-alias -i-static -z noexecstack -z relro -z now -nocompchk -Wall
++EXTRA_CFLAGS ?= -O3 -w -ansi-alias -i-static -z noexecstack -z relro -z now -nocompchk -Wall
++CCFLAGS  = $(HPL_DEFS) $(EXTRA_CFLAGS)
+ #
+ # On some platforms,  it is necessary  to use the Fortran linker to find
+ # the Fortran internals used in the BLAS library.
+ #
+ LINKER       = $(CC)
+-LINKFLAGS    = $(CCFLAGS) $(OMP_DEFS) -mt_mpi
++LINKFLAGS_EXTRA ?= -mt_mpi
++LINKFLAGS    = $(CCFLAGS) $(OMP_DEFS) $(LINKFLAGS_EXTRA)
+ #
+ ARCHIVER     = ar
+ ARFLAGS      = r
+diff --git a/setup/Make.Linux_PII_CBLAS b/setup/Make.Linux_PII_CBLAS
+index 78c36ee..333a1f6 100644
+--- a/setup/Make.Linux_PII_CBLAS
++++ b/setup/Make.Linux_PII_CBLAS
+@@ -67,7 +67,7 @@ ARCH         = Linux_PII_CBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = /usr/bin/gcc
++CC           ?= /usr/bin/gcc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O3 -funroll-loops
+ #
+diff --git a/setup/Make.Linux_PII_CBLAS_gm b/setup/Make.Linux_PII_CBLAS_gm
+index d83c116..dfd2ac9 100644
+--- a/setup/Make.Linux_PII_CBLAS_gm
++++ b/setup/Make.Linux_PII_CBLAS_gm
+@@ -67,7 +67,7 @@ ARCH         = Linux_PII_CBLAS_gm
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = mpicc
++CC           ?= mpicc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O3 -funroll-loops -W -Wall
+ #
+diff --git a/setup/Make.Linux_PII_FBLAS b/setup/Make.Linux_PII_FBLAS
+index b235495..6f39cef 100644
+--- a/setup/Make.Linux_PII_FBLAS
++++ b/setup/Make.Linux_PII_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = Linux_PII_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = /usr/bin/gcc
++CC           ?= /usr/bin/gcc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O3 -funroll-loops -W -Wall
+ #
+diff --git a/setup/Make.Linux_PII_FBLAS_gm b/setup/Make.Linux_PII_FBLAS_gm
+index 8403930..eef547b 100644
+--- a/setup/Make.Linux_PII_FBLAS_gm
++++ b/setup/Make.Linux_PII_FBLAS_gm
+@@ -67,7 +67,7 @@ ARCH         = Linux_PII_FBLAS_gm
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = mpicc
++CC           ?= mpicc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O3 -funroll-loops -W -Wall
+ #
+diff --git a/setup/Make.Linux_PII_VSIPL b/setup/Make.Linux_PII_VSIPL
+index a0922d1..b710a5a 100644
+--- a/setup/Make.Linux_PII_VSIPL
++++ b/setup/Make.Linux_PII_VSIPL
+@@ -67,7 +67,7 @@ ARCH         = Linux_PII_VSIPL
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = /usr/bin/gcc
++CC           ?= /usr/bin/gcc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O3 -funroll-loops -W -Wall
+ #
+diff --git a/setup/Make.Linux_PII_VSIPL_gm b/setup/Make.Linux_PII_VSIPL_gm
+index 134758e..c1964a5 100644
+--- a/setup/Make.Linux_PII_VSIPL_gm
++++ b/setup/Make.Linux_PII_VSIPL_gm
+@@ -67,7 +67,7 @@ ARCH         = Linux_PII_VSIPL_gm
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = mpicc
++CC           ?= mpicc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O3 -funroll-loops -W -Wall
+ #
+diff --git a/setup/Make.MacOSX_Accelerate b/setup/Make.MacOSX_Accelerate
+index 539b520..3c30e3b 100644
+--- a/setup/Make.MacOSX_Accelerate
++++ b/setup/Make.MacOSX_Accelerate
+@@ -67,7 +67,7 @@ ARCH         = MacOSX_Accelerate
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC       = mpicc-openmpi-mp
++CC       ?= mpicc-openmpi-mp
+ CCNOOPT  = $(HPL_DEFS)
+ CCFLAGS  = $(HPL_DEFS) -O3
+ #
+diff --git a/setup/Make.PWR2_FBLAS b/setup/Make.PWR2_FBLAS
+index ad4eec7..71daa51 100644
+--- a/setup/Make.PWR2_FBLAS
++++ b/setup/Make.PWR2_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = PWR2_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = mpcc_r
++CC           ?= mpcc_r
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -O3 -qarch=pwr2 -qtune=pwr2 -qmaxmem=-1
+ #
+diff --git a/setup/Make.PWR3_FBLAS b/setup/Make.PWR3_FBLAS
+index ba79569..4786190 100644
+--- a/setup/Make.PWR3_FBLAS
++++ b/setup/Make.PWR3_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = PWR3_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = /usr/vac/bin/xlc
++CC           ?= /usr/vac/bin/xlc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -qtune=pwr3 -qarch=pwr3 -O3 -qmaxmem=-1 -qfloat=hsflt
+ #
+diff --git a/setup/Make.PWRPC_FBLAS b/setup/Make.PWRPC_FBLAS
+index fc00700..eadf64d 100644
+--- a/setup/Make.PWRPC_FBLAS
++++ b/setup/Make.PWRPC_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = PWRPC_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = mpcc_r
++CC           ?= mpcc_r
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -O3 -qarch=ppc -qtune=604 -qmaxmem=-1
+ #
+diff --git a/setup/Make.SUN4SOL2-g_FBLAS b/setup/Make.SUN4SOL2-g_FBLAS
+index 9aca094..c37ee00 100644
+--- a/setup/Make.SUN4SOL2-g_FBLAS
++++ b/setup/Make.SUN4SOL2-g_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = SUN4SOL2-g_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = cc
++CC           ?= cc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -g
+ #
+diff --git a/setup/Make.SUN4SOL2-g_VSIPL b/setup/Make.SUN4SOL2-g_VSIPL
+index 02188a4..6788197 100644
+--- a/setup/Make.SUN4SOL2-g_VSIPL
++++ b/setup/Make.SUN4SOL2-g_VSIPL
+@@ -67,7 +67,7 @@ ARCH         = SUN4SOL2-g_VSIPL
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = cc
++CC           ?= cc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -g
+ #
+diff --git a/setup/Make.SUN4SOL2_FBLAS b/setup/Make.SUN4SOL2_FBLAS
+index b7066b8..0ed02f0 100644
+--- a/setup/Make.SUN4SOL2_FBLAS
++++ b/setup/Make.SUN4SOL2_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = SUN4SOL2_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = cc
++CC           ?= cc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -dalign -fsingle -xO5 -native -xarch=v8plusa 
+ #
+diff --git a/setup/Make.T3E_FBLAS b/setup/Make.T3E_FBLAS
+index 1581bbd..f0990b5 100644
+--- a/setup/Make.T3E_FBLAS
++++ b/setup/Make.T3E_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = T3E_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -173,7 +173,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = cc
++CC           ?= cc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -O3
+ #
+diff --git a/setup/Make.Tru64_FBLAS b/setup/Make.Tru64_FBLAS
+index 016745f..3aff19b 100644
+--- a/setup/Make.Tru64_FBLAS
++++ b/setup/Make.Tru64_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = Tru64_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = cc
++CC           ?= cc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -arch host -tune host -std -O5
+ #
+diff --git a/setup/Make.Tru64_FBLAS_elan b/setup/Make.Tru64_FBLAS_elan
+index ed9d566..27a06ed 100644
+--- a/setup/Make.Tru64_FBLAS_elan
++++ b/setup/Make.Tru64_FBLAS_elan
+@@ -67,7 +67,7 @@ ARCH         = Tru64_FBLAS_elan
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = cc
++CC           ?= cc
+ CCNOOPT      = $(HPL_DEFS)
+ CCFLAGS      = $(HPL_DEFS) -arch host -tune host -std -O5
+ #
+diff --git a/setup/Make.UNKNOWN.in b/setup/Make.UNKNOWN.in
+index 7f9c026..e303c2c 100644
+--- a/setup/Make.UNKNOWN.in
++++ b/setup/Make.UNKNOWN.in
+@@ -67,7 +67,7 @@ ARCH         = @ARCH@
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+@@ -166,7 +166,7 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
+ # - Compilers / linkers - Optimization flags ---------------------------
+ # ----------------------------------------------------------------------
+ #
+-CC           = @CC@
++CC           ?= @CC@
+ CCNOOPT      = $(HPL_DEFS) @CCNOOPT@
+ CCFLAGS      = $(HPL_DEFS) @CCFLAGS@
+ #
