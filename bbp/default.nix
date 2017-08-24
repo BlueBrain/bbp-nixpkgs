@@ -315,6 +315,10 @@ let
 
         };
 
+        morphomesher = callPackage ./hpc/morphomesher {
+
+        };
+
         syntool = callPackage ./hpc/syntool {
 
         };

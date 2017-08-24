@@ -9,9 +9,7 @@
 , zlib
 , hdf5
 , highfive
-, cgal
-, gmp
-, mpfr }:
+ }:
 
 let
     # create a python environment with numpy for numpy bindings tests
@@ -36,21 +34,19 @@ in
       zlib
       cmake38
       hdf5
-      cgal
-      gmp
-      mpfr
     ];
     nativeBuildInputs = [ python_test_env ];
 
     src = fetchgitPrivate {
-      url = config.bbp_git_ssh + "/hpc/morpho-tool";
-      rev = "047cf3c5a47ac486b7e660e0630b50203c9ec6fc";
-      sha256 = "0w2gyanfsidfysfz06djssflha9agzniagynqcpfch6jxglibn92";
+      url = "git@github.com:BlueBrain/morpho-tool.git";
+      rev = "f9d140bcf156e4a5012526756a588d77ab619fbe";
+      sha256 = "06xixqbgiqb044iv38gfiaysv6r2h98n17af3j72aisf63k9vqb9";
     };
 
     cmakeFlags=[
       "-DUNIT_TESTS=OFF"
-      "-DENABLE_MESHER_CGAL=ON"
+      "-DHADOKEN_UNIT_TESTS:BOOL=OFF"
+      "-DENABLE_MESHER_CGAL=OFF"
       "-DBUILD_PYTHON_MODULE:BOOL=ON"
       "-DBUILD_PYTHON_DISTRIBUTABLE:BOOL=ON"
       "-DREBUILD_PYTHON_BINDINGS:BOOL=ON"
