@@ -9,14 +9,14 @@ pression
 
 stdenv.mkDerivation rec {
   name = "collage-${version}";
-  version = "1.7";
+  version = "1.7-dev201708";
 
   buildInputs = [ stdenv pkgconfig boost cmake lunchbox pression ];
 
   src = fetchgit {
     url = "https://github.com/Eyescale/Collage.git";
-    rev = "f320324";
-    sha256 = "19i6rx0i893vrkaxjczk2s0zarx09saz6qpjvx1b2hfimp8nn8jb";
+    rev = "e2bc13dc2f85535e1f8caeb13f53b62c2bacb734";
+    sha256 = "0vnk8i4ys3vw1xjkmn32hrf6sngpz16vih6pjwsxwsl75g03j897";
   };
 
 

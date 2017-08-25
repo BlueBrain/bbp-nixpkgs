@@ -31,7 +31,7 @@ let
 in
 stdenv.mkDerivation rec {
   name = "rtneuron-${version}";
-  version = "2.13.0-201707";
+  version = "2.13.0-dev201708";
 
   buildInputs = [ stdenv pkgconfig boost cmake openscenegraph
                   lunchbox brion bbpsdk collage osgtransparency
@@ -39,8 +39,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/viz/RTNeuron";
-    rev = "06b1be979a6e013adfe722e47e6de5af4250fa47";
-    sha256 = "1sjg14rl0pl9irz9b095ndx85465858qc7mjmfbvdzi48fly03qb";
+    rev = "36885db50256158028195ed6d22dcf6f3f59cb9a";
+    sha256 = "1hxkpjvnkh8kfif0gdxbz52y8sjlffz3p51lvjj0ags2jygqi3wx";
   };
 
 
