@@ -394,10 +394,16 @@ let
 
         cython = additionalPythonPackages.cython;
 
+        numpy_1_13_1 = patches-pkgs.pythonPackages.numpy;
+
         ## machine learning tools
         #tensorflow    
         caffe2 = callPackage ./caffe2 {
 
+        };
+
+        tensorflow = callPackage ./tensorflow/wheel.nix {
+            pythonPackages = patches-pkgs.python27Packages;
         };
 
     };
@@ -407,8 +413,13 @@ let
         pythonPackages = MergePkgs.pythonPackages;
     });
 
+
+  patches-pkgs = MergePkgs 
+  // { pythonPackages = MergePkgs.pythonPackages // (additionalPythonPackages); } 
+  // { python27Packages = MergePkgs.python27Packages // (additionalPythonPackages); };
+
 in
-  MergePkgs // { pythonPackages = MergePkgs.pythonPackages // (additionalPythonPackages); }
+    patches-pkgs
 
 
 

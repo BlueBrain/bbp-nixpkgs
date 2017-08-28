@@ -242,7 +242,7 @@ let
 
         pynrrd = callPackage ./nse/pynrrd {};
         equation = callPackage ./nse/equation {};
-        numpy_1_13_1 = callPackage ./nse/numpy/1.13.1.nix {};
+
 
         brainbuilder = callPackage ./nse/brainbuilder {};
         voxcell = brainbuilder.voxcell;

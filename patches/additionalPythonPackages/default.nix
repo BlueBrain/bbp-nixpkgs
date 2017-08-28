@@ -41,6 +41,7 @@ in
 
     callPackage = pkgs.newScope self;
 
+    bootstrapped-pip =  callPackage ./bootstrapped-pip { };
 
 	future_0_16 = self.buildPythonPackage rec {
     	version = "v0.16.0";
@@ -56,6 +57,96 @@ in
 
 	};
 
+    funcsigs1_0_2 = self.buildPythonPackage rec {
+        name = "funcsigs-1.0.2";
+
+        src = pkgs.fetchurl {
+          url = "mirror://pypi/f/funcsigs/${name}.tar.gz";
+          sha256 = "0l4g5818ffyfmfs1a924811azhjj8ax9xd1cffr1mzd3ycn0zfx7";
+        };
+
+        buildInputs = with self; [
+          unittest2
+        ];
+        
+        doCheck = false;
+    };
+
+    pyext = self.buildPythonPackage rec {
+        name = pname + "-" + version;
+        pname = "pyext";
+        version = "0.7";
+
+        src = pkgs.fetchurl {
+          url = "mirror://pypi/p/pbr/${name}.tar.gz";
+          sha256 = "1pvwjkrjqajzh4wiiw1mzqp0bb81cqc2gk23nj24m32fpqssc676";
+        };
+
+        meta = with stdenv.lib; {
+          description = "Simple Python extensions.";
+          homepage = "https://github.com/kirbyfan64/PyExt";
+          license = licenses.mit;
+          maintainers = with maintainers; [ edwtjo ];
+        };
+    };
+
+
+    numpy_1_13 = callPackage ./numpy/1.13.1.nix {
+        
+    };
+
+    pbr_1_8 = self.buildPythonPackage rec {
+        name = "pbr-${version}";
+        version = "1.8.1";
+
+        src = pkgs.fetchurl {
+          url = "mirror://pypi/p/pbr/${name}.tar.gz";
+          sha256 = "0jcny36cf3s8ar5r4a575npz080hndnrfs4np1fqhv0ym4k7c4p2";
+        };
+
+        # circular dependencies with fixtures
+        doCheck = false;
+        #buildInputs = with self; [ testtools testscenarios testresources
+        #  testrepository fixtures ];
+
+        };
+
+
+    six_1_10 = self.buildPythonPackage rec {
+        name = "six-1.10.0";
+
+        src = pkgs.fetchurl {
+          url = "mirror://pypi/s/six/${name}.tar.gz";
+          sha256 = "0snmb8xffb3vsma0z67i0h0w2g2dy0p3gsgh9gi4i0kgc5l8spqh";
+        };
+
+        buildInputs = with self; [ pytest ];
+
+        checkPhase = ''
+          py.test test_six.py
+        '';
+
+    };
+
+
+    mock2 = self.buildPythonPackage (rec {
+        name = "mock-2.0.0";
+
+        src = pkgs.fetchurl {
+          url = "mirror://pypi/m/mock/${name}.tar.gz";
+          sha256 = "1flbpksir5sqrvq2z0dp8sl4bzbadg21sj4d42w3klpdfvgvcn5i";
+        };
+
+        buildInputs = with self; [ unittest2 ];
+        propagatedBuildInputs = with self; [ funcsigs1_0_2 six_1_10 pbr_1_8 ];
+
+        meta = {
+          description = "Mock objects for Python";
+          homepage = http://python-mock.sourceforge.net/;
+          license = stdenv.lib.licenses.bsd2;
+        };
+    });
+ 
 
 
 	tqdm = 	pythonPackages.buildPythonPackage rec {
@@ -402,6 +493,12 @@ in
     
     propagatedBuildInputs = with self; [pathpy];
     
+  };
+
+
+  protobuf3_2 = callPackage ./protobuf3_2 { 
+    protobuf = pkgs.protobuf3_2;
+    pyext = pyext;
   };
 
 
