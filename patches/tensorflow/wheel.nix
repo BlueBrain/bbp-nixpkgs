@@ -56,67 +56,74 @@ let
 
   };
 
+  self = buildPythonPackage rec {
+      pname = "tensorflow";
+      version = "1.1.0";
+      name = "${pname}-${version}";
+      format = "wheel";
+      disabled = false;
+
+      src = fetchurl {
+        url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp27-none-linux_x86_64.whl";
+        sha256 = "0ld3hqx3idxk0zcrvn3p9yqnmx09zsj3mw66jlfw6fkv5hznx8j2";
+      };
+      
+      ## addition to unpack wheel
+      unpackPhase = ''
+        mkdir dist
+        cp $src dist/"''${src#*-}"
+      '';
+      
+      configurePhase =  ''
+        runHook preConfigure
+        runHook postConfigure
+      '';
+
+      buildPhase = ''
+        runHook preBuild
+        runHook postBuild
+      '';
+
+      installPhase =  ''
+        runHook preInstall
+
+        mkdir -p "$out/${python.sitePackages}"
+        export PYTHONPATH="$out/${python.sitePackages}:$PYTHONPATH"
+
+        pushd dist
+        ${bootstrapped-pip}/bin/pip install *.whl --no-index --prefix=$out --no-cache ${toString installFlags} --build tmpbuild
+        popd
+
+        runHook postInstall
+      '';
+
+        
+      propagatedBuildInputs = with stdenv.lib;
+        [ numpy six protobuf3_2 swig werkzeug mock ]
+        ++ optionals cudaSupport [ cudatoolkit cudnn stdenv.cc ];
+
+      # Note that we need to run *after* the fixup phase because the
+      # libraries are loaded at runtime. If we run in preFixup then
+      # patchelf --shrink-rpath will remove the cuda libraries.
+      postFixup = let
+        rpath = "${stdenv.cc.cc}/lib:${zlib}/lib";
+          
+      in
+      ''
+        echo "rpath: ${rpath}"
+        find $out -name '*.so' -exec patchelf --set-rpath "${rpath}" {} \;
+      '';
+
+      doCheck = false;
+
+      passthru = {
+                pythonDeps =   (pythonPackages.gatherPythonRecDep self);
+      };
+
+
+
+    };
 in
 
-buildPythonPackage rec {
-  pname = "tensorflow";
-  version = "1.1.0";
-  name = "${pname}-${version}";
-  format = "wheel";
-  disabled = false;
-
-  src = fetchurl {
-    url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp27-none-linux_x86_64.whl";
-    sha256 = "0ld3hqx3idxk0zcrvn3p9yqnmx09zsj3mw66jlfw6fkv5hznx8j2";
-  };
-  
-  ## addition to unpack wheel
-  unpackPhase = ''
-    mkdir dist
-    cp $src dist/"''${src#*-}"
-  '';
-  
-  configurePhase =  ''
-    runHook preConfigure
-    runHook postConfigure
-  '';
-
-  buildPhase = ''
-    runHook preBuild
-    runHook postBuild
-  '';
-
-  installPhase =  ''
-    runHook preInstall
-
-    mkdir -p "$out/${python.sitePackages}"
-    export PYTHONPATH="$out/${python.sitePackages}:$PYTHONPATH"
-
-    pushd dist
-    ${bootstrapped-pip}/bin/pip install *.whl --no-index --prefix=$out --no-cache ${toString installFlags} --build tmpbuild
-    popd
-
-    runHook postInstall
-  '';
-
-    
-  propagatedBuildInputs = with stdenv.lib;
-    [ numpy six protobuf3_2 swig werkzeug mock ]
-    ++ optionals cudaSupport [ cudatoolkit cudnn stdenv.cc ];
-
-  # Note that we need to run *after* the fixup phase because the
-  # libraries are loaded at runtime. If we run in preFixup then
-  # patchelf --shrink-rpath will remove the cuda libraries.
-  postFixup = let
-    rpath = "${stdenv.cc.cc}/lib:${zlib}/lib";
-      
-  in
-  ''
-    echo "rpath: ${rpath}"
-    find $out -name '*.so' -exec patchelf --set-rpath "${rpath}" {} \;
-  '';
-
-  doCheck = false;
-
-}
+ self
 
