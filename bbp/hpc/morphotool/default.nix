@@ -1,6 +1,7 @@
 { stdenv
 , cereal
 , config
+, git
 , pythonPackages
 , fetchgitPrivate
 , pkgconfig
@@ -18,6 +19,7 @@ let
         pythonPackages.cython
         pythonPackages.numpy
         pythonPackages.setuptools30
+        pythonPackages.setuptools_scm
         pythonPackages.wheel
       ];
     };
@@ -29,6 +31,7 @@ in
     buildInputs = [
       cereal
       stdenv
+      git
       pkgconfig
       boost
       zlib
@@ -40,7 +43,8 @@ in
     src = fetchgitPrivate {
       url = "git@github.com:BlueBrain/morpho-tool.git";
       rev = "f9d140bcf156e4a5012526756a588d77ab619fbe";
-      sha256 = "06xixqbgiqb044iv38gfiaysv6r2h98n17af3j72aisf63k9vqb9";
+      sha256 = "0ka5z4sb134rz8c1ik4l0012qf0a522rsmmfm9byj3y9mjbc4amd";
+      leaveDotGit = true;  # required by setuptools_scm Python module
     };
 
     cmakeFlags=[
@@ -58,6 +62,7 @@ in
 
     checkPhase = ''
       export LD_LIBRARY_PATH=$PWD/src/io:$PWD/src/morpho:$LD_LIBRARY_PATH;
+      export PYTHON_EGG_CACHE="`pwd`/.egg-cache";
       ctest -V
     '';
 

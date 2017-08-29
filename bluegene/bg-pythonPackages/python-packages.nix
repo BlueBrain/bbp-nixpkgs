@@ -12619,29 +12619,6 @@ let
     '';
   };
 
-  setuptools_scm = buildPythonPackage rec {
-    name = "setuptools_scm-${version}";
-    version = "1.7.0";
-
-    src = pkgs.fetchurl {
-      url = "https://pypi.python.org/packages/source/s/setuptools_scm/${name}.tar.gz";
-      sha256 = "f2f69c782b4f549003edf5b75b356b37f40a4e880b615996c5d9c117913d6f9c";
-    };
-
-    buildInputs = with self; [ pip ];
-
-    preBuild = ''
-      ${python.interpreter} setup.py egg_info
-    '';
-
-    meta = with stdenv.lib; {
-      homepage = https://bitbucket.org/pypa/setuptools_scm/;
-      description = "Handles managing your python package versions in scm metadata";
-      license = licenses.mit;
-      maintainers = with maintainers; [ jgeerds ];
-    };
-  };
-
   setuptoolsDarcs = buildPythonPackage {
     name = "setuptools-darcs-1.2.9";
 
