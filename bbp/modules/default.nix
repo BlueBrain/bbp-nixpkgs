@@ -132,6 +132,16 @@ let
             conflicts = conflicts-modules;
         };
 
+        hpl = pkgs.envModuleGen rec {
+            name = "hpl";
+            moduleFilePrefix = "nix/bench";
+            description = pkgs.hpl.meta.description;
+            packages = [
+                pkgs.hpl
+            ];
+            conflicts = conflicts-modules;
+        };
+
         hpctools = pkgs.envModuleGen rec {
             name = "hpctools";
             moduleFilePrefix = "nix/hpc";
@@ -1815,8 +1825,9 @@ let
         benchs = pkgs.buildEnv {
             name = "all-benchs";
             paths = [
-                mdtest
+                hpl
                 ior
+                mdtest
                 stream
             ];
         };

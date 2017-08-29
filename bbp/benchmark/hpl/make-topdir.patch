@@ -1,0 +1,325 @@
+diff --git a/setup/Make.FreeBSD_PIV_CBLAS b/setup/Make.FreeBSD_PIV_CBLAS
+index 5a703a3..42ded57 100644
+--- a/setup/Make.FreeBSD_PIV_CBLAS
++++ b/setup/Make.FreeBSD_PIV_CBLAS
+@@ -67,7 +67,7 @@ ARCH         = FreeBSD_PIV_CBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.HPUX_FBLAS b/setup/Make.HPUX_FBLAS
+index a1b61b6..f74ca2c 100644
+--- a/setup/Make.HPUX_FBLAS
++++ b/setup/Make.HPUX_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = HPUX
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.I860_FBLAS b/setup/Make.I860_FBLAS
+index da5ab5c..4177e57 100644
+--- a/setup/Make.I860_FBLAS
++++ b/setup/Make.I860_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = I860_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.IRIX_FBLAS b/setup/Make.IRIX_FBLAS
+index 234d19a..cdc568f 100644
+--- a/setup/Make.IRIX_FBLAS
++++ b/setup/Make.IRIX_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = IRIX_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.Linux_ATHLON_CBLAS b/setup/Make.Linux_ATHLON_CBLAS
+index 74b9db0..2f9fb7f 100644
+--- a/setup/Make.Linux_ATHLON_CBLAS
++++ b/setup/Make.Linux_ATHLON_CBLAS
+@@ -67,7 +67,7 @@ ARCH         = Linux_ATHLON_CBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.Linux_ATHLON_FBLAS b/setup/Make.Linux_ATHLON_FBLAS
+index 0b9cee1..004fd16 100644
+--- a/setup/Make.Linux_ATHLON_FBLAS
++++ b/setup/Make.Linux_ATHLON_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = Linux_ATHLON_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.Linux_ATHLON_VSIPL b/setup/Make.Linux_ATHLON_VSIPL
+index 868769a..c803d8c 100644
+--- a/setup/Make.Linux_ATHLON_VSIPL
++++ b/setup/Make.Linux_ATHLON_VSIPL
+@@ -67,7 +67,7 @@ ARCH         = Linux_ATHLON_VSIPL
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.Linux_Intel64 b/setup/Make.Linux_Intel64
+index 34695bd..bee0e2e 100644
+--- a/setup/Make.Linux_Intel64
++++ b/setup/Make.Linux_Intel64
+@@ -67,7 +67,7 @@ ARCH         = Linux_Intel64
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.Linux_PII_CBLAS b/setup/Make.Linux_PII_CBLAS
+index 78c36ee..892ff8d 100644
+--- a/setup/Make.Linux_PII_CBLAS
++++ b/setup/Make.Linux_PII_CBLAS
+@@ -67,7 +67,7 @@ ARCH         = Linux_PII_CBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.Linux_PII_CBLAS_gm b/setup/Make.Linux_PII_CBLAS_gm
+index d83c116..dc6b388 100644
+--- a/setup/Make.Linux_PII_CBLAS_gm
++++ b/setup/Make.Linux_PII_CBLAS_gm
+@@ -67,7 +67,7 @@ ARCH         = Linux_PII_CBLAS_gm
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.Linux_PII_FBLAS b/setup/Make.Linux_PII_FBLAS
+index b235495..52e4bf3 100644
+--- a/setup/Make.Linux_PII_FBLAS
++++ b/setup/Make.Linux_PII_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = Linux_PII_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.Linux_PII_FBLAS_gm b/setup/Make.Linux_PII_FBLAS_gm
+index 8403930..85c0f21 100644
+--- a/setup/Make.Linux_PII_FBLAS_gm
++++ b/setup/Make.Linux_PII_FBLAS_gm
+@@ -67,7 +67,7 @@ ARCH         = Linux_PII_FBLAS_gm
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.Linux_PII_VSIPL b/setup/Make.Linux_PII_VSIPL
+index a0922d1..de87575 100644
+--- a/setup/Make.Linux_PII_VSIPL
++++ b/setup/Make.Linux_PII_VSIPL
+@@ -67,7 +67,7 @@ ARCH         = Linux_PII_VSIPL
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.Linux_PII_VSIPL_gm b/setup/Make.Linux_PII_VSIPL_gm
+index 134758e..c409481 100644
+--- a/setup/Make.Linux_PII_VSIPL_gm
++++ b/setup/Make.Linux_PII_VSIPL_gm
+@@ -67,7 +67,7 @@ ARCH         = Linux_PII_VSIPL_gm
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.MacOSX_Accelerate b/setup/Make.MacOSX_Accelerate
+index 539b520..6a4e2a1 100644
+--- a/setup/Make.MacOSX_Accelerate
++++ b/setup/Make.MacOSX_Accelerate
+@@ -67,7 +67,7 @@ ARCH         = MacOSX_Accelerate
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.PWR2_FBLAS b/setup/Make.PWR2_FBLAS
+index ad4eec7..56f58fd 100644
+--- a/setup/Make.PWR2_FBLAS
++++ b/setup/Make.PWR2_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = PWR2_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.PWR3_FBLAS b/setup/Make.PWR3_FBLAS
+index ba79569..000c4b6 100644
+--- a/setup/Make.PWR3_FBLAS
++++ b/setup/Make.PWR3_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = PWR3_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.PWRPC_FBLAS b/setup/Make.PWRPC_FBLAS
+index fc00700..60a3a4f 100644
+--- a/setup/Make.PWRPC_FBLAS
++++ b/setup/Make.PWRPC_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = PWRPC_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.SUN4SOL2-g_FBLAS b/setup/Make.SUN4SOL2-g_FBLAS
+index 9aca094..281d050 100644
+--- a/setup/Make.SUN4SOL2-g_FBLAS
++++ b/setup/Make.SUN4SOL2-g_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = SUN4SOL2-g_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.SUN4SOL2-g_VSIPL b/setup/Make.SUN4SOL2-g_VSIPL
+index 02188a4..8a4e003 100644
+--- a/setup/Make.SUN4SOL2-g_VSIPL
++++ b/setup/Make.SUN4SOL2-g_VSIPL
+@@ -67,7 +67,7 @@ ARCH         = SUN4SOL2-g_VSIPL
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.SUN4SOL2_FBLAS b/setup/Make.SUN4SOL2_FBLAS
+index b7066b8..33a1496 100644
+--- a/setup/Make.SUN4SOL2_FBLAS
++++ b/setup/Make.SUN4SOL2_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = SUN4SOL2_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.T3E_FBLAS b/setup/Make.T3E_FBLAS
+index 1581bbd..d9db9a7 100644
+--- a/setup/Make.T3E_FBLAS
++++ b/setup/Make.T3E_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = T3E_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.Tru64_FBLAS b/setup/Make.Tru64_FBLAS
+index 016745f..cbd263e 100644
+--- a/setup/Make.Tru64_FBLAS
++++ b/setup/Make.Tru64_FBLAS
+@@ -67,7 +67,7 @@ ARCH         = Tru64_FBLAS
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.Tru64_FBLAS_elan b/setup/Make.Tru64_FBLAS_elan
+index ed9d566..9d87fc0 100644
+--- a/setup/Make.Tru64_FBLAS_elan
++++ b/setup/Make.Tru64_FBLAS_elan
+@@ -67,7 +67,7 @@ ARCH         = Tru64_FBLAS_elan
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
+diff --git a/setup/Make.UNKNOWN.in b/setup/Make.UNKNOWN.in
+index 7f9c026..c2b43de 100644
+--- a/setup/Make.UNKNOWN.in
++++ b/setup/Make.UNKNOWN.in
+@@ -67,7 +67,7 @@ ARCH         = @ARCH@
+ # - HPL Directory Structure / HPL library ------------------------------
+ # ----------------------------------------------------------------------
+ #
+-TOPdir       = $(HOME)/hpl
++TOPdir       ?= $(HOME)/hpl
+ INCdir       = $(TOPdir)/include
+ BINdir       = $(TOPdir)/bin/$(ARCH)
+ LIBdir       = $(TOPdir)/lib/$(ARCH)
