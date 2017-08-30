@@ -56,7 +56,7 @@ in
       "-DREBUILD_PYTHON_BINDINGS:BOOL=ON"
     ];
 
-    enableParallelBuilding = true;
+    enableParallelBuilding = false;
 
     doCheck = true;
 
