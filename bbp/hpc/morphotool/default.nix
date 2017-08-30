@@ -43,7 +43,7 @@ in
     src = fetchgitPrivate {
       url = "git@github.com:BlueBrain/morpho-tool.git";
       rev = "f9d140bcf156e4a5012526756a588d77ab619fbe";
-      sha256 = "0ka5z4sb134rz8c1ik4l0012qf0a522rsmmfm9byj3y9mjbc4amd";
+      sha256 = "1whph0h8wr5f51i2gq2dkmfn7kp63f23zds9s2zzn8rap9cgk1i4";
       leaveDotGit = true;  # required by setuptools_scm Python module
     };
 
@@ -56,7 +56,7 @@ in
       "-DREBUILD_PYTHON_BINDINGS:BOOL=ON"
     ];
 
-    enableParallelBuilding = true;
+    enableParallelBuilding = false;
 
     doCheck = true;
 

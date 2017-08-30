@@ -12,6 +12,9 @@ let
 
     bgq-override = with bgq-override; with MergePkgs; rec { 
 
+        # pandoc requires GHC, which is not supported on BlueGene
+        pandoc = null;
+
         inherit bgq-driver;
 
 
@@ -470,7 +473,6 @@ let
             boost = bgq-boost-gcc47;
         };
 
-
         bgq-map = with MergePkgs; {
             cmake = bgq-cmake;
             hdf5 = bgq-hdf5;
@@ -501,9 +503,8 @@ let
             python = bgq-python27-gcc47;
             petsc = bgq-petsc-gcc47;
             cnk-spi = cnk-spi;
-
         };
-        
+
     };
 
         # enable BGQ on BGQ, hiden anywhere else
