@@ -28,7 +28,7 @@ assert restInterface -> (zeroeq != null && zerobuf != null && lexis != null );
 
 stdenv.mkDerivation rec {
 	name = "brayns-${version}";
-	version = "0.3.0-201707";
+	version = "0.3.0-201708";
 
 	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi
 					glew vmmlib lunchbox brion hdf5-cpp imagemagick deflect ]
@@ -36,8 +36,8 @@ stdenv.mkDerivation rec {
 
 	src = fetchgit {
 		url  = "https://github.com/BlueBrain/Brayns.git";
-		rev = "0190f1038f8b1eb13dd3fb4759e5e1f37131c98c";
-		sha256 = "1wdr6mcicdqhdgpjgvg1rr4xymbjbdh53la4wv5i253lbr43m6bx";
+		rev = "6131e67b6a3213182226827aa728797205a64f57";
+		sha256 = "0qma41377a7n0r0i7ps1bbdwni9p88s3f2j2pvy660yxmw9sa227";
 	};
 
 

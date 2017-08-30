@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   name = "keyv-${version}";
-  version = "1.1.0";
+  version = "1.1.0-dev201708";
 
   buildInputs = [ stdenv boost cmake lunchbox leveldb pression ];
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/Keyv.git";
-    rev = "7951173";
+    rev = "7951173ffb9602392a353c2c8bb6a8ea7bc2f831";
     sha256 = "0kwyh58xbz99gc5c1j5mkvkn0p8y2gkf0l5pjz5ai28rps3ss2m6";
   };
   

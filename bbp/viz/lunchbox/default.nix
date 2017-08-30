@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   name = "lunchbox";
-  version = "1.16.0";
+  version = "1.16.0-dev201708";
   buildInputs = [ stdenv boost pkgconfig servus cmake leveldb doxygen];
 
   src = fetchgit {
     url = "https://github.com/Eyescale/Lunchbox.git";
-    rev = "1a96478";
-    sha256 = "0igsmr741bfwzq0x5x5li53vwh33233bciryrn2fnkigjj0y9jff";
+    rev = "80c14e04666aeb64eb69c605663b3065252339c5 ";
+    sha256 = "0y4ygxrrvil3p34wppiqc08q3abpjk83fcz2pmsqrcz61x4vvmji";
   };
  
 

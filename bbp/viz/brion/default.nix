@@ -16,7 +16,7 @@ doxygen }:
 
 stdenv.mkDerivation rec {
   name = "brion-${version}";
-  version = "2.0-2017.06";
+  version = "2.0-dev2017.08";
 
   buildInputs = [ stdenv pkgconfig 
 				  mvdtool boost 
@@ -25,8 +25,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/Brion.git";
-    rev = "460ea81f08d92f7c7d56ae79b830a275ccdeaeda";
-    sha256 = "0x9j417xvdk0b56pgn0z8c7c0im8lysr4j6z8kgv63hixx5l23ll";
+    rev = "a91ee6815a54a56b7836b89b9d9374caa7a473b4";
+    sha256 = "1k823cx2jgz0zf0a7lw5qha0rlqsnn3k68cqk7i69hw5v15isj1h";
   };
 
 

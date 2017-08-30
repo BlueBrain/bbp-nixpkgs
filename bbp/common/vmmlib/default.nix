@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   name = "vmmlib-${version}";
-  version = "1.13.0-201706";
+  version = "1.13.0-201708";
 
   buildInputs = [ stdenv cmake doxygen];
 
