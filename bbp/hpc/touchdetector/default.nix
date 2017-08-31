@@ -28,8 +28,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/TouchDetector";
-    rev = "ae7cb236b99a3a9a7af894e47c5cbbd95f675cb3";
-    sha256 = "0pnwx265mm2mmywyi3shn11gi5fvh4s56vlg1v4g7ll881ck5ag7";
+    rev = "bae5dc063454144707db216fcda529913fcbdd3e";
+    sha256 = "0hwymh0398vii9cklf9jinvsvnpi5jvjq2m4l07dxhllcv8qb6b9";
   };
 
   cmakeFlags =  [ "-DLIB_SUFFIX=" ] ++ stdenv.lib.optional generateDoc [ "-DTOUCHDETECTOR_DOCUMENTATION=TRUE" ];
