@@ -2,6 +2,7 @@
 , cereal
 , config
 , git
+, pandoc? null
 , pythonPackages
 , fetchgitPrivate
 , pkgconfig
@@ -26,26 +27,27 @@ let
 in
   stdenv.mkDerivation rec {
     name = "morpho-tool-${version}";
-    version = "0.2-201704";
-
-    buildInputs = [
-      cereal
-      stdenv
-      git
-      pkgconfig
-      boost
-      zlib
-      cmake38
-      hdf5
-    ];
-    nativeBuildInputs = [ python_test_env ];
+    version = "0.3-201708";
 
     src = fetchgitPrivate {
       url = "git@github.com:BlueBrain/morpho-tool.git";
-      rev = "f9d140bcf156e4a5012526756a588d77ab619fbe";
-      sha256 = "1whph0h8wr5f51i2gq2dkmfn7kp63f23zds9s2zzn8rap9cgk1i4";
+      rev = "3b2682747f4544fdc22742fee1249b3870fb0ce9";
+      sha256 = "0ss36andarxy4i9jp8fih51irbbvyyazr3g771rrqw8biimgzzqm";
       leaveDotGit = true;  # required by setuptools_scm Python module
     };
+
+    buildInputs = [
+      boost
+      cereal
+      cmake38
+      hdf5
+      git
+      pkgconfig
+      stdenv
+      zlib
+    ] ++ stdenv.lib.optional (pandoc != null) pandoc;
+
+    nativeBuildInputs = [ python_test_env ];
 
     cmakeFlags=[
       "-DUNIT_TESTS=OFF"
@@ -54,9 +56,11 @@ in
       "-DBUILD_PYTHON_MODULE:BOOL=ON"
       "-DBUILD_PYTHON_DISTRIBUTABLE:BOOL=ON"
       "-DREBUILD_PYTHON_BINDINGS:BOOL=ON"
-    ];
+    ] ++ stdenv.lib.optional (pandoc != null) [
+      "-DMORPHO_TOOL_DOCUMENTATION:BOOL=TRUE" ]
+    ;
 
-    enableParallelBuilding = false;
+    enableParallelBuilding = true;
 
     doCheck = true;
 
@@ -65,6 +69,8 @@ in
       export PYTHON_EGG_CACHE="`pwd`/.egg-cache";
       ctest -V
     '';
+
+    outputs = [ "out" ] ++ stdenv.lib.optional (pandoc != null) "doc";
 
     propagatedBuildInputs = [ highfive ];
   }

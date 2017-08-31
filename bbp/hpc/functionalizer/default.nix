@@ -30,7 +30,16 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ boost hpctools zlib mpiRuntime libxml2 hdf5 ];
 
-  nativeBuildInputs = [ pkgconfig cmake python-env ] ++ stdenv.lib.optional (generateDoc == true ) [ asciidoc xmlto docbook_xsl libxslt  ];
+  nativeBuildInputs = [
+    cmake
+    pkgconfig
+    python-env
+  ] ++ stdenv.lib.optional generateDoc [
+    asciidoc
+    docbook_xsl
+    libxslt
+    xmlto
+  ];
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/Functionalizer";
@@ -39,18 +48,20 @@ stdenv.mkDerivation rec {
   };
 
 
-  cmakeFlags=[ "-DUNIT_TESTS=TRUE" ''-DLIB_SUFFIX='' ]
-	        ++ stdenv.lib.optional (generateDoc == true ) [ "-DFUNCTIONALIZER_DOCUMENTATION=TRUE" ] ;
+  cmakeFlags = [
+    "-DUNIT_TESTS=TRUE"
+    ''-DLIB_SUFFIX=''
+  ] ++ stdenv.lib.optional generateDoc "-DFUNCTIONALIZER_DOCUMENTATION=TRUE";
 
   enableParallelBuilding = true;
 
-  outputs = [ "out" "doc" ];
+  outputs = [ "out" ] ++ stdenv.lib.optional generateDoc "doc";
 
   crossAttrs = {
     ## enforce mpiwrapper in cross compilation mode for bgq
-    cmakeFlags= cmakeFlags ++ [ "-DCMAKE_CXX_COMPILER=mpic++" "-DCMAKE_C_COMPILER=mpicc" ];
+    cmakeFlags = cmakeFlags ++ [
+      "-DCMAKE_CXX_COMPILER=mpic++"
+      "-DCMAKE_C_COMPILER=mpicc"
+    ];
   };
-
 }
-
-
