@@ -114,6 +114,10 @@ let
 
         };
 
+        bbpsdk-legacy = bbpsdk.override {
+            legacyVersion = true;
+        };
+
         vmmlib = callPackage ./common/vmmlib {
 
         };
