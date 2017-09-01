@@ -147,7 +147,28 @@ in
         };
     });
  
+    rtree = self.buildPythonPackage (rec {
+        name = "rtree-${version}";
+        version = "0.8.3";
 
+        src = pkgs.fetchurl {
+          url = "mirror://pypi/r/rtree/Rtree-${version}.tar.gz";
+          sha256 = "0jc62jbcqqpjcwcly7l9zk25bg72mrxmjykpvfiscgln00qczfbc";
+        };
+
+        patchPhase = ''
+            sed -i 's@/usr/local@${pkgs.libspatialindex}@g' setup.cfg;
+            sed -i "s@find_library(.*@'${pkgs.libspatialindex}/lib/libspatialindex_c.so'@g" rtree/core.py
+        '';
+
+        doCheck = false; # UTF-8 tests fails on python2
+
+
+        buildInputs = with self; [ unittest2 pkgs.libspatialindex numpy ];
+        propagatedBuildInputs = with self; [ pkgs.libspatialindex ];
+
+    });
+ 
 
 	tqdm = 	pythonPackages.buildPythonPackage rec {
 	    name = "tqdm-${version}";
