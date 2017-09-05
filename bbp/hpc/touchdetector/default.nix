@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
   version = "4.3.1-2017.06";
 
   nativeBuildInputs = [pkgconfig cmake ]
-        ++ stdenv.lib.optional (generateDoc == true) [ asciidoc xmlto docbook_xsl libxslt ];
+        ++ stdenv.lib.optional generateDoc [ asciidoc xmlto docbook_xsl libxslt ];
 
 
   buildInputs = [ boost hpctools zlib mpiRuntime libxml2  hdf5 ];
@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
     sha256 = "0pnwx265mm2mmywyi3shn11gi5fvh4s56vlg1v4g7ll881ck5ag7";
   };
 
-  cmakeFlags =  [ "-DLIB_SUFFIX=" ] ++ stdenv.lib.optional (generateDoc == true) [ "-DTOUCHDETECTOR_DOCUMENTATION=TRUE" ];
+  cmakeFlags =  [ "-DLIB_SUFFIX=" ] ++ stdenv.lib.optional generateDoc [ "-DTOUCHDETECTOR_DOCUMENTATION=TRUE" ];
 
   postInstall = ''
                 install -D ../LICENSE.txt $out/share/doc/TouchDetector/LICENSE.txt ;
@@ -40,7 +40,7 @@ stdenv.mkDerivation rec {
                 '';
 
 
-  outputs =  [ "out" "doc" ];
+  outputs =  [ "out" ] ++ stdenv.lib.optional generateDoc "doc";
 
   crossAttrs = {
     ## enforce mpiwrapper in cross compilation mode for bgq
