@@ -270,21 +270,19 @@ let
 
         bluepy_0_11_2 = callPackage ./nse/bluepy {
           bluepy_version = "0.11.2";
-          bluepy_rev = "53ca4cb72ce9d2a881089143acb8561c44b40b55";
-          bluepy_sha256 = "1d4jlar4m90h1dncfiw0m6z85vyiwx7kyphnnd0zjkmds4c2jva0";
         };
 
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
-		bbpsdk = bbpsdk-legacy;
+    		bbpsdk = bbpsdk-legacy;
         };
 
         muk = callPackage ./nse/muk {
-		brion = brion-legacy;
-		bbpsdk = bbpsdk-legacy;
+    		brion = brion-legacy;
+    		bbpsdk = bbpsdk-legacy;
         };
 
         morphscale = callPackage ./nse/morphscale {
-		bbpsdk = bbpsdk-legacy;
+    		bbpsdk = bbpsdk-legacy;
         };
 
         pynrrd = callPackage ./nse/pynrrd {};

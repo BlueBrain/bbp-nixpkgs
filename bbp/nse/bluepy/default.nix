@@ -2,19 +2,34 @@
 , config
 , fetchgitPrivate
 , pythonPackages
-, buildEnv
-, bluepy_version ? "2017.02-c8255"
-, bluepy_rev ? "c825534e9cc59e7016ad6edeb16f657403da5c32"
-, bluepy_sha256 ? "1kcy8cjzj64d7zvr79mvqnj4ykhbia0zg640vpvzjrgsjjf3zd61"
+, bluepy_version ? "0.6.1-2017.02-c8255"
 }:
 
 
 let
+    
+    info-version-legacy = {
+        version = "0.6.1-2017.02-c8255";
+        rev = "c825534e9cc59e7016ad6edeb16f657403da5c32";
+        sha256 = "1kcy8cjzj64d7zvr79mvqnj4ykhbia0zg640vpvzjrgsjjf3zd61";
+    };
 
-    bluepy_sources = fetchgitPrivate {
-        url = config.bbp_git_ssh + "/analysis/BluePy";
-        rev = bluepy_rev;
-        sha256 = bluepy_sha256;
+    info-version-latest = {
+          version = "0.11.2";
+          rev = "53ca4cb72ce9d2a881089143acb8561c44b40b55";
+          sha256 = "1d4jlar4m90h1dncfiw0m6z85vyiwx7kyphnnd0zjkmds4c2jva0";    
+    };
+
+
+    bluepy-info = if (bluepy_version == "0.6.1-2017.02-c8255") then info-version-legacy
+                     else if (bluepy_version == "0.11.2") then info-version-latest
+                     else throw ("not valid bluepy version");
+
+
+    bluepy-src = fetchgitPrivate {
+            url = config.bbp_git_ssh + "/analysis/BluePy";
+            rev = bluepy-info.rev;
+            sha256 = bluepy-info.sha256;
     };
 
     bluepy_runtime_deps = [
@@ -37,9 +52,9 @@ let
 
     bluepy_config = pythonPackages.buildPythonPackage rec {
 	    name = "bluepy-config-${version}";
-    	version = bluepy_version;
+    	version = bluepy-info.version;
 
-        src = bluepy_sources;
+        src = bluepy-src; 
 
         preConfigure = ''
             cd bluepy_configfile
@@ -57,9 +72,9 @@ let
 
     bluepy_core = pythonPackages.buildPythonPackage rec {
         name = "bluepy-core-${version}";
-        version = bluepy_version;
+        version = bluepy-info.version;
 
-        src = bluepy_sources;
+        src = bluepy-src;
 
         preConfigure = ''
             cd bluepy
