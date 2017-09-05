@@ -114,6 +114,12 @@ let
 
         };
 
+        bbpsdk-legacy = bbpsdk.override {
+            legacyVersion = true;
+	    brion = brion-legacy;
+	    lunchbox = lunchbox-legacy;
+        };
+
         vmmlib = callPackage ./common/vmmlib {
 
         };
@@ -135,8 +141,19 @@ let
 
         };
 
+        lunchbox-legacy = callPackage ./viz/lunchbox {
+		legacyVersion = true;
+        };
+
+
+
         keyv = callPackage ./viz/keyv {
 
+        };
+
+        keyv-legacy = callPackage ./viz/keyv {
+		lunchbox = lunchbox-legacy;
+		pression = pression-legacy;
         };
 
         zerobuf = callPackage ./viz/zerobuf {
@@ -159,8 +176,19 @@ let
 
         };
 
-        pression = callPackage ./viz/pression {
+        brion-legacy = callPackage ./viz/brion {
+		legacyVersion = true;
+		lunchbox = lunchbox-legacy;
+		keyv = keyv-legacy;
+        };
 
+
+        pression = callPackage ./viz/pression {
+		
+        };
+
+        pression-legacy = callPackage ./viz/pression {
+		lunchbox = lunchbox-legacy;
         };
 
         collage = callPackage ./viz/collage {
@@ -234,6 +262,7 @@ let
         };
 
         bluejittersdk = callPackage ./nse/bluejittersdk {
+		bbpsdk = bbpsdk-legacy;
         };
 
         bluepy = callPackage ./nse/bluepy {
@@ -246,14 +275,16 @@ let
         };
 
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
+		bbpsdk = bbpsdk-legacy;
         };
 
         muk = callPackage ./nse/muk {
-
+		brion = brion-legacy;
+		bbpsdk = bbpsdk-legacy;
         };
 
         morphscale = callPackage ./nse/morphscale {
-
+		bbpsdk = bbpsdk-legacy;
         };
 
         pynrrd = callPackage ./nse/pynrrd {};
