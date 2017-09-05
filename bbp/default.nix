@@ -350,6 +350,10 @@ let
             mpiRuntime = bbp-mpi;
         };
 
+        pytouchreader = callPackage ./hpc/pytouchreader {
+
+        };
+
         mdtest = callPackage ./benchmark/mdtest {
             mpi = bbp-mpi;
         };
