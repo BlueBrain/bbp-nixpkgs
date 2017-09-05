@@ -912,6 +912,7 @@ let
                             pythonPkgs.setuptools
                             pythonPkgs.cython
                             pythonPkgs.enum
+                            pythonPkgs.deepdish
                        ];
             conflicts = [ python34-full python34-light ] ++ conflicts-modules;
             dependencies = [ nss-wrapper gcc ];

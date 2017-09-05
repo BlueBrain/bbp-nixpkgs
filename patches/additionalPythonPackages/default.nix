@@ -240,6 +240,22 @@ in
 
    };
 
+  deepdish = pythonPackages.buildPythonPackage rec {
+    name = "deepdish-${version}";
+    version = "0.3.4";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/d/deepdish/${name}.tar.gz";
+      sha256 = "198r0h27d8d0ikk79h2xc4jpaw2n602kpjvbm6mzx29l7zyr6f52";
+    };
+
+    buildInputs = with self; [ simplegeneric tables scipy ];
+
+    propagatedBuildInputs = with self; [ scipy ];
+
+   };
+
+
 
   #backport from NixOS 16.09
   ipython = pythonPackages.buildPythonPackage rec {
