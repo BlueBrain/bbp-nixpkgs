@@ -567,6 +567,19 @@ in
   };
 
 
+  lazy_property = pythonPackages.buildPythonPackage rec {
+    version = "0.0.1";
+    name = "lazy-property-${version}";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/l/lazy-property/${name}.tar.gz";
+      sha256 = "100iggkgnm90k3zgylsdj3ahk9hmjhb9wmms663lc8xk95lx671s";
+    };
+
+    propagatedBuildInputs = with self; [ simplegeneric ];
+
+  };
+
 
   # backport from NixOS 16.09
   ipykernel = pythonPackages.buildPythonPackage rec {
