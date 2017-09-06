@@ -210,21 +210,9 @@ let
             };
         };
 
-        hpl = callPackage ./benchmark/hpl (
-            if (icc-native != null) then {
-                stdenv = stdenvICC;
-                mpi = bbp-mpi;
-                extra_cflags = [
-                    "-mcmodel medium"
-                    "-shared-intel"
-                    "-qopenmp"
-                    "-qopt-streaming-stores always"
-                ];
-            }
-            else {
-                mpi = bbp-mpi;
-            }
-        );
+        hpl = callPackage ./benchmark/hpl {
+            mpi = bbp-mpi;
+        };
 
         osgtransparency = callPackage ./viz/osgtransparency {
 
