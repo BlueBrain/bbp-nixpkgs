@@ -2,7 +2,8 @@
   blas,
   fetchurl,
   mpi,
-  stdenv
+  stdenv,
+  extra_cflags ? [],
 }:
 
 stdenv.mkDerivation rec {
@@ -41,10 +42,16 @@ stdenv.mkDerivation rec {
     env
   '';
 
+  cflags = [
+    "-O3"
+    "-Wall"
+    "-w"
+  ] ++ extra_cflags;
+
   preBuild = ''
       export TOPdir=$PWD
       export CC=mpicc
-      export EXTRA_CFLAGS="-O3 -Wall -w"
+      export EXTRA_CFLAGS="${builtins.concatStringsSep " " cflags}"
       export LAlib=" "
       export LINKFLAGS_EXTRA="-L${blas}/lib -lblas"
   '';
