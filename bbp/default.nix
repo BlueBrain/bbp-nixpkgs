@@ -268,6 +268,10 @@ let
         bluepy = callPackage ./nse/bluepy {
         };
 
+        bluepy_0_9_6 = callPackage ./nse/bluepy {
+            bluepy_version = "0.9.6";
+        };
+
         bluepy_0_11_2 = callPackage ./nse/bluepy {
           bluepy_version = "0.11.2";
         };

@@ -14,6 +14,12 @@ let
         sha256 = "1kcy8cjzj64d7zvr79mvqnj4ykhbia0zg640vpvzjrgsjjf3zd61";
     };
 
+    info-version-0_9_6 = {
+        version = "0.9.6";
+        rev = "cf80c78ab2a5d6b0c87fcd75c7692b088d0587c6";
+        sha256 = "0ldn5hmgfyyslpvwyvch27y785jn73mjw15dj7idh1s8dkvacc29";
+    };
+
     info-version-latest = {
           version = "0.11.2";
           rev = "53ca4cb72ce9d2a881089143acb8561c44b40b55";
@@ -22,6 +28,7 @@ let
 
 
     bluepy-info = if (bluepy_version == "0.6.1-2017.02-c8255") then info-version-legacy
+                     else if (bluepy_version == "0.9.6") then info-version-0_9_6
                      else if (bluepy_version == "0.11.2") then info-version-latest
                      else throw ("not valid bluepy version");
 
