@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   name = "coreneuron-${version}";
-  version = "0.9-201707";
+  version = "0.9-dev201708";
 
   src = fetchFromGitHub {
     owner = "BlueBrain";
     repo = "Coreneuron";
-    rev =  "8c69803b1d365f9560cb8d0786f427c3e4847fc4";
-    sha256 = "0zsl7g0b9ss1wqrwc42vfjylxb1sba9c5zq16z4y1qg7km1n40za";
+    rev =  "ffe7b8d42c1fae5eb20cace244d586a3ad3a1364";
+    sha256 = "0db5wl7qm3i54jf3fas1wv31fbdgdkj9hnp8rrszjzr6a18sa8fj";
   };
 
 

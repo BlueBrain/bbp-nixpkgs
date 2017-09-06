@@ -8,7 +8,7 @@
 
 stdenv.mkDerivation rec {
   name = "reportinglib-${version}";
-  version = "2.4.2-2017.07";
+  version = "2.4.2-dev201708";
 
 
   buildInputs = [ stdenv cmake boost pkgconfig  mpiRuntime];
