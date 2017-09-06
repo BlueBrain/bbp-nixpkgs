@@ -23,6 +23,15 @@ assert nrnOnly -> (nrnModl != null);
 
 
 let 
+    neuron-src = {
+        versionMajor = "7";
+        versionMinor = "5";
+        versionDate = "2017-08-06";
+        rev = "ee80eb94d3f34e86299a0498b5c1b87f8e8bcaa3";
+        sha256 = "0msca5q8yf42scmgfj932vbhzs57yaiy11hydr4vy9zhnzp5kk8r";
+    };
+
+
     isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
             then builtins.getAttr "isBlueGene" stdenv else false;
 
@@ -51,7 +60,7 @@ let
                                         export CC=mpixlc_r
                                         export CXX=mpixlcxx_r
 
-                                        export NEURON_PYTHON_VERSION="2.7"
+                                        export NEURON_PYTHON_VERSION="${pythonVersion}"
                                         export ALL_FLAGS="-qnostaticlink -DLAYOUT=0 -DDISABLE_HOC_EXP -DDISABLE_TIMEOUT -O3 -g -DCORENEURON_BUILD -qlist -qsource -qreport -qsmp=noauto -qthreaded";
                                         export CXXFLAGS="$ALL_FLAGS $CXXFLAGS"
                                         export CFLAGS="$ALL_FLAGS  $CFLAGS";
@@ -67,11 +76,11 @@ in
 stdenv.mkDerivation rec {
     name = "neuron-${version}-BBP-${if modlOnly then "modl" else if nrnOnly then "nrn" else "all"}";
 
-    versionMajor = "7";
-    versionMinor = "5";
-    versionDate= "201707";
+    versionMajor = neuron-src.versionMajor;
+    versionMinor = neuron-src.versionMinor;
+    versionDate = neuron-src.versionDate;
 
-    version = "${versionMajor}.${versionMinor}-${versionDate}";
+    version = "${versionMajor}.${versionMinor}-dev${versionDate}";
 
     buildInputs = [ automake autoconf libtool mpiRuntime ncurses readline flex bison python which nrnModl];
 
@@ -81,8 +90,8 @@ stdenv.mkDerivation rec {
     src = fetchFromGitHub {
 		owner = "nrnhines";
 		repo = "nrn";
-        rev = "9406f1c67c627c2f23fd2ea78f1445d3c4ae9877";
-        sha256 = "04g2pcayln0c9g5gykkmkrzby58n65cb8gd2bwl4vc76a4nm2nwi";
+        rev = neuron-src.rev;
+        sha256 = neuron-src.sha256;
     };
 
 
@@ -96,8 +105,8 @@ cat  > src/nrnoc/nrnversion.h << EOF
 #define NRN_MINOR_VERSION "${versionMinor}"
 #define GIT_DATE "${versionDate}"
 #define GIT_BRANCH "master"
-#define GIT_CHANGESET "NO_GIT"
-#define GIT_TREESET "NO_GIT"
+#define GIT_CHANGESET "${neuron-src.rev}"
+#define GIT_TREESET "${neuron-src.rev}"
 #define GIT_LOCAL "NOT_YET_SUPPORTED"
 #define GIT_TAG "NOT_YET_SUPPORTED"
 EOF
@@ -122,26 +131,6 @@ EOF
 
 
     enableParallelBuilding = true;  
-
-    ## generate a pkg-config file for viz team cmake compat
-    ## need to be removed as soon as neurodamus cmake has been refactored
-    preInstall = if nrnOnly then ''
-mkdir -p $out/lib/pkgconfig;
-cat > $out/lib/pkgconfig/Bluron.pc << EOF
-prefix=$out  
-exec_prefix= \''${prefix}/
-libdir= \''${exec_prefix}/lib
-includedir=\''${prefix}/include
-
-Name: Bluron.pc                           
-Description: Bluron pkgconfig file 
-Version: 2.2.1
-Libs: -L\''${libdir}
-Cflags: -I\''${includedir}/ 
-EOF
-''
-else
-'' '';
 
     ## remove duplicated libtool / autotools files
     postInstall = if modlOnly then
