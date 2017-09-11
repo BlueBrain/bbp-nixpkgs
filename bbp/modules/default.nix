@@ -1544,6 +1544,8 @@ let
             packages = [
                             (if isBlueGene then pkgs.bgq-zlib-gcc47.crossDrv
                              else pkgs.zlib)
+                            (if isBlueGene then null
+                             else pkgs.lz4)
                        ];
             conflicts = conflicts-modules;
         };
