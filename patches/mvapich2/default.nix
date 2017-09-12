@@ -57,6 +57,11 @@ stdenv.mkDerivation rec {
 
 
   postInstall = ''
+
+  # Pick C/C++ compilers available when using mpicc and mpicxx
+  sed "s/^CC=.*/CC=cc/" -i $out/bin/mpicc
+  sed "s/^CXX=.*/CXX=c++/" -i $out/bin/mpicxx
+
 	## add pmi directly in the libmvapich2 path to avoid 
         ## modules incompatibilities
 	${if (slurm-llnl!= null) then ''cp ${slurm-llnl}/lib/libpmi* $out/lib/'' else '' ''}
