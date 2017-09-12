@@ -19,13 +19,16 @@ stdenv.mkDerivation rec {
   };
 
   meta = {
-    description = "STREAM benchmark";
+    description = "Measures sustainable memory bandwidth and computation rate";
     longDescription = ''
+      The STREAM benchmark is a simple synthetic benchmark program that
+      measures sustainable memory bandwidth (in MB/s) and the corresponding
+      computation rate for simple vector kernels.
+
       STREAM is the de facto industry standard benchmark
       for measuring sustained memory bandwidth.
-      Documentation for STREAM is on the web at:
-      http://www.cs.virginia.edu/stream/ref.html
     '';
+    homepage = http://www.cs.virginia.edu/stream/ref.html;
   };
 
   # Intel KNL: -xMIC-AVX512
