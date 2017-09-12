@@ -3,7 +3,6 @@
  std-pkgs
 }:
 
-
 let
     MergePkgs = with MergePkgs;  std-pkgs // patches;
     patches =
@@ -25,7 +24,7 @@ let
 
         };
 
-        
+
         c-ares1_3 = callPackage ./c-ares-1.13 {
 
         };
@@ -403,7 +402,7 @@ let
         numpy_1_13_1 = patches-pkgs.pythonPackages.numpy;
 
         ## machine learning tools
-        #tensorflow    
+        #tensorflow
         caffe2 = callPackage ./caffe2 {
 
         };
@@ -420,13 +419,9 @@ let
     });
 
 
-  patches-pkgs = MergePkgs 
-  // { pythonPackages = MergePkgs.pythonPackages // (additionalPythonPackages); } 
+  patches-pkgs = MergePkgs
+  // { pythonPackages = MergePkgs.pythonPackages // (additionalPythonPackages); }
   // { python27Packages = MergePkgs.python27Packages // (additionalPythonPackages); };
 
 in
     patches-pkgs
-
-
-
-
