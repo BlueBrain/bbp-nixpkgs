@@ -75,9 +75,15 @@ let
             opencollada = opencollada-shared;
         };
 
-        intel-mpi-bench = callPackage ./intel-mpi-bench {
-            mpi = mvapich2;
-        };
+        intel-mpi-bench = callPackage ./intel-mpi-bench (
+            if (icc-native != null) then {
+                stdenv = stdenvICC;
+                mpi = mvapich2;
+            }
+            else {
+                mpi = mvapich2;
+            }
+        );
 
         osu-mpi-bench = callPackage ./osu-mpi-bench {
             mpi = mvapich2;
