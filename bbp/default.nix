@@ -4,7 +4,6 @@
  config
 }:
 
-
 let
     pkgFun =
     pkgs:
@@ -116,8 +115,8 @@ let
 
         bbpsdk-legacy = bbpsdk.override {
             legacyVersion = true;
-	    brion = brion-legacy;
-	    lunchbox = lunchbox-legacy;
+            brion = brion-legacy;
+            lunchbox = lunchbox-legacy;
         };
 
         vmmlib = callPackage ./common/vmmlib {
@@ -142,7 +141,7 @@ let
         };
 
         lunchbox-legacy = callPackage ./viz/lunchbox {
-		legacyVersion = true;
+            legacyVersion = true;
         };
 
 
@@ -152,8 +151,8 @@ let
         };
 
         keyv-legacy = callPackage ./viz/keyv {
-		lunchbox = lunchbox-legacy;
-		pression = pression-legacy;
+            lunchbox = lunchbox-legacy;
+            pression = pression-legacy;
         };
 
         zerobuf = callPackage ./viz/zerobuf {
@@ -177,18 +176,18 @@ let
         };
 
         brion-legacy = callPackage ./viz/brion {
-		legacyVersion = true;
-		lunchbox = lunchbox-legacy;
-		keyv = keyv-legacy;
+            legacyVersion = true;
+            lunchbox = lunchbox-legacy;
+            keyv = keyv-legacy;
         };
 
 
         pression = callPackage ./viz/pression {
-		
+
         };
 
         pression-legacy = callPackage ./viz/pression {
-		lunchbox = lunchbox-legacy;
+            lunchbox = lunchbox-legacy;
         };
 
         collage = callPackage ./viz/collage {
@@ -210,9 +209,21 @@ let
             };
         };
 
-        hpl = callPackage ./benchmark/hpl {
-            mpi = bbp-mpi;
-        };
+        hpl = callPackage ./benchmark/hpl (
+            if (icc-native != null) then {
+                stdenv = stdenvICC;
+                mpi = bbp-mpi;
+                extra_cflags = [
+                    "-mcmodel medium"
+                    "-shared-intel"
+                    "-qopenmp"
+                    "-qopt-streaming-stores always"
+                ];
+            }
+            else {
+                mpi = bbp-mpi;
+            }
+        );
 
         osgtransparency = callPackage ./viz/osgtransparency {
 
@@ -250,7 +261,7 @@ let
         };
 
         bluejittersdk = callPackage ./nse/bluejittersdk {
-		bbpsdk = bbpsdk-legacy;
+            bbpsdk = bbpsdk-legacy;
         };
 
         bluepy = callPackage ./nse/bluepy {
@@ -261,20 +272,20 @@ let
         };
 
         bluepy_0_11_2 = callPackage ./nse/bluepy {
-          bluepy_version = "0.11.2";
+            bluepy_version = "0.11.2";
         };
 
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
-    		bbpsdk = bbpsdk-legacy;
+            bbpsdk = bbpsdk-legacy;
         };
 
         muk = callPackage ./nse/muk {
-    		brion = brion-legacy;
-    		bbpsdk = bbpsdk-legacy;
+            brion = brion-legacy;
+            bbpsdk = bbpsdk-legacy;
         };
 
         morphscale = callPackage ./nse/morphscale {
-    		bbpsdk = bbpsdk-legacy;
+            bbpsdk = bbpsdk-legacy;
         };
 
         pynrrd = callPackage ./nse/pynrrd {};
@@ -295,7 +306,7 @@ let
                 [
                     morphsyn bluejittersdk
                     bluepy_0_11_2 bluerepairsdk muk morphscale voxcell
-                    brain-builder bluerecipe workflow-cell-collection 
+                    brain-builder bluerecipe workflow-cell-collection
                 ];
         });
 
@@ -324,15 +335,15 @@ let
         };
 
         functionalizer = enableBGQ callPackage ./hpc/functionalizer {
-             python = nativeAllPkgs.python;
-             pythonPackages = nativeAllPkgs.pythonPackages;
-             mpiRuntime = bbp-mpi;
-             hpctools = hpctools-xlc;
+            python = nativeAllPkgs.python;
+            pythonPackages = nativeAllPkgs.pythonPackages;
+            mpiRuntime = bbp-mpi;
+            hpctools = hpctools-xlc;
         };
 
         touchdetector = enableBGQ callPackage ./hpc/touchdetector {
-             mpiRuntime = bbp-mpi;
-             hpctools = hpctools-xlc; # impossible to use MPI 3.2 for now on BGQ
+            mpiRuntime = bbp-mpi;
+            hpctools = hpctools-xlc; # impossible to use MPI 3.2 for now on BGQ
         };
 
         bluebuilder = enableBGQ callPackage ./hpc/bluebuilder {
@@ -463,12 +474,12 @@ let
         ##
 
         rdmini = callPackage ./hpc/rdmini {
-                ghc = haskellPackages.ghcWithPackages(haskellPackages:
-                with haskellPackages; [  ]);
+            ghc = haskellPackages.ghcWithPackages(haskellPackages:
+            with haskellPackages; [  ]);
         };
 
         steps = enableBGQ-gcc47 callPackage ./hpc/steps {
-            mpiRuntime = if(mergePkgs.isBlueGene) then bbp-mpi-gcc else bbp-mpi-rdma;
+            mpiRuntime = if (mergePkgs.isBlueGene) then bbp-mpi-gcc else bbp-mpi-rdma;
 
             stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
 
@@ -511,7 +522,3 @@ let
         mergePkgs;
 in
   (pkgFun std-pkgs)
-
-
-
-

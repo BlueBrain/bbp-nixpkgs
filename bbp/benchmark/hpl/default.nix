@@ -12,8 +12,16 @@ stdenv.mkDerivation rec {
 
   meta = with stdenv.lib; {
     description = "portable HPC Linpack Benchmark";
+    longDescription = ''
+      HPL is a software package that solves a (random) dense linear system
+      in double precision (64 bits) arithmetic on distributed-memory
+      computers. It can thus be regarded as a portable as well as freely
+      available implementation of the High Performance Computing Linpack
+      Benchmark.
+    '';
     homepage = http://www.netlib.org/benchmark/hpl/;
     platforms = platforms.unix;
+    license = licenses.ipl10;
   };
 
   src = fetchurl {
