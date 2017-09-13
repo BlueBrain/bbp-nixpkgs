@@ -9,36 +9,52 @@ let
     pkgs:
       with pkgs;
       let
+        # detect if the platform is with slurm or not
         has_slurm = builtins.pathExists "/usr/bin/srun";
+
+        # proper BBP default MPI library, depending of the platform
         bbp-mpi = if pkgs.isBlueGene == true then ibm-mpi-xlc
                 else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2
                 else mpich2;
+
+        # proper BBP default MPI library with RDMA support if available
+        # if not available, map to default mpi library
         bbp-mpi-rdma = if pkgs.isBlueGene == true then ibm-mpi-xlc
                 else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2-rdma
                 else mpich2;
+
+        # proper BBP default MPI library forced to GCC, necessary on some platforms
         bbp-mpi-gcc = if pkgs.isBlueGene == true then ibm-mpi
                                 else bbp-mpi;
 
+        # callpackage mapper
         callPackage = newScope mergePkgs;
+
         enableBGQ-proto = caller: file: map:
         if mergePkgs.isBlueGene == true
             then (newScope (mergePkgs // map)) file
             else caller file;
 
+        # using this function before a package will enable
+        # all the required cross-compilation magic for BlueGene/Q
         enableBGQ = caller: file: (enableBGQ-proto caller file mergePkgs.bgq-map);
 
-        noBGQ = argPkg: (if pkgs.isBlueGene then stdenv else argPkg);
 
+        # same than enableBGQ, but provide a GNU GCC environment
         enableBGQ-gcc47 = caller: file: (enableBGQ-proto  caller file mergePkgs.bgq-map-gcc47);
 
+        # define this derivation to NULL if used on BlueGeneQ
+        noBGQ = argPkg: (if pkgs.isBlueGene then stdenv else argPkg);
+
+        
+        
         pkgsWithBGQGCC = if (pkgs.isBlueGene == true) then (pkgs // mergePkgs.bgq-map-gcc47) else pkgs;
-
-
         pkgsWithBGQXLC = if (pkgs.isBlueGene == true) then (pkgs // mergePkgs.bgq-map) else pkgs;
 
         nativeAllPkgs = pkgs;
 
-        mergePkgs = pkgs // rec {
+
+    mergePkgs = pkgs // rec {
 
         inherit bbp-mpi bbp-mpi-rdma;
 
