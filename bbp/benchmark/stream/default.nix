@@ -42,10 +42,17 @@ stdenv.mkDerivation rec {
     "-DN=134217728"
     "-DOFFSET=0"
     "-DNTIMES=10"
-  ];
+  ] ++ stdenv.lib.optionals ( stdenv ? isICC )  [
+    "-mcmodel medium"
+    "-shared-intel"
+    "-qopenmp"
+    "-qopt-streaming-stores always"
+  ] ++ extra_cflags;
+
+
+
   cflags_str = builtins.concatStringsSep
-    " "
-    (builtins.concatLists [cflags extra_cflags]);
+    " " (cflags);
 
   postPatch = ''
     sed -e "/^CC =/d" -i Makefile
