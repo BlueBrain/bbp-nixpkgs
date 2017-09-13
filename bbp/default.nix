@@ -500,7 +500,7 @@ let
 
         steps-mpi = steps; # enable mpi by default
 
-        steps-py3 = steps.override {
+        steps-mpi-py3 = steps.override {
             python = python3;
             pythonPackages = python3Packages;
             cython = python3Packages.cython;
