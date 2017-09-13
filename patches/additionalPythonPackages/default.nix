@@ -251,9 +251,44 @@ in
 
     buildInputs = with self; [ simplegeneric tables scipy ];
 
-    propagatedBuildInputs = with self; [ scipy ];
+    propagatedBuildInputs = with self; [ scipy tables ];
 
    };
+
+  elephant = pythonPackages.buildPythonPackage rec {
+    name = "elephant-${version}";
+    version = "0.4.1";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/e/elephant/${name}.tar.gz";
+      sha256 = "10dc5v4ff2qsywlwnfnpagayqhjvrn6p6lbgpak0kp5crd21mcl6";
+    };
+
+    buildInputs = with self; [ scipy six_1_10 quantities neo ];
+
+    propagatedBuildInputs = with self; [ scipy  six_1_10 quantities neo ];
+
+    passthru = {
+        pythonDeps = with self; [ scipy six_1_10 quantities neo ];
+    };
+
+   };
+
+  neo = pythonPackages.buildPythonPackage rec {
+    name = "neo-${version}";
+    version = "0.5.1";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/n/neo/${name}.tar.gz";
+      sha256 = "1yw0xlsyxglgvqqlp18wk197vhnslbr2pwaiv4nljljv7m3fqa32";
+    };
+
+    buildInputs = with self; [ scipy quantities ];
+
+    propagatedBuildInputs = with self; [ scipy quantities ];
+
+   };
+
 
 
 

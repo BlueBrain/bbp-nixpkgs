@@ -497,6 +497,11 @@ let
             else {}
         );
 
+
+        mpi4py-py27-bbp = pythonPackages.mpi4py.override {
+            mpi = bbp-mpi;
+        };
+
         modules = (import ./modules) { pkgs = mergePkgs; };
 
 
