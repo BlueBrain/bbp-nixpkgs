@@ -47,6 +47,7 @@ stdenv.mkDerivation rec {
 
   preConfigure = ''
     cp setup/Make.${hplarch} .
+
     env
   '';
 
@@ -54,7 +55,13 @@ stdenv.mkDerivation rec {
     "-O3"
     "-Wall"
     "-w"
+  ] ++ stdenv.lib.optionals ( stdenv ? isICC )  [ 
+    "-mcmodel medium"
+    "-shared-intel"
+    "-qopenmp"
+    "-qopt-streaming-stores always"
   ] ++ extra_cflags;
+
 
   preBuild = ''
       export TOPdir=$PWD

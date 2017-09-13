@@ -36,7 +36,7 @@ let
         }) else null;
 
 
-        stdenvICC = overrideCC stdenv WrappedICC;
+        stdenvICC = (overrideCC stdenv WrappedICC) // {  isICC = true; };
 
         stdenvIntelfSupported = if (WrappedICC != null) then stdenvICC else stdenv;
 
