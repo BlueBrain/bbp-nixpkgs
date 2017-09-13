@@ -38,6 +38,10 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
+  patches = [
+    ./tests-link-against-dl-library.patch
+  ];
+
   
   cmakeFlags = [ "-DPETSC_EXECUTABLE_RUNS=TRUE" 
 		 "-DCMAKE_CXX_COMPILER=mpic++" "-DCMAKE_C_COMPILER=mpicc" ];
