@@ -122,6 +122,16 @@ let
             conflicts = conflicts-modules;
         };
 
+        shoc = pkgs.envModuleGen rec {
+            name = "shoc";
+            moduleFilePrefix = "nix/bench";
+            description = pkgs.shoc.meta.description;
+            packages = [
+                pkgs.shoc
+            ];
+            conflicts = conflicts-modules;
+        };
+
         stream = pkgs.envModuleGen rec {
             name = "stream";
             moduleFilePrefix = "nix/bench";
@@ -1945,6 +1955,7 @@ let
                 hpl
                 ior
                 mdtest
+                shoc
                 stream
             ];
         };
