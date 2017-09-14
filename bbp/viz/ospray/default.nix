@@ -10,22 +10,39 @@
 , freeglut
 , readline
 , qt4
+, mpi
+, devel ? false
 }:
 
+let 
+	devel-info = {
+		version = "1.4-devel";
+		rev = "e629d949e26db22cf33e1e19b609319c2389a828";
+		sha256 = "0srrj6147bgfrlkkicfw3km8y6ipjam86qnkvijl47qfqgfxa7xc";
+	};
 
+	release-info = {
+		version = "1.3.1";
+		rev = "4907ab0e25b20cb0a863927c32cea8dfc1a66433";
+		sha256 = "03lv0dl15kvf04xlb8accz66i7cab299fgbd1kv6gkhm47lwr35h";
+	};
+
+	ospray-info = if (devel) then devel-info else release-info;
+
+in
 stdenv.mkDerivation rec {
 	name = "ospray-${version}";
-	version = "1.2.1";
+	version = ospray-info.version;
 
-	buildInputs = [ pkgconfig embree tbb ispc mesa freeglut readline qt4 ];
+	buildInputs = [ pkgconfig embree tbb ispc mesa freeglut readline qt4 mpi ];
 
 	nativeBuildInputs = [ doxygen cmake ];
 
 	src = fetchFromGitHub {
 		owner = "ospray";
 		repo  = "ospray";
-		rev = "be966e3454bbb386a7dd95a5003da536fcb334f6";
-		sha256 = "097d01cfqmwdb4zrrfvvlv246xfwc4b2vhgpm7xdcr3rvn09dcfk";
+		rev = ospray-info.rev;
+		sha256 = ospray-info.sha256;
 	};
 
 
@@ -35,12 +52,13 @@ stdenv.mkDerivation rec {
                    "-Dembree_DIR=${embree}" 
                    "-DEMBREE_MAX_ISA=AVX2"
                    "-DTBB_ROOT=${tbb}"
+                   "-DOSPRAY_MODULE_MPI=ON"
                    ];
 
 
 	outputs = [ "out" "doc" ];
 
-    propagatedBuildInputs = [ ispc  embree ];
+    propagatedBuildInputs = [ ispc embree ];
 
     enableParallelBuilding = true;
 
