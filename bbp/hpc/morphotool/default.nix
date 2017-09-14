@@ -36,6 +36,12 @@ in
       leaveDotGit = true;  # required by setuptools_scm Python module
     };
 
+    meta = {
+      homepage = https://github.com/BlueBrain/morpho-tool;
+      description = "Perform biological neuron morphologies operations";
+      license = stdenv.lib.licenses.gpl2Plus;
+    };
+
     buildInputs = [
       boost
       cereal

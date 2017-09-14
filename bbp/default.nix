@@ -511,6 +511,14 @@ let
 
         modules = (import ./modules) { pkgs = mergePkgs; };
 
+        hpc-doc = callPackage ./common/vizDoc {
+            name = "hpc-documentation";
+            paths = [
+                functionalizer
+                highfive
+                morphotool
+            ];
+        };
 
         inherit enableBGQ;
         };
