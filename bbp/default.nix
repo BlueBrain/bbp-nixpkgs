@@ -234,6 +234,9 @@ let
             mpi = bbp-mpi;
         };
 
+        iperf = callPackage ./benchmark/iperf {
+        };
+
         osgtransparency = callPackage ./viz/osgtransparency {
 
         };
