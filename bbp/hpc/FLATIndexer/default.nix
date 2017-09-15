@@ -19,7 +19,7 @@ doxygen }:
 
 stdenv.mkDerivation rec {
   name = "flatindexer-${version}";
-  version = "1.8.2";
+  version = "1.8.3";
   buildInputs = [
     bbpsdk
     boost
@@ -40,15 +40,11 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/FLATIndex";
-    rev = "d240ef9f83ea0d1acf099769e6df8fdbfeaa67b0";
-    sha256 = "1whfd96jh5d5cqzwc66yg4i2zc7mdi257k0lppljz0avsp93bgdx";
+    rev = "1a6df17f6022af192be857343e39cc3b0d7691af";
+    sha256 = "02lrmzlxjh12lj4qsjh7bw0wlncrclslhqcbbjz8iircrzbxlw0p";
   };
-
 
   cmakeFlags= [ "-DCOMMON_DISABLE_WERROR=TRUE" ];
 
-
   enableParallelBuilding = true;
 }
-
-
