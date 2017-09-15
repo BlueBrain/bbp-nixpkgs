@@ -74,15 +74,9 @@ let
             opencollada = opencollada-shared;
         };
 
-        intel-mpi-bench = callPackage ./intel-mpi-bench (
-            if (icc-native != null) then {
-                stdenv = stdenvICC;
-                mpi = mvapich2;
-            }
-            else {
-                mpi = mvapich2;
-            }
-        );
+        intel-mpi-bench = callPackage ./intel-mpi-bench {
+            mpi = mvapich2;
+        };
 
         osu-mpi-bench = callPackage ./osu-mpi-bench {
             mpi = mvapich2;
@@ -103,19 +97,6 @@ let
             lapack = openblasCompat;
         };
 
-        icc-native = callPackage ./icc-native {
-
-        };
-
-        WrappedICC = if (icc-native != null) then (import ./cc-wrapper  {
-            inherit stdenv binutils coreutils ;
-            libc = glibc;
-            nativeTools = false;
-            nativeLibc = false;
-            cc = icc-native;
-        }) else null;
-
-        stdenvICC = overrideCC stdenv WrappedICC;
 
         ## new virtualGL verison for viz team
         virtualgl = std-pkgs.virtualgl.overrideDerivation ( oldAttr: rec {
