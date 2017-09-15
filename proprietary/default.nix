@@ -23,6 +23,24 @@ let
         };
 
 
+        icc-native = callPackage ./icc-native {
+
+        };
+
+        WrappedICC = if (icc-native != null) then (import ../patches/cc-wrapper  {
+            inherit stdenv binutils coreutils ;
+            libc = glibc;
+            nativeTools = false;
+            nativeLibc = false;
+            cc = icc-native;
+        }) else null;
+
+
+        stdenvICC = (overrideCC stdenv WrappedICC) // {  isICC = true; };
+
+        stdenvIntelfSupported = if (WrappedICC != null) then stdenvICC else stdenv;
+
+
 	};
 in
 
