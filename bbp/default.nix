@@ -507,6 +507,13 @@ let
 
         steps-mpi = steps; # enable mpi by default
 
+        steps-mpi-py3 = steps.override {
+            python = python3;
+            pythonPackages = python3Packages;
+            cython = python3Packages.cython;
+            numpy = python3Packages.numpy;
+        };
+
         stream = callPackage ./benchmark/stream {
             stdenv = stdenvIntelfSupported;
         };
@@ -518,6 +525,14 @@ let
 
         modules = (import ./modules) { pkgs = mergePkgs; };
 
+        hpc-doc = callPackage ./common/vizDoc {
+            name = "hpc-documentation";
+            paths = [
+                functionalizer
+                highfive
+                morphotool
+            ];
+        };
 
         inherit enableBGQ;
         };
