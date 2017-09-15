@@ -1,0 +1,13 @@
+diff --git a/test/unit/cpp/CMakeLists.txt b/test/unit/cpp/CMakeLists.txt
+index 0bada3d..a815d9c 100644
+--- a/test/unit/cpp/CMakeLists.txt
++++ b/test/unit/cpp/CMakeLists.txt
+@@ -29,7 +29,7 @@ add_custom_target(tests)
+ foreach(test_name IN LISTS tests)
+     set(test_target "test_${test_name}")
+ 
+-    target_link_libraries("${test_target}" ${CMAKE_THREAD_LIBS_INIT}  ${libs})
++    target_link_libraries("${test_target}" ${CMAKE_THREAD_LIBS_INIT} ${CMAKE_DL_LIBS} ${libs})
+ 
+     add_test(NAME "${test_name}" COMMAND "${test_target}")
+     add_dependencies(tests "${test_target}")
