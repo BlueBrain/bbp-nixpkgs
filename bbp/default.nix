@@ -225,9 +225,16 @@ let
             };
         };
 
+        shoc = callPackage ./benchmark/shoc {
+            mpi = bbp-mpi;
+        };
+
         hpl = callPackage ./benchmark/hpl {
             stdenv = stdenvIntelfSupported;
             mpi = bbp-mpi;
+        };
+
+        iperf = callPackage ./benchmark/iperf {
         };
 
         osgtransparency = callPackage ./viz/osgtransparency {
@@ -499,6 +506,13 @@ let
         };
 
         steps-mpi = steps; # enable mpi by default
+
+        steps-mpi-py3 = steps.override {
+            python = python3;
+            pythonPackages = python3Packages;
+            cython = python3Packages.cython;
+            numpy = python3Packages.numpy;
+        };
 
         stream = callPackage ./benchmark/stream {
             stdenv = stdenvIntelfSupported;
