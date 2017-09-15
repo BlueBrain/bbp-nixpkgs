@@ -225,9 +225,16 @@ let
             };
         };
 
+        shoc = callPackage ./benchmark/shoc {
+            mpi = bbp-mpi;
+        };
+
         hpl = callPackage ./benchmark/hpl {
             stdenv = stdenvIntelfSupported;
             mpi = bbp-mpi;
+        };
+
+        iperf = callPackage ./benchmark/iperf {
         };
 
         osgtransparency = callPackage ./viz/osgtransparency {

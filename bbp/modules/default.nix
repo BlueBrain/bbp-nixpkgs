@@ -122,6 +122,26 @@ let
             conflicts = conflicts-modules;
         };
 
+        iperf = pkgs.envModuleGen rec {
+            name = "iperf";
+            moduleFilePrefix = "nix/bench";
+            description = pkgs.iperf.meta.description;
+            packages = [
+                pkgs.iperf
+            ];
+            conflicts = conflicts-modules;
+        };
+
+        shoc = pkgs.envModuleGen rec {
+            name = "shoc";
+            moduleFilePrefix = "nix/bench";
+            description = pkgs.shoc.meta.description;
+            packages = [
+                pkgs.shoc
+            ];
+            conflicts = conflicts-modules;
+        };
+
         stream = pkgs.envModuleGen rec {
             name = "stream";
             moduleFilePrefix = "nix/bench";
@@ -1944,7 +1964,9 @@ let
             paths = [
                 hpl
                 ior
+                iperf
                 mdtest
+                shoc
                 stream
             ];
         };

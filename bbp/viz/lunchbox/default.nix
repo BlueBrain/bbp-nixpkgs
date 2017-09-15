@@ -49,7 +49,9 @@ stdenv.mkDerivation rec {
 
   checkPhase = ''
 	export LD_LIBRARY_PATH=''${PWD}/lib/:''${LD_LIBRARY_PATH}
-	ctest -V -E perf 
+	# disable perf -> too much time and memory
+	# disable thread -> will fail when executed on machine with low resource
+	ctest -V -E "(perf|Thread|thread)"
   '';
   
 }
