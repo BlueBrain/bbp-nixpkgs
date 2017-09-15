@@ -399,10 +399,17 @@ let
         pythonPackages = MergePkgs.pythonPackages;
     });
 
+    additionalPython3Packages = MergePkgs.callPackage ./additionalPythonPackages ({
+        pkgs = MergePkgs;
+        pythonPackages = MergePkgs.python3Packages;
+    });
 
-  patches-pkgs = MergePkgs
-  // { pythonPackages = MergePkgs.pythonPackages // (additionalPythonPackages); }
-  // { python27Packages = MergePkgs.python27Packages // (additionalPythonPackages); };
+  patches-pkgs = MergePkgs // {
+      pythonPackages = MergePkgs.pythonPackages // (additionalPythonPackages);
+      python27Packages = MergePkgs.python27Packages // (additionalPythonPackages);
+      python3Packages = MergePkgs.python3Packages // (additionalPython3Packages);
+      python34Packages = MergePkgs.python34Packages // (additionalPython3Packages);
+  };
 
 in
     patches-pkgs
