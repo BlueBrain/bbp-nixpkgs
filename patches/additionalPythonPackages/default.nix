@@ -253,6 +253,10 @@ in
 
     propagatedBuildInputs = with self; [ scipy tables ];
 
+    passthru = {
+        pythonDeps = with self; [ scipy tables ];
+    };
+
    };
 
   elephant = pythonPackages.buildPythonPackage rec {
