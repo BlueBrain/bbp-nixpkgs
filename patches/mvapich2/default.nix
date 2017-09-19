@@ -3,6 +3,7 @@ fetchurl,
 python,
 perl,
 pkgconfig,
+bison,
 numactl ? null,
 hwloc ? null,
 slurm-llnl ? null,
@@ -68,6 +69,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     gfortran
+    bison
     hwloc
     libibverbs
     librdmacm

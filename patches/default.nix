@@ -246,9 +246,9 @@ let
         };
 
         ##
-        # mvapich2 mpi implementation
+        # mvapich2 mpi
         #
-        mvapich2 = callPackage ./mvapich2 {
+        mvapich2-slurm = callPackage ./mvapich2 {
             stdenv = enableDebugInfo stdenv;
             # libibverbs needs a recompilation and a sync
             # on viz cluster lx/viz1 due to InfiniBand OFed ABI maddness
@@ -258,11 +258,11 @@ let
             extraConfigureFlags = [ "--with-device=ch3:nemesis"];
         };
 
-        ## mvapich2 with clang wrapper
-        mvapich2-clang = mvapich2.override {
-            stdenv = ( overrideCC stdenv clang);
+        mvapich2-hydra = mvapich2.override {
+            slurm-llnl = null;
         };
 
+        mvapich2 = mvapich2-slurm;
 
 
         ## MVAPICH 2 support with RDMA / Infiniband
