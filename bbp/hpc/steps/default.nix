@@ -1,58 +1,109 @@
-{ stdenv
-, fetchgitPrivate
+{
+  blas
 , cmake
-, blas
+, cython
+, fetchFromGitHub
+, fetchgitPrivate
+, gtest
 , liblapack
+, libxslt
+, mpiRuntime
+, numpy
+, petsc
 , python
 , pythonPackages
-, libxslt
+, stdenv
 , swig
-, numpy
-, cython
-, petsc
-, mpiRuntime
-, gtest }:
+, integrationTests? false
+}:
 
-let 
+let
 	steps-python-env = python.buildEnv.override {
-		extraLibs = [ 	pythonPackages.unittest2 pythonPackages.numpy pythonPackages.nose
-                		pythonPackages.nose_xunitmp pythonPackages.nose_testconfig
-						pythonPackages.pandas 
-						libxslt  ];
+		extraLibs = [
+      libxslt
+      pythonPackages.pandas
+      pythonPackages.nose_xunitmp
+      pythonPackages.nose
+      pythonPackages.nose_testconfig
+      pythonPackages.numpy
+      pythonPackages.unittest2
+    ];
 	};
 in
 stdenv.mkDerivation rec {
   name = "steps-${version}";
-  version = "3.1-2016.07";
+  version = "3.1-2017.07-PR109";
 
-  nativeBuildInputs = [ cmake swig ];
-  
-  buildInputs = [ stdenv blas cython liblapack mpiRuntime petsc steps-python-env gtest ];
+  nativeBuildInputs = [ cmake swig python ];
+
+  buildInputs = [
+    blas
+    cython
+    gtest
+    liblapack
+    mpiRuntime
+    petsc
+    stdenv
+    python
+    steps-python-env
+  ] ++ stdenv.lib.optional integrationTests validation;
 
   src = fetchgitPrivate {
     url = "ssh://git@github.com/CNS-OIST/HBP_STEPS.git";
-    rev = "ea6216c6440c510f2621029fec7a8d64d157aa02";
-    sha256 = "1jrnhhyxcdfy2qy1a3x4k5ndyzljqvj436a8hbimcyjcmwjmac7q";
+    rev = "aeee332f602151cf1777773c3b7c4e9c6bc64910";
+    sha256 = "126ljq75bmf9ia4y24ym2z9zj1y86ywsnsr5bmx859dfddkdar6q";
   };
-  
+
+  validation = if integrationTests
+  then fetchFromGitHub {
+    owner = "CNS-OIST";
+    repo = "STEPS_Validation";
+    rev = "b2f28b2773bb8b1da79d0cc7bd81d8d042636034";
+    sha256 = "048iblc36nyxhbwcp3l4hpmq92fqajhxxclg7a2a1cwyycpdbz7q";
+  }
+  else null;
 
   enableParallelBuilding = true;
 
-  
-  cmakeFlags = [ "-DPETSC_EXECUTABLE_RUNS=TRUE" 
-		 "-DCMAKE_CXX_COMPILER=mpic++" "-DCMAKE_C_COMPILER=mpicc" ];
- 
   preConfigure = ''
-		# 42 dude !
-		export CC=mpicc
-		export CXX=mpicxx
-        export CXXFLAGS="-pthread -D__STDC_CONSTANT_MACROS"
-  ''; 
+    # 42 dude !
+    export CC=mpicc
+    export CXX=mpicxx
+    export CXXFLAGS="-pthread -D__STDC_CONSTANT_MACROS"
+  '';
+
+  cmakeFlags = [
+    "-DCMAKE_CXX_COMPILER=mpic++"
+    "-DCMAKE_C_COMPILER=mpicc"
+    "-DPETSC_EXECUTABLE_RUNS=TRUE"
+  ];
+
+  doCheck = false;
+
+  checkPhase = ''export LD_LIBRARY_PATH="$PWD/src:$LD_LIBRARY_PATH" ctest -V'';
+
+  doInstallCheck = integrationTests;
+
+  installCheckPhase = if integrationTests
+  then ''
+    runHook preInstallCheck
+    (
+      export PYTHONPATH="$out"
+      cd ${validation}/validation
+      chmod -R u+w .
+
+      ${steps-python-env}/bin/${python.executable} \
+        ${validation}/validation/run_validation_tests.py
+
+      ${mpiRuntime}/bin/mpirun -n 4 \
+        ${steps-python-env}/bin/${python.executable} \
+        ${validation}/validation/run_validation_mpi_tests.py
+    )
+    runHook postInstallCheck
+  ''
+  else null;
 
   passthru = {
-	python-env = steps-python-env;
-
+	  python-env = steps-python-env;
   };
 }
-
-

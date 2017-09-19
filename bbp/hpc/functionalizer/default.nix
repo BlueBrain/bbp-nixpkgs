@@ -28,6 +28,24 @@ stdenv.mkDerivation rec {
   name = "functionalizer-${version}";
   version = "3.10.0";
 
+  meta = {
+    description = "Apply several steps of filtering on touches";
+    longDescription = ''
+      Functionalizer takes as input the touches information output by the
+      BlueDetector and applies the distributed approach of parallel
+      transposition of a matrix (representing neurons connections), in order
+      to perform several steps of filtering and output the final synapses as
+      hdf5 files. It does all IO operations using MPI IO and hdf5 IO - uses
+      parallel hdf5 when available.
+    '';
+    platforms = stdenv.lib.platforms.unix;
+    homepage = "https://bbpcode.epfl.ch/code/#/admin/projects/building/Functionalizer";
+    repository = "ssh://bbpcode.epfl.ch/building/Functionalizer";
+    license = {
+      fullName = "Copyright 2012, Blue Brain Project";
+    };
+  };
+
   buildInputs = [ boost hpctools zlib mpiRuntime libxml2 hdf5 ];
 
   nativeBuildInputs = [
