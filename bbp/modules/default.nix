@@ -981,6 +981,7 @@ let
                             pythonPkgs.cython
                             pythonPkgs.enum
                             pythonPkgs.deepdish
+                            pythonPkgs.tables
                             mpi4py-py27-bbp
                        ];
             conflicts = [ python34-full python34-light ] ++ conflicts-modules;
