@@ -1,6 +1,5 @@
 { stdenv
 , fetchurl
-, buildPythonPackage
 , isPy35 ? null
 , isPy27 ? null
 , cudaSupport ? false
@@ -31,9 +30,9 @@ let
 
   python = pythonPackages.python;
 
-  numpy = pythonPackages.numpy_1_13;
+  numpy = pythonPackages.numpy;
 
-  six = pythonPackages.six_1_10;
+  six = pythonPackages.six;
   
   mock = pythonPackages.mock2;
 
@@ -41,7 +40,7 @@ let
 
   bootstrapped-pip = pythonPackages.bootstrapped-pip;
 
-  werkzeug = buildPythonPackage rec {
+  werkzeug = pythonPackages.buildPythonPackage rec {
     name = "Werkzeug-0.11.10";
 
     src = fetchurl {
@@ -56,7 +55,7 @@ let
 
   };
 
-  self = buildPythonPackage rec {
+  self = pythonPackages.buildPythonPackage rec {
       pname = "tensorflow";
       version = "1.1.0";
       name = "${pname}-${version}";

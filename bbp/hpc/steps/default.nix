@@ -51,7 +51,7 @@ stdenv.mkDerivation rec {
   src = fetchgitPrivate {
     url = "ssh://git@github.com/CNS-OIST/HBP_STEPS.git";
     rev = "aeee332f602151cf1777773c3b7c4e9c6bc64910";
-    sha256 = "126ljq75bmf9ia4y24ym2z9zj1y86ywsnsr5bmx859dfddkdar6q";
+    sha256 = "02ccv7jk19fhxsc0g5awir9r3qnqsjbkzkfcl5cf0a7hn6k1yis3";
   };
 
   validation = if integrationTests

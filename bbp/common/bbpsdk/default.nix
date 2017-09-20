@@ -20,13 +20,13 @@ let
    last = {
         version = "0.26-dev201708";
         rev = "d3ba7b165c3fafdf8fd438be9248d80c8fc3ab8b";
-        sha256 = "1vf6i6pdjqbdww0lq4z6g6vvrs46czf444jv85shyd8achhmg055";
+        sha256 = "0s1d6nanlyl47jg0dbmhwpwrgrgfmnf46hj5bvdjn6s58dyrhg1y";
     };
 
     legacy-repair = {
         version = "0.26-legacy";
         rev = "7ccfd867b43746909ac3429cf44e2e4014431bbf";
-        sha256 = "0kxr69fkn9l3zf2xrs20jl15sifmvwaz7qchlgzkjjzx5r122qsm";
+        sha256 = "1pcrds2sqajm22cvq9fb7vhl857p7w45j0p23q7220qj6am01k4x";
     };
 
     bbpsdk-info = if (legacyVersion) then legacy-repair else last;

@@ -20,12 +20,12 @@ stdenv.mkDerivation rec {
   name = "equalizer-${version}";
   version = "2.1.0-dev201708";
 
-  buildInputs = [ stdenv pkgconfig boost bison flex hwloc x11 cmake lunchbox pression collage opengl hwsd vmmlib qt.base ];
+  buildInputs = [ stdenv pkgconfig boost bison flex hwloc x11 cmake lunchbox pression collage opengl hwsd vmmlib qt.qtbase ];
 
   src = fetchgit {
     url = "https://github.com/Eyescale/Equalizer.git";
     rev = "21b3de02d39e30f14b9a15964a05240bcd28f553";
-    sha256 = "1kpbig757h0a0n6vhwr097p65nahz24wv1v1iv9a0sv6dv40mshk";
+    sha256 = "11nslk5cfilfzamshcv051sr4zwjhqcsb12669y6myqjj4180h83";
   };
 
 
@@ -33,6 +33,11 @@ stdenv.mkDerivation rec {
   preBuild = ''
 	export LD_LIBRARY_PATH="''${PWD}/lib:''${LDLIBRARY_PATH}"
   '';
+
+  cmakeFlags = [
+			"-DCOMMON_DISABLE_WERROR=TRUE"
+			"-DDISABLE_SUBPROJECTS=TRUE" 
+	       ];
 
 
   enableParallelBuilding = true;

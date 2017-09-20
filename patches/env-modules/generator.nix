@@ -46,6 +46,10 @@ extraContent ? ""
                                                     ${depPrefixString} ${(extractName (builtins.head (depList)))}
                                                     ${depBuilder depPrefixString (builtins.tail depList)}
                                                  '';
+
+    # extract compiler libc if required
+    # will be the first package argument
+    extractCompilerLibc = (builtins.head packages).libc;
             
                             
  in
@@ -134,10 +138,10 @@ else
 ##
 ${if (isCompiler == true) then
 ''
-    prepend-path --delim " " NIX_CFLAGS_COMPILE "-I${targetEnv.stdenv.cc.libc}/include"
-    prepend-path --delim " " NIX_LDFLAGS "-L${targetEnv.stdenv.cc.libc}/lib"
+    prepend-path --delim " " NIX_CFLAGS_COMPILE "-I${extractCompilerLibc}/include"
+    prepend-path --delim " " NIX_LDFLAGS "-L${extractCompilerLibc}/lib"
 
-    prepend-path CMAKE_PREFIX_PATH "${targetEnv.stdenv.cc.libc}"
+    prepend-path CMAKE_PREFIX_PATH "${extractCompilerLibc}"
 ''
 else
 ''''

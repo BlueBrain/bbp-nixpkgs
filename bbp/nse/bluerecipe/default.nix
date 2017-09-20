@@ -1,13 +1,13 @@
-{ config, fetchgitPrivate, buildPythonPackage, pythonPackages, bluepy_0_11_2, equation }:
+{ config, fetchgitPrivate, pythonPackages, bluepy_0_11_2, equation }:
 
-buildPythonPackage rec {
+pythonPackages.buildPythonPackage rec {
   name = "bluerecipe-${version}";
   version = "0.1.2.dev0";
   
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/nse/bluerecipe";
     rev = "889a7f75f838c69dd689a3f3f66fa5b22d25fe4b";
-    sha256 = "1x1v7c7xzc2rvqlmkns7370iwnnd85vx5a1snivrgd91frmw8qy4";
+    sha256 = "0brr22f77y2z6j32g4z78qvd3b7j0f9fnp4prcyrz4n63p5rp6yb";
   };
 
   propagatedBuildInputs = with pythonPackages; [ lxml equation bluepy_0_11_2 ];

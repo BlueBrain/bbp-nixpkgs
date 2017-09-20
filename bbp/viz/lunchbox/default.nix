@@ -13,13 +13,13 @@ let
         legacy-info = {
                 version = "2.16.0-legacy";
                 rev = "1a96478";
-                sha256 = "0igsmr741bfwzq0x5x5li53vwh33233bciryrn2fnkigjj0y9jff";
+                sha256 = "0yrdmggcncxahd47m8jvl59c0zcwyydkmdc17rn7npjs369w1y75";
         };
 
         last-info = {
                 version = "1.16.0-dev201708";
                 rev = "80c14e04666aeb64eb69c605663b3065252339c5";
-                sha256 = "0y4ygxrrvil3p34wppiqc08q3abpjk83fcz2pmsqrcz61x4vvmji";
+                sha256 = "0cgb6jckbkjh50ds275zfwp5lpf2nfd4aq7s9qdp76fib18fbbkn";
         };
 
         lunchbox-info = if (legacyVersion) then legacy-info else last-info;

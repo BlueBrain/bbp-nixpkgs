@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
   src = fetchgitExternal {
     url = config.bbp_git_ssh + "/platform/BlueJitterSDK";
     rev = "e9f0b2e2c8b8061995b233d2d2fac5d093034c9e";
-    sha256 = "0l95m2rh071rkcmfsg9drcsmhxg7q2j1f9gv9qpqapk8c2f6kbf3";
+    sha256 = "1gsklk4a1j6vws7kzmwhcgxkdb6lj5mfn3a3hjjpic01sxxipyb1";
   };
 
 

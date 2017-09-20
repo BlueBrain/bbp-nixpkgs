@@ -186,27 +186,28 @@ in
 
 	};
 
-
 	nose_xunitmp = pythonPackages.buildPythonPackage rec {
 			name = "nose_xunitmp-${version}";
 			version = "0.4";
 
 			src = pkgs.fetchurl {
-			url = "https://pypi.python.org/packages/86/cc/ab61fd10d25d090e80326e84dcde8d6526c45265b4cee242db3f792da80f/nose_xunitmp-0.4.0.tar.gz";
-			md5 = "c2d1854a9843d3171b42b64e66bbe54f";
+				url = "https://pypi.python.org/packages/86/cc/ab61fd10d25d090e80326e84dcde8d6526c45265b4cee242db3f792da80f/nose_xunitmp-0.4.0.tar.gz";
+				sha256 = "10p363s46ddm2afl4mql7yxkrrc2g4mshprzglq8lyqf3yycig7k";
 			};
 
 			buildInputs = with pythonPackages; [ nose ];
 
 	}; 
 
+
+	
 	nose_testconfig = pythonPackages.buildPythonPackage rec {
 			name = "nose_testconfig-${version}";
 			version = "0.10";
 
 			src = pkgs.fetchurl {
 				url = "https://pypi.python.org/packages/a0/1a/9bb934f1274715083cfe8139d7af6fa78ca5437707781a1dcc39a21697b4/nose-testconfig-0.10.tar.gz";
-				md5 = "2ff0a26ca9eab962940fa9b1b8e97995";
+				sha256 = "1j4l3a77pwq6wgc5gfmhh52jba4sy9vbmy8sldxqg3wfxqh8lcjl";
 			};
 
 			buildInputs = with pythonPackages; [ nose ];
@@ -214,31 +215,7 @@ in
 	};           
 
 
-  cython = pythonPackages.buildPythonPackage rec {
-    name = "Cython-${version}";
-    version = "0.25.2";
-
-    src = pkgs.fetchurl {
-      url = "https://pypi.io/packages/source/C/Cython/${name}.tar.gz";
-      sha256 = "01h3lrf6d98j07iakifi81qjszh6faa37ibx7ylva1vsqbwx2hgi";
-    };
-
-    setupPyBuildFlags = ["--build-base=$out"];
-
-    buildInputs = with pythonPackages; [ pkgs.pkgconfig ];
-
-   };
-    
-
-  ordereddict = pythonPackages.buildPythonPackage rec {
-    name = "ordereddict-1.1";
-
-    src = pkgs.fetchurl {
-      url = "http://pypi.python.org/packages/source/o/ordereddict/${name}.tar.gz";
-      md5 = "a0ed854ee442051b249bfad0f638bbec";
-    };
-
-   };
+   
 
   deepdish = pythonPackages.buildPythonPackage rec {
     name = "deepdish-${version}";

@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
   src = fetchgit {
     url = "https://github.com/HBPVIS/ZeroBuf.git";
     rev = "748d6aafde87dfce7ed5297e04527e7dabf59d30";
-    sha256 = "1zs5bxb2wrqav9kbyvaqjmkl9r2xvdg4wk4hzdq0bhn9w3sp4z5i";
+    sha256 = "0l81f72l03b1j11rxqafvnxbzhldmz4jifa1npa0hjgrr5wlf8cg";
   };
   
   enableParallelBuilding = false;
