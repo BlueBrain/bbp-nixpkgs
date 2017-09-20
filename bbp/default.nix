@@ -254,12 +254,24 @@ let
         };
 
         ospray = callPackage ./viz/ospray {
+            mpi = bbp-mpi-rdma;
+        };
 
+        ospray-devel = callPackage ./viz/ospray {
+            mpi = bbp-mpi-rdma;
+            devel = true;
+        };
 
+        ospray-modules = callPackage ./viz/ospray-modules {
+            ospray = ospray-devel;
         };
 
         brayns = callPackage ./viz/brayns {
 
+        };
+
+        brayns-devel = callPackage ./viz/brayns {
+            ospray = ospray-devel;
         };
 
         ##
