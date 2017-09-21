@@ -1,0 +1,20 @@
+diff -ur learning_engine-aaec1af/lengine/binding/python/CMakeLists.txt learning_engine-aaec1af.new/lengine/binding/python/CMakeLists.txt
+--- learning_engine-aaec1af/lengine/binding/python/CMakeLists.txt	2017-09-21 11:58:42.305582997 +0200
++++ learning_engine-aaec1af.new/lengine/binding/python/CMakeLists.txt	2017-09-21 11:58:28.261674453 +0200
+@@ -53,8 +53,14 @@
+     target_include_directories(LearnEngine PRIVATE ${PROJECT_SOURCE_DIR} ${PYTHON_INCLUDE_DIR} ${HIGHFIVE_INCLUDE_DIRS} ${NUMPY_INCLUDE_DIRS})
+ 
+ install(TARGETS  LearnEngine
+-LIBRARY DESTINATION ${LIB_INSTALL_DIR}
+-ARCHIVE DESTINATION ${LIB_INSTALL_DIR} )
++LIBRARY DESTINATION ${LIB_INSTALL_DIR}/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages
++)
++
++install(TARGETS  LearnEngine
++LIBRARY DESTINATION ${LIB_INSTALL_DIR}/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/dist-packages
++ )
++
++
+ 
+  #  Install python package, from source
+  #  install(CODE "execute_process( \
