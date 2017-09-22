@@ -2,7 +2,7 @@
 , config
 , boost
 , cgal
-, cmake38
+, cmake
 , fetchgitPrivate
 , gmp
 , morphotool
@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
   src = fetchgitPrivate {
     url = "git@github.com:BlueBrain/morpho-mesher.git";
     rev = "89dc7db96d4bb43f5513daee5366a2e5ea34b990";
-    sha256 = "0fcn01yswzdli60kb59nd930bykm5mvwi4n1xajryrx02m7p543w";
+    sha256 = "0awpsydyp81ppmw4phjdiz95cgffsbqdan6phdd6f59ymn5r86lk";
   };
 
   passthru = {
@@ -33,7 +33,7 @@ stdenv.mkDerivation rec {
   buildInputs = [
     boost
     cgal
-    cmake38
+    cmake
     gmp
     morphotool
     mpfr

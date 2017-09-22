@@ -22,33 +22,33 @@ let
 
   src-master = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "47db2a75328b236b86ce98c743bf98ae8244a599";
-        sha256 = "0pc9pqnd40bzw2bxbm6vsh8xzmd82mnv547h6hs6bn605fkvabri";
+        rev = "2d74e938d6e69d838f5f78b444ab4d32ab8fcaf1";
+        sha256 = "0nv9i8a5bs07n33vc6d5sm79wn7c4cf5ygz3mgd6vnlwv32lh4sb";
     };
 
   src-savestate = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
         rev = "e8c6bfc02e58e58633a869000a1d1da4c9e3d4d5";
-        sha256 = "0zzqaxzc98zyl00nj24jsd8qawa2airi2nmlh0n5j8gzycvd7z2g";
+        sha256 = "11hg1aqj6j4j43psz20v7dlvyxrmsy2hp45qdhiw6y00gmyzgm4j";
   };
 
   src-hippocampus = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "594883e7c676c0aeda955abf815c493428692205";
-        sha256 = "15fbcck17hi99svvhvk4af83756sxnzdgpg8kbvk5145sfjfnkr5";
+        rev = "ad0d34c1a5b91bc9bb35fa2a0c2e522921b86aeb";
+        sha256 = "13wambrrp2fbwxmm50fl2g2zp80p9i22drjqwm6nmlxskffmmkpb";
   };
 
   src-simplification = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "6ef13a2b5137aa892b0134118fe019a137d08e5f";
-        sha256 = "1sj219jilsj2c79z5syhxmnmsvn3jp3ihw889m78m7wxgfxsi2g9";
+        rev = "6722e912201ad156712a057f0c57d1985234a8f9";
+        sha256 = "1z4978698gc98y398lcqxjcqd6n1q793dxrv3yy4yrcmmhzafrf7";
   };
 
 
   src-coreneuron = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
         rev = "d82001eea54ba1602b6c13c00d871b35b0292fed";
-        sha256 = "0xm750bl9whdam2d8bpvixdp1gagq8c3vaxlf7bs9xyw4jmc814n";
+        sha256 = "0fiiqmnh4r4hpy5w3nr8hr49wbgrs9psqi2q9a0m9b1rf81mv1hr";
   };
 
 
@@ -70,8 +70,11 @@ stdenv.mkDerivation rec {
 
 
 
-    CFLAGS="-O2 -g";
-    CXXFLAGS="-O2 -g";
+    # TOFIX: no error format security force disable
+    # https://bbpteam.epfl.ch/project/issues/browse/BBPBGLIB-365
+    neurodamus_cflags="-O2 -g -Wno-error -Wall";
+
+    patches = [ ./neurodamus-printf.patch ];
 
     buildPhase = ''
         mkdir -p $out
@@ -81,14 +84,12 @@ stdenv.mkDerivation rec {
 
         cd lib
 
-        # add additional flags
-
-        ${if (isBGQ == true) then ''export CXXFLAGS="-qsmp ''${CXXFLAGS}" '' else ''''}
+        ${if (isBGQ == true) then ''export CXXFLAGS="-qsmp ''${CXXFLAGS}'' else ''''} 
         ${if (isBGQ == true) then ''export CFLAGS="-qsmp ''${CFLAGS}" '' else ''''}
 
         # build
         echo "build using nrnivmodl $(which nrnivmodl) ..."
-        nrnivmodl -incflags '-I ${reportinglib}/include -I ${hdf5}/include' -loadflags '-L${reportinglib}/lib -lreportinglib -L${hdf5}/lib -lhdf5' modlib
+        nrnivmodl -incflags '-I ${reportinglib}/include -I ${hdf5}/include ${neurodamus_cflags} ' -loadflags '-L${reportinglib}/lib -lreportinglib -L${hdf5}/lib -lhdf5' modlib
 
     '';
 

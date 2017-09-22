@@ -1,5 +1,5 @@
 { stdenv, fetchurl, pkgconfig
-, bzip2, curl, expat, libarchive, xz, zlib, libuv, rhash
+, bzip2, curl, expat, libarchive, xz, zlib, libuv, rhas
 # darwin attributes
 , ps
 , isBootstrap ? false
@@ -44,7 +44,7 @@ stdenv.mkDerivation rec {
 
   buildInputs =
     [ setupHook pkgconfig ]
-    ++ optionals useSharedLibraries [ bzip2 curl expat libarchive xz zlib libuv rhash ]
+    ++ optionals useSharedLibraries [ bzip2 curl expat libarchive xz zlib libuv rhas ]
     ++ optional useNcurses ncurses
     ++ optional useQt4 qt4;
 

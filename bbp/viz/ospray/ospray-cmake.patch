@@ -1,0 +1,25 @@
+diff -ur ospray-be966e3454bbb386a7dd95a5003da536fcb334f6-src.old/cmake/ospray_cmake_config/osprayConfig.cmake.in ospray-be966e3454bbb386a7dd95a5003da536fcb334f6-src/cmake/ospray_cmake_config/osprayConfig.cmake.in
+--- ospray-be966e3454bbb386a7dd95a5003da536fcb334f6-src.old/cmake/ospray_cmake_config/osprayConfig.cmake.in	1970-01-01 01:00:01.000000000 +0100
++++ ospray-be966e3454bbb386a7dd95a5003da536fcb334f6-src/cmake/ospray_cmake_config/osprayConfig.cmake.in	2017-09-19 17:47:29.138000022 +0200
+@@ -76,7 +76,7 @@
+ set(OSPRAY_ROOT ${CURRENT_ROOT_INSTALL_DIR})
+ 
+ # Set the include directories for ospray (itself).
+-set(OSPRAY_INCLUDE_DIR "${OSPRAY_ROOT}/include")
++set(OSPRAY_INCLUDE_DIR "@CMAKE_INSTALL_INCLUDEDIR@")
+ if(NOT EXISTS ${OSPRAY_INCLUDE_DIR}/ospray/version.h)
+   OSPRAY_REPORT_NOT_FOUND(
+     "ospray install root:  ${OSPRAY_ROOT}, "
+@@ -144,10 +144,10 @@
+ endif()
+ 
+ IF(WIN32)
+-  SET(LIBRARY_PATH_PREFIX ${OSPRAY_ROOT}/@CMAKE_INSTALL_LIBDIR@/${CMAKE_IMPORT_LIBRARY_PREFIX})
++  SET(LIBRARY_PATH_PREFIX @CMAKE_INSTALL_LIBDIR@/${CMAKE_IMPORT_LIBRARY_PREFIX})
+   SET(LIBRARY_SUFFIX ${CMAKE_IMPORT_LIBRARY_SUFFIX})
+ ELSE()
+-  SET(LIBRARY_PATH_PREFIX ${OSPRAY_ROOT}/@CMAKE_INSTALL_LIBDIR@/${CMAKE_SHARED_LIBRARY_PREFIX})
++  SET(LIBRARY_PATH_PREFIX @CMAKE_INSTALL_LIBDIR@/${CMAKE_SHARED_LIBRARY_PREFIX})
+   SET(LIBRARY_SUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})
+ ENDIF()
+ 

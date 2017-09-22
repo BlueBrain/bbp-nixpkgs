@@ -7,7 +7,7 @@
 , fetchgitPrivate
 , pkgconfig
 , boost
-, cmake38
+, cmake
 , zlib
 , hdf5
 , highfive
@@ -32,7 +32,7 @@ in
     src = fetchgitPrivate {
       url = "git@github.com:BlueBrain/morpho-tool.git";
       rev = "3b2682747f4544fdc22742fee1249b3870fb0ce9";
-      sha256 = "0ss36andarxy4i9jp8fih51irbbvyyazr3g771rrqw8biimgzzqm";
+      sha256 = "0sjv2klbsypmv8g083sawsv6yinbv4z53gcv541bgyiahn57j6mr";
       leaveDotGit = true;  # required by setuptools_scm Python module
     };
 
@@ -45,7 +45,7 @@ in
     buildInputs = [
       boost
       cereal
-      cmake38
+      cmake
       hdf5
       git
       pkgconfig

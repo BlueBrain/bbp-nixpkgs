@@ -14,6 +14,6 @@ stdenv.mkDerivation rec {
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/algorithms/synthesis/morphsyn";
     rev = "9040c21a7094f906884b6e2883435b0e07283bab";
-    sha256 = "0i5zb94k0wizqqqn517x76vvwm1vyc258vf0c8431365wzvhq5g4";
+    sha256 = "19j4qj65lz5qdfvzy1mbghd31xcjjp6xf4n581nw9vnipnd83j12";
   };
 }

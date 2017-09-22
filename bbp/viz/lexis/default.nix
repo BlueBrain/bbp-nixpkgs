@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
   src = fetchgit {
     url = "https://github.com/HBPVIS/Lexis.git";
     rev = "a4e458a";
-    sha256 = "15z390z3pip43bhd2a0wmqcnzlqqhw857ghrxaf5i49xzhyy4qam";
+    sha256 = "1d5dpmzmnxg6pxin48sv05wgq09ap3ibmmy4g7ikgdjn0qab36hj";
   };
   
   enableParallelBuilding = true;

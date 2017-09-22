@@ -43,7 +43,7 @@ stdenv.mkDerivation rec {
                   
   configureFlags = [ 
                         "--with-boost=${boost.dev}" 
-                        "--with-boost-libdir=${boost.lib}/lib"
+                        "--with-boost-libdir=${boost}/lib"
                     ];
                      
   enableParallelBuilding = true;  

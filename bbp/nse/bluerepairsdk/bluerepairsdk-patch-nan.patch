@@ -1,0 +1,20 @@
+diff -ur BlueRepairSDK-58cf1c9/BlueRepairSDK/src/morphstats.cpp BlueRepairSDK-58cf1c9.new/BlueRepairSDK/src/morphstats.cpp
+--- BlueRepairSDK-58cf1c9/BlueRepairSDK/src/morphstats.cpp	1970-01-01 01:00:01.000000000 +0100
++++ BlueRepairSDK-58cf1c9.new/BlueRepairSDK/src/morphstats.cpp	2017-09-20 16:46:09.159999836 +0200
+@@ -3,6 +3,7 @@
+ #include "utility.h"
+ 
+ #include <algorithm>
++#include <cmath>
+ 
+ #include <boost/math/constants/constants.hpp>
+ 
+@@ -118,7 +119,7 @@
+     ret += children_length(*it);
+   }
+ 
+-  if (isnan(ret)) {
++  if (std::isnan(ret)) {
+     return 0;
+   }
+ 

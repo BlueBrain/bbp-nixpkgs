@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
         src = fetchgitPrivate {
         url = "git@github.com:BlueBrain/ospray-modules.git";
         rev = "35be398e8e400bf4523d64512daefafb658e8115";
-        sha256 = "0bbqb55vvd5fjbfaqri4jywg6nvpmaybqp33428rc5vns1hrqpva";
+        sha256 = "0sa3qji4zbdgl77wdj5w5d7q2mh2f699d85syw1ialpag8pmwjzd";
     };
 
     # right now no top-level CMakeLists.txt, so build the only module we have now

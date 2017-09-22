@@ -146,7 +146,7 @@ let
 
         opengl = mesa;
 
-        qt = qt54;
+        qt = qt56;
 
         servus = callPackage ./viz/servus {
 
@@ -265,6 +265,8 @@ let
         ospray-modules = callPackage ./viz/ospray-modules {
             ospray = ospray-devel;
         };
+
+	qt4 = null;
 
         brayns = callPackage ./viz/brayns {
 

@@ -1,0 +1,22 @@
+diff -ur bbp-2d74e93/lib/modlib/lookupTableV2.mod bbp-2d74e93.new/lib/modlib/lookupTableV2.mod
+--- bbp-2d74e93/lib/modlib/lookupTableV2.mod	1970-01-01 01:00:01.000000000 +0100
++++ bbp-2d74e93.new/lib/modlib/lookupTableV2.mod	2017-09-20 14:10:01.773000251 +0200
+@@ -113,7 +113,7 @@
+ 		if(strncmp(header,"ExtracellularElectrodeLookupTable",33)!=0){
+ 			*tempTable = tbl;
+ 			printf("Header does not match: \n");
+-			printf(header);
++			printf("%s", header);
+ 			return;
+ 		}
+ 		fread(&(tbl->vInfo),sizeof(char),1,file);		
+diff: bbp-2d74e93/simtools/i686/bglbal: No such file or directory
+diff: bbp-2d74e93.new/simtools/i686/bglbal: No such file or directory
+diff: bbp-2d74e93/simtools/i686/bgrun: No such file or directory
+diff: bbp-2d74e93.new/simtools/i686/bgrun: No such file or directory
+diff: bbp-2d74e93/simtools/i686/sortspike: No such file or directory
+diff: bbp-2d74e93.new/simtools/i686/sortspike: No such file or directory
+diff: bbp-2d74e93/simtools/i686/upconfig: No such file or directory
+diff: bbp-2d74e93.new/simtools/i686/upconfig: No such file or directory
+diff: bbp-2d74e93/simtools/i686/upsim: No such file or directory
+diff: bbp-2d74e93.new/simtools/i686/upsim: No such file or directory

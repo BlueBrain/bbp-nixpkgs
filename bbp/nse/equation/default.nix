@@ -1,6 +1,6 @@
-{ fetchurl, pythonPackages, buildPythonPackage }:
+{ fetchurl, pythonPackages }:
 
-buildPythonPackage rec {
+pythonPackages.buildPythonPackage rec {
   version = "1.2.01";
   name = "Equation-${version}";
 

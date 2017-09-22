@@ -1,4 +1,4 @@
 [submodule "std-nixpkgs"]
 	path = std-nixpkgs
-	url = https://github.com/adevress/nixpkgs-bbp-upstream.git
+	url = https://github.com/NixOS/nixpkgs.git
 	branch = bbp

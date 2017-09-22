@@ -125,12 +125,13 @@ let
         };
 
 
+	llvmPackages_3_9 = llvmPackages;
         # llvm 4 backport
-        llvmPackages_3_9 = callPackage ./llvm/3.9 {
-              newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
-              inherit ccWrapperFun;
-              inherit (stdenvAdapters) overrideCC;
-        };
+        # llvmPackages_3_9 = callPackage ./llvm/3.9 {
+        #      newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
+        #      inherit ccWrapperFun;
+        #      inherit (stdenvAdapters) overrideCC;
+        #};
 
         # ispc compiler for brayns
         ispc = callPackage ./ispc {
@@ -156,15 +157,14 @@ let
 
         ## patch version of HDF5 with
         # cpp bindigns enabled
-        hdf5-cpp = callPackage ./hdf5 {
-            szip = null;
-            mpi = null;
-            enableCpp = true;
-        };
+        hdf5-cpp = std-pkgs.hdf5.override {
+		cpp = true;
+	};
+
 
         ## enforce thread safety
         hdf5 =  std-pkgs.hdf5.overrideDerivation  ( oldAttrs:{
-            configureFlags = oldAttrs.configureFlags + " --enable-threadsafe ";
+            configureFlags = oldAttrs.configureFlags ++ [ "--enable-threadsafe" "--enable-unsupported" ];
         });
 
 
@@ -293,24 +293,6 @@ let
 
         };
 
-        cmake36 = std-pkgs.cmake.overrideDerivation ( oldAttr: rec {
-            majorVersion = "3.6";
-            minorVersion = "1";
-            version = "${majorVersion}.${minorVersion}";
-
-            src = fetchurl {
-                url = "${oldAttr.meta.homepage}files/v${majorVersion}/cmake-${version}.tar.gz";
-                sha256 = "04ggm9c0zklxypm6df1v4klrrd85m6vpv13kasj42za283n9ivi8";
-            };
-
-            outputs = [ "out" "doc" ];
-        });
-
-        # cmake 3.8.2
-        cmake38 = callPackage ./cmake {
-            ps = if stdenv.isDarwin then darwin.adv_cmds else null;
-        };
-
         ##
         #
         folly = callPackage ./folly {
@@ -378,7 +360,7 @@ let
 
         };
 
-        cython = additionalPythonPackages.cython;
+        cython = pythonPackages.cython;
 
         numpy_1_13_1 = patches-pkgs.pythonPackages.numpy;
 
