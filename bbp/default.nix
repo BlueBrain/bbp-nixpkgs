@@ -526,6 +526,10 @@ let
             numpy = python3Packages.numpy;
         };
 
+        steps-validation = callPackage ./hpc/steps_validation {
+            steps = steps-mpi;
+        };
+
         stream = callPackage ./benchmark/stream {
             stdenv = stdenvIntelfSupported;
         };
