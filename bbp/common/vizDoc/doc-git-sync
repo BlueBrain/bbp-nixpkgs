@@ -4,4 +4,4 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DOC_DIR="$SCRIPT_DIR/../share/hpc-documentation"
 RSYNC="${RSYNC:-@RSYNC@}"
 
-"$RSYNC" -Lrtv "${DOC_DIR}/" $@
+"$RSYNC" -Lrtv --chmod=u+w "${DOC_DIR}/" $@
