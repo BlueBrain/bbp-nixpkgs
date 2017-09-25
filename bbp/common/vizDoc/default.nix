@@ -16,6 +16,7 @@
 pkgs.runCommand name
   {
     name = name;
+    rsync = "${pkgs.rsync}/bin/rsync";
     pkgs = builtins.toJSON (map (drv: {
       name = drv.name;
       version = drv.version;
@@ -24,5 +25,5 @@ pkgs.runCommand name
     }) paths);
   }
   ''
-    ${pkgs.python2}/bin/python ${./builder.py}
+    ${pkgs.python2}/bin/python ${./builder.py} ${./doc-git-sync}
   ''
