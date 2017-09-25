@@ -43,8 +43,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/Functionalizer";
-    rev = "f8bea9c66fed7ddc56bf30401d7001c39b4dc7ed";
-    sha256 = "0q4kqfrrxk3sqc8kifgb2fis2d0pn4hp52skxj7xhbi3d6pd0145";
+    rev = "765cc24787d5f7389c0f3b2ce836d659186f2ec8";
+    sha256 = "0kbnfxi9xdr29b5292j1snzx7y36sa077h8dmgszab0kvzymh08s";
   };
 
 
