@@ -10,6 +10,7 @@ import json
 import logging
 import os
 import os.path as osp
+import stat
 import sys
 
 
@@ -132,16 +133,17 @@ class Package(object):
     @property
     def project_description(self):
         return dict(
-            packageurl=self.homepage,
-            description=self.description,
-            repository=self.repository,
-            issueurl=self.issueurl,
-            maintainers=', '.join(self.maintainers),
+            name=self.name[:-(len(self.version) + 1)],
             version=self.version,
-            updated=TODAY,
-            license=self.license.get('fullName'),
             major=self.version_major,
             minor=self.version_minor,
+            description=self.description,
+            packageurl=self.homepage,
+            issueurl=self.issueurl,
+            repository=self.repository,
+            license=self.license.get('fullName'),
+            maintainers=', '.join(self.maintainers),
+            updated=TODAY,
         )
 
     @property
@@ -179,12 +181,26 @@ class Package(object):
             print('---', file=ostr)
 
 
+def install_sync_script(script, out, rsync):
+    dest_dir = osp.join(out, 'bin')
+    if not osp.isdir(dest_dir):
+        os.makedirs(dest_dir)
+    dest_file = osp.join(dest_dir, 'doc-git-sync')
+    with open(dest_file, 'w') as ostr:
+        with open(script) as istr:
+            for line in istr:
+                ostr.write(line.replace('@RSYNC@', rsync))
+    st = os.stat(dest_file)
+    os.chmod(dest_file, st.st_mode | stat.S_IEXEC)
+
+
 def main():
     error_occured = False
     try:
         pkgs = get_pkgs()
         out = get_required_env('out')
         name = get_required_env('name')
+        rsync = get_required_env('rsync')
     except EnvironmentError as e:
         error_occured = True
         logging.error(e)
@@ -206,6 +222,8 @@ def main():
             except Exception as e:
                 error_occured = True
                 logger.error(e)
+    if sys.argv:
+        install_sync_script(sys.argv[1], out, rsync)
     sys.exit(1 if error_occured else 0)
 
 
