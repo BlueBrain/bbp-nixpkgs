@@ -392,6 +392,12 @@ let
             pythonPackages = patches-pkgs.python27Packages;
         };
 
+        cctz = callPackage ./cctz {
+        };
+
+        abseil-cpp = callPackage ./abseil-cpp {
+            cctz = patches-pkgs.cctz;
+        };
     };
 
     additionalPythonPackages = MergePkgs.callPackage ./additionalPythonPackages ({
