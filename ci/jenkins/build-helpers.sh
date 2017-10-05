@@ -8,11 +8,14 @@ export BBP_NETWORK_PROXY="http://bbpproxy.epfl.ch:80/"
 
 ## number of cores for -j
 ## use ncore if present
-## or try to get it from /proc if not 
+## or try to get it from /proc if not
 if [[ "$(which ncore 2> /dev/null)x" != "x" ]]; then
-	NCORES="$(ncore)" 
-else
+	NCORES="$(ncore)"
+elif [ -f /proc/cpuinfo ] ;then
 	NCORES="$(grep -c "processor" /proc/cpuinfo)"
+else
+	# OSX
+	NCORES="$(sysctl -n hw.ncpu)"
 fi
 
 ## add 2 process for configure and fetching
@@ -48,7 +51,7 @@ function collectAllGarbage {
 	if [[ "${NODE_IS_BGQ}x" == "x" ]]; then
 		nix-collect-garbage --delete-older-than 30d || true
 	fi
-} 
+}
 
 
 function setupNixEnvironment {
@@ -63,7 +66,7 @@ function setupNixEnvironment {
 	if [[ "${HOSTNAME_STRING}" == *"bg1"* ]]; then
 		echo "#### BlueGene/Q environment detected"
 		export NODE_IS_BGQ=1
-		module load nix 
+		module load nix
 		return
 	fi
 
@@ -94,7 +97,7 @@ function loadNixpkgsEnv {
 	export NIXPKGS_DIR="$(readlink  -f ${SCRIPT_DIR}/../../sourcethis.sh)"
 
 	echo "### load and use BBPpkgs: ${NIXPKGS_DIR} "
-    source ${NIXPKGS_DIR}	
+    source ${NIXPKGS_DIR}
 
 }
 
@@ -102,7 +105,7 @@ function loadNixpkgsEnv {
 function buildDerivationList {
 	echo "### Launch build for $@"
  	NB_PKGS="$#"
-	echo "#### configured for ${NB_PKGS} derivations"	
+	echo "#### configured for ${NB_PKGS} derivations"
 	echo "#### parallel build with -j ${NCORES} "
 
 	export PKG_BUILD_DRV=""
@@ -136,12 +139,12 @@ echo "## Start build for the derivations: $@"
 	export DERIVATION_PATH="./"
 
 	setupNixEnvironment
-	loadNixpkgsEnv 
+	loadNixpkgsEnv
 
 	buildDerivationList $@
 
 	copyClosuresToCache
-	
-	collectAllGarbage	
+
+	collectAllGarbage
 
 }
