@@ -70,12 +70,12 @@ function setupNixEnvironment {
 		return
 	fi
 
-	if [[ "$(which nix)" != "" ]]; then
-		echo "#### nix tool found in path at $(which nix), skip install"
-		return
+	if [[ "$(which nix-build)" != "" ]]; then
+		echo "#### nix tool found in path at $(which nix-build), skip install"
+	else
+		installNixMonoUser
 	fi
 
-	installNixMonoUser
 	if [[ "${NODE_NEED_PROXY}x" != "x" ]] || [[ "${HTTP_PROXY}x" != "x" ]] || [[ "${http_proxy}x" != "x"  ]]; then
 		setupProxyVM
 	fi
