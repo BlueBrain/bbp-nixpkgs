@@ -67,9 +67,14 @@ function setupNixEnvironment {
 		return
 	fi
 
-	if [[ "$(which nix)" != "" ]]; then
-		echo "#### nix tool found in path at $(which nix), skip install"
-		return
+	local NIX_DAEMON_SH=/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+	if [[ "$(which nix-build)" != "" ]]; then
+		echo "#### nix tool found in path at $(which nix-build), skip install"
+	elif [ -e "$NIX_DAEMON_SH" ]; then
+		echo "### sourcing file $NIX_DAEMON_SH"
+		source "$NIX_DAEMON_SH"
+	else
+		installNixMonoUser
 	fi
 
 	installNixMonoUser
@@ -90,8 +95,13 @@ function copyClosuresToCache {
 }
 
 
+function pyreadlink {
+	# `readlink -f` in not standard
+	python -c 'import os, sys; print os.path.realpath(sys.argv[1])' $@
+}
+
 function loadNixpkgsEnv {
-	export NIXPKGS_DIR="$(readlink  -f ${SCRIPT_DIR}/../../sourcethis.sh)"
+	export NIXPKGS_DIR="$(pyreadlink ${SCRIPT_DIR}/../../sourcethis.sh)"
 
 	echo "### load and use BBPpkgs: ${NIXPKGS_DIR} "
     source ${NIXPKGS_DIR}	
