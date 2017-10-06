@@ -22,9 +22,9 @@ let
 	};
 
 	release-info = {
-		version = "1.3.1";
-		rev = "4907ab0e25b20cb0a863927c32cea8dfc1a66433";
-		sha256 = "03lv0dl15kvf04xlb8accz66i7cab299fgbd1kv6gkhm47lwr35h";
+		version = "1.4.0";
+		rev = "d433745f558a8a59340fe6d662601e37d46aec07";
+		sha256 = "19hd87iqkc492ariwqwwavja95f1jh20r12ry6mj5p84f4hhwc8x";
 	};
 
 	ospray-info = if (devel) then devel-info else release-info;
@@ -47,8 +47,7 @@ stdenv.mkDerivation rec {
 
 
 
-    cmakeFlags = [ "-DOSPRAY_USE_EXTERNAL_EMBREE=TRUE"      # disable bundle embree
-                   "-DOSPRAY_ZIP_MODE=OFF"                   #disable bundle dependencies
+    cmakeFlags = [ "-DOSPRAY_ZIP_MODE=OFF"                   #disable bundle dependencies
                    "-Dembree_DIR=${embree}" 
                    "-DEMBREE_MAX_ISA=AVX2"
                    "-DTBB_ROOT=${tbb}"

@@ -14,13 +14,13 @@
 
 stdenv.mkDerivation rec {
     name = "embree-${version}";
-    version = "2.16.5";
+    version = "2.17.0";
 
     src = fetchFromGitHub {
         owner = "embree";
         repo = "embree";
-        rev = "68219475088e35bf5a0f603ae777743b680bc3b2";
-        sha256 = "1h8my7r35q6x203nbwjf0dspj5y3njlgx4nggfiswrgwvx1741sr";
+        rev = "c48d21814cd5c590c7d77e1ac699c586be7ada70";
+        sha256 = "0ri4xndxwc18622kzcz4q0s5ff1dcc6d5vfzimcmxilzm369c2p8";
     };
     
 
