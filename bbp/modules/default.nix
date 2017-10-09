@@ -2337,6 +2337,11 @@ with generic-modules; rec {
                     pkgs.bgq-pythonPackages-gcc47.bg-numpy.crossDrv
                     bgq-pythonPackages-gcc47.bg-mpi4py.crossDrv
                     bgq-pythonPackages-gcc47.bg-h5py.crossDrv
+                    bgq-pythonPackages-gcc47.pyparsing.crossDrv
+                    bgq-pythonPackages-gcc47.bg-matplotlib.crossDrv
+                    bgq-pythonPackages-gcc47.six.crossDrv
+                    bgq-pythonPackages-gcc47.nose.crossDrv
+
                     pkgs.pythonPackages.enum
                     pkgs.pythonPackages.pip
                     pkgs.pythonPackages.virtualenv
