@@ -5,7 +5,7 @@
 , boost
 , assimp ? null
 , ospray
-, embree 
+, tbb
 , freeglut
 , libXmu
 , libXi
@@ -28,25 +28,22 @@ assert restInterface -> (zeroeq != null && zerobuf != null && lexis != null );
 
 stdenv.mkDerivation rec {
 	name = "brayns-${version}";
-	version = "0.3.0-201709";
+	version = "0.3.0-201710";
 
-	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi
+	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb
 					glew vmmlib lunchbox brion hdf5-cpp imagemagick deflect ]
 				  ++ (stdenv.lib.optional) (restInterface) [ zerobuf zeroeq lexis zerobuf.python ];
 
 	src = fetchgit {
 		url  = "https://github.com/BlueBrain/Brayns.git";
-		rev = "355726ca528ab5d9fa01d7be324b9fc4c55bc260";
-		sha256 = "17p6nha0byfrildy58rvwa26dqx8irgdi3l5h62a29i356nvk248";
+		rev = "e80493686378d825608f35d3ea1db4fd748dfaca";
+		sha256 = "03p5vv8rxbrkgfx92vdfvd81m3lcivwxba9yar6d0mzq0lc5jxlp";
 	};
 
 
 	cmakeFlags = [ 
 			"-DCOMMON_DISABLE_WERROR=TRUE"
 			"-DOSPRAY_ROOT=${ospray}"
-			"-DEMBREE_ROOT=${embree}"
-			"-DBRAYNS_USE_OPTIONAL_DEPENDENCY=ON"
-			"-DBRAYNS_LIVRE_ENABLED=OFF"
 		    ];
 
 

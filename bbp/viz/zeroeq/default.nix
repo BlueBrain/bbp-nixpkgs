@@ -11,7 +11,7 @@
 
 stdenv.mkDerivation rec {
   name = "zeroeq-${version}";
-  version = "0.8.0-dev201708";
+  version = "0.9.0-201710";
 
   buildInputs = [ stdenv pkgconfig servus cmake boost zeromq openssl ];
 
@@ -19,8 +19,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/HBPVIS/ZeroEQ.git";
-    rev = "ed5ad57949cba799b21ab5eae039c27f61b935ba";
-    sha256 = "1r2g7sifnv3fcl0n0cxbaypryb4pdj1xrnnpj6v0izgr5n95flr9";
+    rev = "ce76c9ca4f8cd83d470d46023af2c75323c2c7b0";
+    sha256 = "1irq44cab4pihyfxna3ljlr9sdkin7vi6z5c92b34lx4vac0813l";
   };
   
   propagatedBuildInputs = [ servus ];

@@ -2,14 +2,14 @@
 
 stdenv.mkDerivation rec {
   name = "servus-${version}";
-  version= "1.5.1-dev201708";
+  version= "1.6.0-dev201710";
 
   buildInputs = [ stdenv pkgconfig boost cmake doxygen avahi];
 
   src = fetchgit {
     url = "https://github.com/HBPVIS/Servus.git";  
-    rev = "7a60583ad1bb337b9a8b3a8b006e7a342cd57fa4";
-    sha256 = "1vdlkgv3xmv8jqi13vfq3r34gsxchfmzyrvxc3lyz8i880lcm90x";
+    rev = "8d47578a7b738432f294b12af80aa9c9d9080df0";
+    sha256 = "033f2jjkfzaw66nafhgyf1qry8bjbsk3f4plzkhrdhv7hf6kgb18";
   };
   
 

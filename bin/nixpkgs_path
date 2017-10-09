@@ -1,0 +1,23 @@
+# This script need to be sourced
+#
+# e.g 
+# source bin/nixpkgs_path
+# nix-shell -p python -p pythonPackages.numpy 
+
+# export user specific TMPDIR
+export TMPDIR="$(mktemp -d)"
+
+# get current path
+NIXPKGS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && cd .. && pwd -P)"
+
+
+VAR_ENV="export NIX_PATH=\"nixpkgs=${NIXPKGS_DIR}:\$NIX_PATH\""
+
+# print it
+echo "$VAR_ENV"
+
+# export it
+eval "$VAR_ENV"
+
+
+
