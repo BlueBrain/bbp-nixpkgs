@@ -397,6 +397,8 @@ let
 
         abseil-cpp = callPackage ./abseil-cpp {
             cctz = patches-pkgs.cctz;
+            gtest = gtest1_8;
+            gmock = gtest1_8;
         };
     };
 

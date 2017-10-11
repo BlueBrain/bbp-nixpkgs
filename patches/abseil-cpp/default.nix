@@ -14,8 +14,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "adevress";
     repo = "abseil-cpp";
-    rev = "827226585158822f6d20d6899a55ae6f216b80f7";
-    sha256 = "0jkn4g5k80nb1mc3fs64jjyyxx9x7l1z82qw6k274qjj15yy0shf";
+    rev = "977ccb392aa25f026afeed3e12e43a90768e7392";
+    sha256 = "0b5iyjxmc5j9q9dwvxam9d6n509cd39z9fzk82z8kjkp2ay7khg4";
   };
 
   buildInputs = [
