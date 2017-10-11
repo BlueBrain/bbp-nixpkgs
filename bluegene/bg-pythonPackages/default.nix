@@ -56,7 +56,7 @@ let
 	
        });
  
-        bg-h5py = pythonPkgs.h5py.override {
+       bg-h5py = pythonPkgs.h5py.override {
     		mpi = mpiRuntime.crossDrv;
     		mpi4py = bg-mpi4py;
     		mpiSupport = false;
@@ -64,6 +64,11 @@ let
     		hdf5 = bg-hdf5.crossDrv;
     		cython = bg-cython;
 	    };
+
+
+      bg-matplotlib = pythonPkgs.matplotlib.override {
+            numpy = bg-numpy;
+      };
 
 
     };
