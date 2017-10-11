@@ -7587,9 +7587,9 @@ let
   };
 
 
-  matplotlib = callPackage ../../std-nixpkgs/pkgs/development/python-modules/matplotlib/default.nix {
+  matplotlib = callPackage ./matplotlib/default.nix {
     stdenv = if stdenv.isDarwin then pkgs.clangStdenv else pkgs.stdenv;
-    enableGhostscript = true;
+    enableGhostscript = false;
   };
 
 

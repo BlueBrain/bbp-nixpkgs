@@ -58,15 +58,27 @@ stdenv.mkDerivation rec {
   preConfigure = ''
     # 42 dude !
     export CC=mpicc
-    export CXX=mpicxx
+    export CXX=mpic++
     export CXXFLAGS="-pthread -D__STDC_CONSTANT_MACROS"
+
+  '' + (stdenv.lib.optionalString) (stdenv ? isBlueGene) ''
+    echo "enable BGQ specific tuning "
   '';
 
   cmakeFlags = [
     "-DCMAKE_CXX_COMPILER=mpic++"
     "-DCMAKE_C_COMPILER=mpicc"
     "-DPETSC_EXECUTABLE_RUNS=TRUE"
+  ] ++ (stdenv.lib.optionals) (stdenv ? isBlueGene) [
+    "-DTARGET_NATIVE_ARCH=OFF"
   ];
+
+  makeFlags = [ "VERBOSE=1" ];
+
+  postInstall = ''
+    mkdir -p $out/${python.sitePackages}
+    ln -s $out/steps $out/${python.sitePackages}/steps
+  '';
 
   doCheck = false;
 
