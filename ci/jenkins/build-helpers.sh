@@ -8,11 +8,14 @@ export BBP_NETWORK_PROXY="http://bbpproxy.epfl.ch:80/"
 
 ## number of cores for -j
 ## use ncore if present
-## or try to get it from /proc if not 
+## or try to get it from /proc if available
+## or use sysctl on OSX
 if [[ "$(which ncore 2> /dev/null)x" != "x" ]]; then
 	NCORES="$(ncore)" 
-else
+elif [ -e /proc/cpuinfo ]; then
 	NCORES="$(grep -c "processor" /proc/cpuinfo)"
+elif [ "$(uname -s)" = Darwin ] ;then
+	NCORES=$(sysctl -n hw.ncpu)
 fi
 
 ## add 2 process for configure and fetching
