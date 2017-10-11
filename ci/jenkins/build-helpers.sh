@@ -70,6 +70,11 @@ function setupNixEnvironment {
 		return
 	fi
 
+    if [[ "$(which nix)" != "" ]]; then
+        echo "#### nix tool found in path at $(which nix), skip install"
+        return
+    fi
+
 	local NIX_DAEMON_SH=/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 	if [[ "$(which nix-build)" != "" ]]; then
 		echo "#### nix tool found in path at $(which nix-build), skip install"
