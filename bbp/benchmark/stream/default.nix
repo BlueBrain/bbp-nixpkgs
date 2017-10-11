@@ -47,6 +47,8 @@ stdenv.mkDerivation rec {
     "-shared-intel"
     "-qopenmp"
     "-qopt-streaming-stores always"
+  ] ++ stdenv.lib.optionals (! stdenv ? isICC) [
+    "-fopenmp"
   ] ++ extra_cflags;
 
 

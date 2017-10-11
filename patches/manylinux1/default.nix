@@ -3,6 +3,7 @@
 , ncurses
 , xorg
 , glib
+, libxml2
 , buildEnv
 }:
 
@@ -35,6 +36,8 @@ let
                     xorg.libXrender
                     xorg.libX11
                     xorg.libXext
+                    # extension
+                    libxml2 
                 ];
     };
     
