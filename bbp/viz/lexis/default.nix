@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
     sha256 = "15z390z3pip43bhd2a0wmqcnzlqqhw857ghrxaf5i49xzhyy4qam";
   };
   
-  enableParallelBuilding = true;
+  enableParallelBuilding = false;
 
   propagatedBuildInputs = [ vmmlib zerobuf ];
   
