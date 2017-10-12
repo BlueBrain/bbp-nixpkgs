@@ -6,11 +6,9 @@
 , cmake
 , hdf5
 , highfive
-, gsl
 , tbb
 , pkgconfig
 , pythonPackages
-, mpi ? null
 , syntool ? null
 }:
 
@@ -34,8 +32,6 @@ stdenv.mkDerivation rec {
                     cmake
                     tbb
                     pkgconfig
-                    gsl
-                    mpi
                     syntool
                     hdf5
                     highfive
@@ -48,13 +44,11 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate{
     url = config.bbp_git_ssh + "/hpc/learning_engine.git";
-    rev = "aaec1af71d42092002faba0ad0b01977204c3cc5";
-    sha256 = "1ms7ziizj68y3vp99l71g97gx4v06al7yz0dy99xc2xi7ddpg9y8";
+    rev = "11f6e337fb6afbbb46d577bbc62e8c4e1146be4d";
+    sha256 = "0sv7hz881z1bmjh59vb3v85nj5hjmlmf8dn04izwb0lik51rgdkw";
   };
 
   enableParallelBuilding = true;
-
-  patches = [ ./python-path.patch ];
 
   doCheck = true;
 
@@ -65,7 +59,7 @@ stdenv.mkDerivation rec {
 
   checkPhase = ''
     export PYTHONPATH=${pythonPackages.numpy}/lib/${pythonPackages.python.libPrefix}/site-packages:$PYTHONPATH
-    echo "pythonpath $PYTHONPATH"    
+    echo "pythonpath $PYTHONPATH"
     ctest -V -E "brunel.*"
   '';
 
