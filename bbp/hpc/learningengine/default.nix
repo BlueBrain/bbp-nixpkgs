@@ -24,10 +24,10 @@ in
 
 stdenv.mkDerivation rec {
   name = "learningengine-${version}";
-  version = "1.0-201708";
+  version = "1.0-201710";
 
-  buildInputs = [ 
-                    boost 
+  buildInputs = [
+                    boost
                     zlib
                     cmake
                     tbb
@@ -52,6 +52,7 @@ stdenv.mkDerivation rec {
 
   doCheck = true;
 
+  // if support MKL the following option should be added next dictionnary "-DOPT_RANDOM=mkl"
   cmakeFlags =  [
                     "-DLEARNING_ENGINE_SYN2=TRUE"
                     "-DLEARNING_ENGINE_SLURM=FALSE"
