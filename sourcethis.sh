@@ -3,23 +3,52 @@
 
 export NIXPKG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
 
-# setup SSH for gerrit access
 
-if [[ "${NIX_PATH}"  != *"ssh-config-file"* ]]; then
-	export NIX_PATH="ssh-config-file=$HOME/.ssh/config:$NIX_PATH"
+
+function LocalMachineSSHSetup {
+
+    # setup SSH for gerrit access
+    if [[ "${NIX_PATH}"  != *"ssh-config-file"* ]]; then
+    	export NIX_PATH="ssh-config-file=$HOME/.ssh/config:$NIX_PATH"
+    fi
+
+
+    # setup SSH agent forwarding
+    if [[ "${SSH_AUTH_SOCK}x" != "x" ]]; then
+    	export NIX_PATH="ssh-auth-sock=${SSH_AUTH_SOCK}:${NIX_PATH}"
+    fi
+}
+
+
+function vizClusterSSHSetup {
+   
+    # setup SSH for git access on viz cluster at BBP
+    echo "Enable BBP viz cluster configuration"
+
+    export NIX_PATH="ssh-config-file=/etc/nix/ssh/config:$NIX_PATH"
+
+}
+
+function BBPnixpkgsSetup {
+    # and setup the BBP nixpkgs"
+    export NIX_PATH="BBPpkgs=${NIXPKG_DIR}:${NIX_PATH}"
+
+}
+
+
+
+BBPnixpkgsSetup
+
+if [[ "$(hostname)" == *viz* ]]; then
+    vizClusterSSHSetup
+else
+    LocalMachineSSHSetup
 fi
-
-
-# setup SSH agent forwarding
-if [[ "${SSH_AUTH_SOCK}x" != "x" ]]; then
-	export NIX_PATH="ssh-auth-sock=${SSH_AUTH_SOCK}:${NIX_PATH}"
-fi
-
-# and setup the BBP nixpkgs"
-export NIX_PATH="BBPpkgs=${NIXPKG_DIR}:${NIX_PATH}"
 
 
 
 echo "### setup NIX_PATH as"
-echo "export NIX_PATH=${NIX_PATH}"
+VAL_EXPORT="export NIX_PATH=${NIX_PATH}"
+echo "$VAL_EXPORT"
+eval "$VAL_EXPORT"
 
