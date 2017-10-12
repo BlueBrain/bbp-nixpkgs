@@ -52,7 +52,7 @@ stdenv.mkDerivation rec {
 
   doCheck = true;
 
-  // if support MKL the following option should be added next dictionnary "-DOPT_RANDOM=mkl"
+  # if support MKL the following option should be added next dictionnary "-DOPT_RANDOM=mkl"
   cmakeFlags =  [
                     "-DLEARNING_ENGINE_SYN2=TRUE"
                     "-DLEARNING_ENGINE_SLURM=FALSE"
