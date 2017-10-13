@@ -423,7 +423,7 @@ let
         };
 
         learningengine = callPackage ./hpc/learningengine {
-            mpi = bbp-mpi;
+            stdenv = stdenvIntelfSupported;
         };
 
         mod2c = callPackage ./hpc/mod2c {
