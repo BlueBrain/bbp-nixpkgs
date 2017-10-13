@@ -1977,7 +1977,7 @@ let
             bison flex swig gcc gsl freetype gmp libpng hadoken libspatialindex
             sdl2 autotools folly abseil
 
-            cmake vtk itk readline ncurses 
+            cmake readline ncurses 
             python27-light python27-full manylinux1-python
             cython ipython ipykernel pyqt5 elephant 
 
@@ -1997,7 +1997,7 @@ let
 			gdb valgrind uftrace
 
             # nse team
-            neurom morphsyn bluejittersdk bluerepairsdk bluepy muk morphscale
+#            neurom morphsyn bluejittersdk bluerepairsdk bluepy muk morphscale
 
             # viz team
             lunchbox brion zeroeq zerobuf lexis vmmlib
@@ -2012,7 +2012,7 @@ let
             nest mod2c coreneuron flatindexer highfive morphomesher pytouchreader learningengine
 
             # machine learning
-            caffe2 tensorflow
+            # caffe2 tensorflow
 
             #dev env
             dev-env-gcc
@@ -2363,6 +2363,13 @@ with generic-modules; rec {
                     pkgs.pythonPackages.cython
                ];
             conflicts = [ bgq-python27-light ] ++ conflicts-modules;
+
+	   ## on BGQ, we want python to avoid to check for any uid or
+	   ## home related staff, because it might triggers issue on CNK
+	   ## when IO nodes have libnss_sssd installed
+	   extraContent = ''
+		setenv PYTHONUSERBASE /nonexistingdir/python
+	   '';
       };
 
 

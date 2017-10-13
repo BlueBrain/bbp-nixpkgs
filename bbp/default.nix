@@ -58,6 +58,8 @@ let
 
         inherit bbp-mpi bbp-mpi-rdma;
 
+	pandoc = null;
+
         intel-mpi-bench = pkgs.intel-mpi-bench.override {
             mpi = bbp-mpi;
         };
