@@ -25,14 +25,14 @@ function vizClusterSSHSetup {
     # setup SSH for git access on viz cluster at BBP
     echo "Enable BBP viz cluster configuration"
 
-    export NIX_PATH="ssh-config-file=/etc/nix/ssh/config:$NIX_PATH"
+    export NIX_PATH="ssh-config-file=/etc/nix/ssh/config/config:$NIX_PATH"
 
 }
 
 function BBPnixpkgsSetup {
     # and setup the BBP nixpkgs"
     export NIX_PATH="BBPpkgs=${NIXPKG_DIR}:${NIX_PATH}"
-
+    export NIX_PATH="nixpkgs=${NIXPKG_DIR}:${NIX_PATH}"
 }
 
 
