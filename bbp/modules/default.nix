@@ -122,6 +122,16 @@ let
             conflicts = conflicts-modules;
         };
 
+        perftest = pkgs.envModuleGen rec {
+            name = "perftest";
+            moduleFilePrefix = "nix/bench";
+            description = pkgs.perftest.meta.description;
+            packages = [
+                pkgs.perftest
+            ];
+            conflicts = conflicts-modules;
+        };
+
         iperf = pkgs.envModuleGen rec {
             name = "iperf";
             moduleFilePrefix = "nix/bench";
@@ -2029,6 +2039,7 @@ let
                 ior
                 iperf
                 mdtest
+                perftest
                 shoc
                 stream
             ];
