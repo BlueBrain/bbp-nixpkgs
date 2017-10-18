@@ -19,8 +19,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/HBPVIS/ZeroEQ.git";
-    rev = "ce76c9ca4f8cd83d470d46023af2c75323c2c7b0";
-    sha256 = "1irq44cab4pihyfxna3ljlr9sdkin7vi6z5c92b34lx4vac0813l";
+    rev = "1e66ee32846ac6e966eefe39c1c07fb376031880";
+    sha256 = "1cag19qh2l8jvfpkfp5xgbakaj4xrbyb1z56vjnb9ycf940imrx8";
   };
   
   propagatedBuildInputs = [ servus ];
