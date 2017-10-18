@@ -183,6 +183,10 @@ let
 
         };
 
+        rockets = callPackage ./viz/rockets {
+
+        };
+
         lexis = callPackage ./viz/lexis {
 
         };
