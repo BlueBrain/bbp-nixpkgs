@@ -39,19 +39,21 @@ stdenv.mkDerivation rec {
 
   cflags = [
     "-O3"
-    "-DN=134217728"
     "-DOFFSET=0"
-    "-DNTIMES=10"
+    "-DNTIMES=20"
+    "-DTUNE"
+    "-DSTREAM_ARRAY_SIZE=160000000" # 152MB
+    "-mcmodel=medium"
   ] ++ stdenv.lib.optionals ( stdenv ? isICC )  [
-    "-mcmodel medium"
     "-shared-intel"
+    "-mtune=native"
+    "-march=native"
+    "-ffreestanding"
     "-qopenmp"
     "-qopt-streaming-stores always"
   ] ++ stdenv.lib.optionals (! stdenv ? isICC) [
     "-fopenmp"
   ] ++ extra_cflags;
-
-
 
   cflags_str = builtins.concatStringsSep
     " " (cflags);
