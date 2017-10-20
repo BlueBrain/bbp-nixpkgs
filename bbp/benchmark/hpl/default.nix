@@ -74,4 +74,9 @@ stdenv.mkDerivation rec {
   makeFlags = [
     "arch=${hplarch}"
   ];
+
+  installPhase = ''
+    mkdir -p $out/bin
+    cp bin/${hplarch}/xhpl $out/bin
+  '';
 }
