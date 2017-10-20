@@ -63,12 +63,14 @@ stdenv.mkDerivation rec {
   ] ++ extra_cflags;
 
 
+  ldflags = if blas ? isMKL then "-lmkl_rt" else "-lblas";
+
   preBuild = ''
       export TOPdir=$PWD
       export CC=mpicc
       export EXTRA_CFLAGS="${builtins.concatStringsSep " " cflags}"
       export LAlib=" "
-      export LINKFLAGS_EXTRA="-L${blas}/lib -lblas"
+      export LINKFLAGS_EXTRA="-L${blas}/lib ${ldflags}"
   '';
 
   makeFlags = [

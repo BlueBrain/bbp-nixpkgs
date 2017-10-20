@@ -16,7 +16,7 @@ let
 
         patchelf_rewire = callPackage ./patchelf_rewire {
 
-        };  
+        };
 
         allinea_ddt = callPackage ./allinea/ddt {
             inherit patchelf_rewire;
@@ -25,6 +25,9 @@ let
 
         icc-native = callPackage ./icc-native {
 
+        };
+
+        intel-mkl = callPackage ./intel-mkl {
         };
 
         WrappedICC = if (icc-native != null) then (import ../patches/cc-wrapper  {
@@ -40,7 +43,7 @@ let
 
         stdenvIntelfSupported = if (WrappedICC != null) then stdenvICC else stdenv;
 
-
+        intelMKLIfSupported = if (WrappedICC != null) then intel-mkl else pkgs.blas;
 	};
 in
 
