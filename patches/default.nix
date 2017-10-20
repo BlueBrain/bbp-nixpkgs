@@ -43,6 +43,10 @@ let
 
         };
 
+        libwebsockets = callPackage ./libwebsockets {
+
+        };
+
         ##open scene graph, for viz software
         openscenegraph = callPackage ./openscenegraph {
 

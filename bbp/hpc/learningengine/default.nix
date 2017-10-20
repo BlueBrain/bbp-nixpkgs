@@ -6,11 +6,9 @@
 , cmake
 , hdf5
 , highfive
-, gsl
 , tbb
 , pkgconfig
 , pythonPackages
-, mpi ? null
 , syntool ? null
 }:
 
@@ -26,16 +24,14 @@ in
 
 stdenv.mkDerivation rec {
   name = "learningengine-${version}";
-  version = "1.0-201708";
+  version = "1.0-201710";
 
-  buildInputs = [ 
-                    boost 
+  buildInputs = [
+                    boost
                     zlib
                     cmake
                     tbb
                     pkgconfig
-                    gsl
-                    mpi
                     syntool
                     hdf5
                     highfive
@@ -48,16 +44,15 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate{
     url = config.bbp_git_ssh + "/hpc/learning_engine.git";
-    rev = "aaec1af71d42092002faba0ad0b01977204c3cc5";
-    sha256 = "1ms7ziizj68y3vp99l71g97gx4v06al7yz0dy99xc2xi7ddpg9y8";
+    rev = "3f6bd44c7715a1390917cef35cc496c74aa03e24";
+    sha256 = "0cqsgpp3w6cffp1dx409pxslqfwrwi10f2v01mgx5j4n7llxcli3";
   };
 
   enableParallelBuilding = true;
 
-  patches = [ ./python-path.patch ];
-
   doCheck = true;
 
+  # if support MKL the following option should be added next dictionnary "-DOPT_RANDOM=mkl"
   cmakeFlags =  [
                     "-DLEARNING_ENGINE_SYN2=TRUE"
                     "-DLEARNING_ENGINE_SLURM=FALSE"
@@ -65,7 +60,7 @@ stdenv.mkDerivation rec {
 
   checkPhase = ''
     export PYTHONPATH=${pythonPackages.numpy}/lib/${pythonPackages.python.libPrefix}/site-packages:$PYTHONPATH
-    echo "pythonpath $PYTHONPATH"    
+    echo "pythonpath $PYTHONPATH"
     ctest -V -E "brunel.*"
   '';
 
