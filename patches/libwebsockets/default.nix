@@ -12,7 +12,10 @@ stdenv.mkDerivation rec {
   };
 
   buildInputs = [ cmake openssl zlib libuv ];
+
   cmakeFlags = [ "-DLWS_WITH_PLUGINS=ON" ];
+
+  propagatedBuildInputs = [ libuv zlib openssl ];  
 
   meta = {
     description = "Light, portable C library for websockets";
