@@ -56,6 +56,7 @@ stdenv.mkDerivation rec {
   cmakeFlags =  [
                     "-DLEARNING_ENGINE_SYN2=TRUE"
                     "-DLEARNING_ENGINE_SLURM=FALSE"
+		    "-DGIT_VERSION=${src.rev}"
                 ];
 
   checkPhase = ''
