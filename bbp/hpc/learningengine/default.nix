@@ -44,8 +44,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate{
     url = config.bbp_git_ssh + "/hpc/learning_engine.git";
-    rev = "11f6e337fb6afbbb46d577bbc62e8c4e1146be4d";
-    sha256 = "0sv7hz881z1bmjh59vb3v85nj5hjmlmf8dn04izwb0lik51rgdkw";
+    rev = "3f6bd44c7715a1390917cef35cc496c74aa03e24";
+    sha256 = "0cqsgpp3w6cffp1dx409pxslqfwrwi10f2v01mgx5j4n7llxcli3";
   };
 
   enableParallelBuilding = true;
@@ -56,6 +56,7 @@ stdenv.mkDerivation rec {
   cmakeFlags =  [
                     "-DLEARNING_ENGINE_SYN2=TRUE"
                     "-DLEARNING_ENGINE_SLURM=FALSE"
+		    "-DGIT_VERSION=${src.rev}"
                 ];
 
   checkPhase = ''

@@ -10,11 +10,14 @@ let
 	##auto config
 	generic-config = (import ./config/all_config.nix);
 
+    #helpers
+    toPath = builtins.toPath;
+    getEnv = x: if builtins ? getEnv then builtins.getEnv x else "";
+
+
     ## system
     configSystem =
     let
-        toPath = builtins.toPath;
-        getEnv = x: if builtins ? getEnv then builtins.getEnv x else "";
         pathExists = name:
             builtins ? pathExists && builtins.pathExists (toPath name);
 
@@ -27,9 +30,9 @@ let
             else if homeDir != "" && pathExists configFile2 then import (toPath configFile2)
             else {};
 
+
     in
         configExpr // { allowUnfree = true; };
-
 
     ## import all config: blue gene override and others 
     all-config = (import ./bluegene/config.nix) // generic-config // configSystem // config ;
@@ -56,9 +59,14 @@ please run "git submodule update --recursive --init" in your bbp-nixpkgs directo
 
     ## all the bbp packages
     bbp-pkgs = args: (import ./bbp { std-pkgs = bgq-pkgs args; config = all-config; } );
+
+    # add the inait packages
+    inait-pkgs = args: (if ((builtins.pathExists ./inait/proof) == false)
+                        then bbp-pkgs args 
+                        else (import (builtins.toPath ./inait) { pkgs = bbp-pkgs args; config = all-config; }));
     
 in
-    bbp-pkgs { 
+    inait-pkgs { 
        config = all-config;
        inherit system;
     }

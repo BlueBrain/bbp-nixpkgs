@@ -225,6 +225,9 @@ let
             };
         };
 
+        perftest = callPackage ./benchmark/perftest {
+        };
+
         shoc = callPackage ./benchmark/shoc {
             mpi = bbp-mpi;
         };
