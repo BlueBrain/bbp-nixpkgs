@@ -235,6 +235,7 @@ let
         hpl = callPackage ./benchmark/hpl {
             stdenv = stdenvIntelfSupported;
             mpi = bbp-mpi;
+            blas = intelMKLIfSupported;
         };
 
         iperf = callPackage ./benchmark/iperf {

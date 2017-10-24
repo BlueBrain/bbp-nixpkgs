@@ -1,62 +1,59 @@
 { stdenv
 , which
-, config	
+, config
 }:
 
-let 
+let
   has_icc = config ? intel_compiler_path && config.intel_compiler_path != null;
-  compiler_path = if (has_icc) then config.intel_compiler_path else "" ;
+  compiler_path = if (has_icc) then config.intel_compiler_path else "";
 
   gcc_path = "${stdenv.cc}/bin/gcc";
   gxx_path = "${stdenv.cc}/bin/g++";
 
   wrapper = stdenv.mkDerivation {
-	name = "intel-compiler-native";
-	
-	unpackPhase = '' echo "no sources" '';	
+    name = "intel-compiler-native";
 
-	dontBuild = true;
+    unpackPhase = '' echo "no sources" '';
 
-	installPhase = ''
-		mkdir -p $out/{bin,include,lib,nix-support};
+    dontBuild = true;
 
-		echo "contruct icc path from ${compiler_path}";
+    installPhase = ''
+      mkdir -p $out/{bin,include,lib,nix-support};
 
-		ls ${compiler_path}/bin/intel64/ > /dev/null 
+      echo "contruct icc path from ${compiler_path}";
 
-		pushd ${compiler_path}/bin/intel64/
-		for i in ./*
-		do
-			ln -s ${compiler_path}/bin/intel64/$i $out/bin/$i;
-		done
-		popd
+      ls ${compiler_path}/bin/intel64/ > /dev/null
 
-		ln -s $out/bin/icc $out/bin/cc
-		ln -s $out/bin/icpc $out/bin/c++
+      pushd ${compiler_path}/bin/intel64/
+      for i in ./*
+      do
+        ln -s ${compiler_path}/bin/intel64/$i $out/bin/$i;
+      done
+      popd
 
-		pushd ${compiler_path}/compiler/lib/intel64/
-		for i in ./*
-		do
-			ln -s ${compiler_path}/compiler/lib/intel64/$i $out/lib/$i;
-		done
-		popd
+      ln -s $out/bin/icc $out/bin/cc
+      ln -s $out/bin/icpc $out/bin/c++
 
-		ln -s ${compiler_path}/compiler/include $out/include
-		
+      pushd ${compiler_path}/compiler/lib/intel64/
+      for i in ./*
+      do
+        ln -s ${compiler_path}/compiler/lib/intel64/$i $out/lib/$i;
+      done
+      popd
 
-		echo "export NIX_CFLAGS_COMPILE=\"-gcc-name=${gcc_path} \''${NIX_CFLAGS_COMPILE}\"" >> $out/nix-support/compiler_setup.sh
-		echo "export NIX_CFLAGS_COMPILE=\"-gxx-name=${gcc_path} \''${NIX_CFLAGS_COMPILE}\"" >> $out/nix-support/compiler_setup.sh
-		echo "export NIX_CFLAGS_COMPILE=\"-L$out/lib \''${NIX_CFLAGS_COMPILE}\"" >> $out/nix-support/compiler_setup.sh
+      ln -s ${compiler_path}/compiler/include $out/include
 
-	'';
+      echo "export NIX_CFLAGS_COMPILE=\"-gcc-name=${gcc_path} \''${NIX_CFLAGS_COMPILE}\"" >> $out/nix-support/compiler_setup.sh
+      echo "export NIX_CFLAGS_COMPILE=\"-gxx-name=${gcc_path} \''${NIX_CFLAGS_COMPILE}\"" >> $out/nix-support/compiler_setup.sh
+      echo "export NIX_CFLAGS_COMPILE=\"-L$out/lib \''${NIX_CFLAGS_COMPILE}\"" >> $out/nix-support/compiler_setup.sh
+    '';
 
-	preferLocalBuild = true;
+    preferLocalBuild = true;
 
-	passthru = {
-		isIcc = true;
-		gcc	= stdenv.cc;
-	};
-	
+    passthru = {
+      isIcc = true;
+      gcc  = stdenv.cc;
+    };
   };
 
 in
