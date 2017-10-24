@@ -1,0 +1,12 @@
+diff -ur -x common -x Pydoxine Brion-bea8f83/CMakeLists.txt Brion-bea8f83.new/CMakeLists.txt
+--- Brion-bea8f83/CMakeLists.txt	2017-10-25 11:43:21.950175532 +0200
++++ Brion-bea8f83.new/CMakeLists.txt	2017-10-25 11:34:49.734841783 +0200
+@@ -35,6 +35,7 @@
+ common_find_package(HDF5 SYSTEM REQUIRED COMPONENTS C CXX)
+ common_find_package(Keyv REQUIRED)
+ common_find_package(Lunchbox REQUIRED)
++common_find_package(HighFive)
+ common_find_package(MVDTool)
+ common_find_package(NumPy 1.7)
+ common_find_package(OpenMP)
+Only in Brion-bea8f83.new/: build

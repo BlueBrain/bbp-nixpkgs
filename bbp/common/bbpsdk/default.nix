@@ -45,6 +45,9 @@ stdenv.mkDerivation rec {
   };
 
 
+  # will be restricted only to legacy version in future 
+  patches = (stdenv.lib.optionals) (true) [ ./bbpsdk-highfive-legacy.patch ]; 
+
   # BBPSDK boost.python bindings take more than 1G mem per core to compile
   # with recent GCC, disable parallel buildings or GCC SIGBUS
   enableParallelBuilding = false;

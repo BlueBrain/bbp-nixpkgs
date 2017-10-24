@@ -8,6 +8,7 @@ keyv,
 vmmlib,
 pkgconfig, 
 hdf5-cpp, 
+highfive,
 zlib, 
 mvdtool,
 python,
@@ -40,7 +41,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ stdenv pkgconfig 
 				  mvdtool boost 
 				  python pythonPackages.numpy pythonPackages.sphinx pythonPackages.lxml
-				  cmake vmmlib servus lunchbox keyv hdf5-cpp zlib doxygen ];
+				  cmake vmmlib servus lunchbox keyv hdf5-cpp highfive zlib doxygen ];
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/Brion.git";
@@ -48,8 +49,11 @@ stdenv.mkDerivation rec {
     sha256 = brion-info.sha256;
   };
 
-  enableParallelBuilding = true;
+  patches = (stdenv.lib.optionals) (legacyVersion) [ ./brion-legacy-higfive.patch ];
 
+  enableParallelBuilding = false; # memory consumption too high for python bindings generation
+
+  makeFlags = [ "VERBOSE=1" ];
 
   propagatedBuildInputs = [ servus vmmlib boost ];
    

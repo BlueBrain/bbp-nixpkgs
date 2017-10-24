@@ -1,0 +1,11 @@
+diff -ur BBPSDK-7ccfd86/CMakeLists.txt BBPSDK-7ccfd86.new/CMakeLists.txt
+--- BBPSDK-7ccfd86/CMakeLists.txt	2017-10-25 15:23:53.686245318 +0200
++++ BBPSDK-7ccfd86.new/CMakeLists.txt	2017-10-25 15:24:24.666023942 +0200
+@@ -34,6 +34,7 @@
+ common_find_package(Brion REQUIRED)
+ common_find_package(Lunchbox REQUIRED)
+ common_find_package(OpenMP)
++common_find_package(HighFive)
+ common_find_package(MVDTool)
+ common_find_package(PythonInterp)
+ common_find_package(PythonLibs)
