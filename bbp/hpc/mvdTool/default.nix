@@ -2,8 +2,8 @@
 , fetchFromGitHub
 , pkgconfig
 , boost
+, cython
 , cmake
-, zlib
 , hdf5
 , highfive
 , pythonPackages
@@ -19,21 +19,20 @@ in
 
 stdenv.mkDerivation rec {
   name = "mvd-tool-${version}";
-  version = "1.3";
+  version = "1.4";
   
-  buildInputs = [ stdenv pkgconfig boost zlib cmake hdf5 ];
-  nativeBuildInputs = [ python_test_env ];
+  buildInputs = [ stdenv pkgconfig boost highfive cmake hdf5 ];
+  nativeBuildInputs = [ python_test_env cython ];
 
   src = fetchFromGitHub {
     owner = "BlueBrain";
     repo = "MVDTool";
-    rev = "f7517b0ef60172f8a904a2cb4af681635658246c";
-    sha256 = "050lq9anfbqh36mhp66qsqpril2sn8jdp79xsymlc8dpgi7ii1sa";
+    rev = "1fe217e84524d891fc6f24fd696af66ba8d08f62";
+    sha256 = "0lgwp7xzifb66f99hvklr5ij3lqfhim0c7nnrgrxmpwpgdkrh9r7";
   };
   
   cmakeFlags=[ 
-			   "-DUNIT_TESTS=ON"
-			   "-DMVDTOOL_INSTALL_HIGHFIVE=OFF"
+               "-DBUILD_PYTHON_BINDINGS=ON"
 			 ];   
 
   enableParallelBuilding = true;
