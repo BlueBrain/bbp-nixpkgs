@@ -7,11 +7,14 @@ in
 
 	# detect if the installation is prefixed without root right
 	# and without owning the "/nix directory
-       is_prefixed = if (builtins.pathExists "/nix") == true then false else true;
+    is_prefixed = if (builtins.pathExists "/nix") == true then false else true;
 
-  # Internal BBP code base
-  bbp_git_ssh = "ssh://bbpcode.epfl.ch";
+    # Internal BBP code base
+    bbp_git_ssh = "ssh://bbpcode.epfl.ch";
 
+
+    # Internal Inait code base
+    inait_git_ssh = "ssh://gogs@git.inaitcloud.com";
 
       ## allow if defined to source a system specific
       ## bash script in the pkg buidl environment
