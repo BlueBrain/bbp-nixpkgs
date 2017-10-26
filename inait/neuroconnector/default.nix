@@ -25,8 +25,8 @@ pythonPackages.buildPythonPackage rec {
 
   src = fetchgitPrivate {
     url = config.inait_git_ssh + "/SIMULATION/neuroconnector.git";
-    rev = "6e242d8ef799d87f21c63002424a6de37667a98d";
-    sha256 = "1wyirmwqmr6cwia4n226c6wsar1y8irp79rsvff29ln38q4xi8fv";
+    rev = "4e2046afb4c219265150826781bb2d8af38b450a";
+    sha256 = "2wyirmwqmr6cwia4n226c6wsar1y8irp79rsvff29ln38q4xi8fv";
   };
   
   propagatedBuildInputs = [ mvdtool pythonPackages.numpy pythonPackages.rtree ];
