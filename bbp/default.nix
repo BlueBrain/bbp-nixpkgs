@@ -553,6 +553,7 @@ let
                 functionalizer
                 highfive
                 morphotool
+                pytouchreader
             ];
         };
 
