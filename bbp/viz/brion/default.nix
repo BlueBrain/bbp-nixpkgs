@@ -26,8 +26,8 @@ let
 	};
 
 	last-info = {
-		version = "2.0-dev2017.10";
-		rev = "f8e46f43d73ff0a7321338fdc61b58c14f98740b";
+		version = "3.0-dev2017.10";
+		rev = "5396f1e73b0b4df1691d1126a0dbdcfdb7100c7a";
 		sha256 = "19saq2mcwf4aiy0i461xs3n9pfjr650z3ws8amqdahs8kq0a0y0s";
 	};
 
