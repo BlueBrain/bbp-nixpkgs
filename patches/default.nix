@@ -18,6 +18,11 @@ let
             });
         };
 
+        # Boost with Python 3 support
+        boost-py3 = boost.override {
+            python = python3;
+        };
+
         ccWrapperFun = callPackage ../std-nixpkgs/pkgs/build-support/cc-wrapper;
 
         gtest1_8 = callPackage ./gtest {
