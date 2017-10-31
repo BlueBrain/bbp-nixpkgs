@@ -358,6 +358,7 @@ let
             packages =
             [
                 pkgs.neuron
+                pkgs.neuron.iv
                 pkgs.readline
                 pkgs.ncurses
             ];
