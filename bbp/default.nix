@@ -195,6 +195,11 @@ let
 
         };
 
+        brion-py3 = brion.override {
+            pythonPackages = python3Packages;
+            boost = boost-py3;
+        };
+
         brion-legacy = callPackage ./viz/brion {
             legacyVersion = true;
             lunchbox = lunchbox-legacy;

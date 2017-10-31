@@ -11,7 +11,6 @@ hdf5-cpp,
 highfive,
 zlib, 
 mvdtool,
-python,
 pythonPackages,
 doxygen,
 legacyVersion ? false
@@ -40,7 +39,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ stdenv pkgconfig 
 				  mvdtool boost 
-				  python pythonPackages.numpy pythonPackages.sphinx pythonPackages.lxml
+				  pythonPackages.python pythonPackages.numpy pythonPackages.sphinx pythonPackages.lxml
 				  cmake vmmlib servus lunchbox keyv hdf5-cpp highfive zlib doxygen ];
 
   src = fetchgit {
