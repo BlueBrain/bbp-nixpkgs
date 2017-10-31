@@ -149,19 +149,6 @@ let
             clangUnwrapped = llvmPackages_3_9.clang-unwrapped;
         };
 
-        ## nvidia openGL implementation
-        # required on viz cluster with nvidia hardware
-        # where the native library are not usable ( too old )
-        nvidia-x11-34032 = callPackage ./nvidia-driver/legacy340-32-kernel26.nix {
-            libsOnly = true;
-            kernel = null;
-        };
-
-        nvidia-x11-36757 = callPackage ./nvidia-driver/nvidia-viz-default.nix {
-            libsOnly = true;
-            kernel = null;
-        };
-
 
         ## patch version of HDF5 with
         # cpp bindigns enabled
