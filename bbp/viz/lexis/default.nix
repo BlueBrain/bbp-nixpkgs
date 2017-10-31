@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/HBPVIS/Lexis.git";
-    rev = "a4e458a";
+    rev = "f84436c295fb0401e72f9b9f2370bbbbba2cc059";
     sha256 = "15z390z3pip43bhd2a0wmqcnzlqqhw857ghrxaf5i49xzhyy4qam";
   };
   
