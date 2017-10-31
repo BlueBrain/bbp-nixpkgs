@@ -450,17 +450,10 @@ let
         };
 
 
-        neuron-modl = callPackage ./hpc/neuron {
-            stdenv = (enableDebugInfo pkgsWithBGQXLC.stdenv);
-            mpiRuntime = null;
-            modlOnly = true;
-        };
-
         neuron = enableBGQ callPackage ./hpc/neuron {
             stdenv = (enableDebugInfo pkgsWithBGQXLC.stdenv);
             mpiRuntime = bbp-mpi;
-            nrnOnly = true;
-            nrnModl = mergePkgs.neuron-modl;
+            isBlueGene = pkgs.isBlueGene;
         };
 
 
