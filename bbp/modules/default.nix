@@ -1992,6 +1992,7 @@ let
                             git mercurial
                             #build tools
                             cmake
+                            ninja 
 
                             # libs
                             default_mpi
@@ -2017,7 +2018,6 @@ let
                 gldev
                 ncurses
                 readline
-                ninja
                 openblas
                 libxml2
                 zlib
