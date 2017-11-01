@@ -19,7 +19,9 @@ let
         };
 
         # Boost with Python 3 support
-        boost-py3 = boost.override {
+        boost-py3 = (boost.overrideDerivation ( oldAttr: {
+            name = oldAttr.name + "-py3";
+        })).override {
             python = python3;
         };
 
