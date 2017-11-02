@@ -328,6 +328,8 @@ let
         trilinos = callPackage ./trilinos {
             mpi = pkgs.openmpi;
             parmetis = parmetis;
+            withZoltan = true;
+            yaml-cpp = yaml-cpp;
         };
 
         ## profiling tools
@@ -404,6 +406,29 @@ let
             cctz = patches-pkgs.cctz;
             gtest = gtest1_8;
             gmock = gtest1_8;
+        };
+
+        omega_h = callPackage ./omega_h {
+            cmake38 = patches-pkgs.cmake38;
+            gmodel = patches-pkgs.gmodel;
+            libmeshb = patches-pkgs.libmeshb;
+            trilinos = trilinos.override {
+                buildSharedLibs = true;
+                mpi = mpich2;
+                withKokkos = true;
+                withTeuchos = true;
+                withZoltan = true;
+                yaml-cpp = yaml-cpp;
+            };
+        };
+
+        libmeshb = callPackage ./libmeshb {
+        };
+
+        gmodel =  callPackage ./gmodel {
+        };
+
+        yaml-cpp = callPackage ./yaml-cpp {
         };
     };
 
