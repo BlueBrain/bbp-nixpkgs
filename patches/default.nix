@@ -380,6 +380,9 @@ let
 
         numpy_1_13_1 = patches-pkgs.pythonPackages.numpy;
 
+        rocksdb = callPackage ./rocksdb {
+        };
+
         ## machine learning tools
         #tensorflow
         caffe2 = callPackage ./caffe2 {
