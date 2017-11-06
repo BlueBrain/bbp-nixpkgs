@@ -56,7 +56,8 @@ in stdenv.mkDerivation rec {
   ''
   # Patch llvm-config to return correct library path based on --link-{shared,static}.
   + stdenv.lib.optionalString (enableSharedLibraries) ''
-    substitute '${./llvm-outputs.patch}' ./llvm-outputs.patch --subst-var lib
+    export LLVM_INSTALL_PREFIX="$out"
+    substitute '${./llvm-outputs.patch}' ./llvm-outputs.patch --subst-var LLVM_INSTALL_PREFIX
     patch -p1 < ./llvm-outputs.patch
   ''
   # Remove broken tests: (https://bugs.llvm.org//show_bug.cgi?id=31610)
