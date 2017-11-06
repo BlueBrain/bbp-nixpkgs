@@ -390,6 +390,10 @@ let
             pythonPackages = patches-pkgs.python27Packages;
         };
 
+        tensorflow-py3 = tensorflow.override {
+            pythonPackages = patches-pkgs.python34Packages;
+        };
+
         cctz = callPackage ./cctz {
         };
 
