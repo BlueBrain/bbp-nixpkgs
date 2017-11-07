@@ -8,7 +8,9 @@
 , mpiRuntime
 , bison
 , flex
-, neurodamus}:
+, neurodamus
+, frontendCompiler ? null
+}:
 
 stdenv.mkDerivation rec {
   name = "coreneuron-${version}";
@@ -21,11 +23,17 @@ stdenv.mkDerivation rec {
   };
 
 
-
   buildInputs = [ boost bison flex mpiRuntime ];
 
   nativeBuildInputs= [ python perl pkgconfig cmake ];
 
-  cmakeFlags= ["-DADDITIONAL_MECHPATH=${neurodamus.src}/lib/modlib/" "-DADDITIONAL_MECHS=${neurodamus.src}/lib/modlib/coreneuron_modlist.txt"];
+  cmakeFlags= [ 
+                "-DADDITIONAL_MECHPATH=${neurodamus.src}/lib/modlib/"
+                "-DADDITIONAL_MECHS=${neurodamus.src}/lib/modlib/coreneuron_modlist.txt"
+  ]
+  ++ (stdenv.lib.optionals) (frontendCompiler != null) [ 
+                "-DFRONTEND_C_COMPILER=${frontendCompiler}/bin/cc"
+                "-DFRONTEND_CXX_COMPILER=${frontendCompiler}/bin/c++"
+  ];
 
 }
