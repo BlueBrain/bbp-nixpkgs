@@ -465,6 +465,12 @@ let
             isBlueGene = pkgs.isBlueGene;
         };
 
+        neuron-nomultisend = neuron.override {
+            multiSend = false;
+        }; 
+
+
+
 
         reportinglib = enableBGQ callPackage ./hpc/reportinglib {
             mpiRuntime = bbp-mpi;
