@@ -452,6 +452,7 @@ let
         coreneuron = enableBGQ callPackage ./hpc/coreneuron {
             mpiRuntime = bbp-mpi;
             neurodamus = neurodamus-coreneuron;
+            frontendCompiler = if (pkgs.isBlueGene) then gcc else null;
         };
 
         bluron = enableBGQ callPackage ./hpc/bluron/cmake-build.nix {
