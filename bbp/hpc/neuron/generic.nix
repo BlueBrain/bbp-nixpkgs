@@ -27,8 +27,6 @@ stdenv.mkDerivation rec {
     buildInputs = [ automake autoconf libtool mpiRuntime ncurses readline flex bison python which interview];
 
 
-	patches = [ ./nrn.patch ];
-
     src = neuron-src.srcs;
 
 ## neuron configure its version number from commit number.
