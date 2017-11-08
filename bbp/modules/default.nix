@@ -2720,6 +2720,7 @@ with generic-modules; rec {
             bgq-coreneuron 
             bgq-neurodamus bgq-neurodamus-savestate bgq-neurodamus-hippocampus bgq-mod2c
             bgq-neuron
+            nest 
         ];
       };
 

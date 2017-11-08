@@ -14,8 +14,8 @@
 stdenv.mkDerivation rec {
   name = "nest-${version}";
   version = "2.12.0-201706";
-  buildInputs = [ stdenv cmake libtool pkgconfig mpiRuntime ]
-               ++ stdenv.lib.optional (isBGQ == false) [ cython gsl readline python];
+  buildInputs = [ stdenv cmake libtool pkgconfig mpiRuntime python cython ]
+               ++ stdenv.lib.optional (isBGQ == false) [ gsl readline];
 
   src = fetchFromGitHub {
     owner = "nest";
@@ -35,8 +35,8 @@ stdenv.mkDerivation rec {
 	       ++ stdenv.lib.optional (isBGQ) [ "-Denable-bluegene=Q"
 					     "-Dwith-gsl=OFF"
 					     "-Dwith-readline=OFF"
-					     "-Dwith-python=OFF"
-					     "-Dstatic-libraries=ON" ];
+					     "-Dwith-python=ON"
+					     "-Dstatic-libraries=OFF" ];
 
 
   enableParallelBuilding = true;
