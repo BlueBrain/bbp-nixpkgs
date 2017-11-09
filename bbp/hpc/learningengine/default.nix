@@ -57,7 +57,12 @@ stdenv.mkDerivation rec {
                     "-DLEARNING_ENGINE_SYN2=TRUE"
                     "-DLEARNING_ENGINE_SLURM=FALSE"
 		    "-DGIT_VERSION=${src.rev}"
+		    "-DCMAKE_CXX_FLAGS=-axmic-avx512"
                 ];
+
+  makeFlags = [
+                    "VERBOSE=1"
+              ];
 
   checkPhase = ''
     export PYTHONPATH=${pythonPackages.numpy}/lib/${pythonPackages.python.libPrefix}/site-packages:$PYTHONPATH
