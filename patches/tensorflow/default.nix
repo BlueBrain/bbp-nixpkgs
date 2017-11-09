@@ -60,21 +60,36 @@ let
   self = buildPythonPackage rec {
       pname = "tensorflow";
       version = "1.1.0";
-      name = "${pname}-${version}";
+      name = "${pname}${if cudaSupport then "-gpu" else ""}-${version}";
       format = "wheel";
       disabled = false;
 
-      src = if python.majorVersion == "2.7"
+      src =
+      if python.majorVersion == "2.7"
       then
-        fetchurl {
-          url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp27-none-linux_x86_64.whl";
-          sha256 = "0ld3hqx3idxk0zcrvn3p9yqnmx09zsj3mw66jlfw6fkv5hznx8j2";
-        }
+        if cudaSupport
+        then
+            fetchurl {
+              url = "https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-${version}-cp27-none-linux_x86_64.whl";
+              sha256 = "1baa9jwr6f8f62dyx6isbw8yyrd0pi1dz1srjblfqsyk1x3pnfvh";
+            }
+        else
+            fetchurl {
+              url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp27-none-linux_x86_64.whl";
+              sha256 = "0ld3hqx3idxk0zcrvn3p9yqnmx09zsj3mw66jlfw6fkv5hznx8j2";
+            }
       else
-        fetchurl {
-          url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp34-cp34m-linux_x86_64.whl";
-          sha256 = "07x61jpa62hv1i1345mpgj66qyhr203x15zhv7c0i4nf1kdl1bx0";
-        }
+        if cudaSupport
+        then
+          fetchurl {
+            url = "https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-${version}-cp34-cp34m-linux_x86_64.whl";
+            sha256 = "0rrkxcww1kl3i1kcgmg88hz8qz6ppf0cd9cqb7ww59jiz6g9i2fc";
+          }
+        else
+          fetchurl {
+            url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp34-cp34m-linux_x86_64.whl";
+            sha256 = "07x61jpa62hv1i1345mpgj66qyhr203x15zhv7c0i4nf1kdl1bx0";
+          }
       ;
 
       ## addition to unpack wheel

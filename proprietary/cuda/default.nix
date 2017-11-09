@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, patchelf, perl, ncurses, expat, python27, zlib
+{ lib, stdenv, fetchurl, patchelf, perl, ncurses, expat, python27, zlib
 , xorg, gtk2, glib, fontconfig, freetype, unixODBC, alsaLib, glibc, utils
 }:
 
@@ -77,6 +77,12 @@ let
         # Hack to fix building against recent Glibc/GCC.
         echo "NIX_CFLAGS_COMPILE+=' -D_FORCE_INLINES'" >> $out/nix-support/setup-hook
       '';
+
+      passthru = {
+        majorVersion =
+          let versionParts = lib.splitString "." version;
+          in "${lib.elemAt versionParts 0}.${lib.elemAt versionParts 1}";
+      };
 
       meta = {
         license = stdenv.lib.licenses.unfree;
