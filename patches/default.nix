@@ -388,11 +388,23 @@ let
         ## machine learning tools
         #tensorflow
         caffe2 = callPackage ./caffe2 {
-
         };
+
+        inherit (MergePkgs.callPackage ./cudnn {
+          cudatoolkit8 = cudatoolkit8;
+        })
+        cudnn_cudatoolkit7
+        cudnn_cudatoolkit75
+        cudnn6_cudatoolkit8
+        cudnn_cudatoolkit8
+        cudnn_cudatoolkit9;
+
+        cudnn = cudnn_cudatoolkit8;
 
         tensorflow = callPackage ./tensorflow {
             pythonPackages = patches-pkgs.python27Packages;
+            cudaSupport = true;
+            cudnn = cudnn;
         };
 
         tensorflow-py3 = tensorflow.override {
