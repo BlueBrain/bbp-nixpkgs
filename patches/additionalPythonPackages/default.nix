@@ -648,18 +648,7 @@ in
     passthru = {
         pythonDeps = (gatherPythonRecDep ipykernel);
     };
-
-
- 
-
   };
-
-
-  #machine learning python
-  tensorflowWithoutCuda = callPackage ../tensorflow {
-    protobuf3_2 = pkgs.protobuf3_2;
-  };
-
 }
 
 
