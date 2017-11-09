@@ -12,11 +12,16 @@ bison,
 python,
 interview,
 which,
+multiSend ? true,
 ...
 }:
 
+let 
+    name_extension = ''BBP${if (multiSend == false) then ''-nomultisend'' else ''''}'';
+in
+
 stdenv.mkDerivation rec {
-    name = "neuron-${version}-BBP";
+    name = "neuron-${version}-${name_extension}";
 
     versionMajor = neuron-src.info.versionMajor;
     versionMinor = neuron-src.info.versionMinor;
@@ -26,8 +31,6 @@ stdenv.mkDerivation rec {
 
     buildInputs = [ automake autoconf libtool mpiRuntime ncurses readline flex bison python which interview];
 
-
-	patches = [ ./nrn.patch ];
 
     src = neuron-src.srcs;
 
@@ -59,9 +62,9 @@ postPatch = ''
 
     configureFlags = [
                             "--with-paranrn"
-                            "--with-multisend"
                             ''${if (interview != null) then ''--with-iv=${interview}'' else ''--without-iv''}''
     ] 
+    ++ (stdenv.lib.optional) (multiSend) [ "--with-multisend" ]
     ++ (stdenv.lib.optional) (python != null) [ "--with-nrnpython=${python}/bin/python" ];
     
 

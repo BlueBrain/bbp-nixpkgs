@@ -69,8 +69,6 @@ stdenv.mkDerivation rec {
     buildInputs = [ automake autoconf libtool mpiRuntime ncurses readline flex bison python which nrnModl];
 
 
-	patches = [ ./nrn.patch ];
-
     src = neuron-src.srcs; 
 
 
