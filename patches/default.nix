@@ -391,7 +391,7 @@ let
 
         };
 
-        tensorflow = callPackage ./tensorflow/wheel.nix {
+        tensorflow = callPackage ./tensorflow {
             pythonPackages = patches-pkgs.python27Packages;
         };
 
