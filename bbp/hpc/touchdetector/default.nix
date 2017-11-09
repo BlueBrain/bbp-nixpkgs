@@ -18,7 +18,7 @@
 
 stdenv.mkDerivation rec {
   name = "touchdetector-${version}";
-  version = "4.3.1-2017.06";
+  version = "4.3.1-2017.10dev";
 
   nativeBuildInputs = [pkgconfig cmake ]
         ++ stdenv.lib.optional generateDoc [ asciidoc xmlto docbook_xsl libxslt ];
@@ -28,8 +28,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/TouchDetector";
-    rev = "ae7cb236b99a3a9a7af894e47c5cbbd95f675cb3";
-    sha256 = "0pnwx265mm2mmywyi3shn11gi5fvh4s56vlg1v4g7ll881ck5ag7";
+    rev = "c6234115e887b6e27d6949a9b08620b9cc56c573";
+    sha256 = "06z3wlx2n0pv16v0j54cvj327xfap6dgw6p92p2s4r2a3dmy5fzz";
   };
 
   cmakeFlags =  [ "-DLIB_SUFFIX=" ] ++ stdenv.lib.optional generateDoc [ "-DTOUCHDETECTOR_DOCUMENTATION=TRUE" ];
