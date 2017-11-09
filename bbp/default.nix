@@ -443,6 +443,7 @@ let
 
         learningengine = callPackage ./hpc/learningengine {
             stdenv = stdenvIntelfSupported;
+            blas = intelMKLIfSupported;
         };
 
         mod2c = callPackage ./hpc/mod2c {

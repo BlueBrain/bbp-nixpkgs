@@ -7,6 +7,7 @@
 , hdf5
 , highfive
 , tbb
+, blas
 , pkgconfig
 , pythonPackages
 , syntool ? null
@@ -34,6 +35,7 @@ stdenv.mkDerivation rec {
                     pkgconfig
                     syntool
                     hdf5
+                    blas
                     highfive
                     python-env
                     pythonPackages.cython
@@ -52,12 +54,13 @@ stdenv.mkDerivation rec {
 
   doCheck = true;
 
-  # if support MKL the following option should be added next dictionnary "-DOPT_RANDOM=mkl"
   cmakeFlags =  [
                     "-DLEARNING_ENGINE_SYN2=TRUE"
                     "-DLEARNING_ENGINE_SLURM=FALSE"
 		    "-DGIT_VERSION=${src.rev}"
+                ] ++ stdenv.lib.optionals ( stdenv ? isICC ) [
 		    "-DCMAKE_CXX_FLAGS=-axmic-avx512"
+                    "-DOPT_RANDOM=mkl"
                 ];
 
   makeFlags = [
