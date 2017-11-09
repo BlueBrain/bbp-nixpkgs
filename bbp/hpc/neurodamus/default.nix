@@ -22,8 +22,8 @@ let
 
   src-master = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "93e2ba7932ff028e9f89e2f612db2d628c4553a3";
-        sha256 = "0q6g8dqrs0dhbjx24dkg1ah414pjh1j6472ql9a3inn5zm2fhzf6";
+        rev = "33e4f9ef821bce37901e5f7c98a01a9f2ae48a13";
+        sha256 = "0p7fnyfgpyw7pyqh4p1mdfnjbdrfdxqpw3i2i1l4bwlbfb0cmpcc";
     };
 
   src-savestate = fetchgitPrivate {
