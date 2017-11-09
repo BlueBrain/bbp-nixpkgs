@@ -5,38 +5,53 @@
 }:
 
 
-let 
+let
+  pytouchreader = pythonPackages.buildPythonPackage rec {
+    name = "pytouchreader-${version}";
+    version = "1.0.0";
 
-pytouchreader = pythonPackages.buildPythonPackage rec {
-  name = "pytouchreader-${version}";
-  version = "0.2-dev201708";
+    meta = {
+      description = "A Python utility to read raw binary touches efficiently";
+      longDescription = ''
+      '';
+      platform = stdenv.lib.platforms.unix;
+      homepage = "https://documents.epfl.ch/groups/b/bb/bbp-dev-hpc/www/pytouchreader";
+      repository = "ssh://bbpcode.epfl.ch/hpc/PyModules";
+      license = {
+        fullName = "Copyright 2017, Blue Brain Project";
+      };
+    };
 
+    src = fetchgitPrivate {
+      url = config.bbp_git_ssh + "/hpc/PyModules";
+      rev = "44ebe4235d520b42a594b7388f7478eb49152b74";
+      sha256 = "0iwn9mspx82pxjcm22fz4wk9yla58ga0jzkhcr3ygaqjr8mh1pj4";
+    };
 
-  propagatedBuildInputs = [ 
-                            pythonPackages.numpy
-                            pythonPackages.future
-                            pythonPackages.simplegeneric 
-                            pythonPackages.lazy_property
-                        ];
+    propagatedBuildInputs = [
+      pythonPackages.future
+      pythonPackages.lazy_property
+      pythonPackages.numpy
+      pythonPackages.simplegeneric
+    ];
 
-  src = fetchgitPrivate {
-    url = config.bbp_git_ssh + "/hpc/PyModules";
-    rev = "5882069dc383f6f7f2be0601eea337956fe2c456";
-    sha256 = "1p4hzjymvs63kwlafzwmrs6x4fb501sjys0w83qf6ykpddqv3p0n";
+    passthru = {
+      pythonDeps = pythonPackages.gatherPythonRecDep pytouchreader;
+    };
+
+    preConfigure = ''
+      cd PyTouchReader;
+    '';
+
+    postInstall = ''
+      mkdir -p $out/share/doc
+      src="$PWD"
+      pushd $out/share/doc
+      tar zxf "$src/docs/_build/PyTouchReader-1.0.0-docs-html.tgz"
+      popd
+    '';
+
+    outputs = ["out" "doc"];
   };
-
-  preConfigure = ''
-    cd PyTouchReader;
-  '';
-
-  passthru = {
-            pythonDeps =   (pythonPackages.gatherPythonRecDep pytouchreader);
-  };
-
-};
-
 in
-
-    pytouchreader
-
-
+  pytouchreader

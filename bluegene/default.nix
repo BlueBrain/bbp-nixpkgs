@@ -465,12 +465,19 @@ let
             cmake = bgq-cmake;
         };
 
+        bgq-yaml-cpp-gcc47 = all-pkgs-bgq-gcc47.yaml-cpp.override {
+            boost = bgq-boost-gcc47;
+            cmake = bgq-cmake;
+            stdenv = enableDebugInfo bgq-stdenv-gcc47;
+        };
+
         bgq-zoltan-gcc47 = all-pkgs-bgq-gcc47.trilinos.override {
             stdenv = enableDebugInfo bgq-stdenv-gcc47;
             mpi = ibm-mpi;
             cmake = bgq-cmake;
             parmetis = bgq-parmetis-gcc47;
             boost = bgq-boost-gcc47;
+            yaml-cpp = bgq-yaml-cpp-gcc47;
         };
 
         bgq-map = with MergePkgs; {

@@ -46,7 +46,7 @@ stdenv.mkDerivation rec {
     "-DHADOKEN_UNIT_TESTS:BOOL=OFF"
   ];
 
-  enableParallelBuilding = true;
+  enableParallelBuilding = false;
 
   doCheck = true;
 

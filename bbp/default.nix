@@ -183,12 +183,21 @@ let
 
         };
 
+        rockets = callPackage ./viz/rockets {
+
+        };
+
         lexis = callPackage ./viz/lexis {
 
         };
 
         brion = callPackage ./viz/brion {
 
+        };
+
+        brion-py3 = brion.override {
+            pythonPackages = python3Packages;
+            boost = boost-py3;
         };
 
         brion-legacy = callPackage ./viz/brion {
@@ -415,6 +424,12 @@ let
             numpy = pythonPackages.numpy;
         };
 
+        flatindexer-py3 = flatindexer.override {
+            mpiRuntime = bbp-mpi;
+            boost = boost-py3;
+            python = python3;
+            numpy = python3Packages.numpy;
+        };
 
         bbptestdata = callPackage ./tests/BBPTestData {
 
@@ -437,6 +452,7 @@ let
         coreneuron = enableBGQ callPackage ./hpc/coreneuron {
             mpiRuntime = bbp-mpi;
             neurodamus = neurodamus-coreneuron;
+            frontendCompiler = if (pkgs.isBlueGene) then gcc else null;
         };
 
         bluron = enableBGQ callPackage ./hpc/bluron/cmake-build.nix {
@@ -444,18 +460,17 @@ let
         };
 
 
-        neuron-modl = callPackage ./hpc/neuron {
-            stdenv = (enableDebugInfo pkgsWithBGQXLC.stdenv);
-            mpiRuntime = null;
-            modlOnly = true;
-        };
-
         neuron = enableBGQ callPackage ./hpc/neuron {
             stdenv = (enableDebugInfo pkgsWithBGQXLC.stdenv);
             mpiRuntime = bbp-mpi;
-            nrnOnly = true;
-            nrnModl = mergePkgs.neuron-modl;
+            isBlueGene = pkgs.isBlueGene;
         };
+
+        neuron-nomultisend = neuron.override {
+            multiSend = false;
+        }; 
+
+
 
 
         reportinglib = enableBGQ callPackage ./hpc/reportinglib {
@@ -553,6 +568,7 @@ let
                 functionalizer
                 highfive
                 morphotool
+                pytouchreader
             ];
         };
 

@@ -18,6 +18,13 @@ let
             });
         };
 
+        # Boost with Python 3 support
+        boost-py3 = (boost.overrideDerivation ( oldAttr: {
+            name = oldAttr.name + "-py3";
+        })).override {
+            python = python3;
+        };
+
         ccWrapperFun = callPackage ../std-nixpkgs/pkgs/build-support/cc-wrapper;
 
         gtest1_8 = callPackage ./gtest {
@@ -142,19 +149,6 @@ let
             clangStdenv = llvmPackages_3_9.stdenv;
             llvm = llvmPackages_3_9.llvm;
             clangUnwrapped = llvmPackages_3_9.clang-unwrapped;
-        };
-
-        ## nvidia openGL implementation
-        # required on viz cluster with nvidia hardware
-        # where the native library are not usable ( too old )
-        nvidia-x11-34032 = callPackage ./nvidia-driver/legacy340-32-kernel26.nix {
-            libsOnly = true;
-            kernel = null;
-        };
-
-        nvidia-x11-36757 = callPackage ./nvidia-driver/nvidia-viz-default.nix {
-            libsOnly = true;
-            kernel = null;
         };
 
 
@@ -334,6 +328,8 @@ let
         trilinos = callPackage ./trilinos {
             mpi = pkgs.openmpi;
             parmetis = parmetis;
+            withZoltan = true;
+            yaml-cpp = yaml-cpp;
         };
 
         ## profiling tools
@@ -386,6 +382,9 @@ let
 
         numpy_1_13_1 = patches-pkgs.pythonPackages.numpy;
 
+        rocksdb = callPackage ./rocksdb {
+        };
+
         ## machine learning tools
         #tensorflow
         caffe2 = callPackage ./caffe2 {
@@ -396,6 +395,10 @@ let
             pythonPackages = patches-pkgs.python27Packages;
         };
 
+        tensorflow-py3 = tensorflow.override {
+            pythonPackages = patches-pkgs.python34Packages;
+        };
+
         cctz = callPackage ./cctz {
         };
 
@@ -403,6 +406,29 @@ let
             cctz = patches-pkgs.cctz;
             gtest = gtest1_8;
             gmock = gtest1_8;
+        };
+
+        omega_h = callPackage ./omega_h {
+            cmake38 = patches-pkgs.cmake38;
+            gmodel = patches-pkgs.gmodel;
+            libmeshb = patches-pkgs.libmeshb;
+            trilinos = trilinos.override {
+                buildSharedLibs = true;
+                mpi = mpich2;
+                withKokkos = true;
+                withTeuchos = true;
+                withZoltan = true;
+                yaml-cpp = yaml-cpp;
+            };
+        };
+
+        libmeshb = callPackage ./libmeshb {
+        };
+
+        gmodel =  callPackage ./gmodel {
+        };
+
+        yaml-cpp = callPackage ./yaml-cpp {
         };
     };
 

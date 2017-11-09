@@ -120,7 +120,7 @@ function buildDerivationList {
 
 	set -e
 	set -o pipefail
-	nix-build ${DERIVATION_PATH} ${PKG_BUILD_DRV} -j $NCORES 2>&1 | tee build_log.txt
+	nix-build --show-trace ${DERIVATION_PATH} ${PKG_BUILD_DRV} -j $NCORES 2>&1 | tee build_log.txt
 	set +o pipefail
 	set +e
 

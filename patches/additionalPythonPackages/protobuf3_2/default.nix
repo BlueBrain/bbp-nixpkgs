@@ -10,8 +10,8 @@ buildPythonPackage rec {
 
   disable = false;
 
-  propagatedBuildInputs = [ protobuf google_apputils ];
-  buildInputs = [ google_apputils pyext ];
+  propagatedBuildInputs = [ protobuf ];
+  buildInputs = [ pyext ];
 
   prePatch = ''
     while [ ! -d python ]; do

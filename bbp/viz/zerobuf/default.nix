@@ -1,9 +1,9 @@
 { stdenv, fetchgit, cmake, servus, pkgconfig, python, pythonPackages, boost }:
 
 
-let 
+let
 	python-env = python.buildEnv.override {
-    extraLibs = [ 
+    extraLibs = [
 				  pythonPackages.pyparsing
 				];
  };
@@ -18,10 +18,10 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/HBPVIS/ZeroBuf.git";
-    rev = "748d6aafde87dfce7ed5297e04527e7dabf59d30";
-    sha256 = "1zs5bxb2wrqav9kbyvaqjmkl9r2xvdg4wk4hzdq0bhn9w3sp4z5i";
+    rev = "96e793d90343d125e59205aadfa6e767050cef5a";
+    sha256 = "0n5n1pq42c0jmnjqhjmynsd8bg82hmla345crilixvsvxg7gmkll";
   };
-  
+
   enableParallelBuilding = false;
 
   propagatedBuildInputs = [ servus ];
@@ -29,7 +29,7 @@ stdenv.mkDerivation rec {
   postInstall = ''
 		sed -i 's@!/usr/bin/env python@!${python-env}/bin/python@g' $out/bin/zerobufCxx.py
 		chmod a+x $out/bin/zerobufCxx.py
-  '';  
+  '';
 
   doCheck = true;
 

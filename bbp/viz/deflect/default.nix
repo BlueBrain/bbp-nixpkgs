@@ -12,14 +12,14 @@
 
 stdenv.mkDerivation rec {
   name = "deflect-${version}";
-  version = "0.14.0-201710";
+  version = "0.14.0";
 
   buildInputs = [ stdenv cmake boost freeglut mesa libjpeg_turbo libXi libXmu qt.base ];
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/Deflect";
-    rev = "de281e990716b1733f3b40a1eacdae81797bcce9";
-    sha256 = "0na4bwp33agxyv73c9vw3ridb78j0mq82znrkah4cpr8h5vbbyx8";
+    rev = "cc4c7329c173673811d4b75e0770310d7c5d268d";
+    sha256 = "08cxfrlh01gyhmhw8ckcj1fqnndrqj2va27gp94xdxhaicfm5fd9";
   };
   
   enableParallelBuilding = true;

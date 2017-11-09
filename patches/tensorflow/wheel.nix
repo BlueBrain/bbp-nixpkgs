@@ -1,6 +1,5 @@
 { stdenv
 , fetchurl
-, buildPythonPackage
 , isPy35 ? null
 , isPy27 ? null
 , cudaSupport ? false
@@ -29,12 +28,14 @@ assert ! (stdenv.isDarwin && cudaSupport);
 let
   installFlags = [];
 
+  buildPythonPackage = pythonPackages.buildPythonPackage;
+
   python = pythonPackages.python;
 
   numpy = pythonPackages.numpy_1_13;
 
   six = pythonPackages.six_1_10;
-  
+
   mock = pythonPackages.mock2;
 
   protobuf3_2 = pythonPackages.protobuf3_2;
@@ -63,17 +64,25 @@ let
       format = "wheel";
       disabled = false;
 
-      src = fetchurl {
-        url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp27-none-linux_x86_64.whl";
-        sha256 = "0ld3hqx3idxk0zcrvn3p9yqnmx09zsj3mw66jlfw6fkv5hznx8j2";
-      };
-      
+      src = if python.majorVersion == "2.7"
+      then
+        fetchurl {
+          url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp27-none-linux_x86_64.whl";
+          sha256 = "0ld3hqx3idxk0zcrvn3p9yqnmx09zsj3mw66jlfw6fkv5hznx8j2";
+        }
+      else
+        fetchurl {
+          url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp34-cp34m-linux_x86_64.whl";
+          sha256 = "07x61jpa62hv1i1345mpgj66qyhr203x15zhv7c0i4nf1kdl1bx0";
+        }
+      ;
+
       ## addition to unpack wheel
       unpackPhase = ''
         mkdir dist
         cp $src dist/"''${src#*-}"
       '';
-      
+
       configurePhase =  ''
         runHook preConfigure
         runHook postConfigure
@@ -97,7 +106,6 @@ let
         runHook postInstall
       '';
 
-        
       propagatedBuildInputs = with stdenv.lib;
         [ numpy six protobuf3_2 swig werkzeug mock ]
         ++ optionals cudaSupport [ cudatoolkit cudnn stdenv.cc ];
@@ -107,7 +115,6 @@ let
       # patchelf --shrink-rpath will remove the cuda libraries.
       postFixup = let
         rpath = "${stdenv.cc.cc}/lib:${zlib}/lib";
-          
       in
       ''
         echo "rpath: ${rpath}"
@@ -117,13 +124,10 @@ let
       doCheck = false;
 
       passthru = {
-                pythonDeps =   (pythonPackages.gatherPythonRecDep self);
+        pythonDeps =   (pythonPackages.gatherPythonRecDep self);
       };
-
-
-
     };
 in
 
- self
+self
 
