@@ -391,13 +391,13 @@ let
         };
 
         inherit (MergePkgs.callPackage ./cudnn {
+          cudatoolkit7 = cudatoolkit7;
           cudatoolkit8 = cudatoolkit8;
         })
         cudnn_cudatoolkit7
-        cudnn_cudatoolkit75
         cudnn6_cudatoolkit8
         cudnn_cudatoolkit8
-        cudnn_cudatoolkit9;
+        ;
 
         cudnn = cudnn_cudatoolkit8;
 
