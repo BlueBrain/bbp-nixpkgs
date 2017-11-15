@@ -46,8 +46,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate{
     url = config.bbp_git_ssh + "/hpc/learning_engine.git";
-    rev = "58950044a49bd8880848b89d4c38d95bef547dc8";
-    sha256 = "1s1dkvywf8px3adqv9dwy653z1ai2vxsbm77h82viy8shm5ksxhb";
+    rev = "c8760c3f85d9d8f3b654237fa538c38e450cfc4e";
+    sha256 = "1427jjqyjn4875116yzgmx5vxw46nm37gaiasjg0dsani7x9s6wr";
   };
 
   enableParallelBuilding = true;
@@ -61,8 +61,7 @@ stdenv.mkDerivation rec {
                     "-DOPT_PRECISION=double"
                     "-DLEARNING_ENGINE_BENCHMARK=OFF"
                 ] ++ stdenv.lib.optionals ( stdenv ? isICC ) [
-                    "-DOPT_RANDOM=mkl"
-                    "-DCMAKE_SHARED_LINKER_FLAGS=-liomp5"
+                    "-DOPT_RANDOM=standard"
                 ];
 
   makeFlags = [
@@ -72,7 +71,7 @@ stdenv.mkDerivation rec {
   checkPhase = ''
     export PYTHONPATH=${pythonPackages.numpy}/lib/${pythonPackages.python.libPrefix}/site-packages:$PYTHONPATH
     echo "pythonpath $PYTHONPATH"
-    ctest -V -E "brunel_fixed_topo.* unit_example_simulations_test"
+    ctest -V -E brunelfixedtopo
   '';
 
 }
