@@ -4,11 +4,11 @@
 }:
 
 
-let 
+let
 
 	self = pythonPackages;
 
-in 
+in
  rec {
 
 	# For a given list of python modules
@@ -24,23 +24,23 @@ in
 
 
     # function able to gather recursively all the python dependencies of a nix python package
-    # it returns the depenrencies as a list [ a b c ] 
-    # used to generate module containing all the necessary python dependencies 
+    # it returns the dependencies as a list [ a b c ]
+    # used to generate module containing all the necessary python dependencies
     gatherPythonRecDep  = x: let
                                 isPythonModule = drv: if (drv.drvAttrs ? pythonPath) then true else false;
-            
-                                getPropDepNative = drv: if ( drv.drvAttrs ? propagatedNativeBuildInputs != null) 
-                                                    then  drv.drvAttrs.propagatedNativeBuildInputs 
+
+                                getPropDepNative = drv: if ( drv.drvAttrs ? propagatedNativeBuildInputs != null)
+                                                    then  drv.drvAttrs.propagatedNativeBuildInputs
                                                     else [];
-                                getPropDepTarget = drv: if ( drv.drvAttrs ? propagatedBuildInputs != null) 
-                                                    then  drv.drvAttrs.propagatedBuildInputs 
+                                getPropDepTarget = drv: if ( drv.drvAttrs ? propagatedBuildInputs != null)
+                                                    then  drv.drvAttrs.propagatedBuildInputs
                                                     else [];
 
                                 getPropDep = drv: (getPropDepNative drv) ++ (getPropDepTarget drv);
- 
-            
+
+
                                 recConcat = deps: if ( deps == [] ) then []
-                                                  else [ (builtins.head deps) ] ++ (recConcat (getPropDep (builtins.head deps) ) ) 
+                                                  else [ (builtins.head deps) ] ++ (recConcat (getPropDep (builtins.head deps) ) )
                                                         ++ (recConcat (builtins.tail deps));
 
                                 allRecDep = recConcat ( getPropDep x);
@@ -49,9 +49,11 @@ in
 
                             in  allPythonRecDep;
 
-    callPackage = pkgs.newScope self;
+  pythonAtLeast = stdenv.lib.versionAtLeast self.python.pythonVersion;
 
-    bootstrapped-pip =  callPackage ./bootstrapped-pip { };
+  callPackage = pkgs.newScope self;
+
+  bootstrapped-pip =  callPackage ./bootstrapped-pip { };
 
 	future_0_16 = self.buildPythonPackage rec {
     	version = "v0.16.0";
@@ -78,10 +80,9 @@ in
         buildInputs = with self; [
           unittest2
         ];
-        
+
         doCheck = false;
     };
-
 
     rtree = self.buildPythonPackage (rec {
         name = "rtree-${version}";
@@ -269,7 +270,7 @@ in
 
 			buildInputs = with pythonPackages; [ nose ];
 
-	}; 
+	};
 
 	nose_testconfig = pythonPackages.buildPythonPackage rec {
 			name = "nose_testconfig-${version}";
@@ -282,7 +283,7 @@ in
 
 			buildInputs = with pythonPackages; [ nose ];
 
-	};           
+	};
 
 
     deepdish = pythonPackages.buildPythonPackage rec {
@@ -413,6 +414,25 @@ in
     };
   };
 
+  # Backport from NixOS 16.09
+  prompt_toolkit = pythonPackages.buildPythonPackage rec {
+    name = "prompt_toolkit-${version}";
+    version = "1.0.9";
+
+    src = pkgs.fetchurl {
+      sha256 = "172r15k9kwdw2lnajvpz1632dd16nqz1kcal1p0lq5ywdarj6rfd";
+      url = "mirror://pypi/p/prompt_toolkit/${name}.tar.gz";
+    };
+  #  checkPhase = ''
+  #    rm prompt_toolkit/win32_types.py
+  #    py.test -k 'not test_pathcompleter_can_expanduser'
+  #  '';
+
+    buildInputs = with self; [ pytest ];
+    propagatedBuildInputs = with self; [ docopt six_1_11 wcwidth pygments ];
+
+  };
+
   cov_core = pythonPackages.buildPythonPackage rec {
     pname = "cov-core";
     version = "1.15.0";
@@ -439,7 +459,9 @@ in
 
   };
 
-  # backport from NixOS 16.09 
+  tensorflow-tensorboard = with self; callPackage ./tensorflow-tensorboard {
+  };
+
   ipython_genutils = pythonPackages.buildPythonPackage rec {
     version = "0.1.0";
     name = "ipython_genutils-${version}";
@@ -469,7 +491,7 @@ in
       sha256 = "deb3a960c1d55868dfbcac98432358b92ba89d95029cddd4040db1f27405055c";
     };
 
-    propagatedBuildInputs = with self; [ six ];
+    propagatedBuildInputs = with self; [ six_1_11 ];
 
   };
 
@@ -478,12 +500,12 @@ in
   simplegeneric = pythonPackages.buildPythonPackage rec {
     version = "0.8.1";
     name = "simplegeneric-${version}";
-    
+
     src = pkgs.fetchurl {
       url = "https://pypi.python.org/packages/source/s/simplegeneric/${name}.zip";
       sha256 = "dc972e06094b9af5b855b3df4a646395e43d1c9d0d39ed345b7393560d0b9173";
     };
-    
+
   };
 
 
@@ -491,16 +513,14 @@ in
   pickleshare = pythonPackages.buildPythonPackage rec {
     version = "0.5";
     name = "pickleshare-${version}";
-    
+
     src = pkgs.fetchurl {
       url = "https://pypi.python.org/packages/source/p/pickleshare/${name}.tar.gz";
       sha256 = "c0be5745035d437dbf55a96f60b7712345b12423f7d0951bd7d8dc2141ca9286";
     };
-    
-    propagatedBuildInputs = with self; [pathpy];
-    
-  };
 
+    propagatedBuildInputs = with self; [pathpy];
+  };
 
   lazy_property = pythonPackages.buildPythonPackage rec {
     version = "0.0.1";
@@ -642,8 +662,17 @@ in
     doCheck = false;
   };
 
+  add-site-dir = stdenv.mkDerivation rec {
+    name = "register-site-packages";
+    site-packages = pythonPackages.python.sitePackages;
 
-
+    buildCommand = ''
+        mkdir -p "$out/${site-packages}"
+        cat <<EOF >"$out/${site-packages}/sitecustomize.py"
+import site
+import os
+site.addsitedir(os.path.dirname(os.path.abspath(__file__)))
+EOF
+    '';
+  };
 }
-
-

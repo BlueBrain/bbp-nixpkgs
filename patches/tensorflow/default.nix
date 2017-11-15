@@ -30,66 +30,58 @@ let
 
   buildPythonPackage = pythonPackages.buildPythonPackage;
 
+  bootstrapped-pip = pythonPackages.bootstrapped-pip;
   python = pythonPackages.python;
 
-  numpy = pythonPackages.numpy;
-
-  six = pythonPackages.six;
-
-  mock = pythonPackages.mock;
-
-  protobuf = pythonPackages.protobuf;
-
-  bootstrapped-pip = pythonPackages.bootstrapped-pip;
-
-  werkzeug = buildPythonPackage rec {
-    name = "Werkzeug-0.11.10";
-
-    src = fetchurl {
-      url = "mirror://pypi/W/Werkzeug/${name}.tar.gz";
-      sha256 = "1vpf98k4jp4yhbv2jbyq8dj5fdasrd26rkq34pacs5n7mkxxlr6c";
-    };
-
-    LC_ALL = "en_US.UTF-8";
-
-    propagatedBuildInputs = with pythonPackages; [ itsdangerous ];
-    buildInputs = with pythonPackages; [ pytest requests glibcLocales ];
-
-  };
-
   self = buildPythonPackage rec {
-      pname = "tensorflow";
-      version = "1.1.0";
-      name = "${pname}${if cudaSupport then "-gpu" else ""}-${version}";
-      format = "wheel";
-      disabled = false;
+    pname = "tensorflow";
+    version = "1.4.0";
+    name = "${pname}${if cudaSupport then "-gpu" else ""}-${version}";
+    format = "wheel";
+    disabled = false;
 
-      src =
+    src =
       if python.majorVersion == "2.7"
       then
         if cudaSupport
         then
             fetchurl {
-              url = "https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-${version}-cp27-none-linux_x86_64.whl";
-              sha256 = "1baa9jwr6f8f62dyx6isbw8yyrd0pi1dz1srjblfqsyk1x3pnfvh";
+              url = "http://bbpobjectstorage.epfl.ch:81/swift/v1/nix-data/tensorflow/gpu/tensorflow-${version}-cp27-cp27mu-linux_x86_64.whl";
+              sha256 = "1cpv1f1rl3xf6j4502n3zz6pwpam1s5z7zzs4hxvsirnxdd6bs5c";
             }
         else
             fetchurl {
-              url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp27-none-linux_x86_64.whl";
-              sha256 = "0ld3hqx3idxk0zcrvn3p9yqnmx09zsj3mw66jlfw6fkv5hznx8j2";
+              url = "http://bbpobjectstorage.epfl.ch:81/swift/v1/nix-data/tensorflow/cpu/tensorflow-${version}-cp27-cp27mu-linux_x86_64.whl";
+              sha256 = "1ijh8rns7ir3cj4lklk9i9z2vm76pibwpqq2yg55mswmz4sxaqhc";
             }
       else
         if cudaSupport
         then
           fetchurl {
-            url = "https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-${version}-cp36-cp36m-linux_x86_64.whl";
-            sha256 = "3rrkxcww1kl3i1kcgmg88hz8qz6ppf0cd9cqb7ww59jiz6g9i2fc";
+            url = "http://bbpobjectstorage.epfl.ch:81/swift/v1/nix-data/tensorflow/gpu/tensorflow-${version}-cp34-cp34m-linux_x86_64.whl";
+            sha256 = "0bqw05k4q6jm4vz7hl3wz1lpz9fpinj7lym3z5bmj3v0f8pa9rgi";
           }
         else
           fetchurl {
-            url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp36-cp36m-linux_x86_64.whl";
-            sha256 = "1a2cc8ihl94iqff76nxg6bq85vfb7sj5cvvi9sxy2f43k32fi4lv";
+            url = "http://bbpobjectstorage.epfl.ch:81/swift/v1/nix-data/tensorflow/cpu/tensorflow-${version}-cp34-cp34m-linux_x86_64.whl";
+            sha256 = "dfdcyz5ag2mksxci52kg517hyvfz4fyqpcxbfsdvqn1b7g3yqw13";
           }
+      ;
+
+    propagatedBuildInputs = with stdenv.lib; with pythonPackages;
+      [
+        backports_weakref
+        bootstrapped-pip
+        mock
+        numpy
+        protobuf
+        six
+        swig
+        setuptools
+        tensorflow-tensorboard
+      ]
+      ++ optionals cudaSupport [ cudatoolkit cudnn stdenv.cc ]
+      ++ optionals (!pythonAtLeast "3.4") [ enum34 ]
       ;
 
       ## addition to unpack wheel
@@ -118,18 +110,16 @@ let
         ${bootstrapped-pip}/bin/pip install *.whl --no-index --prefix=$out --no-cache ${toString installFlags} --build tmpbuild
         popd
 
+        rm -f $out/bin/tensorboard
+
         runHook postInstall
       '';
-
-      propagatedBuildInputs = with stdenv.lib;
-        [ numpy six protobuf swig werkzeug mock ]
-        ++ optionals cudaSupport [ cudatoolkit cudnn stdenv.cc ];
 
       # Note that we need to run *after* the fixup phase because the
       # libraries are loaded at runtime. If we run in preFixup then
       # patchelf --shrink-rpath will remove the cuda libraries.
       postFixup = let
-        rpath = "${stdenv.cc.cc}/lib:${zlib}/lib";
+        rpath = "${stdenv.lib.getLib stdenv.cc.cc}/lib:${zlib}/lib";
       in
       ''
         echo "rpath: ${rpath}"
@@ -138,8 +128,10 @@ let
 
       doCheck = false;
 
+      passthru = {
+        site-packages = "lib/${python.libPrefix}/site-packages/tensorflow";
+      };
+
     };
 in
-
 self
-

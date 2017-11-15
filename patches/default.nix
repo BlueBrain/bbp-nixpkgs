@@ -38,7 +38,6 @@ let
 
         };
 
-
         grpc = callPackage ./grpc {
             gtest = gtest1_8;
             c-ares = c-ares1_3;
@@ -366,7 +365,7 @@ let
         cudnn_cudatoolkit8
         ;
 
-        cudnn = cudnn_cudatoolkit8;
+        cudnn = cudnn6_cudatoolkit8;
 
         tensorflow = callPackage ./tensorflow {
             pythonPackages = patches-pkgs.python27Packages;
@@ -376,6 +375,16 @@ let
 
         tensorflow-py3 = tensorflow.override {
             pythonPackages = patches-pkgs.python36Packages;
+        };
+
+        tensorflow-gpu = callPackage ./tensorflow {
+            pythonPackages = patches-pkgs.python27Packages;
+            cudaSupport = true;
+            cudnn = cudnn;
+        };
+
+        tensorflow-gpu-py3 = tensorflow-gpu.override {
+            pythonPackages = patches-pkgs.python34Packages;
         };
 
         cctz = callPackage ./cctz {
