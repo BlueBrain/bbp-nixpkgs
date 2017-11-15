@@ -35,7 +35,6 @@ stdenv.mkDerivation rec {
                     pkgconfig
                     syntool
                     hdf5
-                    blas
                     highfive
                     python-env
                     pythonPackages.cython

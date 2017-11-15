@@ -8,14 +8,14 @@
 
 stdenv.mkDerivation rec {
   name = "rockets-${version}";
-  version = "0.1.0-dev201710";
+  version = "0.1.0-dev201711";
 
   buildInputs = [ stdenv boost cmake libwebsockets ];
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/viz/Rockets";
-    rev = "89d020f80e67d9b63f4ddfd5e7f4c73797fa6b6c";
-    sha256 = "1w6whcp758j9axfcjss65fbzs9wll42bh7f3xb7fysdijzmmx565";
+    rev = "614d6b3078809dedb77629b061448c9f2c2f49fc";
+    sha256 = "0n16aw951ifx3bl08mpq0aldmh4ixyy48xf4al413nsyqzv7ixrf";
   };
 
   enableParallelBuilding = true;
