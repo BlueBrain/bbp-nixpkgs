@@ -28,6 +28,10 @@ let
 
         ## nvidia
         inherit (callPackages ./cuda { inherit utils; })
+        cudatoolkit6
+        cudatoolkit65
+        cudatoolkit7
+        cudatoolkit75
         cudatoolkit8;
 
          ## nvidia openGL implementation
