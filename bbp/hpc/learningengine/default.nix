@@ -46,8 +46,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate{
     url = config.bbp_git_ssh + "/hpc/learning_engine.git";
-    rev = "3f6bd44c7715a1390917cef35cc496c74aa03e24";
-    sha256 = "0cqsgpp3w6cffp1dx409pxslqfwrwi10f2v01mgx5j4n7llxcli3";
+    rev = "58950044a49bd8880848b89d4c38d95bef547dc8";
+    sha256 = "1s1dkvywf8px3adqv9dwy653z1ai2vxsbm77h82viy8shm5ksxhb";
   };
 
   enableParallelBuilding = true;
@@ -58,9 +58,11 @@ stdenv.mkDerivation rec {
                     "-DLEARNING_ENGINE_SYN2=TRUE"
                     "-DLEARNING_ENGINE_SLURM=FALSE"
 		    "-DGIT_VERSION=${src.rev}"
+                    "-DOPT_PRECISION=double"
+                    "-DLEARNING_ENGINE_BENCHMARK=OFF"
                 ] ++ stdenv.lib.optionals ( stdenv ? isICC ) [
-		    "-DCMAKE_CXX_FLAGS=-axmic-avx512"
                     "-DOPT_RANDOM=mkl"
+                    "-DCMAKE_SHARED_LINKER_FLAGS=-liomp5"
                 ];
 
   makeFlags = [
@@ -70,7 +72,7 @@ stdenv.mkDerivation rec {
   checkPhase = ''
     export PYTHONPATH=${pythonPackages.numpy}/lib/${pythonPackages.python.libPrefix}/site-packages:$PYTHONPATH
     echo "pythonpath $PYTHONPATH"
-    ctest -V -E "brunel.*"
+    ctest -V -E "brunel_fixed_topo.* unit_example_simulations_test"
   '';
 
 }
