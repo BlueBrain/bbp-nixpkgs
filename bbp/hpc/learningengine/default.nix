@@ -7,6 +7,7 @@
 , hdf5
 , highfive
 , tbb
+, blas
 , pkgconfig
 , pythonPackages
 , syntool ? null
@@ -44,25 +45,32 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate{
     url = config.bbp_git_ssh + "/hpc/learning_engine.git";
-    rev = "3f6bd44c7715a1390917cef35cc496c74aa03e24";
-    sha256 = "0cqsgpp3w6cffp1dx409pxslqfwrwi10f2v01mgx5j4n7llxcli3";
+    rev = "c8760c3f85d9d8f3b654237fa538c38e450cfc4e";
+    sha256 = "1427jjqyjn4875116yzgmx5vxw46nm37gaiasjg0dsani7x9s6wr";
   };
 
   enableParallelBuilding = true;
 
   doCheck = true;
 
-  # if support MKL the following option should be added next dictionnary "-DOPT_RANDOM=mkl"
   cmakeFlags =  [
                     "-DLEARNING_ENGINE_SYN2=TRUE"
                     "-DLEARNING_ENGINE_SLURM=FALSE"
 		    "-DGIT_VERSION=${src.rev}"
+                    "-DOPT_PRECISION=double"
+                    "-DLEARNING_ENGINE_BENCHMARK=OFF"
+                ] ++ stdenv.lib.optionals ( stdenv ? isICC ) [
+                    "-DOPT_RANDOM=standard"
                 ];
+
+  makeFlags = [
+                    "VERBOSE=1"
+              ];
 
   checkPhase = ''
     export PYTHONPATH=${pythonPackages.numpy}/lib/${pythonPackages.python.libPrefix}/site-packages:$PYTHONPATH
     echo "pythonpath $PYTHONPATH"
-    ctest -V -E "brunel.*"
+    ctest -V -E brunelfixedtopo
   '';
 
 }
