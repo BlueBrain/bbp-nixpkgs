@@ -34,7 +34,7 @@ let
 
   numpy = pythonPackages.numpy_1_13;
 
-  six = pythonPackages.six_1_10;
+  six = pythonPackages.six_1_11;
 
   mock = pythonPackages.mock2;
 
