@@ -4,11 +4,11 @@ let
     openblas = pkgs.openblasCompat;
 in
 buildPythonPackage rec {
-  name = "numpy-1.13.1";
+  name = "numpy-1.13.3";
 
   src = fetchurl {
-    url = "mirror://pypi/n/numpy/numpy-1.13.1.zip";
-    sha256 = "c9b0283776085cb2804efff73e9955ca279ba4edafd58d3ead70b61d209c4fbb";
+    url = "mirror://pypi/n/numpy/${name}.zip";
+    sha256 = "0l576ngjbpjdkyja6jd16znxyjshsn9ky1rscji4zg5smpaqdvin";
   };
 
   doCheck = false;
