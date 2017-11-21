@@ -25,6 +25,7 @@ let
       popd
 
       cp -r ${compiler_path}/mkl/include $out/include
+      echo "Done"
     '';
 
     preferLocalBuild = true;

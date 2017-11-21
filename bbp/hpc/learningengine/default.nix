@@ -16,7 +16,7 @@
 
 let
   python-env = pythonPackages.python.buildEnv.override {
-        extraLibs = [ pythonPackages.numpy ];
+        extraLibs = [ pythonPackages.numpy pythonPackages.matplotlib ];
   };
 
 in
@@ -39,14 +39,15 @@ stdenv.mkDerivation rec {
                     python-env
                     pythonPackages.cython
                     pythonPackages.numpy
+                    blas
                 ];
 
   propagatedBuildInputs = [ pythonPackages.cython pythonPackages.numpy ];
 
   src = fetchgitPrivate{
     url = config.bbp_git_ssh + "/hpc/learning_engine.git";
-    rev = "c8760c3f85d9d8f3b654237fa538c38e450cfc4e";
-    sha256 = "1427jjqyjn4875116yzgmx5vxw46nm37gaiasjg0dsani7x9s6wr";
+    rev = "3f9e41c87c8d276439bbee7d63c86d666b3c831b";
+    sha256 = "1wxkh50kk1rhwvhf903wgviddvj0xbr952h379qx4hafyx2zb2xp";
   };
 
   enableParallelBuilding = true;
@@ -56,11 +57,11 @@ stdenv.mkDerivation rec {
   cmakeFlags =  [
                     "-DLEARNING_ENGINE_SYN2=TRUE"
                     "-DLEARNING_ENGINE_SLURM=FALSE"
-		    "-DGIT_VERSION=${src.rev}"
+        		    "-DGIT_VERSION=${src.rev}"
                     "-DOPT_PRECISION=double"
                     "-DLEARNING_ENGINE_BENCHMARK=OFF"
                 ] ++ stdenv.lib.optionals ( stdenv ? isICC ) [
-                    "-DOPT_RANDOM=standard"
+                    "-DOPT_RANDOM=mkl"
                 ];
 
   makeFlags = [
@@ -70,7 +71,7 @@ stdenv.mkDerivation rec {
   checkPhase = ''
     export PYTHONPATH=${pythonPackages.numpy}/lib/${pythonPackages.python.libPrefix}/site-packages:$PYTHONPATH
     echo "pythonpath $PYTHONPATH"
-    ctest -V -E brunelfixedtopo
+    ctest -V -E "brunelfixedtopo|unit_example_simulations_test|unit_pool_simulations_test"
   '';
 
 }
