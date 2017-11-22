@@ -1,5 +1,6 @@
 { stdenv
 , config
+, patchelf
 }:
 
 let
@@ -10,16 +11,21 @@ let
     name = "intel-mkl";
     unpackPhase = ''echo "no sources"'';
     dontBuild = true;
+    dontStrip = true;
     installPhase = ''
       mkdir -p $out/lib;
 
       pushd ${compiler_path}/mkl/lib/intel64
-      for i in ./* ; do
-        ln -s "${compiler_path}/mkl/lib/intel64/$i" "$out/lib/$i";
+      for i in * ; do
+        echo "Nixify $i under ${compiler_path}/mkl/lib/intel64"
+        cp -f -L  "${compiler_path}/mkl/lib/intel64/$i" "$out/lib/$i" || true
+        ${patchelf}/bin/patchelf --set-interpreter ${stdenv.glibc}/lib/ld-linux-x86-64.so.2 $out/lib/$i || /bin/true
+        ${patchelf}/bin/patchelf --set-rpath "${stdenv.cc.cc}/lib:${stdenv.glibc}/lib:$out/lib" "$out/lib/$i" || /bin/true
       done
       popd
 
-      ln -s ${compiler_path}/mkl/include $out/include
+      cp -r ${compiler_path}/mkl/include $out/include
+      echo "Done"
     '';
 
     preferLocalBuild = true;
