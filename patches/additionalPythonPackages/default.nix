@@ -737,6 +737,11 @@ in
         pythonDeps = (gatherPythonRecDep ipykernel);
     };
   };
+
+  scikit-learn = callPackage ./scikit-learn {
+	blas = pkgs.openblasCompat;
+  };
+
 }
 
 
