@@ -57,8 +57,8 @@ stdenv.mkDerivation rec {
   cmakeFlags =  [
                     "-DLEARNING_ENGINE_SYN2=TRUE"
                     "-DLEARNING_ENGINE_SLURM=FALSE"
-       		    "-DGIT_VERSION=${src.rev}"
-                    "-DOPT_PRECISION=double"
+       		          "-DGIT_VERSION=${src.rev}"
+                    "-DOPT_PRECISION=float"
                     "-DLEARNING_ENGINE_BENCHMARK=OFF"
                 ] ++ stdenv.lib.optionals ( stdenv ? isICC ) [
                     "-DOPT_RANDOM=mkl"
