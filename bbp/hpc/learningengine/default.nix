@@ -57,8 +57,8 @@ stdenv.mkDerivation rec {
   cmakeFlags =  [
                     "-DLEARNING_ENGINE_SYN2=TRUE"
                     "-DLEARNING_ENGINE_SLURM=FALSE"
-       		    "-DGIT_VERSION=${src.rev}"
-                    "-DOPT_PRECISION=double"
+       		          "-DGIT_VERSION=${src.rev}"
+                    "-DOPT_PRECISION=float"
                     "-DLEARNING_ENGINE_BENCHMARK=OFF"
                 ] ++ stdenv.lib.optionals ( stdenv ? isICC ) [
                     "-DOPT_RANDOM=mkl"
@@ -71,7 +71,7 @@ stdenv.mkDerivation rec {
   checkPhase = ''
     export PYTHONPATH=${pythonPackages.numpy}/lib/${pythonPackages.python.libPrefix}/site-packages:$PYTHONPATH
     echo "pythonpath $PYTHONPATH"
-    ctest -V -E "brunelfixedtopo|unit_example_simulations_test|unit_pool_simulations_test"
+    ctest -V -E "brunelfixedtopo|unit_example_simulations_test|unit_pool_simulations_test|brunel"
   '';
 
 }
