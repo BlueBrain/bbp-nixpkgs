@@ -335,8 +335,6 @@ let
         voxcell = brainbuilder.voxcell;
         brain-builder = brainbuilder.brain-builder;
 
-        bluerecipe = callPackage ./nse/bluerecipe {};
-
         workflow-cell-collection = callPackage ./nse/workflow/cell-collection {};
 
         nse-allpkgs = noBGQ (pkgs.buildEnv {
@@ -345,7 +343,7 @@ let
                 [
                     morphsyn bluejittersdk
                     bluepy_0_11_2 bluerepairsdk muk morphscale voxcell
-                    brain-builder bluerecipe workflow-cell-collection
+                    brain-builder workflow-cell-collection
                 ];
         });
 
