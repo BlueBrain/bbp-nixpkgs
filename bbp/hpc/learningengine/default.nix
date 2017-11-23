@@ -71,7 +71,7 @@ stdenv.mkDerivation rec {
   checkPhase = ''
     export PYTHONPATH=${pythonPackages.numpy}/lib/${pythonPackages.python.libPrefix}/site-packages:$PYTHONPATH
     echo "pythonpath $PYTHONPATH"
-    ctest -V -E "brunelfixedtopo|unit_example_simulations_test|unit_pool_simulations_test"
+    ctest -V -E "brunelfixedtopo|unit_example_simulations_test|unit_pool_simulations_test|brunel"
   '';
 
 }
