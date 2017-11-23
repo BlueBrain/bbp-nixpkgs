@@ -2189,7 +2189,7 @@ let
             neuron-nomultisend hpcbench
 
             # machine learning
-            caffe2 tensorflow tensorflow-py3
+            caffe2 
 
             #dev env
             dev-env-gcc
@@ -2283,6 +2283,9 @@ let
 
             # hpc extension
             neuromapp
+
+	    # machine learning
+	    tensorflow tensorflow-py3
 
             # exotic
             bazel
