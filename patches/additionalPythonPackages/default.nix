@@ -707,6 +707,22 @@ in
 
   };
 
+  keras = pythonPackages.buildPythonPackage rec {
+    version = "2.1.1";
+    name = "Keras-${version}";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/k/keras/${name}.tar.gz";
+      sha256 = "08siyp456avryhpj7dhwg39plc4m2yrk04i9ykni35qdqrc29jph";
+    };
+
+    propagatedBuildInputs = with self; [
+      numpy_1_13
+      pyyaml_3_12
+      scipy
+      six_1_11
+    ];
+  };
 
   # backport from NixOS 16.09
   ipykernel = pythonPackages.buildPythonPackage rec {
