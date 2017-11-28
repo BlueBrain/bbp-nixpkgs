@@ -75,6 +75,7 @@ stdenv.mkDerivation rec {
 
   makeFlags = [
     "arch=${hplarch}"
+    "OMP_DEFS="
   ];
 
   installPhase = ''
