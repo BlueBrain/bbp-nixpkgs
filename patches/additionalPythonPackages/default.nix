@@ -838,6 +838,50 @@ in
     ];
   };
 
+  py4j_0_10_4 = pythonPackages.buildPythonPackage rec {
+    version = "0.10.4";
+    name = "py4j-${version}";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/p/py4j/${name}.zip";
+      sha256 = "1bkaw3fflcnq44bqrc4fcrd402k74ibx5bqzyqwqffdvrgdvyvs0";
+    };
+  };
+
+  pypandoc = pythonPackages.buildPythonPackage rec {
+    version = "1.4";
+    name = "pypandoc-${version}";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/p/pypandoc/${name}.tar.gz";
+      sha256 = "0nqsq43jzjf2f8w2kdfby0jqfc33knq0kng4hx47cxjaz3ayc579";
+    };
+
+    propagatedBuildInputs = with self; [
+      pkgs.pandoc
+      bootstrapped-pip
+      wheel
+    ];
+
+    doCheck = false;
+  };
+
+  pyspark = pythonPackages.buildPythonPackage rec {
+    version = "2.2.0";
+    name = "pyspark-${version}";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/p/pyspark/${name}.post0.tar.gz";
+      sha256 = "0g1slgd24wx3hnkvqxjdd9pcqid5x1yc5pl6kn9i5kh8hq8r9jcx";
+    };
+
+    propagatedBuildInputs = with self; [
+      py4j_0_10_4
+      pypandoc
+      setuptools30
+    ];
+  };
+
   # backport from NixOS 16.09
   ipykernel = pythonPackages.buildPythonPackage rec {
     version = "4.5.2";

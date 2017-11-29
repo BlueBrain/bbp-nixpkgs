@@ -378,6 +378,13 @@ let
             hpctools = hpctools-xlc;
         };
 
+        spykfunc = callPackage ./hpc/spykfunc {
+        };
+
+        spykfunc-py3 = spykfunc.override {
+            pythonPackages = python3Packages;
+        };
+
         touchdetector = enableBGQ callPackage ./hpc/touchdetector {
             mpiRuntime = bbp-mpi;
             hpctools = hpctools-xlc; # impossible to use MPI 3.2 for now on BGQ
@@ -568,6 +575,7 @@ let
                 highfive
                 morphotool
                 pytouchreader
+                spykfunc
             ];
         };
 
