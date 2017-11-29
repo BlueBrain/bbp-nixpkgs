@@ -1,5 +1,5 @@
-let 
-	intel_icc_path = "/gpfs/bbp.cscs.ch/apps/viz/intel2017/compilers_and_libraries_2017.0.098/linux";
+let
+	intel_icc_path = "/gpfs/bbp.cscs.ch/apps/viz/intel2018/compilers_and_libraries_2018.0.128/linux";
 	intel_icc_path_1 = "/opt/intel/compilers_and_libraries_2017.1.132/linux";
 in
 {

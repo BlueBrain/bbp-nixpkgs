@@ -46,8 +46,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate{
     url = config.bbp_git_ssh + "/hpc/learning_engine.git";
-    rev = "556e841cb96fbc2c969d348725d9656440f87e30";
-    sha256 = "1j8r0j91zcgvwxfkh6y634q29fbbdljc9dznrk9kcv4z7g4wi1mp";
+    rev = "ffe1fc2e69ff6009ea4eb0a024f483aec667b869";
+    sha256 = "0alsb2r20y7iz6z22s3k00f742789kdv9ana3rc0hb31nkf9p9bl";
   };
 
   enableParallelBuilding = true;
