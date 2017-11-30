@@ -25,7 +25,7 @@ in
 
 stdenv.mkDerivation rec {
   name = "learningengine-${version}";
-  version = "1.0-201710dev";
+  version = "1.1-201711dev";
 
   buildInputs = [
                     boost
