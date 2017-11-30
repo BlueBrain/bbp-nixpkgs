@@ -1152,7 +1152,7 @@ let
                pkgs.python27Full
                pythonPkgs.cython
                pythonPkgs.deepdish
-               pythonPkgs.enum
+               pythonPkgs.enum34
                pythonPkgs.h5py
                pythonPkgs.matplotlib
                pythonPkgs.numpy
@@ -2573,7 +2573,7 @@ with generic-modules; rec {
                     pkgs.bgq-pythonPackages-gcc47.bg-numpy.crossDrv
 
                     pkgs.pythonPackages.cython
-                    pkgs.pythonPackages.enum
+                    pkgs.pythonPackages.enum34
                     pkgs.pythonPackages.pip
                     pkgs.pythonPackages.setuptools
                     pkgs.pythonPackages.virtualenv
