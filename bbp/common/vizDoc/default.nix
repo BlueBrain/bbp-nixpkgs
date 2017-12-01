@@ -25,5 +25,5 @@ pkgs.runCommand name
     }) paths);
   }
   ''
-    ${pkgs.python2}/bin/python ${./builder.py} ${./doc-git-sync}
+    ${pkgs.python2.interpreter} ${./builder.py} ${./doc-git-sync}
   ''
