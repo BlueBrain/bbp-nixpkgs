@@ -81,6 +81,9 @@ stdenv.mkDerivation rec {
     license = {
       fullName = "Copyright 2012, Blue Brain Project";
     };
+    maintainers = [
+      config.maintainers.jamesgkind
+    ];
   };
 
 

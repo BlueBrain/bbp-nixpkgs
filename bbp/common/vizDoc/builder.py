@@ -63,6 +63,11 @@ def lookup_dir(root, name):
 
 
 class Package(object):
+    MAINTAINERS_BLACK_LIST = {
+        'Florian Friesdorf <flo@chaoflow.net>',
+        'Domen Kozar <domen@dev.si>',
+    }
+
     """Documentation package
     """
     def __init__(self, pkg):
@@ -70,7 +75,7 @@ class Package(object):
 
     @property
     def name(self):
-        return self._pkg['name']
+        return self._get_meta_property('docname', default=self._pkg['name'])
 
     @property
     def meta(self):
@@ -108,7 +113,11 @@ class Package(object):
 
     @property
     def maintainers(self):
-        return self._get_meta_property('maintainers', [])
+        return [
+            maintainer for maintainer
+            in self._get_meta_property('maintainers', [])
+            if maintainer not in Package.MAINTAINERS_BLACK_LIST
+        ]
 
     @property
     def version(self):

@@ -20,6 +20,12 @@ let
       license = {
         fullName = "Copyright 2017, Blue Brain Project";
       };
+      maintainers = [
+        config.maintainers.ferdonline
+      ];
+      # Override documentation package name because
+      # buildPythonPackage prefix `name` by "pythonMAJOR.MINOR-"
+      docname = name;
     };
 
     src = fetchgitPrivate {

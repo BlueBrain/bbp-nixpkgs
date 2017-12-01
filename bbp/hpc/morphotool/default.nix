@@ -40,6 +40,9 @@ in
       homepage = https://github.com/BlueBrain/morpho-tool;
       description = "Perform biological neuron morphologies operations";
       license = stdenv.lib.licenses.gpl2Plus;
+      maintainers = [
+        config.maintainers.adevress
+      ];
     };
 
     buildInputs = [

@@ -42,11 +42,14 @@ in
         parallel hdf5 when available.
       '';
       platforms = stdenv.lib.platforms.unix;
-      homepage = "https://bbpcode.epfl.ch/code/#/admin/projects/building/Functionalizer";
+      homepage = "https://bbpteam.epfl.ch/project/spaces/display/BBPHPC/Spark+functionalizer";
       repository = "ssh://bbpcode.epfl.ch/building/Functionalizer";
       license = {
         fullName = "Copyright 2017, Blue Brain Project";
       };
+      maintainers = [
+        config.maintainers.ferdonline
+      ];
     };
     src = fetchgitPrivate {
       url = config.bbp_git_ssh + "/building/Functionalizer";
