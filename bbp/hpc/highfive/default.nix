@@ -1,5 +1,6 @@
 {
   boost,
+  config,
   cmake,
   fetchFromGitHub,
   hdf5,
@@ -54,6 +55,9 @@ stdenv.mkDerivation rec {
     platforms = stdenv.lib.platforms.all;
     homepage = https://github.com/BlueBrain/HighFive;
     license = stdenv.lib.licenses.boost;
+    maintainers = [
+      config.maintainers.adevress
+    ];
   };
 
 }
