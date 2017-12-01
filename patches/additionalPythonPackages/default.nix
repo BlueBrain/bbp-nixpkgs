@@ -169,6 +169,17 @@ in
 
     });
 
+    binaryornot = pythonPackages.buildPythonPackage rec {
+      name = "binaryornot-${version}";
+      version = "0.4.4";
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/b/binaryornot/${name}.tar.gz";
+        sha256 = "0qc006986rb6bcbmiymwgcl1mns2jphr1j7sr7nk41nlr7gh359m";
+      };
+      propagatedBuildInputs = with self; [ chardet3 ];
+      doCheck = false;
+    };
+
     cached-property = pythonPackages.buildPythonPackage rec {
       name = "cached-property-${version}";
       version = "1.3.1";
@@ -176,6 +187,44 @@ in
         url = "mirror://pypi/c/cached-property/${name}.tar.gz";
         sha256 = "1wwm23dyysdb4444xz1q6b1agpyax101d8fx45s58ms92fzg0qk5";
       };
+    };
+
+    certifi17 = pythonPackages.buildPythonPackage rec {
+      name = "certifi-${version}";
+      version = "2017.11.5";
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/c/certifi/${name}.tar.gz";
+        sha256 = "1h0k6sy3p4csfdayghg2wjbnb1hfz27i5qbr0c7v8dhira8l5isy";
+      };
+    };
+
+    chardet3 = pythonPackages.buildPythonPackage rec {
+      name = "chardet-${version}";
+      version = "3.0.4";
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/c/chardet/${name}.tar.gz";
+        sha256 = "1bpalpia6r5x1kknbk11p1fzph56fmmnp405ds8icksd3knr5aw4";
+      };
+      doCheck = false;
+    };
+
+    cookiecutter = pythonPackages.buildPythonPackage rec {
+      name = "cookiecutter-${version}";
+      version = "1.6.0";
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/c/cookiecutter/${name}.tar.gz";
+        sha256 = "0glsvaz8igi2wy1hsnhm9fkn6560vdvdixzvkq6dn20z3hpaa5hk";
+      };
+
+      propagatedBuildInputs = with self; [
+        binaryornot
+        click
+        future_0_16
+        jinja2-time
+        poyo
+        requests2_18
+        whichcraft
+      ];
     };
 
     docopt = pythonPackages.buildPythonPackage rec {
@@ -187,35 +236,40 @@ in
       };
     };
 
-    markupsafe_1_0 = pythonPackages.buildPythonPackage rec {
-      name = "MarkupSafe-${version}";
-      version = "1.0";
+    hpcbench = pythonPackages.buildPythonPackage rec {
+      name = "hpcbench-${version}";
+      version = "0.3.4";
       src = pkgs.fetchurl {
-        url = "mirror://pypi/m/markupsafe/${name}.tar.gz";
-        sha256 = "0rdn1s8x9ni7ss8rfiacj7x1085lx8mh2zdwqslnw8xc3l4nkgm6";
+       url = "mirror://pypi/h/hpcbench/${name}.tar.gz";
+       sha256 = "06xv3mx9yj3dybnxrz5zigllbh7jsqb2xii34mnrc9lab8jvwiki";
       };
+      # # For development purpose, and add "pkgs.git" dependency
+      # src = pkgs.fetchgit {
+      #   url = "https://github.com/tristan0x/hpcbench.git";
+      #   rev = "f0978baea4b3863567b7ae07c9a592f0f316a56a";
+      #   sha256 = "16l7x69rbn0g1kdl7zk7zaqlgyymib58pm1irwkyr0w4cjifqyvq";
+      #   leaveDotGit = true;
+      # };
+      propagatedBuildInputs = with self; [
+        cached-property
+        cookiecutter
+        docopt
+        jinja2
+        numpy_1_13
+        py-elasticsearch
+        pyyaml_3_12
+        setuptools_scm
+        six_1_11
+      ];
     };
 
-    urllib3_1_22 = pythonPackages.buildPythonPackage rec {
-      name = "urllib3-${version}";
-      version = "1.22";
+    idna_2_6 = pythonPackages.buildPythonPackage rec {
+      name = "idna-${version}";
+      version = "2.6";
       src = pkgs.fetchurl {
-        url = "mirror://pypi/u/urllib3/${name}.tar.gz";
-        sha256 = "0kyvc9zdlxr5r96bng5rhm9a6sfqidrbvvkz64s76qs5267dli6c";
+        url = "mirror://pypi/i/idna/${name}.tar.gz";
+        sha256 = "13qaab6d0s15gknz8v3zbcfmbj6v86hn9pjxgkdf62ch13imssic";
       };
-      propagatedBuildInputs = with self; [ tornado ];
-      doCheck = false;
-    };
-
-    py-elasticsearch = pythonPackages.buildPythonPackage rec {
-      name = "elasticsearch-${version}";
-      version = "6.0.0";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/e/elasticsearch/${name}.tar.gz";
-        sha256 = "029q603g95fzkh87xkbxxmjfq5s9xkr9y27nfik6d4prsl0zxmlz";
-      };
-      propagatedBuildInputs = with self; [ urllib3_1_22 ];
-      doCheck = false;
     };
 
     jinja2 = pythonPackages.buildPythonPackage rec {
@@ -226,6 +280,38 @@ in
         sha256 = "190l36hfw3wb2n3n68yacjabxyb1pnxwn7vjx96cmjj002xy2jzq";
       };
       propagatedBuildInputs = with self; [ markupsafe_1_0 ];
+    };
+
+    jinja2-time = pythonPackages.buildPythonPackage rec {
+      name = "jinja2-time-${version}";
+      version = "0.2.0";
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/j/jinja2-time/${name}.tar.gz";
+        sha256 = "0h0dr7cfpjnjj8bgl2vk9063a53649pn37wnlkd8hxjy656slkni";
+      };
+      propagatedBuildInputs = with self; [
+        arrow
+        dateutil
+        jinja2
+      ];
+    };
+
+    markupsafe_1_0 = pythonPackages.buildPythonPackage rec {
+      name = "MarkupSafe-${version}";
+      version = "1.0";
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/m/markupsafe/${name}.tar.gz";
+        sha256 = "0rdn1s8x9ni7ss8rfiacj7x1085lx8mh2zdwqslnw8xc3l4nkgm6";
+      };
+    };
+
+    poyo = pythonPackages.buildPythonPackage rec {
+      name = "poyo-${version}";
+      version = "0.4.1";
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/p/poyo/${name}.tar.gz";
+        sha256 = "1mjjyc4siq8p44d5ciln0ykf5cldh8zy9aqwzsc50xn7w7ilwfqh";
+      };
     };
 
     pyyaml_3_12 = pythonPackages.buildPythonPackage rec {
@@ -239,23 +325,51 @@ in
       propagatedBuildInputs = with self; [ pkgs.libyaml ];
     };
 
-    hpcbench = pythonPackages.buildPythonPackage rec {
-      name = "hpcbench-${version}";
-      version = "0.3.2";
+    py-elasticsearch = pythonPackages.buildPythonPackage rec {
+      name = "elasticsearch-${version}";
+      version = "6.0.0";
       src = pkgs.fetchurl {
-        url = "mirror://pypi/h/hpcbench/${name}.tar.gz";
-        sha256 = "1sij9xx9nbyc7w78si4v93hha20jsq1mhbarl1y4v5y1k5n5d56x";
+        url = "mirror://pypi/e/elasticsearch/${name}.tar.gz";
+        sha256 = "029q603g95fzkh87xkbxxmjfq5s9xkr9y27nfik6d4prsl0zxmlz";
+      };
+      propagatedBuildInputs = with self; [ urllib3_1_22 ];
+      doCheck = false;
+    };
+
+    requests2_18 = pythonPackages.buildPythonPackage rec {
+      name = "requests-${version}";
+      version = "2.18.4";
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/r/requests/${name}.tar.gz";
+        sha256 = "0zi3v9nsmv9j27d0c0m1dvqyvaxz53g8m0aa1h3qanxs4irkwi4w";
       };
       propagatedBuildInputs = with self; [
-        cached-property
-        docopt
-        jinja2
-        numpy_1_13
-        py-elasticsearch
-        pyyaml_3_12
-        setuptools_scm
-        six_1_11
+        chardet3
+        certifi17
+        idna_2_6
+        urllib3_1_22
       ];
+      doCheck = false;
+    };
+
+    urllib3_1_22 = pythonPackages.buildPythonPackage rec {
+      name = "urllib3-${version}";
+      version = "1.22";
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/u/urllib3/${name}.tar.gz";
+        sha256 = "0kyvc9zdlxr5r96bng5rhm9a6sfqidrbvvkz64s76qs5267dli6c";
+      };
+      propagatedBuildInputs = with self; [ tornado ];
+      doCheck = false;
+    };
+
+    whichcraft = pythonPackages.buildPythonPackage rec {
+      name = "whichcraft-${version}";
+      version = "0.4.1";
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/w/whichcraft/${name}.tar.gz";
+        sha256 = "1zapij0ggmwp8gmr3yc4fy7pbnh3dag59nvyigrfkdvw734m23cy";
+      };
     };
 
 	tqdm = 	pythonPackages.buildPythonPackage rec {
