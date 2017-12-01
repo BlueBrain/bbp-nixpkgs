@@ -101,5 +101,5 @@ stdenv.mkDerivation rec {
     ctest -V -E "${builtins.concatStringsSep "|" excludedTests}"
   '';
 
-  outputs = [ "doc" "out" ];
+  outputs = [ "out" "doc" ];
 }
