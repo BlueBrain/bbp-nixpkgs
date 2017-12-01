@@ -186,7 +186,7 @@ class Package(object):
         with open(meta_file, 'w') as ostr:
             print('---', file=ostr)
             for key, value in self.project_description.items():
-                print(key, ': ', value, sep='', file=ostr)
+                print(key, ': ', value.encode('utf-8'), sep='', file=ostr)
             print('---', file=ostr)
 
 

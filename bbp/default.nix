@@ -573,6 +573,7 @@ let
             paths = [
                 functionalizer
                 highfive
+                learningengine
                 morphotool
                 pytouchreader
                 spykfunc
