@@ -19,7 +19,7 @@ let
         last-info = {
                 version = "1.16.0-dev201708";
                 rev = "80c14e04666aeb64eb69c605663b3065252339c5";
-                sha256 = "0y4ygxrrvil3p34wppiqc08q3abpjk83fcz2pmsqrcz61x4vvmji";
+                sha256 = "0cgb6jckbkjh50ds275zfwp5lpf2nfd4aq7s9qdp76fib18fbbkn";
         };
 
         lunchbox-info = if (legacyVersion) then legacy-info else last-info;

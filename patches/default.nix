@@ -160,12 +160,6 @@ let
             enableCpp = true;
         };
 
-        ## enforce thread safety
-        hdf5 =  std-pkgs.hdf5.overrideDerivation  ( oldAttrs:{
-            configureFlags = oldAttrs.configureFlags + " --enable-threadsafe ";
-        });
-
-
         phdf5 = std-pkgs.hdf5.override {
             mpi = openmpi;
 
@@ -378,7 +372,7 @@ let
 
         };
 
-        cython = additionalPythonPackages.cython;
+        cython = pythonPackages.cython;
 
         numpy_1_13_1 = patches-pkgs.pythonPackages.numpy;
 

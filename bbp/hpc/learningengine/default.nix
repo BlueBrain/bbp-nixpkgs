@@ -30,7 +30,7 @@ stdenv.mkDerivation rec {
   src = fetchgitPrivate{
     url = config.bbp_git_ssh + "/hpc/learning_engine.git";
     rev = "19e1c042e10c0677269fc3bcb15493dd58ba8f99";
-    sha256 = "10syaz0697irscpw61ahqgk38gsr5la8h6p4psjiwfr78caz4m5j";
+    sha256 = "11sbxbyya0hbhrlqqsirlpvsgjvn4p4f1dc6bdgx6rgm67pww5y0";
   };
   meta = {
     description = "Point neuron simulator";
