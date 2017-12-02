@@ -503,7 +503,7 @@ in
       [ 
       backports_shutil_get_terminal_size 
       decorator pickleshare prompt_toolkit
-      simplegeneric traitlets requests2 pathlib2 pexpect
+      simplegeneric traitlets requests pathlib2 pexpect
       pygments setuptools30
       ]
       ++ stdenv.lib.optionals stdenv.isDarwin [appnope];
