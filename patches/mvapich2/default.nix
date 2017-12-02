@@ -92,6 +92,7 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = false;
 
   preferLocalBuild = enforceLocalBuild;
+  noAuditTmpdir = true;
 
   postInstall = ''
   # Pick C/C++ compilers available when using mpicc and mpicxx
@@ -103,7 +104,7 @@ stdenv.mkDerivation rec {
 	${if (slurm-llnl!= null) then ''cp ${slurm-llnl}/lib/libpmi* $out/lib/'' else '' ''}
 
 	rm -f $out/lib/*.la;
-	'';
+  '';
 
   meta = with stdenv.lib; {
     description = "Implementation of the Message Passing Interface (MPI) standard";
