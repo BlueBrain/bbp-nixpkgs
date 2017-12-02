@@ -38,8 +38,8 @@ let
     all-config = (import ./bluegene/config.nix) // generic-config // configSystem // config ;
 
     ## all standard upstream packages
-    std-pkgs = args: (if builtins.pathExists ./std-nixpkgs/default.nix
-            then (import ./std-nixpkgs args) 
+    std-pkgs = args: (if builtins.pathExists ./base/default.nix
+            then (import ./base args) 
             else builtins.abort  
 (''
 
