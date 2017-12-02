@@ -15,13 +15,13 @@ let
         # proper BBP default MPI library, depending of the platform
         bbp-mpi = if pkgs.isBlueGene == true then ibm-mpi-xlc
                 else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2
-                else mpich2;
+                else mvapich2-hydra;
 
         # proper BBP default MPI library with RDMA support if available
         # if not available, map to default mpi library
         bbp-mpi-rdma = if pkgs.isBlueGene == true then ibm-mpi-xlc
                 else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2-rdma
-                else mpich2;
+                else mvapich2-hydra;
 
         # proper BBP default MPI library forced to GCC, necessary on some platforms
         bbp-mpi-gcc = if pkgs.isBlueGene == true then ibm-mpi
