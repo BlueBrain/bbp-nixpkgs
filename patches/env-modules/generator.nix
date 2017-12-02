@@ -134,10 +134,10 @@ else
 ##
 ${if (isCompiler == true) then
 ''
-    prepend-path --delim " " NIX_CFLAGS_COMPILE "-I${targetEnv.stdenv.cc.libc}/include"
-    prepend-path --delim " " NIX_LDFLAGS "-L${targetEnv.stdenv.cc.libc}/lib"
+    prepend-path --delim " " NIX_CFLAGS_COMPILE "-I${(builtins.head packages).libc}/include"
+    prepend-path --delim " " NIX_LDFLAGS "-L${(builtins.head packages).libc}/lib"
 
-    prepend-path CMAKE_PREFIX_PATH "${targetEnv.stdenv.cc.libc}"
+    prepend-path CMAKE_PREFIX_PATH "${(builtins.head packages).libc}"
 ''
 else
 ''''
