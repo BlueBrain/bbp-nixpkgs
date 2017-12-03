@@ -259,7 +259,7 @@ let
         };
 
         rtneuron = callPackage ./viz/rtneuron {
-
+		boost = boost159;
         };
 
         embree = callPackage ./viz/embree {
@@ -427,6 +427,7 @@ let
         flatindexer = callPackage ./hpc/FLATIndexer {
             mpiRuntime = bbp-mpi;
             numpy = pythonPackages.numpy;
+	    boost= boost159;
         };
 
         flatindexer-py3 = flatindexer.override {
