@@ -7,11 +7,11 @@
 , fetchgitPrivate
 , pkgconfig
 , boost
-, cmake38
+, cmake
 , zlib
 , hdf5
 , highfive
- }:
+}:
 
 let
     # create a python environment with numpy for numpy bindings tests
@@ -48,7 +48,7 @@ in
     buildInputs = [
       boost
       cereal
-      cmake38
+      cmake
       hdf5
       git
       pkgconfig

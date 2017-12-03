@@ -2,7 +2,7 @@
 , config
 , boost
 , cgal
-, cmake38
+, cmake
 , fetchgitPrivate
 , gmp
 , morphotool
@@ -33,7 +33,7 @@ stdenv.mkDerivation rec {
   buildInputs = [
     boost
     cgal
-    cmake38
+    cmake
     gmp
     morphotool
     mpfr
