@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
   src = fetchgitExternal {
     url = config.bbp_git_ssh + "/platform/BlueRepairSDK";
     rev = "58cf1c9e37226142fbc214f6a4fa3f8e35a8385a";
-    sha256 = "132q3zyjb4aaz244j2qarpwg6xv3jqq5mfsl1qniy4s7fdj9axqd";
+    sha256 = "1njiqfgxb7kfm4sfksjdlglax7k2jxn1z2bq0aq7m4mlrmq1w6f7";
     subdir = "BlueRepairSDK";
   };
 
