@@ -18,6 +18,11 @@ let
             });
         };
 
+	# force usage of boost 159
+	# until problems with rtneuron and FLATIndexer are solved
+	# TODO: migrate these two componentns to boost 165 
+	boost = boost159;
+
         # Boost with Python 3 support
         boost-py3 = (boost.overrideDerivation ( oldAttr: {
             name = oldAttr.name + "-py3";
@@ -151,10 +156,10 @@ let
 
         ## patch version of HDF5 with
         # cpp bindigns enabled
-        hdf5-cpp = callPackage ./hdf5 {
+        hdf5-cpp =  std-pkgs.hdf5.override {
             szip = null;
             mpi = null;
-            enableCpp = true;
+            cpp = true;
         };
 
         phdf5 = std-pkgs.hdf5.override {
