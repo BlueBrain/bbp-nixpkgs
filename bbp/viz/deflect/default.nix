@@ -14,7 +14,7 @@ stdenv.mkDerivation rec {
   name = "deflect-${version}";
   version = "0.14.0";
 
-  buildInputs = [ stdenv cmake boost freeglut mesa libjpeg_turbo libXi libXmu qt.base ];
+  buildInputs = [ stdenv cmake boost freeglut mesa libjpeg_turbo libXi libXmu qt.qtbase ];
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/Deflect";

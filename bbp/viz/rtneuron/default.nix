@@ -35,7 +35,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ stdenv pkgconfig boost cmake openscenegraph
                   lunchbox brion bbpsdk collage osgtransparency
-                  equalizer pythonEnv-rtneuron qt.base qt.svg ];
+                  equalizer pythonEnv-rtneuron qt.qtbase qt.qtsvg ];
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/viz/RTNeuron";
