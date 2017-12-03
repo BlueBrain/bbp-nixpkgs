@@ -34,6 +34,7 @@ stdenv.mkDerivation rec {
 	export LD_LIBRARY_PATH="''${PWD}/lib:''${LDLIBRARY_PATH}"
   '';
 
+  cmakeFlags = [ "-DDISABLE_SUBPROJECTS=TRUE" ];
 
   enableParallelBuilding = true;
 
