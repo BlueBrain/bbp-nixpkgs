@@ -51,7 +51,7 @@ let
                             pythonPackages.shapely
                             pythonPackages.jsonschema
                             pythonPackages.progressbar
-                            pythonPackages.sqlalchemy9
+                            pythonPackages.sqlalchemy
                             pythonPackages.pyyaml
                             pythonPackages.ordereddict
                           ];
