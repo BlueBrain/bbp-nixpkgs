@@ -422,7 +422,7 @@ in
 
     src = pkgs.fetchurl {
       url = "http://pypi.python.org/packages/source/o/ordereddict/${name}.tar.gz";
-      md5 = "a0ed854ee442051b249bfad0f638bbec";
+      sha256 = "198r0h27d8d0ikk79h2xc4jpaw2n602kpjvbm6mzx29l7zyr6f53";
     };
 
    };
