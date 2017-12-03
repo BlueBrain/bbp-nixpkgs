@@ -54,7 +54,7 @@ in
     src = fetchgitPrivate {
       url = config.bbp_git_ssh + "/building/Functionalizer";
       rev = "65e942529d1ede7e08d372fad1764553b18d9ac7";
-      sha256 = "05bfl9zrp39ilyfjia4hd86shrha11vp07rchazk3abmhp3qz15y";
+      sha256 = "0andhmf46na6vxd2w0b5q0q63wgjqg2dq7229r9as3fl6isf4sr9";
     };
     patches = [] ++ stdenv.lib.optionals (!enum34Required) [
       # old setuptools version does not support environment markers

@@ -13,7 +13,7 @@ let
         legacy-info = {
                 version = "2.16.0-legacy";
                 rev = "1a96478";
-                sha256 = "0igsmr741bfwzq0x5x5li53vwh33233bciryrn2fnkigjj0y9jff";
+                sha256 = "0yrdmggcncxahd47m8jvl59c0zcwyydkmdc17rn7npjs369w1y75";
         };
 
         last-info = {
