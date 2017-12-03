@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
         sha256 = "0pvfpvb36djvqlcc3lq7si0c5xpb2cqndjg8wvzg35ygnwqs5ngj";
     };
 
-
+    patches = [ ./strip-stupid-path.patch ];
 
     configurePhase = ''
         make config prefix=$out cc=mpicc cxx=mpic++ 

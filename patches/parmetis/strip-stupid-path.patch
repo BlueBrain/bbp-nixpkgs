@@ -1,0 +1,10 @@
+diff -ur parmetis-4.0.3.old/metis/programs/CMakeLists.txt parmetis-4.0.3/metis/programs/CMakeLists.txt
+--- parmetis-4.0.3.old/metis/programs/CMakeLists.txt	2013-03-30 17:24:50.000000000 +0100
++++ parmetis-4.0.3/metis/programs/CMakeLists.txt	2017-12-03 22:51:44.218054155 +0100
+@@ -1,6 +1,5 @@
+ # These programs use internal metis data structures.
+ include_directories(../libmetis)
+-link_directories(/home/karypis/local/lib)
+ # Build program.
+ add_executable(gpmetis gpmetis.c cmdline_gpmetis.c io.c stat.c)
+ add_executable(ndmetis ndmetis.c cmdline_ndmetis.c io.c smbfactor.c)
