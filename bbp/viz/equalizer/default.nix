@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
   src = fetchgit {
     url = "https://github.com/Eyescale/Equalizer.git";
     rev = "ba5259d6a1be4c2441c26a51c7c5ec6ac506c47b";
-    sha256 = "1vj3mcyd1a47r5cx83mjrqa82xday7ffkxmz9dk6kgg858p55nqx";
+    sha256 = "02kgggic0cwgzr90gn2dxvj2817mafrf7fy9x5dnqk9kqwyzim1x";
   };
 
 

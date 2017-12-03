@@ -11,7 +11,7 @@ let
     info-version-legacy = {
         version = "0.6.1-2017.02-c8255";
         rev = "c825534e9cc59e7016ad6edeb16f657403da5c32";
-        sha256 = "1kcy8cjzj64d7zvr79mvqnj4ykhbia0zg640vpvzjrgsjjf3zd61";
+        sha256 = "0ipchbw8igax6ni26cg7k1zchcv8xvnazmlvx2mz08blz43jbp1c";
     };
 
     info-version-0_9_6 = {
