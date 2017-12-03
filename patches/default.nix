@@ -130,19 +130,16 @@ let
 
         # llvm 4 backport
         llvmPackages_4 = callPackage ./llvm/4 {
-              newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
+              newScope = extra: MergePkgs.newScope ({ cmake = cmake; } // extra );
               inherit ccWrapperFun;
               inherit (stdenvAdapters) overrideCC;
         };
 
 
-        # llvm 4 backport
-        llvmPackages_3_9 = callPackage ./llvm/3.9 {
-              newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
-              inherit ccWrapperFun;
-              inherit (stdenvAdapters) overrideCC;
-        };
-
+        # llvm 3.9 backport
+        llvmPackages_3_9 = llvmPackages_39;
+        
+        
         # ispc compiler for brayns
         ispc = callPackage ./ispc {
             # require clang compiler
@@ -285,24 +282,6 @@ let
 
         };
 
-        cmake36 = std-pkgs.cmake.overrideDerivation ( oldAttr: rec {
-            majorVersion = "3.6";
-            minorVersion = "1";
-            version = "${majorVersion}.${minorVersion}";
-
-            src = fetchurl {
-                url = "${oldAttr.meta.homepage}files/v${majorVersion}/cmake-${version}.tar.gz";
-                sha256 = "04ggm9c0zklxypm6df1v4klrrd85m6vpv13kasj42za283n9ivi8";
-            };
-
-            outputs = [ "out" "doc" ];
-        });
-
-        # cmake 3.8.2
-        cmake38 = callPackage ./cmake {
-            ps = if stdenv.isDarwin then darwin.adv_cmds else null;
-        };
-
         ##
         #
         folly = callPackage ./folly {
@@ -415,7 +394,6 @@ let
         };
 
         omega_h = callPackage ./omega_h {
-            cmake38 = patches-pkgs.cmake38;
             gmodel = patches-pkgs.gmodel;
             libmeshb = patches-pkgs.libmeshb;
             trilinos = trilinos.override {
