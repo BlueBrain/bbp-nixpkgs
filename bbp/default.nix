@@ -146,7 +146,7 @@ let
 
         opengl = mesa;
 
-        qt = qt54;
+        qt = qt59;
 
         servus = callPackage ./viz/servus {
 
