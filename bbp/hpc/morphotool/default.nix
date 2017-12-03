@@ -32,7 +32,7 @@ in
     src = fetchgitPrivate {
       url = "git@github.com:BlueBrain/morpho-tool.git";
       rev = "8b94f2d21c77273ebd91cf3a456e139563c32f76";
-      sha256 = "1j6vbb2dhylhglnvn99nisb0gyd1v6daqx2n3l97ap9ig3xc17ql";
+      sha256 = "0mqdy81a71rjbcsfks6hvl0kqy6vsnkmwxpfz66rsbl8zxiv7m6y";
       leaveDotGit = true;  # required by setuptools_scm Python module
     };
 
