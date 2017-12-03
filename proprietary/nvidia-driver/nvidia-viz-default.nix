@@ -1,5 +1,5 @@
 { stdenv, fetchurl, kernel ? null, xorg, zlib, perl
-, gtk, atk, pango, glib, gdk_pixbuf, cairo, nukeReferences
+, gtk2, atk, pango, glib, gdk_pixbuf, cairo, nukeReferences
 , # Whether to build the libraries only (i.e. not the kernel module or
   # nvidia-settings).  Used to support 32-bit binaries on 64-bit
   # Linux.
