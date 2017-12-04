@@ -331,7 +331,11 @@ let
         equation = callPackage ./nse/equation {};
 
 
-        brainbuilder = callPackage ./nse/brainbuilder {};
+        brainbuilder = callPackage ./nse/brainbuilder {
+		buildPythonPackage = pythonPackages.buildPythonPackage;
+		numpy = pythonPackages.numpy;
+	};
+
         voxcell = brainbuilder.voxcell;
         brain-builder = brainbuilder.brain-builder;
 

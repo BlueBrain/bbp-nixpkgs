@@ -1,6 +1,6 @@
-{ fetchFromGitHub, pythonPackages, buildPythonPackage }:
+{ fetchFromGitHub, pythonPackages }:
 
-buildPythonPackage rec {
+pythonPackages.buildPythonPackage rec {
   version = "0.2.2";
   name = "pynrrd-${version}";
 

@@ -23,7 +23,7 @@ let
     info-version-latest = {
           version = "0.11.2";
           rev = "53ca4cb72ce9d2a881089143acb8561c44b40b55";
-          sha256 = "1d4jlar4m90h1dncfiw0m6z85vyiwx7kyphnnd0zjkmds4c2jva0";    
+          sha256 = "0yrj2jmr5p0i95pcxwij7z37p0zbvfjl1z48vg2hl3i8ywra9hbl";    
     };
 
 

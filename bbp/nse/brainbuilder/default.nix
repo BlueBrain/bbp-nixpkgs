@@ -1,10 +1,10 @@
-{ config, fetchgitPrivate, buildPythonPackage, pythonPackages, pynrrd, voxcell, numpy_1_13_1 }:
+{ config, fetchgitPrivate, buildPythonPackage, pythonPackages, pynrrd, voxcell, numpy }:
 
 let
   brainbuilder_src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/platform/BrainBuilder";
     rev =  "f2f608e6f436c41006ac0194243bbda1c460d96d";
-    sha256 = "0izljzdjf0gm65jn2db0a1rs6rg00dvqmrv68723l7b8agzrhbwd";
+    sha256 = "1scxs7j72hqxzf9bns23v9ilzn8kd1lj826a2ag4hvq726dqfw57";
   };
 in {
   voxcell = buildPythonPackage rec {
@@ -13,7 +13,7 @@ in {
     
     src = brainbuilder_src;
 
-    propagatedBuildInputs = with pythonPackages; [ numpy_1_13_1 pandas h5py six pynrrd ];
+    propagatedBuildInputs = with pythonPackages; [ numpy pandas h5py six pynrrd ];
 
     configurePhase = null;
 
@@ -37,7 +37,7 @@ in {
     
     src = brainbuilder_src;
 
-    propagatedBuildInputs = with pythonPackages; [ numpy_1_13_1 pandas h5py scipy lxml six voxcell ];
+    propagatedBuildInputs = with pythonPackages; [ numpy pandas h5py scipy lxml six voxcell ];
 
     configurePhase = null;
 
