@@ -124,12 +124,12 @@ let
 
         });
 
-        # llvm 4 backport
-        llvmPackages_4 = callPackage ./llvm/4 {
-              newScope = extra: MergePkgs.newScope ({ cmake = cmake; } // extra );
-              inherit ccWrapperFun;
-              inherit (stdenvAdapters) overrideCC;
-        };
+        # # llvm 4 backport
+        # llvmPackages_4 = callPackage ./llvm/4 {
+        #       newScope = extra: MergePkgs.newScope ({ cmake = cmake; } // extra );
+        #       inherit ccWrapperFun;
+        #       inherit (stdenvAdapters) overrideCC;
+        # };
 
 
         # llvm 3.9 backport

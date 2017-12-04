@@ -1,5 +1,5 @@
 {
-  cmake38,
+  cmake,
   fetchFromGitHub,
   gmodel,
   libmeshb,
@@ -45,7 +45,7 @@ stdenv.mkDerivation rec {
   };
 
   buildInputs = [
-    cmake38
+    cmake
     gmodel
     libmeshb
     trilinos

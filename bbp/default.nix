@@ -328,13 +328,15 @@ let
         };
 
         pynrrd = callPackage ./nse/pynrrd {};
-        equation = callPackage ./nse/equation {};
+        equation = callPackage ./nse/equation {
+            buildPythonPackage = pythonPackages.buildPythonPackage;
+        };
 
 
         brainbuilder = callPackage ./nse/brainbuilder {
-		buildPythonPackage = pythonPackages.buildPythonPackage;
-		numpy = pythonPackages.numpy;
-	};
+	       	buildPythonPackage = pythonPackages.buildPythonPackage;
+		    numpy = pythonPackages.numpy;
+       };
 
         voxcell = brainbuilder.voxcell;
         brain-builder = brainbuilder.brain-builder;
