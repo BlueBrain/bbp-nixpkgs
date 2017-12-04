@@ -583,6 +583,7 @@ let
                 morphotool
                 pytouchreader
                 spykfunc
+                syntool
             ];
         };
 
