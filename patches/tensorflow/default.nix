@@ -38,7 +38,7 @@ let
 
   mock = pythonPackages.mock;
 
-  protobuf3_2 = pythonPackages.protobuf3_2;
+  protobuf = pythonPackages.protobuf;
 
   bootstrapped-pip = pythonPackages.bootstrapped-pip;
 
@@ -122,7 +122,7 @@ let
       '';
 
       propagatedBuildInputs = with stdenv.lib;
-        [ numpy six protobuf3_2 swig werkzeug mock ]
+        [ numpy six protobuf swig werkzeug mock ]
         ++ optionals cudaSupport [ cudatoolkit cudnn stdenv.cc ];
 
       # Note that we need to run *after* the fixup phase because the

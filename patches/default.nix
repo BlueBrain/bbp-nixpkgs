@@ -37,13 +37,7 @@ let
         };
 
 
-
-        protobuf3_2 = callPackage ./protobuf/3.2.nix {
-            gmock = gtest1_8;
-        };
-
         grpc = callPackage ./grpc {
-            protobuf = protobuf3_2;
             gtest = gtest1_8;
             c-ares = c-ares1_3;
         };
@@ -378,7 +372,7 @@ let
         };
 
         tensorflow-py3 = tensorflow.override {
-            pythonPackages = patches-pkgs.python34Packages;
+            pythonPackages = patches-pkgs.python36Packages;
         };
 
         cctz = callPackage ./cctz {
@@ -427,7 +421,7 @@ let
       pythonPackages = MergePkgs.pythonPackages // (additionalPythonPackages);
       python27Packages = MergePkgs.python27Packages // (additionalPythonPackages);
       python3Packages = MergePkgs.python3Packages // (additionalPython3Packages);
-      python34Packages = MergePkgs.python34Packages // (additionalPython3Packages);
+      python36Packages = MergePkgs.python36Packages // (additionalPython3Packages);
   };
 
 in

@@ -663,12 +663,6 @@ in
   };
 
 
-  protobuf3_2 = callPackage ./protobuf3_2 { 
-    protobuf = pkgs.protobuf3_2;
-    pyext = pyext;
-  };
-
-
   lazy_property = pythonPackages.buildPythonPackage rec {
     version = "0.0.1";
     name = "lazy-property-${version}";
