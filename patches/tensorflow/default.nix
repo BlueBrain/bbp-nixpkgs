@@ -32,9 +32,9 @@ let
 
   python = pythonPackages.python;
 
-  numpy = pythonPackages.numpy_1_13;
+  numpy = pythonPackages.numpy;
 
-  six = pythonPackages.six_1_11;
+  six = pythonPackages.six;
 
   mock = pythonPackages.mock2;
 
@@ -53,7 +53,7 @@ let
     LC_ALL = "en_US.UTF-8";
 
     propagatedBuildInputs = with pythonPackages; [ itsdangerous ];
-    buildInputs = with pythonPackages; [ pytest requests2 glibcLocales ];
+    buildInputs = with pythonPackages; [ pytest requests glibcLocales ];
 
   };
 

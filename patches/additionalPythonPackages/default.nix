@@ -91,25 +91,6 @@ in
     };
 
 
-    pbr_1_8 = self.buildPythonPackage rec {
-        name = "pbr-${version}";
-        version = "1.8.1";
-
-        src = pkgs.fetchurl {
-          url = "mirror://pypi/p/pbr/${name}.tar.gz";
-          sha256 = "0jcny36cf3s8ar5r4a575npz080hndnrfs4np1fqhv0ym4k7c4p2";
-        };
-
-        # circular dependencies with fixtures
-        doCheck = false;
-        #buildInputs = with self; [ testtools testscenarios testresources
-        #  testrepository fixtures ];
-
-        };
-
-
-
-
     mock2 = self.buildPythonPackage (rec {
         name = "mock-2.0.0";
 
@@ -119,7 +100,7 @@ in
         };
 
         buildInputs = with self; [ unittest2 ];
-        propagatedBuildInputs = with self; [ funcsigs1_0_2 six pbr_1_8 ];
+        propagatedBuildInputs = with self; [ funcsigs1_0_2 six pbr ];
 
         meta = {
           description = "Mock objects for Python";
@@ -318,7 +299,7 @@ in
 
 			src = pkgs.fetchurl {
 			url = "https://pypi.python.org/packages/86/cc/ab61fd10d25d090e80326e84dcde8d6526c45265b4cee242db3f792da80f/nose_xunitmp-0.4.0.tar.gz";
-			md5 = "c2d1854a9843d3171b42b64e66bbe54f";
+			sha256 = "10p363s46ddm2afl4mql7yxkrrc2g4mshprzglq8lyqf3yycig7k";
 			};
 
 			buildInputs = with pythonPackages; [ nose ];
@@ -331,7 +312,7 @@ in
 
 			src = pkgs.fetchurl {
 				url = "https://pypi.python.org/packages/a0/1a/9bb934f1274715083cfe8139d7af6fa78ca5437707781a1dcc39a21697b4/nose-testconfig-0.10.tar.gz";
-				md5 = "2ff0a26ca9eab962940fa9b1b8e97995";
+				sha256 = "1j4l3a77pwq6wgc5gfmhh52jba4sy9vbmy8sldxqg3wfxqh8lcjl";
 			};
 
 			buildInputs = with pythonPackages; [ nose ];

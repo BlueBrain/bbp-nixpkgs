@@ -373,8 +373,8 @@ let
 
         tensorflow = callPackage ./tensorflow {
             pythonPackages = patches-pkgs.python27Packages;
-            cudaSupport = true;
-            cudnn = cudnn;
+            cudaSupport = false;
+            cudnn = null;
         };
 
         tensorflow-py3 = tensorflow.override {
