@@ -178,10 +178,6 @@ let
         };
 
 
-        clapack = callPackage ./clapack {
-            blas = openblas;
-        };
-
         ##  slurm BBP configuration
         #    Add support for Kerberos plugin and allow it to run
         #    with system configuration
