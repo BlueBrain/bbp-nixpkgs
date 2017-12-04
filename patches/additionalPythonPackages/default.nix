@@ -91,24 +91,7 @@ in
     };
 
 
-    mock2 = self.buildPythonPackage (rec {
-        name = "mock-2.0.0";
 
-        src = pkgs.fetchurl {
-          url = "mirror://pypi/m/mock/${name}.tar.gz";
-          sha256 = "1flbpksir5sqrvq2z0dp8sl4bzbadg21sj4d42w3klpdfvgvcn5i";
-        };
-
-        buildInputs = with self; [ unittest2 ];
-        propagatedBuildInputs = with self; [ funcsigs1_0_2 six pbr ];
-
-        meta = {
-          description = "Mock objects for Python";
-          homepage = http://python-mock.sourceforge.net/;
-          license = stdenv.lib.licenses.bsd2;
-        };
-    });
- 
     rtree = self.buildPythonPackage (rec {
         name = "rtree-${version}";
         version = "0.8.3";

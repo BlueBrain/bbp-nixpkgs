@@ -36,7 +36,7 @@ let
 
   six = pythonPackages.six;
 
-  mock = pythonPackages.mock2;
+  mock = pythonPackages.mock;
 
   protobuf3_2 = pythonPackages.protobuf3_2;
 
