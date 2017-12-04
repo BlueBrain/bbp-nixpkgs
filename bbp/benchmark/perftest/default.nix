@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
   src = fetchgit {
     url = "git://git.openfabrics.org/~grockah/perftest.git";
     rev = "b727d9c491e3573a1c92e6cb41bd5e7cb9db70c5";
-    sha256 = "1rwb4nrw2nk4lqlwypj1w9x5ffaa4yp6ypm9yaidnrwrhm8s7jzh";
+    sha256 = "1ym97ynlnaa7vljjdxg1xha3vriwx50hqb17876a26pb0wzck6vv";
   };
 
   passthru = {
