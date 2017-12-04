@@ -68,6 +68,7 @@ stdenv.mkDerivation rec {
 		  else if ( branchName == "default" ) then src-master
           else throw ( "neurodamus : not a valid branchName name " + branchName ) ;
 
+    patches = if (branchName == "simplification" || branchName == "savestate") then [ ./gcc-6-security-fix.patch ] else [ ];
 
 
     CFLAGS="-O2 -g";

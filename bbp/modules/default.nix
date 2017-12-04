@@ -2218,7 +2218,7 @@ let
             helloworld mvdtool morphotool syntool hpctools functionalizer touchdetector bluebuilder
             neurodamus neurodamus-savestate neurodamus-hippocampus neurodamus-simplification neuron
             nest mod2c coreneuron flatindexer flatindexer-py3 highfive morphomesher pytouchreader learningengine
-            spykfunc spykfunc-py3
+#            spykfunc spykfunc-py3
             neuron-nomultisend hpcbench
 
             # machine learning

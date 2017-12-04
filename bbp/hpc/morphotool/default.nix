@@ -19,8 +19,7 @@ let
       extraLibs = [
         pythonPackages.cython
         pythonPackages.numpy
-        pythonPackages.setuptools30
-        pythonPackages.setuptools_scm
+	pythonPackages.setuptools
         pythonPackages.wheel
       ];
     };
@@ -53,7 +52,9 @@ in
       git
       pkgconfig
       stdenv
+      pythonPackages.setuptools
       zlib
+      python_test_env
     ] ++ stdenv.lib.optional (pandoc != null) pandoc;
 
     nativeBuildInputs = [ python_test_env ];
@@ -63,7 +64,7 @@ in
       "-DHADOKEN_UNIT_TESTS:BOOL=OFF"
       "-DENABLE_MESHER_CGAL=OFF"
       "-DBUILD_PYTHON_MODULE:BOOL=ON"
-      "-DBUILD_PYTHON_DISTRIBUTABLE:BOOL=ON"
+#      "-DBUILD_PYTHON_DISTRIBUTABLE:BOOL=ON"
       "-DREBUILD_PYTHON_BINDINGS:BOOL=ON"
     ] ++ stdenv.lib.optional (pandoc != null) [
       "-DMORPHO_TOOL_DOCUMENTATION:BOOL=TRUE" ]
@@ -82,4 +83,9 @@ in
     outputs = [ "out" ] ++ stdenv.lib.optional (pandoc != null) "doc";
 
     propagatedBuildInputs = [ highfive ];
+
+    passthru = {
+	pythonEnv = python_test_env;
+
+    };
   }

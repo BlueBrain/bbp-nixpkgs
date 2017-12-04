@@ -427,7 +427,6 @@ let
         flatindexer = callPackage ./hpc/FLATIndexer {
             mpiRuntime = bbp-mpi;
             numpy = pythonPackages.numpy;
-	    boost= boost159;
         };
 
         flatindexer-py3 = flatindexer.override {

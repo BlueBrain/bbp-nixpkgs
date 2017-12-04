@@ -15,7 +15,7 @@ let
       lxml
       pip
       pyspark
-      setuptools30
+      setuptools
       setuptools_scm
       sphinx
       sphinx_rtd_theme
@@ -74,7 +74,7 @@ in
       mkdir -p $out
       pushd pyspark
       for target in build docs bdist_wheel ; do
-        ${python_executable} setup.py $target
+        ${python-env.interpreter} setup.py $target
       done
       popd
 
@@ -89,7 +89,7 @@ in
       export PYTHONPATH="$out/lib/${python.libPrefix}/site-packages:$PYTHONPATH"
 
       pushd pyspark
-      ${python_executable} setup.py install \
+      ${python-env.interpreter} setup.py install \
         --install-lib=$out/lib/${pythonPackages.python.libPrefix}/site-packages \
         --old-and-unmanageable \
         --prefix="$out"

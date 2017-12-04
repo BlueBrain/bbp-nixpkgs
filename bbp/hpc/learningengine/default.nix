@@ -97,6 +97,7 @@ stdenv.mkDerivation rec {
   ];
   checkPhase = ''
     export PYTHONPATH=${pythonPackages.numpy}/lib/${pythonPackages.python.libPrefix}/site-packages:$PYTHONPATH
+    export LD_LIBRARY_PATH="''${PWD}/learningengine:${hdf5}/lib:''${LD_LIBRARY_PATH}"
     echo "pythonpath $PYTHONPATH"
     ctest -V -E "${builtins.concatStringsSep "|" excludedTests}"
   '';
