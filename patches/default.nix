@@ -37,9 +37,6 @@ let
         };
 
 
-        c-ares1_3 = callPackage ./c-ares-1.13 {
-
-        };
 
         protobuf3_2 = callPackage ./protobuf/3.2.nix {
             gmock = gtest1_8;
@@ -358,7 +355,6 @@ let
 
         cython = pythonPackages.cython;
 
-        numpy_1_13_1 = patches-pkgs.pythonPackages.numpy;
 
         rocksdb = callPackage ./rocksdb {
         };

@@ -2,3 +2,6 @@
 	path = std-nixpkgs
 	url = https://github.com/adevress/nixpkgs-bbp-upstream.git
 	branch = bbp
+[submodule "base"]
+	path = base
+	url = git@github.com:adevress/nixpkgs-base.git
