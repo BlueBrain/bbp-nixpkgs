@@ -25,8 +25,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "facebook";
     repo = "folly";
-    rev = "66950202701a4fa60fde106f5bcae6d8dbe4327d";
-    sha256 = "0gyzpphmnr9bdd8jlz7rd6fkrcx6ssgrv2ah7glyvghq6qhrj6dy";
+    rev = "ee207f19892790e091082cc7c7ab8c5df0398061";
+    sha256 = "1ldzfk75blag00gsla84fdysv0ilcs1psadaz3jasqid857z0r74";
  };
  
   nativeBuildInputs = [ automake autoconf libtool python pkgconfig ];
