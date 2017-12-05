@@ -82,13 +82,13 @@ let
         if cudaSupport
         then
           fetchurl {
-            url = "https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-${version}-cp34-cp34m-linux_x86_64.whl";
-            sha256 = "0rrkxcww1kl3i1kcgmg88hz8qz6ppf0cd9cqb7ww59jiz6g9i2fc";
+            url = "https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-${version}-cp36-cp36m-linux_x86_64.whl";
+            sha256 = "3rrkxcww1kl3i1kcgmg88hz8qz6ppf0cd9cqb7ww59jiz6g9i2fc";
           }
         else
           fetchurl {
-            url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp34-cp34m-linux_x86_64.whl";
-            sha256 = "07x61jpa62hv1i1345mpgj66qyhr203x15zhv7c0i4nf1kdl1bx0";
+            url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp36-cp36m-linux_x86_64.whl";
+            sha256 = "1a2cc8ihl94iqff76nxg6bq85vfb7sj5cvvi9sxy2f43k32fi4lv";
           }
       ;
 

@@ -2295,7 +2295,7 @@ let
 
             # machine learning
             tensorflow 
-            #tensorflow-py3
+            tensorflow-py3
 
             # exotic
             bazel
