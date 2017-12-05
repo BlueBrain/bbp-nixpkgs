@@ -580,10 +580,14 @@ let
                 functionalizer
                 highfive
                 learningengine
+                morphomesher
                 morphotool
+                mvdtool
                 pytouchreader
+                reportinglib
                 spykfunc
                 syntool
+                touchdetector
             ];
         };
 
