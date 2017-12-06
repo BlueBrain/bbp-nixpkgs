@@ -35,5 +35,4 @@ stdenv.mkDerivation rec {
     python
   ];
 
-  outputs = [ "out" "doc" ];
 }
