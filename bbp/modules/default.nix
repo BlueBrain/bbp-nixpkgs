@@ -1157,6 +1157,7 @@ let
                pythonPkgs.matplotlib
                pythonPkgs.numpy
                pythonPkgs.pandas
+               pythonPkgs.dateutil
                pythonPkgs.pip
                pythonPkgs.pycurl
                pythonPkgs.setuptools
