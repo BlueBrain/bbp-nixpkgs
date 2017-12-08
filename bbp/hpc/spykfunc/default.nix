@@ -30,7 +30,7 @@ in
 
   stdenv.mkDerivation rec {
     name = "spykfunc-${version}";
-    version = "0.3.dev1";
+    version = "0.5.0";
     meta = {
       description = "New Functionalizer implementation on top of Spark";
       longDescription = ''
@@ -53,8 +53,8 @@ in
     };
     src = fetchgitPrivate {
       url = config.bbp_git_ssh + "/building/Functionalizer";
-      rev = "65e942529d1ede7e08d372fad1764553b18d9ac7";
-      sha256 = "0andhmf46na6vxd2w0b5q0q63wgjqg2dq7229r9as3fl6isf4sr9";
+      rev = "79dbd9ea1e8c1d8c14cc808fc1891ee33f3d257a";
+      sha256 = "0wdznacmc985652ppnmassxi0y3r7j3i4jnawp3hagg46sxbp9h5";
     };
     patches = [] ++ stdenv.lib.optionals (!enum34Required) [
       # old setuptools version does not support environment markers

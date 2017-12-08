@@ -42,6 +42,7 @@ let
     bluepy_runtime_deps = [
                             #  core
                             pythonPackages.h5py
+                            pythonPackages.lazy
                             pythonPackages.numpy
                             pythonPackages.pandas
                             pythonPackages.matplotlib
