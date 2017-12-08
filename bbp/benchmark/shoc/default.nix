@@ -47,6 +47,7 @@ stdenv.mkDerivation rec {
   ];
 
   configureFlags = [
+    "--without-opencl"
     ''CUDA_CPPFLAGS="-gencode=arch=compute_35,code=sm_35"''
   ];
 
