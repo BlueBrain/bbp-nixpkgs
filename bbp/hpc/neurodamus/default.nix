@@ -23,32 +23,32 @@ let
   src-master = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
         rev = "12c11fdd5bac854a5111ce11f363a04d9c151d9c";
-        sha256 = "0i59mlf5rmfqllvs6903shwp6sgfgngn7kyrqj1m5f2wgw7ngfb5";
+        sha256 = "1d24g5v1d3jxghply0nv4g6gmxqmj7q247c2pyv4sraivicrpicj";
     };
 
   src-savestate = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
         rev = "e8c6bfc02e58e58633a869000a1d1da4c9e3d4d5";
-        sha256 = "0zzqaxzc98zyl00nj24jsd8qawa2airi2nmlh0n5j8gzycvd7z2g";
+        sha256 = "11hg1aqj6j4j43psz20v7dlvyxrmsy2hp45qdhiw6y00gmyzgm4j";
   };
 
   src-hippocampus = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
         rev = "579f6ce9eeb40f73c4c864e189db0ebd7901a7ed";
-        sha256 = "0iwdavflydjgbk0jis1gg6jibjinlm7zixsgyxdvgaac5346q72y";
+        sha256 = "0dfmfb9mfkbq9ckn9xvb8n2lkbvwvwbs8qb3gvb7gf14dh8aiwvm";
   };
 
   src-simplification = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
         rev = "6ef13a2b5137aa892b0134118fe019a137d08e5f";
-        sha256 = "1sj219jilsj2c79z5syhxmnmsvn3jp3ihw889m78m7wxgfxsi2g9";
+        sha256 = "1ihj87xlw2g9q60srfr8y4ml5k076n4xhm855z94vkxqzq4hr9fj";
   };
 
 
   src-coreneuron = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
         rev = "980deaf0de430573b15e2358f48cf2dab833c8dc";
-        sha256 = "1rzfgk31lwd3s543k5bsmvpl2nhqll3cr125sm7i6acg7274l4pg";
+        sha256 = "1v85drcd9y16gca0sc0vaj460p4mabq0kkvj1li9l2adypmlj4zs";
   };
 
 
