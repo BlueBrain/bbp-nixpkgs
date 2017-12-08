@@ -2163,7 +2163,8 @@ let
 
             cmake vtk itk readline ncurses 
             python27-light python27-full manylinux1-python
-            cython ipython ipykernel pyqt5 elephant 
+            cython ipython ipykernel elephant 
+            # pyqt5
 
             # parallel
             tbb
@@ -2186,7 +2187,9 @@ let
 
             # viz team
             lunchbox brion brion-py3 rockets zeroeq zerobuf lexis vmmlib
-            bbpsdk rtneuron equalizer virtualgl glxinfo bbpsdk-legacy
+            bbpsdk 
+           # rtneuron 
+            equalizer virtualgl glxinfo bbpsdk-legacy
             brayns brayns-devel embree ospray ospray-devel deflect
 
             gldev qt5
