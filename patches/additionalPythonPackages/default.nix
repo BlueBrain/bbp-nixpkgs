@@ -447,7 +447,15 @@ in
     doCheck = false;
   };
 
+  lazy = pythonPackages.buildPythonPackage rec {
+    version = "1.3";
+    name = "lazy-${version}";
 
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/l/lazy/${name}.zip";
+      sha256 = "0gcfwv411rng9c0kpild11qq5wzyzq690nc76wkppfh6f6zpf2n8";
+    };
+  };
 
   # backport from NixOS 16.09
   setuptools30 = stdenv.mkDerivation rec {
