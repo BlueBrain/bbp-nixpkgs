@@ -6,12 +6,14 @@
 let
   has_icc = config ? intel_compiler_path && config.intel_compiler_path != null;
   compiler_path = if (has_icc) then config.intel_compiler_path else "";
+  compiler_version = config.intel_compiler_version;
 
   gcc_path = "${stdenv.cc}/bin/gcc";
   gxx_path = "${stdenv.cc}/bin/g++";
 
-  wrapper = stdenv.mkDerivation {
-    name = "intel-compiler-native";
+  wrapper = stdenv.mkDerivation rec {
+    name = "intel-compiler-native-${version}";
+    version = compiler_version;
 
     unpackPhase = '' echo "no sources" '';
 
@@ -52,6 +54,7 @@ let
 
     passthru = {
       isIcc = true;
+      iccVersion = version;
       gcc  = stdenv.cc;
     };
   };
