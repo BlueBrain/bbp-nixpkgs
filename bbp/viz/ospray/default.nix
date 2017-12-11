@@ -52,6 +52,8 @@ stdenv.mkDerivation rec {
                    "-DEMBREE_MAX_ISA=AVX2"
                    "-DTBB_ROOT=${tbb}"
                    "-DOSPRAY_MODULE_MPI=ON"
+                   "-DCMAKE_INSTALL_INCLUDEDIR=include/"
+                   "-DCMAKE_INSTALL_LIBDIR=lib/"
                    ];
 
 

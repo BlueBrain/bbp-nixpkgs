@@ -32,13 +32,13 @@ let
 
   python = pythonPackages.python;
 
-  numpy = pythonPackages.numpy_1_13;
+  numpy = pythonPackages.numpy;
 
-  six = pythonPackages.six_1_11;
+  six = pythonPackages.six;
 
-  mock = pythonPackages.mock2;
+  mock = pythonPackages.mock;
 
-  protobuf3_2 = pythonPackages.protobuf3_2;
+  protobuf = pythonPackages.protobuf;
 
   bootstrapped-pip = pythonPackages.bootstrapped-pip;
 
@@ -53,7 +53,7 @@ let
     LC_ALL = "en_US.UTF-8";
 
     propagatedBuildInputs = with pythonPackages; [ itsdangerous ];
-    buildInputs = with pythonPackages; [ pytest requests2 glibcLocales ];
+    buildInputs = with pythonPackages; [ pytest requests glibcLocales ];
 
   };
 
@@ -82,13 +82,13 @@ let
         if cudaSupport
         then
           fetchurl {
-            url = "https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-${version}-cp34-cp34m-linux_x86_64.whl";
-            sha256 = "0rrkxcww1kl3i1kcgmg88hz8qz6ppf0cd9cqb7ww59jiz6g9i2fc";
+            url = "https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-${version}-cp36-cp36m-linux_x86_64.whl";
+            sha256 = "3rrkxcww1kl3i1kcgmg88hz8qz6ppf0cd9cqb7ww59jiz6g9i2fc";
           }
         else
           fetchurl {
-            url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp34-cp34m-linux_x86_64.whl";
-            sha256 = "07x61jpa62hv1i1345mpgj66qyhr203x15zhv7c0i4nf1kdl1bx0";
+            url = "https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${version}-cp36-cp36m-linux_x86_64.whl";
+            sha256 = "1a2cc8ihl94iqff76nxg6bq85vfb7sj5cvvi9sxy2f43k32fi4lv";
           }
       ;
 
@@ -122,7 +122,7 @@ let
       '';
 
       propagatedBuildInputs = with stdenv.lib;
-        [ numpy six protobuf3_2 swig werkzeug mock ]
+        [ numpy six protobuf swig werkzeug mock ]
         ++ optionals cudaSupport [ cudatoolkit cudnn stdenv.cc ];
 
       # Note that we need to run *after* the fixup phase because the

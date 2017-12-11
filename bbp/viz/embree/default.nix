@@ -27,7 +27,10 @@ stdenv.mkDerivation rec {
     buildInputs = [ cmake ispc tbb freeglut 
                     mesa libpng libXmu libXi imagemagick ];
 
-
+    cmakeFlags = [
+			"-DCMAKE_INSTALL_INCLUDEDIR=include/"
+			"-DCMAKE_INSTALL_LIBDIR=lib/"
+		];
 
 }
 

@@ -18,6 +18,11 @@ let
             });
         };
 
+	# force usage of boost 159
+	# until problems with rtneuron and FLATIndexer are solved
+	# TODO: migrate these two componentns to boost 165 
+	boost = boost159;
+
         # Boost with Python 3 support
         boost-py3 = (boost.overrideDerivation ( oldAttr: {
             name = oldAttr.name + "-py3";
@@ -32,16 +37,7 @@ let
         };
 
 
-        c-ares1_3 = callPackage ./c-ares-1.13 {
-
-        };
-
-        protobuf3_2 = callPackage ./protobuf/3.2.nix {
-            gmock = gtest1_8;
-        };
-
         grpc = callPackage ./grpc {
-            protobuf = protobuf3_2;
             gtest = gtest1_8;
             c-ares = c-ares1_3;
         };
@@ -128,21 +124,18 @@ let
 
         });
 
-        # llvm 4 backport
-        llvmPackages_4 = callPackage ./llvm/4 {
-              newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
-              inherit ccWrapperFun;
-              inherit (stdenvAdapters) overrideCC;
-        };
+        # # llvm 4 backport
+        # llvmPackages_4 = callPackage ./llvm/4 {
+        #       newScope = extra: MergePkgs.newScope ({ cmake = cmake; } // extra );
+        #       inherit ccWrapperFun;
+        #       inherit (stdenvAdapters) overrideCC;
+        # };
 
 
-        # llvm 4 backport
-        llvmPackages_3_9 = callPackage ./llvm/3.9 {
-              newScope = extra: MergePkgs.newScope ({ cmake = cmake36; } // extra );
-              inherit ccWrapperFun;
-              inherit (stdenvAdapters) overrideCC;
-        };
-
+        # llvm 3.9 backport
+        llvmPackages_3_9 = llvmPackages_39;
+        
+        
         # ispc compiler for brayns
         ispc = callPackage ./ispc {
             # require clang compiler
@@ -154,17 +147,11 @@ let
 
         ## patch version of HDF5 with
         # cpp bindigns enabled
-        hdf5-cpp = callPackage ./hdf5 {
+        hdf5-cpp =  std-pkgs.hdf5.override {
             szip = null;
             mpi = null;
-            enableCpp = true;
+            cpp = true;
         };
-
-        ## enforce thread safety
-        hdf5 =  std-pkgs.hdf5.overrideDerivation  ( oldAttrs:{
-            configureFlags = oldAttrs.configureFlags + " --enable-threadsafe ";
-        });
-
 
         phdf5 = std-pkgs.hdf5.override {
             mpi = openmpi;
@@ -184,10 +171,6 @@ let
 
         };
 
-
-        clapack = callPackage ./clapack {
-            blas = openblas;
-        };
 
         ##  slurm BBP configuration
         #    Add support for Kerberos plugin and allow it to run
@@ -291,24 +274,6 @@ let
 
         };
 
-        cmake36 = std-pkgs.cmake.overrideDerivation ( oldAttr: rec {
-            majorVersion = "3.6";
-            minorVersion = "1";
-            version = "${majorVersion}.${minorVersion}";
-
-            src = fetchurl {
-                url = "${oldAttr.meta.homepage}files/v${majorVersion}/cmake-${version}.tar.gz";
-                sha256 = "04ggm9c0zklxypm6df1v4klrrd85m6vpv13kasj42za283n9ivi8";
-            };
-
-            outputs = [ "out" "doc" ];
-        });
-
-        # cmake 3.8.2
-        cmake38 = callPackage ./cmake {
-            ps = if stdenv.isDarwin then darwin.adv_cmds else null;
-        };
-
         ##
         #
         folly = callPackage ./folly {
@@ -378,9 +343,8 @@ let
 
         };
 
-        cython = additionalPythonPackages.cython;
+        cython = pythonPackages.cython;
 
-        numpy_1_13_1 = patches-pkgs.pythonPackages.numpy;
 
         rocksdb = callPackage ./rocksdb {
         };
@@ -403,12 +367,12 @@ let
 
         tensorflow = callPackage ./tensorflow {
             pythonPackages = patches-pkgs.python27Packages;
-            cudaSupport = true;
-            cudnn = cudnn;
+            cudaSupport = false;
+            cudnn = null;
         };
 
         tensorflow-py3 = tensorflow.override {
-            pythonPackages = patches-pkgs.python34Packages;
+            pythonPackages = patches-pkgs.python36Packages;
         };
 
         cctz = callPackage ./cctz {
@@ -421,7 +385,6 @@ let
         };
 
         omega_h = callPackage ./omega_h {
-            cmake38 = patches-pkgs.cmake38;
             gmodel = patches-pkgs.gmodel;
             libmeshb = patches-pkgs.libmeshb;
             trilinos = trilinos.override {
@@ -458,7 +421,7 @@ let
       pythonPackages = MergePkgs.pythonPackages // (additionalPythonPackages);
       python27Packages = MergePkgs.python27Packages // (additionalPythonPackages);
       python3Packages = MergePkgs.python3Packages // (additionalPython3Packages);
-      python34Packages = MergePkgs.python34Packages // (additionalPython3Packages);
+      python36Packages = MergePkgs.python36Packages // (additionalPython3Packages);
   };
 
 in

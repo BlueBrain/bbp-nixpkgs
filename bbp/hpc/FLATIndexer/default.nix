@@ -41,7 +41,7 @@ stdenv.mkDerivation rec {
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/FLATIndex";
     rev = "92d08e5dccdc4f3fbe4242bc9e5b00663e28cb99";
-    sha256 = "166z46h5sr1g78vyfjnykh4xbl8qr89nz5kkmq9mhkzmdvag3piq";
+    sha256 = "1ycyb07g0jnibmpcddj2j14p9bg7dxcy5m02avcy20dklgwqhb66";
   };
 
   cmakeFlags= [ "-DCOMMON_DISABLE_WERROR=TRUE" ];

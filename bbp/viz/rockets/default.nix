@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/viz/Rockets";
     rev = "614d6b3078809dedb77629b061448c9f2c2f49fc";
-    sha256 = "0n16aw951ifx3bl08mpq0aldmh4ixyy48xf4al413nsyqzv7ixrf";
+    sha256 = "13sy113aifqbmswrm0rp5iywfxnswq7qw36z51mjg49ng6zp86yi";
   };
 
   enableParallelBuilding = true;

@@ -40,6 +40,7 @@ let
         nvidia-x11-34032 = callPackage ./nvidia-driver/legacy340-32-kernel26.nix {
             libsOnly = true;
             kernel = null;
+            gtk = pkgs.gtk;
         };
 
         nvidia-x11-36757 = callPackage ./nvidia-driver/nvidia-viz-default.nix {

@@ -31,7 +31,7 @@ let
     src = fetchgitPrivate {
       url = config.bbp_git_ssh + "/hpc/PyModules";
       rev = "44ebe4235d520b42a594b7388f7478eb49152b74";
-      sha256 = "0iwn9mspx82pxjcm22fz4wk9yla58ga0jzkhcr3ygaqjr8mh1pj4";
+      sha256 = "1c4m0slk908c8nn1l1al2sc9mrbvmb3vz4ckk7min6snw6yxmwmi";
     };
 
     propagatedBuildInputs = [
@@ -47,6 +47,7 @@ let
 
     preConfigure = ''
       cd PyTouchReader;
+      rm dist/*.whl
     '';
 
     postInstall = ''

@@ -15,13 +15,13 @@ let
         # proper BBP default MPI library, depending of the platform
         bbp-mpi = if pkgs.isBlueGene == true then ibm-mpi-xlc
                 else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2
-                else mpich2;
+                else mvapich2-hydra;
 
         # proper BBP default MPI library with RDMA support if available
         # if not available, map to default mpi library
         bbp-mpi-rdma = if pkgs.isBlueGene == true then ibm-mpi-xlc
                 else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2-rdma
-                else mpich2;
+                else mvapich2-hydra;
 
         # proper BBP default MPI library forced to GCC, necessary on some platforms
         bbp-mpi-gcc = if pkgs.isBlueGene == true then ibm-mpi
@@ -146,7 +146,7 @@ let
 
         opengl = mesa;
 
-        qt = qt54;
+        qt = qt59;
 
         servus = callPackage ./viz/servus {
 
@@ -259,7 +259,7 @@ let
         };
 
         rtneuron = callPackage ./viz/rtneuron {
-
+		boost = boost159;
         };
 
         embree = callPackage ./viz/embree {
@@ -328,10 +328,16 @@ let
         };
 
         pynrrd = callPackage ./nse/pynrrd {};
-        equation = callPackage ./nse/equation {};
+        equation = callPackage ./nse/equation {
+            buildPythonPackage = pythonPackages.buildPythonPackage;
+        };
 
 
-        brainbuilder = callPackage ./nse/brainbuilder {};
+        brainbuilder = callPackage ./nse/brainbuilder {
+	       	buildPythonPackage = pythonPackages.buildPythonPackage;
+		    numpy = pythonPackages.numpy;
+       };
+
         voxcell = brainbuilder.voxcell;
         brain-builder = brainbuilder.brain-builder;
 

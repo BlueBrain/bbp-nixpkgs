@@ -1,0 +1,12 @@
+diff -ur bbp-6ef13a2.old/lib/modlib/lookupTableV2.mod bbp-6ef13a2/lib/modlib/lookupTableV2.mod
+--- bbp-6ef13a2.old/lib/modlib/lookupTableV2.mod	1970-01-01 01:00:01.000000000 +0100
++++ bbp-6ef13a2/lib/modlib/lookupTableV2.mod	2017-12-04 00:06:37.434176113 +0100
+@@ -113,7 +113,7 @@
+ 		if(strncmp(header,"ExtracellularElectrodeLookupTable",33)!=0){
+ 			*tempTable = tbl;
+ 			printf("Header does not match: \n");
+-			printf(header);
++			printf("%s",header);
+ 			return;
+ 		}
+ 		fread(&(tbl->vInfo),sizeof(char),1,file);		

@@ -23,6 +23,8 @@ stdenv.mkDerivation rec {
 		./slurm-spank-pluginsmod_conflict.patch
 
 		./slurm-flex.patch
+
+        ./werror-fix.patch
 	    ];
 
   buildInputs = [ pkgconfig lua pam bison flex slurm-llnl ];

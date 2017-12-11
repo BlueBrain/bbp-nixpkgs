@@ -91,62 +91,7 @@ in
     };
 
 
-    numpy_1_13 = callPackage ./numpy/1.13.1.nix {
-        
-    };
 
-    pbr_1_8 = self.buildPythonPackage rec {
-        name = "pbr-${version}";
-        version = "1.8.1";
-
-        src = pkgs.fetchurl {
-          url = "mirror://pypi/p/pbr/${name}.tar.gz";
-          sha256 = "0jcny36cf3s8ar5r4a575npz080hndnrfs4np1fqhv0ym4k7c4p2";
-        };
-
-        # circular dependencies with fixtures
-        doCheck = false;
-        #buildInputs = with self; [ testtools testscenarios testresources
-        #  testrepository fixtures ];
-
-        };
-
-
-    six_1_11 = self.buildPythonPackage rec {
-        name = "six-1.11.0";
-
-        src = pkgs.fetchurl {
-          url = "mirror://pypi/s/six/${name}.tar.gz";
-          sha256 = "1scqzwc51c875z23phj48gircqjgnn3af8zy2izjwmnlxrxsgs3h";
-        };
-
-        buildInputs = with self; [ pytest ];
-
-        checkPhase = ''
-          py.test test_six.py
-        '';
-
-    };
-
-
-    mock2 = self.buildPythonPackage (rec {
-        name = "mock-2.0.0";
-
-        src = pkgs.fetchurl {
-          url = "mirror://pypi/m/mock/${name}.tar.gz";
-          sha256 = "1flbpksir5sqrvq2z0dp8sl4bzbadg21sj4d42w3klpdfvgvcn5i";
-        };
-
-        buildInputs = with self; [ unittest2 ];
-        propagatedBuildInputs = with self; [ funcsigs1_0_2 six_1_11 pbr_1_8 ];
-
-        meta = {
-          description = "Mock objects for Python";
-          homepage = http://python-mock.sourceforge.net/;
-          license = stdenv.lib.licenses.bsd2;
-        };
-    });
- 
     rtree = self.buildPythonPackage (rec {
         name = "rtree-${version}";
         version = "0.8.3";
@@ -169,17 +114,6 @@ in
 
     });
 
-    binaryornot = pythonPackages.buildPythonPackage rec {
-      name = "binaryornot-${version}";
-      version = "0.4.4";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/b/binaryornot/${name}.tar.gz";
-        sha256 = "0qc006986rb6bcbmiymwgcl1mns2jphr1j7sr7nk41nlr7gh359m";
-      };
-      propagatedBuildInputs = with self; [ chardet3 ];
-      doCheck = false;
-    };
-
     cached-property = pythonPackages.buildPythonPackage rec {
       name = "cached-property-${version}";
       version = "1.3.1";
@@ -198,16 +132,6 @@ in
       };
     };
 
-    chardet3 = pythonPackages.buildPythonPackage rec {
-      name = "chardet-${version}";
-      version = "3.0.4";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/c/chardet/${name}.tar.gz";
-        sha256 = "1bpalpia6r5x1kknbk11p1fzph56fmmnp405ds8icksd3knr5aw4";
-      };
-      doCheck = false;
-    };
-
     cookiecutter = pythonPackages.buildPythonPackage rec {
       name = "cookiecutter-${version}";
       version = "1.6.0";
@@ -222,7 +146,7 @@ in
         future_0_16
         jinja2-time
         poyo
-        requests2_18
+        requests
         whichcraft
       ];
     };
@@ -255,11 +179,11 @@ in
         cookiecutter
         docopt
         jinja2
-        numpy_1_13
+        numpy
         py-elasticsearch
-        pyyaml_3_12
+        pyyaml
         setuptools_scm
-        six_1_11
+        six
       ];
     };
 
@@ -314,17 +238,6 @@ in
       };
     };
 
-    pyyaml_3_12 = pythonPackages.buildPythonPackage rec {
-      name = "PyYAML-${version}";
-      version = "3.12";
-      src = pkgs.fetchurl {
-        url = "http://pyyaml.org/download/pyyaml/${name}.zip";
-        sha256 = "19s1lxi0idq4a0bpvld866pv5b16lqxypyswmsdi5ys4210jxj2s";
-      };
-      buildInputs = with self; [ pkgs.pyrex ];
-      propagatedBuildInputs = with self; [ pkgs.libyaml ];
-    };
-
     py-elasticsearch = pythonPackages.buildPythonPackage rec {
       name = "elasticsearch-${version}";
       version = "6.0.0";
@@ -332,36 +245,10 @@ in
         url = "mirror://pypi/e/elasticsearch/${name}.tar.gz";
         sha256 = "029q603g95fzkh87xkbxxmjfq5s9xkr9y27nfik6d4prsl0zxmlz";
       };
-      propagatedBuildInputs = with self; [ urllib3_1_22 ];
+      propagatedBuildInputs = with self; [ urllib3 ];
       doCheck = false;
     };
 
-    requests2_18 = pythonPackages.buildPythonPackage rec {
-      name = "requests-${version}";
-      version = "2.18.4";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/r/requests/${name}.tar.gz";
-        sha256 = "0zi3v9nsmv9j27d0c0m1dvqyvaxz53g8m0aa1h3qanxs4irkwi4w";
-      };
-      propagatedBuildInputs = with self; [
-        chardet3
-        certifi17
-        idna_2_6
-        urllib3_1_22
-      ];
-      doCheck = false;
-    };
-
-    urllib3_1_22 = pythonPackages.buildPythonPackage rec {
-      name = "urllib3-${version}";
-      version = "1.22";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/u/urllib3/${name}.tar.gz";
-        sha256 = "0kyvc9zdlxr5r96bng5rhm9a6sfqidrbvvkz64s76qs5267dli6c";
-      };
-      propagatedBuildInputs = with self; [ tornado ];
-      doCheck = false;
-    };
 
     whichcraft = pythonPackages.buildPythonPackage rec {
       name = "whichcraft-${version}";
@@ -395,7 +282,7 @@ in
 
 			src = pkgs.fetchurl {
 			url = "https://pypi.python.org/packages/86/cc/ab61fd10d25d090e80326e84dcde8d6526c45265b4cee242db3f792da80f/nose_xunitmp-0.4.0.tar.gz";
-			md5 = "c2d1854a9843d3171b42b64e66bbe54f";
+			sha256 = "10p363s46ddm2afl4mql7yxkrrc2g4mshprzglq8lyqf3yycig7k";
 			};
 
 			buildInputs = with pythonPackages; [ nose ];
@@ -408,39 +295,13 @@ in
 
 			src = pkgs.fetchurl {
 				url = "https://pypi.python.org/packages/a0/1a/9bb934f1274715083cfe8139d7af6fa78ca5437707781a1dcc39a21697b4/nose-testconfig-0.10.tar.gz";
-				md5 = "2ff0a26ca9eab962940fa9b1b8e97995";
+				sha256 = "1j4l3a77pwq6wgc5gfmhh52jba4sy9vbmy8sldxqg3wfxqh8lcjl";
 			};
 
 			buildInputs = with pythonPackages; [ nose ];
 
 	};           
 
-
-  cython = pythonPackages.buildPythonPackage rec {
-    name = "Cython-${version}";
-    version = "0.25.2";
-
-    src = pkgs.fetchurl {
-      url = "https://pypi.io/packages/source/C/Cython/${name}.tar.gz";
-      sha256 = "01h3lrf6d98j07iakifi81qjszh6faa37ibx7ylva1vsqbwx2hgi";
-    };
-
-    setupPyBuildFlags = ["--build-base=$out"];
-
-    buildInputs = with pythonPackages; [ pkgs.pkgconfig ];
-
-   };
-    
-
-  ordereddict = pythonPackages.buildPythonPackage rec {
-    name = "ordereddict-1.1";
-
-    src = pkgs.fetchurl {
-      url = "http://pypi.python.org/packages/source/o/ordereddict/${name}.tar.gz";
-      md5 = "a0ed854ee442051b249bfad0f638bbec";
-    };
-
-   };
 
   deepdish = pythonPackages.buildPythonPackage rec {
     name = "deepdish-${version}";
@@ -470,12 +331,12 @@ in
       sha256 = "10dc5v4ff2qsywlwnfnpagayqhjvrn6p6lbgpak0kp5crd21mcl6";
     };
 
-    buildInputs = with self; [ scipy six_1_11 quantities neo ];
+    buildInputs = with self; [ scipy six quantities neo ];
 
-    propagatedBuildInputs = with self; [ scipy  six_1_11 quantities neo ];
+    propagatedBuildInputs = with self; [ scipy  six quantities neo ];
 
     passthru = {
-        pythonDeps = with self; [ scipy six_1_11 quantities neo ];
+        pythonDeps = with self; [ scipy six quantities neo ];
     };
 
    };
@@ -518,7 +379,7 @@ in
       [ 
       backports_shutil_get_terminal_size 
       decorator pickleshare prompt_toolkit
-      simplegeneric traitlets requests2 pathlib2 pexpect
+      simplegeneric traitlets requests pathlib2 pexpect
       pygments setuptools30
       ]
       ++ stdenv.lib.optionals stdenv.isDarwin [appnope];
@@ -810,11 +671,6 @@ in
   };
 
 
-  protobuf3_2 = callPackage ./protobuf3_2 { 
-    protobuf = pkgs.protobuf3_2;
-    pyext = pyext;
-  };
-
   lazy_property = pythonPackages.buildPythonPackage rec {
     version = "0.0.1";
     name = "lazy-property-${version}";
@@ -838,10 +694,10 @@ in
     };
 
     propagatedBuildInputs = with self; [
-      numpy_1_13
-      pyyaml_3_12
+      numpy
+      pyyaml
       scipy
-      six_1_11
+      six
     ];
   };
 

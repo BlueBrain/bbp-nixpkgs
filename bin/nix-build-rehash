@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -o pipefail
+
+function extract_hash {
+	CONTENT="$1"
+
+	export EXTRACT_NEW_HASH="$(echo "${CONTENT}" | sed -e 's@.* hash ‘\([a-z0-9]*\)’.*@\1@g')"
+	export EXTRACT_OLD_HASH="$(echo "${CONTENT}" | sed -e 's@.* when ‘\([a-z0-9]*\)’.*@\1@g')"
+
+	echo " Found hash old ${EXTRACT_OLD_HASH} need to be replaced by ${EXTRACT_NEW_HASH} "
+}
+
+function update_hash {
+	export OLD_HASH="$1"
+	export NEW_HASH="$2"
+
+	find . -type f | xargs sed -i -e "s@${OLD_HASH}@${NEW_HASH}@g"
+
+}
+
+
+
+function build_trigger {
+	export ALL_ARGS="$@"
+	export FILE_LOG="/tmp/rebuild_log-$(date +%s).log"
+
+	nix-build ./ ${ALL_ARGS}   2>&1 | tee ${FILE_LOG}
+
+	export RES="$?"
+	if [[ "${RES}" != "0" ]]; then
+		echo "Build failure.... test if checksum was wrong"
+
+		export LOG_FILE_MATCH="$(grep "sha256" ${FILE_LOG})"
+
+		if [[ "${LOG_FILE_MATCH}" != "" ]]; then
+			echo "Detect sha256 mismatch, replace and rebuild ...."
+			extract_hash "${LOG_FILE_MATCH}"
+			update_hash "${EXTRACT_OLD_HASH}" "${EXTRACT_NEW_HASH}"
+			build_trigger "$@"
+		else
+			echo "no checksum failure detected"
+
+		fi			
+
+
+	fi		
+
+}
+
+
+build_trigger $@

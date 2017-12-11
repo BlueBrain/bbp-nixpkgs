@@ -35,14 +35,15 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ stdenv pkgconfig boost cmake openscenegraph
                   lunchbox brion bbpsdk collage osgtransparency
-                  equalizer pythonEnv-rtneuron qt.base qt.svg ];
+                  equalizer pythonEnv-rtneuron qt.qtbase qt.qtsvg ];
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/viz/RTNeuron";
-    rev = "47dce1e11a6534dc2eb4971a589cec459c9cc274";
-    sha256 = "04215jjjl1sqc6lna19bd8zbyl9r89snjgysp7iwrmd9mj5x53wl";
+    rev = "6c82fb03a3f0dc94fcac5d34edc441375f27bc8c";
+    sha256 = "1cw603n7lfhfq9bjxk5x2p4lh90f05187p84wp03d3w15dkijqps";
   };
 
+  cmakeFlags = [ "-DDISABLE_SUBPROJECTS=TRUE" ];
 
   enableParallelBuilding = true;
 }

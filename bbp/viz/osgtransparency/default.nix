@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/viz/osgTransparency";
     rev = "e7763676d2844c18eab13607679d2a999f57a3f0";
-    sha256 = "0iiyasg1c4lgwkmyrpbsgdhj9dhm3grv6fac8vwf1gvdmdq1f5na";
+    sha256 = "0939ifn1fwxd83kf7iqc9xd2vcj6gcdkm1gpy396bk0fjw4cd6fb";
   };
 
 

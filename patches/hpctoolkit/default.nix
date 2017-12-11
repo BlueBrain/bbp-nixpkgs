@@ -9,6 +9,7 @@
 , libelf
 , libxml2
 , boost
+, libbfd
 , papi
 , libunwind
 }:
@@ -51,18 +52,19 @@ let
           src = fetchFromGitHub {
             owner = "HPCToolkit";
             repo = "hpctoolkit-externals";
-            rev = "3d2953623357bb06e9a4b51eca90a4b039c2710e";
-            sha256 = "0b9ha9s2hwhsf1yzzynflj1w6ixw4yadqcyzhb27y6cqqyni20x1";
+            rev = "0787e3221af1594b1b1f06204b00b16f91738c8f";
+            sha256 = "15iadk4gcbdjl872vy3mvmqm9yckdlak25i114dwp57y9b855d7p";
          };
          
           nativeBuildInputs = [ cmake file ];
           
-          buildInputs = [ stdenv pkgconfig libxml2 boost xercesc libelf xed ];
+          buildInputs = [ stdenv pkgconfig libbfd libxml2 boost xercesc libelf xed ];
           
           configureFlags = [ "--with-xerces=${xercesc}"
                  "--with-libxml2=${libxml2}"
                  "--with-boost=${boost.dev}"
-                 "--with-libunwind=${libunwind}"
+                 "--with-libunwind-libdir=${libunwind}"
+                 "--with-libunwind-include-dir=${libunwind.dev}"
                  "--with-libelf=${libelf}"
                  "--with-xed2=${xed}"  ];
           
@@ -81,8 +83,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "HPCToolkit";
     repo = "hpctoolkit";
-    rev = "78b3a2c66778c7a639c141fde2d19067a88de0ff";
-    sha256 = "0qrwnm6ssj41w126r81g0vbikdv0fgfksdv9xcbnk60b04g2ya97";
+    rev = "c779ab073d7959a94cfe6735a62be341158047b3";
+    sha256 = "15iadk4gcbdjl872vy3mvmqm9yckdlak25i114dwp57y9b855d7p";
  };
  
   nativeBuildInputs = [ perl file ]; 

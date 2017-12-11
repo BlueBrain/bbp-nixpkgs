@@ -21,13 +21,13 @@ let
 	legacy-info = {
 		version = "2.0-legacy";
 		rev = "bea8f838bc6d4c9b40bf90d1cdacaa625bbabe7b";
-		sha256 = "03qlvxrl5vvmzg4d0v13nnihr09hp26fab69m8i09g6xhrq87cic";
+		sha256 = "1qhs9dzq8j8bdssqhmnxm5hm7bl2h8zipavzqx2va1jwg5f2mnr6";
 	};
 
 	last-info = {
 		version = "3.0-dev2017.10";
 		rev = "5396f1e73b0b4df1691d1126a0dbdcfdb7100c7a";
-		sha256 = "19saq2mcwf4aiy0i461xs3n9pfjr650z3ws8amqdahs8kq0a0y0s";
+		sha256 = "1b2gjzyad2jwa9md8vhvi3m9x2xpywdx21m1pb4ld5hsxjw7nhnf";
 	};
 
 	brion-info = if (legacyVersion) then legacy-info else last-info;
@@ -39,7 +39,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ stdenv pkgconfig 
 				  mvdtool boost 
-				  pythonPackages.python pythonPackages.numpy pythonPackages.sphinx pythonPackages.lxml
+				  pythonPackages.python pythonPackages.numpy pythonPackages.lxml
 				  cmake vmmlib servus lunchbox keyv hdf5-cpp highfive zlib doxygen ];
 
   src = fetchgit {
@@ -51,6 +51,8 @@ stdenv.mkDerivation rec {
   patches = (stdenv.lib.optionals) (legacyVersion) [ ./brion-legacy-higfive.patch ];
 
   enableParallelBuilding = false; # memory consumption too high for python bindings generation
+
+  cmakeFlags = [ "-DDISABLE_SUBPROJECTS=TRUE" ];
 
   makeFlags = [ "VERBOSE=1" ];
 

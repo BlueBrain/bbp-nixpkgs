@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
     src = fetchgit {
         url = "https://github.com/caffe2/caffe2.git";
         rev = "651e3debccaa1d4890ee6a7cb28e23d6bd5e481d";
-        sha256 = "1gpmn9xk9w0y2f95v5i9sv3mymc00y5qmga4yiswyzn05pd46ja9";
+        sha256 = "1mgpxzpjjlx269a3bm5919vazamlk74wyxxk6cippcyvlwda748h";
         
     };
 

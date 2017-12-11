@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
   src = fetchgitExternal {
     url = config.bbp_git_ssh + "/building/BlueBuilder";
     rev = "e304808bd291803a8eab57b61a8cb72d85374006";
-    sha256 = "1c8k0s2g0p4b7myh56rq9j8bg1fjjgsdhszbfnsdfcx4nkm9fxkn";
+    sha256 = "1fx76ivl81x27sh9d23s3d3grh7cmv73a23gg0lplz451p97956n";
   };
 
   isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true

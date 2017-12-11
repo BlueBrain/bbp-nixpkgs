@@ -18,8 +18,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/Coreneuron";
-    rev =  "e9ac6bf6a3bdba9ab1cc209b1b48cb97bdd1c990";
-    sha256 = "24an66irqv2wyf0k0bbrvricybkdv9h0isqly83110lgjkfdb6gd";
+    rev =  "4cf570aeeb294565dbc52779f63f44f34ff8e58d";
+    sha256 = "071k1pw8va8rvamwbr9wwrb806jsa4m1kzv3igsrpm52bsjiymn2";
   };
 
 
