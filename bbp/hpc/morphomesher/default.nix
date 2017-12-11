@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
   src = fetchgitPrivate {
     url = "git@github.com:BlueBrain/morpho-mesher.git";
     rev = "37b5d3ce6f5e6da6674e2250c0b9a4784c16437e";
-    sha256 = "1p4fpp03h6l9myaq9c2lpdzcgvxhygrr09fl5w4j1f4q398kccz5";
+    sha256 = "1v0vjnmallwr1ykxl0g53ypj2nrvgj5gwbxfkwyvkppr81k52qpj";
   };
 
   passthru = {
