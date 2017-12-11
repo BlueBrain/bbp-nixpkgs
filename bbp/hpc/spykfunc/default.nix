@@ -9,11 +9,13 @@
 let
   python-env = with stdenv.lib; with pythonPackages; python.buildEnv.override {
     extraLibs = [
+      docopt
       future
       h5py
       lazy_property
       lxml
       pip
+      progress
       pyspark
       setuptools
       setuptools_scm
@@ -29,7 +31,7 @@ in
 
   stdenv.mkDerivation rec {
     name = "spykfunc-${version}";
-    version = "0.5.0";
+    version = "0.5.1";
     meta = {
       description = "New Functionalizer implementation on top of Spark";
       longDescription = ''
