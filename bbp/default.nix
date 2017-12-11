@@ -586,7 +586,6 @@ let
                 pytouchreader
                 reportinglib
                 spykfunc
-                syntool
                 touchdetector
             ];
         };
