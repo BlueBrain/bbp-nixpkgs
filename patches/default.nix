@@ -73,6 +73,7 @@ let
         });
 
         blender = callPackage ./blender {
+            pythonPackages = python3Packages;
             stdpkgs = std-pkgs;
         };
 
