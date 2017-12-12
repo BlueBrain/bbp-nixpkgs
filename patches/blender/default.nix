@@ -17,8 +17,8 @@
     src = fetchFromGitHub {
         owner = "nantille";
         repo = "blender_mod";
-        rev = "1684f5f05641ee10c6f53a6638465cb2ab134f87";
-        sha256 = "1nrk3v8hj8z36xpsfi7i19qrjhdc8j3p6s8dmrh0irqvdvi5jxgq";
+        rev = "5b1280da79528626a18ac04b3f585f0dce783f89";
+        sha256 = "0jfklmc7i61y69rm3iz2vym1s2yf2q7v83zz2fawfg9hmyws1i17";
     };
     
 
