@@ -14,7 +14,6 @@
     origin_version = "2.79";
     version = "${origin_version}-nantille";
 
-
     src = fetchFromGitHub {
         owner = "nantille";
         repo = "blender_mod";
