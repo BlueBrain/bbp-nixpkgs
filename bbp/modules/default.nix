@@ -2187,7 +2187,7 @@ let
             # viz team
             lunchbox brion brion-py3 rockets zeroeq zerobuf lexis vmmlib
             bbpsdk 
-           # rtneuron 
+            rtneuron 
             equalizer virtualgl glxinfo bbpsdk-legacy
             embree ospray ospray-devel deflect
 
