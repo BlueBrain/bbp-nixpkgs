@@ -1155,6 +1155,7 @@ let
                pythonPkgs.matplotlib
                pythonPkgs.numpy
                pythonPkgs.pandas
+               pythonPkgs.pytz
                pythonPkgs.dateutil
                pythonPkgs.pip
                pythonPkgs.pycurl
@@ -1166,7 +1167,7 @@ let
                pythonPkgs.virtualenv
             ];
             conflicts = [ python36-full python36-light ] ++ conflicts-modules;
-            dependencies = [ nss-wrapper gcc ];
+            dependencies = [ nss-wrapper gcc manylinux1-python ];
         };
 
         python36-light = with pkgs; pkgs.envModuleGen rec {
