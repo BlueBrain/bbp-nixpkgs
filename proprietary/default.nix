@@ -47,8 +47,14 @@ let
             kernel = null;
         };
 
+        nvidia-x11-38498 = callPackage ./nvidia-driver/nvidia-viz-default.nix {
+            libsOnly = true;
+            kernel = null;
+            driverVersion = "384.98";
+        };
+
         # set it up to default viz cluster version 
-        nvidia-drivers = nvidia-x11-36757;
+        nvidia-drivers = nvidia-x11-38498;
         
 
         ## intel

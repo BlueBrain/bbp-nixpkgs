@@ -1,9 +1,10 @@
 { stdenv, fetchurl, kernel ? null, xorg, zlib, perl
-, gtk, atk, pango, glib, gdk_pixbuf, cairo, nukeReferences
-, # Whether to build the libraries only (i.e. not the kernel module or
+, gtk2, atk, pango, glib, gdk_pixbuf, cairo, nukeReferences
+  # Whether to build the libraries only (i.e. not the kernel module or
   # nvidia-settings).  Used to support 32-bit binaries on 64-bit
   # Linux.
-  libsOnly ? false
+, libsOnly ? false
+, driverVersion ? "367.57"
 }:
 
 with stdenv.lib;
@@ -12,32 +13,37 @@ assert (!libsOnly) -> kernel != null;
 
 let
 
-  versionNumber = "367.57";
+  driverInfo = if (driverVersion == "367.57") then
+                { 
+                    versionNumber = "367.57";
+                    sha256 = "1r6nbm201psrs4xxw8826kl1li10wbhjbfwvp924ninsl6v8ljmr";
+                }
+               else if (driverVersion == "384.98") then
+               {
+                   versionNumber = "384.98";
+                   sha256 = "1xc04whl13krvvr85sm8fchphfrz00w4cw3dcz5sn0ffav3hk68n";
+        
+               }
+               else throw "nvidia-x11 does not support platform ${stdenv.system}";
 
   # Policy: use the highest stable version as the default (on our master).
   inherit (stdenv.lib) makeLibraryPath;
 
 in
 
-stdenv.mkDerivation {
-  name = "nvidia-x11-${versionNumber}${optionalString (!libsOnly) "-${kernel.version}"}";
+stdenv.mkDerivation rec {
+
+  versionNumber = driverInfo.versionNumber;
+  name = "nvidia-x11-${driverInfo.versionNumber}${optionalString (!libsOnly) "-${kernel.version}"}";
 
   builder = ./nvidia-viz-builder.sh;
 
-  src =
-    if stdenv.system == "i686-linux" then
-      fetchurl {
-        url = "http://us.download.nvidia.com/XFree86/Linux-x86/${versionNumber}/NVIDIA-Linux-x86-${versionNumber}.run";
-        sha256 = "0vxrx2hmycvhyp32mapf1vv01ddlghliwsvkhsg29hv3a7fl4i28";
-      }
-    else if stdenv.system == "x86_64-linux" then
-      fetchurl {
+  src = fetchurl {
         url = "http://us.download.nvidia.com/XFree86/Linux-x86_64/${versionNumber}/NVIDIA-Linux-x86_64-${versionNumber}-no-compat32.run";
-        sha256 = "1r6nbm201psrs4xxw8826kl1li10wbhjbfwvp924ninsl6v8ljmr";
-      }
-    else throw "nvidia-x11 does not support platform ${stdenv.system}";
+        sha256 = driverInfo.sha256;
+  };
 
-  inherit versionNumber libsOnly;
+  inherit libsOnly;
   inherit (stdenv) system;
 
   kernel = if libsOnly then null else kernel.dev;
