@@ -151,15 +151,6 @@ in
       ];
     };
 
-    docopt = pythonPackages.buildPythonPackage rec {
-      name = "docopt-${version}";
-      version = "0.6.2";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/d/docopt/${name}.tar.gz";
-        sha256 = "14f4hn6d1j4b99svwbaji8n2zj58qicyz19mm0x6pmhb50jsics9";
-      };
-    };
-
     hpcbench = pythonPackages.buildPythonPackage rec {
       name = "hpcbench-${version}";
       version = "0.3.4";
@@ -235,6 +226,15 @@ in
       src = pkgs.fetchurl {
         url = "mirror://pypi/p/poyo/${name}.tar.gz";
         sha256 = "1mjjyc4siq8p44d5ciln0ykf5cldh8zy9aqwzsc50xn7w7ilwfqh";
+      };
+    };
+
+    progress = pythonPackages.buildPythonPackage rec {
+      name = "progress-${version}";
+      version = "1.3";
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/p/progress/${name}.tar.gz";
+        sha256 = "02pnlh96ixf53mzxr5lgp451qg6b7ff4sl5mp2h1cryh7gp8k3f8";
       };
     };
 
@@ -380,7 +380,7 @@ in
       backports_shutil_get_terminal_size 
       decorator pickleshare prompt_toolkit
       simplegeneric traitlets requests pathlib2 pexpect
-      pygments setuptools30
+      pygments setuptools
       ]
       ++ stdenv.lib.optionals stdenv.isDarwin [appnope];
 
@@ -457,79 +457,6 @@ in
     };
   };
 
-  # backport from NixOS 16.09
-  setuptools30 = stdenv.mkDerivation rec {
-      pname = "setuptools";
-      shortName = "${pname}-${version}";
-      name = "${pythonPackages.python.libPrefix}-${shortName}";
-
-      version = "30.2.0";
-
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/${builtins.substring 0 1 pname}/${pname}/${shortName}.tar.gz";
-        sha256 = "f865709919903e3399343c0b3c42f95e9aeddc41e38cfb334fb2bb5dfa384857";
-      };
-
-      buildInputs = [ pythonPackages.python pythonPackages.wrapPython ];
-      doCheck = false;  # requires pytest
-      installPhase = ''
-          dst=$out/${pythonPackages.python.sitePackages}
-          mkdir -p $dst
-          export PYTHONPATH="$dst:$PYTHONPATH"
-          ${pythonPackages.python.interpreter} setup.py install --prefix=$out
-          wrapPythonPrograms
-      '';
-
-      pythonPath = [];
-    };
-
-
-  setuptools_scm = pythonPackages.buildPythonPackage rec {
-    name = "setuptools_scm-${version}";
-    version = "1.15.6";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/s/setuptools_scm/${name}.tar.gz";
-      sha256 = "0pzvfmx8s20yrgkgwfbxaspz2x1g38qv61jpm0ns91lrb22ldas9";
-    };
-
-    buildInputs = with self; [ pip ];
-    checkInputs = with self; [ pytest ];
-    # Seems to fail due to chroot
-    doCheck = false;
-
-    checkPhase = ''
-      py.test
-    '';
-
-    meta = with stdenv.lib; {
-      homepage = https://bitbucket.org/pypa/setuptools_scm/;
-      description = "Handles managing your python package versions in scm metadata";
-      license = licenses.mit;
-      maintainers = with maintainers; [ jgeerds ];
-    };
-  };
-
-
-  # Backport from NixOS 16.09
-  prompt_toolkit = pythonPackages.buildPythonPackage rec {
-    name = "prompt_toolkit-${version}";
-    version = "1.0.9";
-
-    src = pkgs.fetchurl {
-      sha256 = "172r15k9kwdw2lnajvpz1632dd16nqz1kcal1p0lq5ywdarj6rfd";
-      url = "mirror://pypi/p/prompt_toolkit/${name}.tar.gz";
-    };
-  #  checkPhase = ''
-  #    rm prompt_toolkit/win32_types.py
-  #    py.test -k 'not test_pathcompleter_can_expanduser'
-  #  '';
-
-    buildInputs = with self; [ pytest ];
-    propagatedBuildInputs = with self; [ docopt six wcwidth pygments ];
-
-  };
-
   cov_core = pythonPackages.buildPythonPackage rec {
     pname = "cov-core";
     version = "1.15.0";
@@ -579,34 +506,6 @@ in
     };
 
   };
-
-
-
-  # backport from NixOS 16.09 
-  traitlets = pythonPackages.buildPythonPackage rec {
-    version = "4.3.1";
-    name = "traitlets-${version}";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/t/traitlets/${name}.tar.gz";
-      sha256 = "ba8c94323ccbe8fd792e45d8efe8c95d3e0744cc8c085295b607552ab573724c";
-    };
-
-    LC_ALL = "en_US.UTF-8";
-
-    preConfigure = ''
-        mkdir -p $out
-    '';
-
-    buildInputs = with pythonPackages; [ pkgs.glibcLocales pytest mock ];
-    propagatedBuildInputs = with pythonPackages; [ipython_genutils decorator enum34];
-
-    checkPhase = ''
-      py.test $out
-    '';
-
-    };
-
 
   # backport from NixOS 16.09 
   ipython_genutils = pythonPackages.buildPythonPackage rec {
@@ -741,7 +640,7 @@ in
     propagatedBuildInputs = with self; [
       py4j_0_10_4
       pypandoc
-      setuptools30
+      setuptools
     ];
   };
 
