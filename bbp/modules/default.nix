@@ -2002,6 +2002,7 @@ let
                        ];
             conflicts = [  cuda8 ];
             dependencies = [ opengl-driver gcc ];
+            extraContent = "prepend-path LD_LIBRARY_PATH $targetEnv/lib/";
         };
 
         R = pkgs.envModuleGen rec {
