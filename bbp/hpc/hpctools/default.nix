@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/hpc/HPCTools";
     rev = "bd1ac24b2761e51f22f72359029dbda4b15a1d26";
-    sha256 = "1liik1pfab6jyx608zgi1gw8mrkq3l7f7n4521m1im3356xy26hc";
+    sha256 = "15k2wg8ajcnd3n8ys595ckkdddz5bwz5sqwbk40q1bjw8d3g3p98";
   };
 
   cmakeFlags= [ "-DLIB_SUFFIX=" "-DCMAKE_BUILD_TYPE=RelWithDebInfo" ];
