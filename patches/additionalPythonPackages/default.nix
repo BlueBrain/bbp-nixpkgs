@@ -380,7 +380,7 @@ in
       backports_shutil_get_terminal_size 
       decorator pickleshare prompt_toolkit
       simplegeneric traitlets requests pathlib2 pexpect
-      pygments setuptools30
+      pygments setuptools
       ]
       ++ stdenv.lib.optionals stdenv.isDarwin [appnope];
 
@@ -456,33 +456,6 @@ in
       sha256 = "0gcfwv411rng9c0kpild11qq5wzyzq690nc76wkppfh6f6zpf2n8";
     };
   };
-
-  # backport from NixOS 16.09
-  setuptools30 = stdenv.mkDerivation rec {
-      pname = "setuptools";
-      shortName = "${pname}-${version}";
-      name = "${pythonPackages.python.libPrefix}-${shortName}";
-
-      version = "30.2.0";
-
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/${builtins.substring 0 1 pname}/${pname}/${shortName}.tar.gz";
-        sha256 = "f865709919903e3399343c0b3c42f95e9aeddc41e38cfb334fb2bb5dfa384857";
-      };
-
-      buildInputs = [ pythonPackages.python pythonPackages.wrapPython ];
-      doCheck = false;  # requires pytest
-      installPhase = ''
-          dst=$out/${pythonPackages.python.sitePackages}
-          mkdir -p $dst
-          export PYTHONPATH="$dst:$PYTHONPATH"
-          ${pythonPackages.python.interpreter} setup.py install --prefix=$out
-          wrapPythonPrograms
-      '';
-
-      pythonPath = [];
-    };
-
 
   setuptools_scm = pythonPackages.buildPythonPackage rec {
     name = "setuptools_scm-${version}";
@@ -741,7 +714,7 @@ in
     propagatedBuildInputs = with self; [
       py4j_0_10_4
       pypandoc
-      setuptools30
+      setuptools
     ];
   };
 
