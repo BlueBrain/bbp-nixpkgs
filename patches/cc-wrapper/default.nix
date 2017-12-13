@@ -32,6 +32,7 @@ stdenv.mkDerivation {
   name =
     (if name != "" then name else ccName + "-wrapper") +
     (if cc != null && ccVersion != "" then "-" + ccVersion else "");
+  version = ccVersion;
 
   preferLocalBuild = true;
 

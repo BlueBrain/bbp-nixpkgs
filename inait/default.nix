@@ -36,7 +36,13 @@ let
             inait = pkgs.buildEnv {
 
                 name = "inait";
-                paths = [ neuroconnector ];
+                paths = [ 
+                        neuroconnector  
+                        pkgs.modules.tensorflow
+                        pkgs.modules.tensorflow-py3
+
+
+                ];
 
             };
     };

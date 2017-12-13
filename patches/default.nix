@@ -403,7 +403,7 @@ let
 
         tensorflow = callPackage ./tensorflow {
             pythonPackages = patches-pkgs.python27Packages;
-            cudaSupport = true;
+            cudaSupport = false;
             cudnn = cudnn;
         };
 
