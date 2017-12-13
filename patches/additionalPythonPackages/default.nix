@@ -549,6 +549,8 @@ in
       pypandoc
       setuptools
     ];
+
+    doCheck = false;
   };
 
   # backport from NixOS 16.09

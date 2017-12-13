@@ -17,6 +17,7 @@ let
       pip
       progress
       pyspark
+      requests
       setuptools
       setuptools_scm
       sphinx
@@ -90,9 +91,11 @@ in
       mkdir -p "$out/${python.sitePackages}"
 
       export PYTHONPATH="$out/${python.sitePackages}:$PYTHONPATH"
+      echo $PYTHONPATH
 
       pushd pyspark
-      ${python.interpreter} setup.py install \
+      echo "installPhase: install package in $out"
+      ${python-env.interpreter} setup.py install \
         --install-lib=$out/${python.sitePackages} \
         --old-and-unmanageable \
         --prefix="$out"
@@ -106,13 +109,5 @@ in
 
     passthru = {
       pythonPackages = pythonPackages;
-      dependencies = with pythonPackages; [
-        docopt
-        future
-        lazy_property
-        lxml
-        py4j_0_10_4
-        pyspark
-      ];
     };
   }
