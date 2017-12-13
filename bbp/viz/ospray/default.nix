@@ -22,9 +22,9 @@ let
 	};
 
 	release-info = {
-		version = "1.4.1";
-		rev = "216110455e4583190f3d8c3e52797f2769f91194";
-		sha256 = "0jv0pccbn212afy41jpz3r6gbwbiy2lrm3lx7c36c3mkdhcavw4c";
+		version = "1.4.2";
+		rev = "b3895aa7441b54166df005f20578fb5106226bb9";
+		sha256 = "1ap3n1444j3b70sv16l5hc62nn3mxiisz00gdlxql8yc43d533bx";
 	};
 
 	ospray-info = if (devel) then devel-info else release-info;
