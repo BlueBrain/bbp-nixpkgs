@@ -26,11 +26,11 @@ in
 
 stdenv.mkDerivation rec {
   name = "learningengine-${version}";
-  version = "1.1-201711dev";
+  version = "1.1-201712dev";
   src = fetchgitPrivate{
     url = config.bbp_git_ssh + "/hpc/learning_engine.git";
-    rev = "19e1c042e10c0677269fc3bcb15493dd58ba8f99";
-    sha256 = "11sbxbyya0hbhrlqqsirlpvsgjvn4p4f1dc6bdgx6rgm67pww5y0";
+    rev = "dbaa5be37ecb2c3e02008c74bd6589e313944b04";
+    sha256 = "15843114a6i5q06ahrrgzx9hjmp9n2lmfmc5ggi3sfd7ibw03pac";
   };
   meta = {
     description = "Point neuron simulator";
