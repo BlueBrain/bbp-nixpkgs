@@ -1,6 +1,6 @@
 { stdenv
 , config
-, fetchgitPrivate
+, fetchgit
 , libwebsockets
 , boost
 , cmake
@@ -8,14 +8,14 @@
 
 stdenv.mkDerivation rec {
   name = "rockets-${version}";
-  version = "0.1.0-dev201711";
+  version = "0.1.0-dev201712";
 
   buildInputs = [ stdenv boost cmake libwebsockets ];
 
-  src = fetchgitPrivate {
-    url = config.bbp_git_ssh + "/viz/Rockets";
-    rev = "614d6b3078809dedb77629b061448c9f2c2f49fc";
-    sha256 = "13sy113aifqbmswrm0rp5iywfxnswq7qw36z51mjg49ng6zp86yi";
+  src = fetchgit {
+    url  = "https://github.com/BlueBrain/Rockets.git";
+    rev = "0b6035fc97b46c7da7f2992d4d1d628fd92dafd4";
+    sha256 = "03j68y2q5d6xmipqgx0fssprhnkc5f8pq72j5asic0zbcv19jhvk";
   };
 
   enableParallelBuilding = true;
