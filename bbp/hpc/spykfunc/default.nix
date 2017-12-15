@@ -9,11 +9,13 @@
 let
   python-env = with stdenv.lib; with pythonPackages; python.buildEnv.override {
     extraLibs = [
+      docopt
       future
       h5py
       lazy_property
       lxml
       pip
+      progress
       pyspark
       setuptools
       setuptools_scm
@@ -24,13 +26,12 @@ let
     ;
   };
   python = pythonPackages.python;
-  python_executable = "${python-env}/bin/${python.executable}";
   enum34Required = !stdenv.lib.versionAtLeast python.pythonVersion "3.4";
 in
 
   stdenv.mkDerivation rec {
     name = "spykfunc-${version}";
-    version = "0.5.0";
+    version = "0.5.1";
     meta = {
       description = "New Functionalizer implementation on top of Spark";
       longDescription = ''
@@ -54,7 +55,7 @@ in
     src = fetchgitPrivate {
       url = config.bbp_git_ssh + "/building/Functionalizer";
       rev = "79dbd9ea1e8c1d8c14cc808fc1891ee33f3d257a";
-      sha256 = "0wdznacmc985652ppnmassxi0y3r7j3i4jnawp3hagg46sxbp9h5";
+      sha256 = "1dvav0rvhbdwckbjlp53bh1iawfqc90d102y3vw3w75pcb1zypwn";
     };
     patches = [] ++ stdenv.lib.optionals (!enum34Required) [
       # old setuptools version does not support environment markers
@@ -73,7 +74,9 @@ in
 
       mkdir -p $out
       pushd pyspark
-      for target in build docs bdist_wheel ; do
+      export PYTHONPATH=${pythonPackages.setuptools}/${python.sitePackages}:$PYTHONPATH}
+      for target in build docs; do
+        echo "buildPhase: executing target $target"
         ${python-env.interpreter} setup.py $target
       done
       popd
@@ -84,13 +87,13 @@ in
     installPhase = ''
       runHook preInstall
 
-      mkdir -p "$out/lib/${python.libPrefix}/site-packages"
+      mkdir -p "$out/${python.sitePackages}"
 
-      export PYTHONPATH="$out/lib/${python.libPrefix}/site-packages:$PYTHONPATH"
+      export PYTHONPATH="$out/${python.sitePackages}:$PYTHONPATH"
 
       pushd pyspark
-      ${python-env.interpreter} setup.py install \
-        --install-lib=$out/lib/${pythonPackages.python.libPrefix}/site-packages \
+      ${python.interpreter} setup.py install \
+        --install-lib=$out/${python.sitePackages} \
         --old-and-unmanageable \
         --prefix="$out"
 
