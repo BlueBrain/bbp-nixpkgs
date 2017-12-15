@@ -8,7 +8,7 @@
 , enableCpp ? true
 }:
 stdenv.mkDerivation rec {
-  version = "1.8.14";
+  version = "1.8.14-bbp";
   name = "hdf5-cpp-${version}";
   src = fetchurl {
     url = "http://www.hdfgroup.org/ftp/HDF5/releases/hdf5-${version}/src/hdf5-${version}.tar.gz";
