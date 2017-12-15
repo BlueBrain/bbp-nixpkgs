@@ -18,6 +18,8 @@ let
             });
         };
 
+    bbp-virtualenv = callPackage ./bbp-virtualenv {};
+
 	# force usage of boost 159
 	# until problems with rtneuron and FLATIndexer are solved
 	# TODO: migrate these two componentns to boost 165 

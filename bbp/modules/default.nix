@@ -1129,8 +1129,8 @@ let
                stdenv
                # python and module collection
                pkgs.python27Full
+               pkgs.bbp-virtualenv
                pythonPkgs.pip
-               pythonPkgs.virtualenv
             ];
             conflicts = [ python36-full python36-light ] ++ conflicts-modules;
             dependencies = [ nss-wrapper manylinux1-python ];
@@ -1148,6 +1148,7 @@ let
                # python and module collection
                mpi4py-py27-bbp
                pkgs.python27Full
+               pkgs.bbp-virtualenv
                pythonPkgs.cython
                pythonPkgs.deepdish
                pythonPkgs.enum34
@@ -1164,7 +1165,6 @@ let
                pythonPkgs.six
                pythonPkgs.six
                pythonPkgs.tables
-               pythonPkgs.virtualenv
             ];
             conflicts = [ python36-full python36-light ] ++ conflicts-modules;
             dependencies = [ nss-wrapper gcc manylinux1-python ];
