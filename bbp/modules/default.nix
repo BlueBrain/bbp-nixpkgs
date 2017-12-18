@@ -1224,7 +1224,7 @@ let
                             pkgs.pythonPackages.ipython
                        ]
                        # add all IPython dependencies
-                      ++ pkgs.pythonPackages.ipython.pythonDeps;
+                      ++ pkgs.pythonPackages.requiredPythonModules [ pkgs.pythonPackages.ipython ];
             conflicts = conflicts-modules ++ [ "iython" ];
         };
 
