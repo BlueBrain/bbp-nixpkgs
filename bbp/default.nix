@@ -327,6 +327,9 @@ let
             bbpsdk = bbpsdk-legacy;
         };
 
+        placement-algorithm = callPackage ./nse/placement-algorithm {
+        };
+
         pynrrd = callPackage ./nse/pynrrd {};
         equation = callPackage ./nse/equation {
             buildPythonPackage = pythonPackages.buildPythonPackage;
