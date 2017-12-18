@@ -59,7 +59,27 @@ let
             inait = pkgs.buildEnv {
 
                 name = "inait";
-                paths = [ neuroconnector ];
+                paths = with pkgs.modules; set.vcs
+		            ++ set.dbg
+		            ++ set.dev_base_pkgs
+		            ++ set.ml_base
+		            ++ set.sciences_base
+		            ++ set.dev_viz
+		            ++ set.compilers
+		            ++ set.dev_toolkit_pkgs
+		            ++ set.nse_base
+            		    ++ set.hpc_base
+		            ++ set.hpc_circuit
+		            ++ set.hpc_simulators
+		            ++ set.python_base
+		            ++ set.python3_base
+		            ++ set.system_pkgs
+		            ++ set.parallel_toolkit
+			    ++ [ 
+				neuroconnector 
+				pyjarvis
+				
+			];
 
             };
     };

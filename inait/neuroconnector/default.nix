@@ -8,20 +8,11 @@
 , pythonPackages
  }:
 
-let
-    # create a python environment with every dep, for the cmd line tool itself
-    python_env = pythonPackages.python.buildEnv.override {
-        extraLibs = [ pythonPackages.numpy pythonPackages.rtree mvdtool ];
-    };
-
-in
-
 pythonPackages.buildPythonPackage rec {
   name = "neuroconnector-${version}";
   version = "1.2";
   
   buildInputs = [ stdenv mvdtool pythonPackages.numpy pythonPackages.rtree ];
-  nativeBuildInputs = [ python_env ];
 
   src = fetchgitPrivate {
     url = config.inait_git_ssh + "/SIMULATION/neuroconnector.git";
