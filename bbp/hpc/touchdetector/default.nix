@@ -33,8 +33,8 @@ stdenv.mkDerivation rec {
   };
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/TouchDetector";
-    rev = "c6234115e887b6e27d6949a9b08620b9cc56c573";
-    sha256 = "193rivdm3np9ss7jcr0wfv80wrvar4a2z5rfv1fizksrha16w2ri";
+    rev = "846a43b56df5b830cafd35e0c4d2d1f944330eb3";
+    sha256 = "0pz0j84j35c1r7hx6xjl2r721hs4dk5s5d91qj9gmyc0rmr1w29s";
   };
 
   buildInputs = [
@@ -56,7 +56,7 @@ stdenv.mkDerivation rec {
     install -D ../LICENSE.txt $out/share/doc/TouchDetector/LICENSE.txt ;
     mkdir -p $out/share/doc/TouchDetector/html
     ${pandoc}/bin/pandoc -s -S --self-contained \
-      -c ${docCss} ${src}/README.txt \
+      -c ${docCss} ${src}/README.md \
       -o $out/share/doc/TouchDetector/html/index.html
   '';
 
