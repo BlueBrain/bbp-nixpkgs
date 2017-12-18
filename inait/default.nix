@@ -16,9 +16,21 @@ let
         neuroconnector = callPackage ./neuroconnector {
 
         };
+        
+        jarvis = callPackage ./jarvis {
+        
+        };
+        
+        jarvis-server = jarvis.server;
+        pyjarvis = jarvis.pyjarvis;
 
     };
 
+
+
+
+    # module generator namespace
+    # create modules for specified packages
     modules = rec {
             pkgs = resultPkgs;
 
@@ -32,6 +44,17 @@ let
                                 pkgs.neuroconnector
                            ];
             };
+
+	    pyjarvis = pkgs.envModuleGen rec {
+                name = "pyjarvis";
+                moduleFilePrefix = "nix/infra";
+                isLibrary = true;
+                description = "Jarvis python bindings module";
+                packages = [
+                                pkgs.pyjarvis
+                           ];
+            };
+
 
             inait = pkgs.buildEnv {
 
