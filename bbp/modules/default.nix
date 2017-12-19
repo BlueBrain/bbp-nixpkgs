@@ -1183,6 +1183,9 @@ let
                pythonPkgs.enum34
                pythonPkgs.h5py
                pythonPkgs.matplotlib
+               pythonPkgs.pyparsing
+               pythonPkgs.backports_functools_lru_cache
+               pythonPkgs.cycler
                pythonPkgs.numpy
                pythonPkgs.pandas
                pythonPkgs.pytz
@@ -1225,12 +1228,25 @@ let
                pkgs.python36
                pythonPkgs.h5py
                pythonPkgs.numpy
+               pythonPkgs.cython
+               pythonPkgs.deepdish
+               pythonPkgs.enum34
+               pythonPkgs.h5py
+               pythonPkgs.matplotlib
+               pythonPkgs.pyparsing
+               pythonPkgs.backports_functools_lru_cache
+               pythonPkgs.cycler
+               pythonPkgs.numpy
                pythonPkgs.pandas
+               pythonPkgs.pytz
+               pythonPkgs.dateutil
                pythonPkgs.pip
                pythonPkgs.pycurl
                pythonPkgs.setuptools
+               pythonPkgs.sh
                pythonPkgs.six
-               pythonPkgs.virtualenv
+               pythonPkgs.six
+               pythonPkgs.tables
             ];
             conflicts = [ python27-light python27-full ] ++ conflicts-modules;
             dependencies = [ nss-wrapper gcc ];

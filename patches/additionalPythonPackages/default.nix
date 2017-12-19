@@ -284,9 +284,11 @@ in
       sha256 = "198r0h27d8d0ikk79h2xc4jpaw2n602kpjvbm6mzx29l7zyr6f52";
     };
 
-    buildInputs = with self; [ simplegeneric tables scipy ];
+    buildInputs = with self; [ simplegeneric tables scipy pandas six ];
 
     propagatedBuildInputs = with self; [ scipy tables ];
+
+    doCheck = false;
 
     passthru = {
         pythonDeps = with self; [ scipy tables ];
