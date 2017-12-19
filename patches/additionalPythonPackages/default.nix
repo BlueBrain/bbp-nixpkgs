@@ -285,13 +285,13 @@ in
 	};           
 
 
-  deepdish = pythonPackages.buildPythonPackage rec {
+    deepdish = pythonPackages.buildPythonPackage rec {
     name = "deepdish-${version}";
     version = "0.3.4";
 
     src = pkgs.fetchurl {
-      url = "mirror://pypi/d/deepdish/${name}.tar.gz";
-      sha256 = "198r0h27d8d0ikk79h2xc4jpaw2n602kpjvbm6mzx29l7zyr6f52";
+        url = "mirror://pypi/d/deepdish/${name}.tar.gz";
+        sha256 = "198r0h27d8d0ikk79h2xc4jpaw2n602kpjvbm6mzx29l7zyr6f52";
     };
 
     buildInputs = with self; [ simplegeneric tables scipy pandas six ];
@@ -301,18 +301,18 @@ in
     doCheck = false;
 
     passthru = {
-        pythonDeps = with self; [ scipy tables ];
+    
     };
 
-   };
+    };
 
-  elephant = pythonPackages.buildPythonPackage rec {
+    elephant = pythonPackages.buildPythonPackage rec {
     name = "elephant-${version}";
     version = "0.4.1";
 
     src = pkgs.fetchurl {
-      url = "mirror://pypi/e/elephant/${name}.tar.gz";
-      sha256 = "10dc5v4ff2qsywlwnfnpagayqhjvrn6p6lbgpak0kp5crd21mcl6";
+        url = "mirror://pypi/e/elephant/${name}.tar.gz";
+        sha256 = "10dc5v4ff2qsywlwnfnpagayqhjvrn6p6lbgpak0kp5crd21mcl6";
     };
 
     buildInputs = with self; [ scipy six quantities neo ];
@@ -320,25 +320,38 @@ in
     propagatedBuildInputs = with self; [ scipy  six quantities neo ];
 
     passthru = {
-        pythonDeps = with self; [ scipy six quantities neo ];
+    
     };
 
-   };
+    };
+   
+    peewee = self.buildPythonPackage rec {
+     name = "peewee-${version}";
+     version = "2.10.2";
 
-  neo = pythonPackages.buildPythonPackage rec {
+     src = pkgs.fetchurl {
+         url = "mirror://pypi/p/peewee/peewee-${version}.tar.gz";
+         sha256 = "10f2mrd5hw6rjklrzaix2lsxlgc8vx3xak54arcy6yd791zhchi3";
+     };
+
+     propagatedBuildInputs = with self; [ cython ];
+    };
+
+
+    neo = pythonPackages.buildPythonPackage rec {
     name = "neo-${version}";
     version = "0.5.1";
 
     src = pkgs.fetchurl {
-      url = "mirror://pypi/n/neo/${name}.tar.gz";
-      sha256 = "1yw0xlsyxglgvqqlp18wk197vhnslbr2pwaiv4nljljv7m3fqa32";
+        url = "mirror://pypi/n/neo/${name}.tar.gz";
+        sha256 = "1yw0xlsyxglgvqqlp18wk197vhnslbr2pwaiv4nljljv7m3fqa32";
     };
 
     buildInputs = with self; [ scipy quantities ];
 
     propagatedBuildInputs = with self; [ scipy quantities ];
 
-   };
+    };
 
 
 

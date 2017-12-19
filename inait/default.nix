@@ -21,8 +21,13 @@ let
         
         };
         
-        jarvis-server = jarvis.server;
         pyjarvis = jarvis.pyjarvis;
+        
+        in8metrics = callPackage ./metrics {
+
+        };
+
+        
 
     };
 
@@ -34,7 +39,7 @@ let
     modules = rec {
             pkgs = resultPkgs;
 
-        
+
             neuroconnector = pkgs.envModuleGen rec {
                 name = "neuroconnector";
                 moduleFilePrefix = "nix/sim";
@@ -45,44 +50,53 @@ let
                            ];
             };
 
-	    pyjarvis = pkgs.envModuleGen rec {
+
+            pyjarvis = pkgs.envModuleGen rec {
                 name = "pyjarvis";
                 moduleFilePrefix = "nix/infra";
                 isLibrary = true;
                 description = "Jarvis python bindings module";
-                packages = [
-                                pkgs.pyjarvis
-                           ];
+                packages = with pkgs.pythonPackages; ( getPyModRec [ pkgs.pyjarvis ] );
             };
+            
+           in8metrics = pkgs.envModuleGen rec {
+                 name = "in8metrics";
+                 moduleFilePrefix = "nix/pipeline";
+                 isLibrary = true;
+                 description = "metrics python bindings module";
+                 packages = with pkgs.pythonPackages; ( getPyModRec [ pkgs.in8metrics.client ] );
+            };
+            
 
 
             inait = pkgs.buildEnv {
 
                 name = "inait";
                 paths = with pkgs.modules; set.vcs
-		            ++ set.dbg
-		            ++ set.dev_base_pkgs
-		            ++ set.ml_base
-		            ++ set.sciences_base
-		            ++ set.dev_viz
-		            ++ set.compilers
-		            ++ set.dev_toolkit_pkgs
-		            ++ set.nse_base
-            		    ++ set.hpc_base
-		            ++ set.hpc_circuit
-		            ++ set.hpc_simulators
-		            ++ set.python_base
-		            ++ set.python3_base
-		            ++ set.system_pkgs
-		            ++ set.parallel_toolkit
-			    ++ [ 
-				neuroconnector 
-				pyjarvis
+                    ++ set.dbg
+                    ++ set.dev_base_pkgs
+                    ++ set.ml_base
+                    ++ set.sciences_base
+                    ++ set.dev_viz
+                    ++ set.compilers
+                    ++ set.dev_toolkit_pkgs
+                    ++ set.nse_base
+                        ++ set.hpc_base
+                    ++ set.hpc_circuit
+                    ++ set.hpc_simulators
+                    ++ set.python_base
+                    ++ set.python3_base
+                    ++ set.system_pkgs
+                    ++ set.parallel_toolkit
+                ++ [ 
+                neuroconnector 
+                pyjarvis
+                in8metrics
                 dev-env-gcc
                 dev-env-python27
                 dev-env-icc
-                dev-env-clang	
-			];
+                dev-env-clang   
+            ];
 
             };
     };
