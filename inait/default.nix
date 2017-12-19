@@ -78,7 +78,10 @@ let
 			    ++ [ 
 				neuroconnector 
 				pyjarvis
-				
+                dev-env-gcc
+                dev-env-python27
+                dev-env-icc
+                dev-env-clang	
 			];
 
             };
