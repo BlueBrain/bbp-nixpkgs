@@ -82,25 +82,6 @@ in
         doCheck = false;
     };
 
-    pyext = self.buildPythonPackage rec {
-        name = pname + "-" + version;
-        pname = "pyext";
-        version = "0.7";
-
-        src = pkgs.fetchurl {
-          url = "mirror://pypi/p/pbr/${name}.tar.gz";
-          sha256 = "1pvwjkrjqajzh4wiiw1mzqp0bb81cqc2gk23nj24m32fpqssc676";
-        };
-
-        meta = with stdenv.lib; {
-          description = "Simple Python extensions.";
-          homepage = "https://github.com/kirbyfan64/PyExt";
-          license = licenses.mit;
-          maintainers = with maintainers; [ edwtjo ];
-        };
-    };
-
-
 
     rtree = self.buildPythonPackage (rec {
         name = "rtree-${version}";
@@ -204,7 +185,7 @@ in
         url = "mirror://pypi/j/jinja2/${name}.tar.gz";
         sha256 = "190l36hfw3wb2n3n68yacjabxyb1pnxwn7vjx96cmjj002xy2jzq";
       };
-      propagatedBuildInputs = with self; [ markupsafe_1_0 ];
+      propagatedBuildInputs = with self; [ markupsafe ];
     };
 
     jinja2-time = pythonPackages.buildPythonPackage rec {
@@ -219,15 +200,6 @@ in
         dateutil
         jinja2
       ];
-    };
-
-    markupsafe_1_0 = pythonPackages.buildPythonPackage rec {
-      name = "MarkupSafe-${version}";
-      version = "1.0";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/m/markupsafe/${name}.tar.gz";
-        sha256 = "0rdn1s8x9ni7ss8rfiacj7x1085lx8mh2zdwqslnw8xc3l4nkgm6";
-      };
     };
 
     poyo = pythonPackages.buildPythonPackage rec {
@@ -322,9 +294,11 @@ in
       sha256 = "198r0h27d8d0ikk79h2xc4jpaw2n602kpjvbm6mzx29l7zyr6f52";
     };
 
-    buildInputs = with self; [ simplegeneric tables scipy ];
+    buildInputs = with self; [ simplegeneric tables scipy pandas six ];
 
     propagatedBuildInputs = with self; [ scipy tables ];
+
+    doCheck = false;
 
     passthru = {
         pythonDeps = with self; [ scipy tables ];
@@ -366,47 +340,6 @@ in
 
    };
 
-
-
-
-  #backport from NixOS 16.09
-  ipython = pythonPackages.buildPythonPackage rec {
-    version = "5.2.1";
-    name = "ipython-${version}";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/i/ipython/${name}.tar.gz";
-      sha256 = "04dafc37c8876e10e797264302e4333dbcd2854ef6d16bb57cc12ce26515bfdb";
-    };
-
-    prePatch = stdenv.lib.optionalString stdenv.isDarwin ''
-      substituteInPlace setup.py --replace "'gnureadline'" " "
-    '';
-
-    buildInputs = with self; [ nose pkgs.glibcLocales pygments ] ++ stdenv.lib.optionals isPy27 [mock];
-
-    propagatedBuildInputs = with pythonPackages;
-      [ 
-      backports_shutil_get_terminal_size 
-      decorator pickleshare prompt_toolkit
-      simplegeneric traitlets requests pathlib2 pexpect
-      pygments setuptools
-      ]
-      ++ stdenv.lib.optionals stdenv.isDarwin [appnope];
-
-    LC_ALL="en_US.UTF-8";
-
-    doCheck = false; # Circular dependency with ipykernel
-
-    checkPhase = ''
-      nosetests
-    '';
-
-    passthru = {
-        pythonDeps = (gatherPythonRecDep ipython);
-    };
-
-  };
 
 
   #  backport from NixOS 16.09
@@ -480,30 +413,6 @@ in
     buildInputs = with self; [ coverage ];
   };
 
-  # backport from NixOS master (plus added cov_core dependency)
-  wheel = pythonPackages.buildPythonPackage rec {
-    pname = "wheel";
-    version = "0.29.0";
-    name = "${pname}-${version}";
-
-    src = pkgs.fetchurl {
-        url = "mirror://pypi/${builtins.substring 0 1 pname}/${pname}/${name}.tar.gz";
-        sha256 = "1ebb8ad7e26b448e9caa4773d2357849bf80ff9e313964bcaf79cbf0201a1648";
-      };
-
-    buildInputs = with self; [ pytest pytestcov coverage cov_core ];
-
-    propagatedBuildInputs = with self; [ jsonschema ];
-
-    # We add this flag to ignore the copy installed by bootstrapped-pip
-    installFlags = [ "--ignore-installed" ];
-
-    meta = {
-      description = "A built-package format for Python";
-      license = with stdenv.lib.licenses; [ mit ];
-      homepage = https://bitbucket.org/pypa/wheel/;
-    };
-  };
 
   # backport from NixOS 16.09
   backports_shutil_get_terminal_size = pythonPackages.buildPythonPackage rec {
@@ -652,6 +561,8 @@ in
       pypandoc
       setuptools
     ];
+
+    doCheck = false;
   };
 
   # backport from NixOS 16.09

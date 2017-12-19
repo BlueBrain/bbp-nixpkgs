@@ -18,6 +18,8 @@ let
             });
         };
 
+    bbp-virtualenv = callPackage ./bbp-virtualenv {};
+
 	# force usage of boost 159
 	# until problems with rtneuron and FLATIndexer are solved
 	# TODO: migrate these two componentns to boost 165 
@@ -240,11 +242,11 @@ let
             extraConfigureFlags = [ "--with-device=ch3:nemesis"];
         };
 
-        mvapich2-hydra = mvapich2.override {
+        mvapich2-hydra = mvapich2-slurm.override {
             slurm-llnl = null;
         };
 
-        mvapich2 = mvapich2-slurm;
+        mvapich2 = if ( builtins.pathExists  "/usr/bin/srun" ) then mvapich2-slurm else mvapich2-hydra;
 
 
         ## MVAPICH 2 support with RDMA / Infiniband
