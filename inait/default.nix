@@ -50,9 +50,7 @@ let
                 moduleFilePrefix = "nix/infra";
                 isLibrary = true;
                 description = "Jarvis python bindings module";
-                packages = [
-                                pkgs.pyjarvis
-                           ];
+                packages = with pkgs.pythonPackages; ( getPyModRec [ pkgs.pyjarvis ] );
             };
 
 
