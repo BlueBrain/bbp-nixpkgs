@@ -34,8 +34,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "BlueBrain";
     repo = "MVDTool";
-    rev = "c96ecaaa4daf280fc2a82b64d9d64bb025c5366f";
-    sha256 = "1hf57qy4gz9iq3qni12rxzr8lhyzdnjqdcsiavfrx1b6vdvw1jp8";
+    rev = "d9261270974f4f25bf278fa19f963600d849ec99";
+    sha256 = "1d0dmvznimsg43b4x6fms5wbw5pb3kz0igl51j36nk3pkw998lim";
   };
 
   buildInputs = [
@@ -53,8 +53,8 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = [ highfive ];
 
   cmakeFlags= [
-    # problem with cython 0.27.3
-    "-DBUILD_PYTHON_BINDINGS=OFF"
+    "-DBUILD_PYTHON_BINDINGS=ON"
+    "-DCMAKE_INSTALL_LIBDIR=lib/"
   ];
   enableParallelBuilding = true;
 
