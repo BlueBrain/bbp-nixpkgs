@@ -25,6 +25,10 @@ let
 	# TODO: migrate these two componentns to boost 165 
 	boost = boost159;
 
+        cmake = std-pkgs.cmake.override {
+            useNcurses = true;
+        };
+
         # Boost with Python 3 support
         boost-py3 = (boost159.overrideDerivation ( oldAttr: {
             name = oldAttr.name + "-py3";
