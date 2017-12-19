@@ -11,6 +11,16 @@ let
 in 
  rec {
 
+	# For a given list of python modules
+	# return all there dependencies
+	# based on pythonPackages.requiredPythonModules
+	#
+    getPyModRec = drvs: with pkgs.lib; let
+		filterNull = list: filter (x: !isNull x) list;
+		conditionalGetRecurse = attr: condition: drv: let f = conditionalGetRecurse attr condition; in
+		  (if (condition drv) then unique [drv]++(concatMap f (filterNull(getAttr attr drv))) else []);
+		_required = drv: conditionalGetRecurse "propagatedBuildInputs" self.hasPythonModule drv;
+	  in (unique (concatMap _required (filterNull drvs)));
 
 
     # function able to gather recursively all the python dependencies of a nix python package
