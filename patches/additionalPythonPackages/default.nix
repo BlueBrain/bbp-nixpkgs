@@ -6,21 +6,21 @@
 
 let 
 
-	self = pythonPackages;
+    self = pythonPackages;
 
 in 
  rec {
 
-	# For a given list of python modules
-	# return all there dependencies
-	# based on pythonPackages.requiredPythonModules
-	#
+    # For a given list of python modules
+    # return all there dependencies
+    # based on pythonPackages.requiredPythonModules
+    #
     getPyModRec = drvs: with pkgs.lib; let
-		filterNull = list: filter (x: !isNull x) list;
-		conditionalGetRecurse = attr: condition: drv: let f = conditionalGetRecurse attr condition; in
-		  (if (condition drv) then unique [drv]++(concatMap f (filterNull(getAttr attr drv))) else []);
-		_required = drv: conditionalGetRecurse "propagatedBuildInputs" self.hasPythonModule drv;
-	  in (unique (concatMap _required (filterNull drvs)));
+        filterNull = list: filter (x: !isNull x) list;
+        conditionalGetRecurse = attr: condition: drv: let f = conditionalGetRecurse attr condition; in
+          (if (condition drv) then unique [drv]++(concatMap f (filterNull(getAttr attr drv))) else []);
+        _required = drv: conditionalGetRecurse "propagatedBuildInputs" self.hasPythonModule drv;
+      in (unique (concatMap _required (filterNull drvs)));
 
 
     # function able to gather recursively all the python dependencies of a nix python package
@@ -53,19 +53,19 @@ in
 
     bootstrapped-pip =  callPackage ./bootstrapped-pip { };
 
-	future_0_16 = self.buildPythonPackage rec {
-    	version = "v0.16.0";
-	    name = "future-${version}";
+    future_0_16 = self.buildPythonPackage rec {
+        version = "v0.16.0";
+        name = "future-${version}";
 
-	    src = pkgs.fetchurl {
-    		url = "http://github.com/PythonCharmers/python-future/archive/${version}.tar.gz";
-    		sha256 = "0dynw5hibdpykszpsyhyc966s6zshknrrp6hg4ldid9nph5zskch";
-		};
+        src = pkgs.fetchurl {
+            url = "http://github.com/PythonCharmers/python-future/archive/${version}.tar.gz";
+            sha256 = "0dynw5hibdpykszpsyhyc966s6zshknrrp6hg4ldid9nph5zskch";
+        };
 
-	    propagatedBuildInputs = with self; stdenv.lib.optionals isPy26 [ importlib argparse ];
-	    doCheck = false;
+        propagatedBuildInputs = with self; stdenv.lib.optionals isPy26 [ importlib argparse ];
+        doCheck = false;
 
-	};
+    };
 
     funcsigs1_0_2 = self.buildPythonPackage rec {
         name = "funcsigs-1.0.2";
@@ -105,14 +105,6 @@ in
 
     });
 
-    cached-property = pythonPackages.buildPythonPackage rec {
-      name = "cached-property-${version}";
-      version = "1.3.1";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/c/cached-property/${name}.tar.gz";
-        sha256 = "1wwm23dyysdb4444xz1q6b1agpyax101d8fx45s58ms92fzg0qk5";
-      };
-    };
 
     certifi17 = pythonPackages.buildPythonPackage rec {
       name = "certifi-${version}";
@@ -121,25 +113,6 @@ in
         url = "mirror://pypi/c/certifi/${name}.tar.gz";
         sha256 = "1h0k6sy3p4csfdayghg2wjbnb1hfz27i5qbr0c7v8dhira8l5isy";
       };
-    };
-
-    cookiecutter = pythonPackages.buildPythonPackage rec {
-      name = "cookiecutter-${version}";
-      version = "1.6.0";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/c/cookiecutter/${name}.tar.gz";
-        sha256 = "0glsvaz8igi2wy1hsnhm9fkn6560vdvdixzvkq6dn20z3hpaa5hk";
-      };
-
-      propagatedBuildInputs = with self; [
-        binaryornot
-        click
-        future_0_16
-        jinja2-time
-        poyo
-        requests
-        whichcraft
-      ];
     };
 
     hpcbench = pythonPackages.buildPythonPackage rec {
@@ -202,15 +175,6 @@ in
       ];
     };
 
-    poyo = pythonPackages.buildPythonPackage rec {
-      name = "poyo-${version}";
-      version = "0.4.1";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/p/poyo/${name}.tar.gz";
-        sha256 = "1mjjyc4siq8p44d5ciln0ykf5cldh8zy9aqwzsc50xn7w7ilwfqh";
-      };
-    };
-
     progress = pythonPackages.buildPythonPackage rec {
       name = "progress-${version}";
       version = "1.3";
@@ -232,57 +196,31 @@ in
     };
 
 
-    whichcraft = pythonPackages.buildPythonPackage rec {
-      name = "whichcraft-${version}";
-      version = "0.4.1";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/w/whichcraft/${name}.tar.gz";
-        sha256 = "1zapij0ggmwp8gmr3yc4fy7pbnh3dag59nvyigrfkdvw734m23cy";
-      };
-    };
+    nose_xunitmp = pythonPackages.buildPythonPackage rec {
+            name = "nose_xunitmp-${version}";
+            version = "0.4";
 
-	tqdm = 	pythonPackages.buildPythonPackage rec {
-	    name = "tqdm-${version}";
-	    version = "v4.10.0";
+            src = pkgs.fetchurl {
+            url = "https://pypi.python.org/packages/86/cc/ab61fd10d25d090e80326e84dcde8d6526c45265b4cee242db3f792da80f/nose_xunitmp-0.4.0.tar.gz";
+            sha256 = "10p363s46ddm2afl4mql7yxkrrc2g4mshprzglq8lyqf3yycig7k";
+            };
 
-	    src = pkgs.fetchFromGitHub {
-	        owner = "tqdm";
-	        repo = "tqdm";
-	        rev = "bbf08db39931fd6cdff5f8ab42e54148f8b4faa4";
-	        sha256 = "08vfbc1x64mgsc9z1zxaq8gdnnvx2y29p91s6r9j1bg7g9vv6w33";
+            buildInputs = with pythonPackages; [ nose ];
 
-	    };
+    }; 
 
-    	buildInputs = [ pythonPackages.coverage pythonPackages.flake8 pythonPackages.nose ];
+    nose_testconfig = pythonPackages.buildPythonPackage rec {
+            name = "nose_testconfig-${version}";
+            version = "0.10";
 
-	};
+            src = pkgs.fetchurl {
+                url = "https://pypi.python.org/packages/a0/1a/9bb934f1274715083cfe8139d7af6fa78ca5437707781a1dcc39a21697b4/nose-testconfig-0.10.tar.gz";
+                sha256 = "1j4l3a77pwq6wgc5gfmhh52jba4sy9vbmy8sldxqg3wfxqh8lcjl";
+            };
 
+            buildInputs = with pythonPackages; [ nose ];
 
-	nose_xunitmp = pythonPackages.buildPythonPackage rec {
-			name = "nose_xunitmp-${version}";
-			version = "0.4";
-
-			src = pkgs.fetchurl {
-			url = "https://pypi.python.org/packages/86/cc/ab61fd10d25d090e80326e84dcde8d6526c45265b4cee242db3f792da80f/nose_xunitmp-0.4.0.tar.gz";
-			sha256 = "10p363s46ddm2afl4mql7yxkrrc2g4mshprzglq8lyqf3yycig7k";
-			};
-
-			buildInputs = with pythonPackages; [ nose ];
-
-	}; 
-
-	nose_testconfig = pythonPackages.buildPythonPackage rec {
-			name = "nose_testconfig-${version}";
-			version = "0.10";
-
-			src = pkgs.fetchurl {
-				url = "https://pypi.python.org/packages/a0/1a/9bb934f1274715083cfe8139d7af6fa78ca5437707781a1dcc39a21697b4/nose-testconfig-0.10.tar.gz";
-				sha256 = "1j4l3a77pwq6wgc5gfmhh52jba4sy9vbmy8sldxqg3wfxqh8lcjl";
-			};
-
-			buildInputs = with pythonPackages; [ nose ];
-
-	};           
+    };           
 
 
   deepdish = pythonPackages.buildPythonPackage rec {
@@ -596,7 +534,7 @@ in
   };
 
   scikit-learn = callPackage ./scikit-learn {
-	blas = pkgs.openblasCompat;
+    blas = pkgs.openblasCompat;
   };
 
 }
