@@ -612,6 +612,11 @@ in
 	blas = pkgs.openblasCompat;
   };
 
+
+  pyzmq4 = (pythonPackages.pyzmq.overrideDerivation ( oldAttr: {
+        buildInputs = [ pkgs.zeromq4 pythonPackages.pytest pythonPackages.tornado ];
+  }));
+
 }
 
 
