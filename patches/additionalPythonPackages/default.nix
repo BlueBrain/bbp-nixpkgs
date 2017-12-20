@@ -617,6 +617,30 @@ in
         buildInputs = [ pkgs.zeromq4 pythonPackages.pytest pythonPackages.tornado ];
   }));
 
+  jsonpath_ng = pythonPackages.buildPythonPackage rec {
+    version = "1.4.2";
+    name = "jsonpath_ng-${version}";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "h2non";
+      repo = "jsonpath-ng";
+      rev = "78868574750184b7540b6f7e401fa8624dbe2980";
+      sha256 = "0kpdlz5z0qx63cgkpr6v9bahmla96svdvgj319qa3ywhzfpim35v";
+    };
+
+    buildInputs = with pythonPackages; [];
+    propagatedBuildInputs = with pythonPackages; [
+      tornado
+      ply
+      six
+      decorator
+    ];
+
+    doCheck = false;
+  };
+
+
+
 }
 
 

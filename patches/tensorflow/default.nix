@@ -138,14 +138,6 @@ let
 
       doCheck = false;
 
-      passthru = {
-        pythonDeps =   (pythonPackages.gatherPythonRecDep self);
-        dependencies =
-          passthru.pythonDeps
-          ++ [pythonPackages.python ]
-          ++ stdenv.lib.optionals cudaSupport [ cudatoolkit cudnn stdenv.cc ]
-        ;
-      };
     };
 in
 
