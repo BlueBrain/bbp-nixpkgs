@@ -70,5 +70,9 @@ stdenv.mkDerivation rec {
       -c ${docCss} ${src}/README.md \
       -o $out/share/doc/morpho-mesher/html/index.html
   '';
-  outputs = [ "out" "doc" ];
+
+  passthru = {
+    pythonModule = pythonPackages.python;
+  };
+
 }
