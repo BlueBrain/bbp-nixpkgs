@@ -45,9 +45,7 @@ let
                 moduleFilePrefix = "nix/sim";
                 isLibrary = true;
                 description = "neuroconnector module";
-                packages = [
-                                pkgs.neuroconnector
-                           ];
+                packages = with pkgs.pythonPackages; ( getPyModRec [ pkgs.neuroconnector ]);
             };
 
 
