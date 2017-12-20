@@ -120,10 +120,6 @@ let
         propagatedBuildInputs = bluepy_runtime_deps ++ [ bluepy_config ];
 
 
-        passthru = {
-            pythonDeps =   (pythonPackages.gatherPythonRecDep bluepy_core);
-        };
-
     };
 
 
