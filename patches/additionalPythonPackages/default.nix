@@ -614,7 +614,10 @@ in
 
 
   pyzmq4 = (pythonPackages.pyzmq.overrideDerivation ( oldAttr: {
-        buildInputs = [ pkgs.zeromq4 pythonPackages.pytest pythonPackages.tornado ];
+        buildInputs =  ( stdenv.lib.remove pkgs.zeromq3 oldAttr.buildInputs ) ++  [ pkgs.zeromq4 pythonPackages.pytest pythonPackages.tornado ];
+ 
+        propagatedBuildInputs =  ( stdenv.lib.remove pkgs.zeromq3 oldAttr.propagatedBuildInputs ) ++ [ pkgs.zeromq4 pythonPackages.pytest pythonPackages.tornado ];
+ 
   }));
 
   jsonpath_ng = pythonPackages.buildPythonPackage rec {

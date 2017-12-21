@@ -24,7 +24,7 @@ let
 
 	  src = jarvis_src;
 
-	  propagatedBuildInputs = [ pythonPackages.pyzmq ];
+	  propagatedBuildInputs = [ pythonPackages.pyzmq4 ];
 	  
 	};
 	
