@@ -29,8 +29,8 @@ stdenv.mkDerivation rec {
   version = "1.1-201712dev";
   src = fetchgitPrivate{
     url = config.bbp_git_ssh + "/hpc/learning_engine.git";
-    rev = "3de9a7afb6f3f87f069b6511344934d27dc472ea";
-    sha256 = "1vxq2w0jhx3qg89rvhhxbh7rllp5g8cyzsbxgrbzc9kc1jx4alxv";
+    rev = "ec40de28543801106c9b102ea0e942de3332fa2d";
+    sha256 = "1cvfsfqxmr3sfcr0skgacd900c70lhxcyp1z6g171pwqs1bm035f";
   };
 
 
@@ -55,11 +55,6 @@ stdenv.mkDerivation rec {
     ];
   };
 
-  preConfigure = ''
-    export CXXFLAGS="-fopenmp"
-    export CPPFLAGS="$CXXFLAGS"
-  '';
-
   buildInputs = [
     blas
     boost
@@ -71,7 +66,7 @@ stdenv.mkDerivation rec {
     pythonPackages.cython
     pythonPackages.numpy
     syntool
-#    tbb
+    tbb
     zlib
   ];
   propagatedBuildInputs = with pythonPackages; [
@@ -86,7 +81,8 @@ stdenv.mkDerivation rec {
     "-DLEARNING_ENGINE_SPHINX:BOOL=ON"
     "-DLEARNING_ENGINE_SYN2=TRUE"
     "-DOPT_PRECISION=float"
-    "-DOPT_THREAD=omp"
+    "-DOPT_THREAD=tbb"
+    "-DLEARNING_ENGINE_TBB_MALLOC:BOOL=OFF"
   ] ++ stdenv.lib.optionals (stdenv ? isICC) [
     "-DOPT_RANDOM=mkl"
   ];
