@@ -10,14 +10,14 @@
 
 stdenv.mkDerivation rec {
   name = "neuroconnector-${version}";
-  version = "2.0";
+  version = "2.1";
   
   buildInputs = [ pkgconfig boost mvdtool pythonPackages.python cmake ];
 
   src = fetchgitPrivate {
     url = config.inait_git_ssh + "/SIMULATION/neuroconnector.git";
-    rev = "621478d1155bff48ce7b5e0d302ba7fa97937fe5";
-    sha256 = "0ixq64c7z6lwjsg8lx06rsqbswhh578il45sb5lim59nnwyw3ml1";
+    rev = "aed430c6a2dbabd3cdb3a60ef42a2ba20bd1fa48";
+    sha256 = "0h4an9k1pda92l799nkn9gh58bzy3c2244zd8nkdsx00ws639lky";
   };
   
   propagatedBuildInputs = [ mvdtool pythonPackages.numpy ];
