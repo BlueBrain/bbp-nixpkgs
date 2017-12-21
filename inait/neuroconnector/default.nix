@@ -22,9 +22,10 @@ stdenv.mkDerivation rec {
   
   propagatedBuildInputs = [ mvdtool pythonPackages.numpy ];
   
-  passthru = {
-	pythonModule = pythonPackages;
+   passthru = {
+    pythonModule = pythonPackages.python;
   };
+ 
 }
 
 
