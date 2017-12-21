@@ -8,20 +8,23 @@
 , pythonPackages
  }:
 
-pythonPackages.buildPythonPackage rec {
+stdenv.mkDerivation rec {
   name = "neuroconnector-${version}";
-  version = "1.2";
+  version = "2.0";
   
-  buildInputs = [ stdenv mvdtool pythonPackages.numpy pythonPackages.rtree ];
+  buildInputs = [ pkgconfig boost mvdtool pythonPackages.python cmake ];
 
   src = fetchgitPrivate {
     url = config.inait_git_ssh + "/SIMULATION/neuroconnector.git";
-    rev = "188868ab0a4a3dc28051eabf74570ad8f28d528f";
-    sha256 = "02nxv7z0jmvi52d6nanyfzm4m3y86n4kwjh82qnv3j8wjrccpdwa";
+    rev = "621478d1155bff48ce7b5e0d302ba7fa97937fe5";
+    sha256 = "0ixq64c7z6lwjsg8lx06rsqbswhh578il45sb5lim59nnwyw3ml1";
   };
   
-  propagatedBuildInputs = [ mvdtool pythonPackages.numpy pythonPackages.rtree ];
+  propagatedBuildInputs = [ mvdtool pythonPackages.numpy ];
   
+  passthru = {
+	pythonModule = pythonPackages;
+  };
 }
 
 
