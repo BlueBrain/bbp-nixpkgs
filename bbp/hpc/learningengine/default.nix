@@ -55,6 +55,11 @@ stdenv.mkDerivation rec {
     ];
   };
 
+  preConfigure = ''
+    export CXXFLAGS="-fopenmp"
+    export CPPFLAGS="$CXXFLAGS"
+  '';
+
   buildInputs = [
     blas
     boost
@@ -66,7 +71,7 @@ stdenv.mkDerivation rec {
     pythonPackages.cython
     pythonPackages.numpy
     syntool
-    tbb
+#    tbb
     zlib
   ];
   propagatedBuildInputs = with pythonPackages; [
@@ -81,6 +86,7 @@ stdenv.mkDerivation rec {
     "-DLEARNING_ENGINE_SPHINX:BOOL=ON"
     "-DLEARNING_ENGINE_SYN2=TRUE"
     "-DOPT_PRECISION=float"
+    "-DOPT_THREAD=omp"
   ] ++ stdenv.lib.optionals (stdenv ? isICC) [
     "-DOPT_RANDOM=mkl"
   ];
