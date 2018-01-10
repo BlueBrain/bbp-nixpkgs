@@ -18,9 +18,8 @@ stdenv.mkDerivation rec {
       fullName = "Blue Brain Project 2017, 2018 All rights reserved";
     };
     maintainers = with config.maintainers; [
-      adevress
-      ferdonline
-      "Arseny V. Povolotsky - arseny.povolotsky@epfl.ch"
+      jamesgkind
+      pramodskumbhar
     ];
   };
   src = fetchgitPrivate {

@@ -587,6 +587,7 @@ let
                 morphomesher
                 morphotool
                 mvdtool
+                neurodamus
                 neuromapp
                 pytouchreader
                 flatindexer

@@ -26,7 +26,7 @@ stdenv.mkDerivation rec {
     homepage = "https://bbpcode.epfl.ch/code/#/admin/projects/building/FLATIndex";
     repository = "ssh://bbpcode.epfl.ch/building/FLATIndex";
     license = {
-      fullName = "Copyright 2017, Blue Brain Project";
+      fullName = "Copyright 2018, Blue Brain Project";
     };
     maintainers = with config.maintainers; [
       tristan0x
