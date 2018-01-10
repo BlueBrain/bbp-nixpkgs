@@ -580,13 +580,16 @@ let
         hpc-doc = callPackage ./common/vizDoc {
             name = "hpc-documentation";
             paths = [
+                cyme
                 functionalizer
                 highfive
                 learningengine
                 morphomesher
                 morphotool
                 mvdtool
+                neuromapp
                 pytouchreader
+                flatindexer
                 reportinglib
                 spykfunc
                 touchdetector
