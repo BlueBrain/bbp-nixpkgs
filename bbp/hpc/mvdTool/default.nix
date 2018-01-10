@@ -74,5 +74,6 @@ stdenv.mkDerivation rec {
   passthru = {
     pythonModule = pythonPackages.python;
   };
+  outputs = [ "out" "doc" ];
 
 }

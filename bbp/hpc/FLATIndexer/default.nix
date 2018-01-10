@@ -1,25 +1,44 @@
-{ stdenv,
-config,
-fetchgitPrivate,
-pkgconfig,
+{ bbpsdk,
 boost,
-bbpsdk,
 brion,
-sparsehash,
-lunchbox,
-vmmlib,
-servus,
 cmake,
-mpiRuntime,
-zlib,
-python,
-numpy,
+config,
+doxygen,
+fetchgitPrivate,
 hdf5,
-doxygen }:
+lunchbox,
+mpiRuntime,
+numpy,
+pandoc,
+pkgconfig,
+python,
+servus,
+sparsehash,
+stdenv,
+vmmlib,
+zlib }:
 
 stdenv.mkDerivation rec {
   name = "flatindexer-${version}";
   version = "1.8.4-201711";
+  meta = {
+    description = "facilitate SIMD programming";
+    homepage = "https://bbpcode.epfl.ch/code/#/admin/projects/building/FLATIndex";
+    repository = "ssh://bbpcode.epfl.ch/building/FLATIndex";
+    license = {
+      fullName = "Copyright 2017, Blue Brain Project";
+    };
+    maintainers = with config.maintainers; [
+      tristan0x
+    ];
+  };
+
+  src = fetchgitPrivate {
+    url = config.bbp_git_ssh + "/building/FLATIndex";
+    rev = "849bb3f56bad2535fdc93a85ed9c229e5e4094e8";
+    sha256 = "137cjp7k2mgk40nxfmdqbj9amzbv5xvvnzvr00gxncda9rdi4rr7";
+  };
+
   buildInputs = [
     bbpsdk
     boost
@@ -37,14 +56,16 @@ stdenv.mkDerivation rec {
     vmmlib
     zlib
   ];
-
-  src = fetchgitPrivate {
-    url = config.bbp_git_ssh + "/building/FLATIndex";
-    rev = "92d08e5dccdc4f3fbe4242bc9e5b00663e28cb99";
-    sha256 = "1ycyb07g0jnibmpcddj2j14p9bg7dxcy5m02avcy20dklgwqhb66";
-  };
-
   cmakeFlags= [ "-DCOMMON_DISABLE_WERROR=TRUE" ];
 
   enableParallelBuilding = true;
+
+  docCss = ../../common/vizDoc/github-pandoc.css;
+  postInstall = ''
+    mkdir -p $out/share/doc/flatindexer/html
+    ${pandoc}/bin/pandoc -s -S --self-contained \
+      -c ${docCss} ${src}/README.txt \
+      -o $out/share/doc/flatindexer/html/index.html
+  '';
+  outputs = [ "out" "doc" ];
 }
