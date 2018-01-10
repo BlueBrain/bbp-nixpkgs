@@ -5,6 +5,7 @@
 , pkgconfig
 , hdf5
 , mpiRuntime
+, pandoc
 , zlib
 , ncurses
 , reportinglib
@@ -57,6 +58,18 @@ in
 stdenv.mkDerivation rec {
     name = "neurodamus${if coreNeuronMode then "-coreneuron" else ""}-${version}";
     version = "1.9.0-201710";
+    meta = {
+        description = "Neuron simulators wrapper";
+        homepage = "https://bbpcode.epfl.ch/code/#/admin/projects/sim/neurodamus/bbp";
+        license = {
+          fullName = "Copyright 2018, Blue Brain Project";
+        };
+        maintainers = with config.maintainers; [
+            jamesgkind
+            pramodskumbhar
+            fouriaux
+        ];
+    };
 
     buildInputs = [ stdenv which pkgconfig hdf5 ncurses zlib mpiRuntime reportinglib nrnEnv ];
 
@@ -95,6 +108,7 @@ stdenv.mkDerivation rec {
 
 
     installPhase = ''
+        runHook preInstall
         #refactor
 
         mkdir -p $out/{bin,lib,share}
@@ -108,11 +122,10 @@ stdenv.mkDerivation rec {
         grep -v "\-dll" $out/bin/special > ./special.tmp
         cp ./special.tmp $out/bin/special
         echo " \"\''${NRNIV}\" -dll \"$out/lib/libnrnmech.so\" \"\$@\" " >> $out/bin/special
-    '' else '' '');
-
-
-
-
+    '' else ''
+    '') +
+    ''runHook postInstall
+    '';
 
     passthru = {
         src = src;
@@ -123,21 +136,21 @@ stdenv.mkDerivation rec {
     # we need to patch the last line of special on not-BGQ paltforms
     # current one is not able to work outside of build directory
     # and reference statically this one
-    postInstall = if isBGQ == false then
-    ''
-    ## rename accordingly special mech path
-    grep -v "\-dll" $out/bin/special > ./special.tmp
-    cp ./special.tmp $out/bin/special
-    echo " \"\''${NRNIV}\" -dll \"$out/lib/libnrnmech.so\" \"\$@\" " >> $out/bin/special
-    ## nrn mech is not installed properly by cmake
-    mkdir -p $out/lib
-    cp lib/*/*/.libs/*.so* $out/lib/
-    ''
-    else
-    '' '';
+    docCss = ../../common/vizDoc/github-pandoc.css;
+    postInstall = ''
+        echo building HTML README
+        mkdir -p $out/share/doc/neurodamus/html
+        if [ -f ${src}/README.txt ] ; then
+            ${pandoc}/bin/pandoc -s -S --self-contained \
+              -c ${docCss} ${src}/README.txt \
+              -o $out/share/doc/neurodamus/html/index.html
+        else
+            # Not all branches have a README.txt
+            touch $out/share/doc/neurodamus/html/index.html
+        fi
+    '';
 
-    propagatedBuildInputs = [ which hdf5 reportinglib ];
+  outputs = [ "out" "doc" ];
+  propagatedBuildInputs = [ which hdf5 reportinglib ];
 
 }
-
-
