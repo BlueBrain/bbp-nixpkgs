@@ -86,6 +86,7 @@ let
                     ++ set.python3_base
                     ++ set.system_pkgs
                     ++ set.parallel_toolkit
+		    ++ set.editors
                 ++ [ 
                 neuroconnector 
                 pyjarvis
