@@ -57,6 +57,11 @@ stdenv.mkDerivation rec {
   makeFlags = [ "VERBOSE=1" ];
 
   propagatedBuildInputs = [ servus vmmlib boost ];
+
+  passthru = {
+    pythonModule = pythonPackages.python;
+  };
+
    
 }
 
