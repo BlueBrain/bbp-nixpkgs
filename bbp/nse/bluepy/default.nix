@@ -21,9 +21,9 @@ let
     };
 
     info-version-latest = {
-          version = "0.11.2";
-          rev = "53ca4cb72ce9d2a881089143acb8561c44b40b55";
-          sha256 = "0yrj2jmr5p0i95pcxwij7z37p0zbvfjl1z48vg2hl3i8ywra9hbl";    
+          version = "0.11.12dev1";
+          rev = "c3e9e4a4d05de5985d2e2ebcb855e620997b7520";
+          sha256 = "08g6wcyz8vif7zvlhwqpid2pnghi7kl151cwvdnr9cimmls7aj28";    
     };
 
 
@@ -47,6 +47,8 @@ let
                             pythonPackages.pandas
                             pythonPackages.matplotlib
                             pythonPackages.lxml
+                            pythonPackages.future
+                            pythonPackages.enum
 
                             #  others
                             pythonPackages.shapely
@@ -73,7 +75,9 @@ let
         buildInputs = [
                         pythonPackages.pip
                         pythonPackages.ordereddict
-				      ];
+			pythonPackages.six
+			pythonPackages.future
+       ];
 
         propagatedBuildInputs = [ pythonPackages.ordereddict ];
     };
