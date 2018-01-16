@@ -73,11 +73,11 @@ let
         pythonPath = [];
 
         buildInputs = [
-                        pythonPackages.pip
                         pythonPackages.ordereddict
 			pythonPackages.six
 			pythonPackages.future
-       ];
+			pythonPackages.jsonschema
+       ] ++ bluepy_runtime_deps;
 
         propagatedBuildInputs = [ pythonPackages.ordereddict ];
     };
