@@ -15,7 +15,8 @@ isLibrary ? false,
 isDefault ? false,
 isCompiler ? false,
 description ? "" ,
-extraContent ? ""
+extraContent ? "",
+ignoreCollisions ? false
 }:
 
 
@@ -61,6 +62,8 @@ stdenv.mkDerivation rec {
     targetEnv =  buildEnv {
         name = "generated-env-module-${name}";
         paths = packages;
+	ignoreCollisions = ignoreCollisions;
+	checkCollisionContents = false;
     };
     
     

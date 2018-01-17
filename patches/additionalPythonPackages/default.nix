@@ -342,64 +342,6 @@ in
 
 
 
-  #  backport from NixOS 16.09
-  jupyter_client = pythonPackages.buildPythonPackage rec {
-    version = "4.4.0";
-    name = "jupyter_client-${version}";
-
-    src = pkgs.fetchFromGitHub {
-      owner = "jupyter";
-      repo = "jupyter_client";
-      rev = "67cc27d5b4ef565a172057a0a9b76e350a19a134";
-      sha256 = "1f71rwm6hfxl5hpjs5p562izgqpm6w92gk429pbayhjmlv901lwk";
-    };
-
-    buildInputs = with self; [ nose ];
-    propagatedBuildInputs = with self; [traitlets jupyter_core pyzmq] ++ stdenv.lib.optional isPyPy py;
-
-    checkPhase = ''
-      nosetests -v
-    '';
-
-    # Circular dependency with ipykernel
-    doCheck = false;
-
-  };
-
-
-  # backport from NixOS 16.09
-  jupyter_core = pythonPackages.buildPythonPackage rec {
-    version = "4.2.1";
-    name = "jupyter_core-${version}";
-
-    src = pkgs.fetchFromGitHub {
-      owner = "jupyter";
-      repo = "jupyter_core";
-      rev = "f81f34068b5c38b452ab65837f6c5bd98c0bac41";
-      sha256 = "0bn1k4gwp5kvwar6zd7yvqaji2n6bnx5ydczv4xqqywl0f34hmi7";
-    };
-
-    buildInputs = with self; [ pytest mock ];
-    propagatedBuildInputs = with self; [ ipython traitlets];
-
-    checkPhase = ''
-      py.test
-    '';
-
-    # Several tests fail due to being in a chroot
-    doCheck = false;
-  };
-
-  lazy = pythonPackages.buildPythonPackage rec {
-    version = "1.3";
-    name = "lazy-${version}";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/l/lazy/${name}.zip";
-      sha256 = "0gcfwv411rng9c0kpild11qq5wzyzq690nc76wkppfh6f6zpf2n8";
-    };
-  };
-
   # Backport from NixOS 16.09
   prompt_toolkit = pythonPackages.buildPythonPackage rec {
     name = "prompt_toolkit-${version}";
@@ -448,24 +390,6 @@ in
   tensorflow-tensorboard = with self; callPackage ./tensorflow-tensorboard {
   };
 
-  ipython_genutils = pythonPackages.buildPythonPackage rec {
-    version = "0.1.0";
-    name = "ipython_genutils-${version}";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/i/ipython_genutils/${name}.tar.gz";
-      sha256 = "3a0624a251a26463c9dfa0ffa635ec51c4265380980d9a50d65611c3c2bd82a6";
-    };
-
-    LC_ALL = "en_US.UTF-8";
-    buildInputs = with self; [ nose pkgs.glibcLocales ];
-
-    checkPhase = ''
-      nosetests -v ipython_genutils/tests
-    '';
-
-   };
-
   # backport from NixOS 16.09
 
   pathlib2 = pythonPackages.buildPythonPackage rec {
@@ -507,6 +431,17 @@ in
 
     propagatedBuildInputs = with self; [pathpy];
   };
+
+  lazy = pythonPackages.buildPythonPackage rec {
+    version = "1.3";
+    name = "lazy-${version}";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/l/lazy/${name}.zip";
+      sha256 = "0gcfwv411rng9c0kpild11qq5wzyzq690nc76wkppfh6f6zpf2n8";
+    };
+  };
+
 
   lazy_property = pythonPackages.buildPythonPackage rec {
     version = "0.0.1";
@@ -582,36 +517,6 @@ in
     ];
 
     doCheck = false;
-  };
-
-  # backport from NixOS 16.09
-  ipykernel = pythonPackages.buildPythonPackage rec {
-    version = "4.5.2";
-    name = "ipykernel-${version}";
-
-    src = pkgs.fetchFromGitHub {
-      owner = "ipython";
-      repo = "ipykernel";
-      rev = "c3b09fc7f9f2d38ca01b6742dcd70d4b9fe56aae";
-      sha256 = "05a5pvfd123prs6hmfhjgj58kp6ygwx418icfvkhi3pn5ri9z61b";
-    };
-
-    buildInputs = with pythonPackages; [ nose ] ++ stdenv.lib.optionals isPy27 [mock];
-    propagatedBuildInputs = with pythonPackages; [
-      ipython
-      jupyter_client
-      pexpect
-      traitlets
-      tornado
-    ];
-
-    # Tests require backends.
-    # I don't want to add all supported backends as propagatedBuildInputs
-    doCheck = false;
-
-    passthru = {
-        pythonDeps = (gatherPythonRecDep ipykernel);
-    };
   };
 
   scikit-learn = callPackage ./scikit-learn {
