@@ -2,6 +2,7 @@
 stdenv,
 buildEnv,
 name,
+targetPlatform,
 version ? "",
 moduleFilePrefix ? "nix",
 moduleFileSuffix ? "",
@@ -47,7 +48,7 @@ ignoreCollisions ? false
                                                     ${depPrefixString} ${(extractName (builtins.head (depList)))}
                                                     ${depBuilder depPrefixString (builtins.tail depList)}
                                                  '';
-            
+    compileInfix = stdenv.lib.replaceStrings ["-"] ["_"] targetPlatform.config;            
                             
  in
 stdenv.mkDerivation rec {
@@ -117,8 +118,8 @@ else
 
 ${if (isLibrary == true && nixCompileFlags == true) then
 ''
-    prepend-path --delim " " NIX_CFLAGS_COMPILE "-I$targetEnv/include"
-    prepend-path --delim " " NIX_LDFLAGS "-L$targetEnv/lib"
+    prepend-path --delim " " NIX_${compileInfix}_CFLAGS_COMPILE "-I$targetEnv/include"
+    prepend-path --delim " " NIX_${compileInfix}_LDFLAGS "-L$targetEnv/lib"
 ''
 else
 '' ''
@@ -137,8 +138,8 @@ else
 ##
 ${if (isCompiler == true) then
 ''
-    prepend-path --delim " " NIX_CFLAGS_COMPILE "-I${(builtins.head packages).libc}/include"
-    prepend-path --delim " " NIX_LDFLAGS "-L${(builtins.head packages).libc}/lib"
+    prepend-path --delim " " NIX_${compileInfix}_CFLAGS_COMPILE "-I${(builtins.head packages).libc}/include"
+    prepend-path --delim " " NIX_${compileInfix}_LDFLAGS "-L${(builtins.head packages).libc}/lib"
 
     prepend-path CMAKE_PREFIX_PATH "${(builtins.head packages).libc}"
 ''
