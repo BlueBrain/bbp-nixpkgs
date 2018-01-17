@@ -55,20 +55,6 @@ in
 
   bootstrapped-pip =  callPackage ./bootstrapped-pip { };
 
-	future_0_16 = self.buildPythonPackage rec {
-    	version = "v0.16.0";
-	    name = "future-${version}";
-
-	    src = pkgs.fetchurl {
-    		url = "http://github.com/PythonCharmers/python-future/archive/${version}.tar.gz";
-    		sha256 = "0dynw5hibdpykszpsyhyc966s6zshknrrp6hg4ldid9nph5zskch";
-		};
-
-	    propagatedBuildInputs = with self; stdenv.lib.optionals isPy26 [ importlib argparse ];
-	    doCheck = false;
-
-	};
-
     funcsigs1_0_2 = self.buildPythonPackage rec {
         name = "funcsigs-1.0.2";
 
@@ -135,7 +121,7 @@ in
       propagatedBuildInputs = with self; [
         binaryornot
         click
-        future_0_16
+        future
         jinja2-time
         poyo
         requests
