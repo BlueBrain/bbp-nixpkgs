@@ -310,8 +310,15 @@ let
             bluepy_version = "0.9.6";
         };
 
-        bluepy_0_11_2 = callPackage ./nse/bluepy {
+        bluepy_latest = callPackage ./nse/bluepy {
             bluepy_version = "0.11.2";
+        };
+
+	pybinreports = callPackages ./nse/pybinreports {
+	};
+
+	bglibpy = callPackage ./nse/bglibpy {
+		bluepy = bluepy_latest;
         };
 
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
@@ -351,7 +358,7 @@ let
             paths =
                 [
                     morphsyn bluejittersdk
-                    bluepy_0_11_2 bluerepairsdk muk morphscale voxcell
+                    bluepy_latest bluerepairsdk muk morphscale voxcell
                     brain-builder workflow-cell-collection
                 ];
         });

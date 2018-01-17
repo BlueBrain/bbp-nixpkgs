@@ -9,34 +9,28 @@ let
 in
 pythonPackages.buildPythonPackage rec {
 	name = "neuroM-${version}";
-	version = "1.3.0";
+	version = "1.4.5";
 
 	src = fetchFromGitHub {
 		owner = "BlueBrain";
 		repo = "NeuroM";
-		rev = "7cadc9333d4a80cc660a223a536dfd1d1bf864de";
-		sha256 = "1sa20fd920zllsj4p5y39z998021jyb287m2grf0pdhvpcx3vn4g";
+		rev = "10b10751e288328495e14c6185dd08d04224f1d3";
+		sha256 = "059b2bqx004nf23nb305d3mg7vp255z11l26n6xvd0v1ahx1liwk";
 
 	};
 
-	preConfigure = ''
-		# downgrade required version of scipy to 0.15
-		# will remove that whehn transition to Nixpkgs  16.09 will be done 
-		sed -i 's/scipy>=0.17.0/scipy>=0.15.0/g' requirements.txt
-	'';
 
-	buildInputs = [ pythonPackages.pip 
-				pythonPackages.scipy  ];
 
 	propagatedBuildInputs = [
 							  pythonPackages.enum34
-							  pythonPackages.future_0_16
+							  pythonPackages.future
 							  pythonPackages.scipy
 							  pythonPackages.numpy
 							  pythonPackages.pyyaml
 							  pythonPackages.tqdm
 							  pythonPackages.matplotlib
-						      pythonPackages.h5py
+    						          pythonPackages.h5py
+    						          pythonPackages.pylru
 							];
 
     passthru = {
