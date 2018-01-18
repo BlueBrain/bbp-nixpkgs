@@ -6,21 +6,21 @@
 
 let
 
-	self = pythonPackages;
+    self = pythonPackages;
 
 in
  rec {
 
-	# For a given list of python modules
-	# return all there dependencies
-	# based on pythonPackages.requiredPythonModules
-	#
+    # For a given list of python modules
+    # return all there dependencies
+    # based on pythonPackages.requiredPythonModules
+    #
     getPyModRec = drvs: with pkgs.lib; let
-		filterNull = list: filter (x: !isNull x) list;
-		conditionalGetRecurse = attr: condition: drv: let f = conditionalGetRecurse attr condition; in
-		  (if (condition drv) then unique [drv]++(concatMap f (filterNull(getAttr attr drv))) else []);
-		_required = drv: conditionalGetRecurse "propagatedBuildInputs" self.hasPythonModule drv;
-	  in (unique (concatMap _required (filterNull drvs)));
+        filterNull = list: filter (x: !isNull x) list;
+        conditionalGetRecurse = attr: condition: drv: let f = conditionalGetRecurse attr condition; in
+          (if (condition drv) then unique [drv]++(concatMap f (filterNull(getAttr attr drv))) else []);
+        _required = drv: conditionalGetRecurse "propagatedBuildInputs" self.hasPythonModule drv;
+      in (unique (concatMap _required (filterNull drvs)));
 
 
     # function able to gather recursively all the python dependencies of a nix python package
@@ -208,107 +208,107 @@ in
     };
 
     py-elasticsearch = pythonPackages.buildPythonPackage rec {
-      name = "elasticsearch-${version}";
-      version = "6.0.0";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/e/elasticsearch/${name}.tar.gz";
-        sha256 = "029q603g95fzkh87xkbxxmjfq5s9xkr9y27nfik6d4prsl0zxmlz";
-      };
-      propagatedBuildInputs = with self; [ urllib3 ];
-      doCheck = false;
+        name = "elasticsearch-${version}";
+        version = "6.0.0";
+        src = pkgs.fetchurl {
+            url = "mirror://pypi/e/elasticsearch/${name}.tar.gz";
+            sha256 = "029q603g95fzkh87xkbxxmjfq5s9xkr9y27nfik6d4prsl0zxmlz";
+        };
+        propagatedBuildInputs = with self; [ urllib3 ];
+        doCheck = false;
     };
 
 
     whichcraft = pythonPackages.buildPythonPackage rec {
-      name = "whichcraft-${version}";
-      version = "0.4.1";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/w/whichcraft/${name}.tar.gz";
-        sha256 = "1zapij0ggmwp8gmr3yc4fy7pbnh3dag59nvyigrfkdvw734m23cy";
-      };
+        name = "whichcraft-${version}";
+        version = "0.4.1";
+        src = pkgs.fetchurl {
+            url = "mirror://pypi/w/whichcraft/${name}.tar.gz";
+            sha256 = "1zapij0ggmwp8gmr3yc4fy7pbnh3dag59nvyigrfkdvw734m23cy";
+        };
     };
 
-	tqdm = 	pythonPackages.buildPythonPackage rec {
-	    name = "tqdm-${version}";
-	    version = "v4.10.0";
+    tqdm =  pythonPackages.buildPythonPackage rec {
+        name = "tqdm-${version}";
+        version = "v4.10.0";
 
-	    src = pkgs.fetchFromGitHub {
-	        owner = "tqdm";
-	        repo = "tqdm";
-	        rev = "bbf08db39931fd6cdff5f8ab42e54148f8b4faa4";
-	        sha256 = "08vfbc1x64mgsc9z1zxaq8gdnnvx2y29p91s6r9j1bg7g9vv6w33";
+        src = pkgs.fetchFromGitHub {
+            owner = "tqdm";
+            repo = "tqdm";
+            rev = "bbf08db39931fd6cdff5f8ab42e54148f8b4faa4";
+            sha256 = "08vfbc1x64mgsc9z1zxaq8gdnnvx2y29p91s6r9j1bg7g9vv6w33";
 
-	    };
+        };
 
-    	buildInputs = [ pythonPackages.coverage pythonPackages.flake8 pythonPackages.nose ];
+        buildInputs = [ pythonPackages.coverage pythonPackages.flake8 pythonPackages.nose ];
 
-	};
+    };
 
 
-	nose_xunitmp = pythonPackages.buildPythonPackage rec {
-			name = "nose_xunitmp-${version}";
-			version = "0.4";
+    nose_xunitmp = pythonPackages.buildPythonPackage rec {
+        name = "nose_xunitmp-${version}";
+        version = "0.4";
 
-			src = pkgs.fetchurl {
-			url = "https://pypi.python.org/packages/86/cc/ab61fd10d25d090e80326e84dcde8d6526c45265b4cee242db3f792da80f/nose_xunitmp-0.4.0.tar.gz";
-			sha256 = "10p363s46ddm2afl4mql7yxkrrc2g4mshprzglq8lyqf3yycig7k";
-			};
+        src = pkgs.fetchurl {
+            url = "https://pypi.python.org/packages/86/cc/ab61fd10d25d090e80326e84dcde8d6526c45265b4cee242db3f792da80f/nose_xunitmp-0.4.0.tar.gz";
+            sha256 = "10p363s46ddm2afl4mql7yxkrrc2g4mshprzglq8lyqf3yycig7k";
+        };
 
-			buildInputs = with pythonPackages; [ nose ];
+        buildInputs = with pythonPackages; [ nose ];
 
-	};
+    };
 
-	nose_testconfig = pythonPackages.buildPythonPackage rec {
-			name = "nose_testconfig-${version}";
-			version = "0.10";
+    nose_testconfig = pythonPackages.buildPythonPackage rec {
+        name = "nose_testconfig-${version}";
+        version = "0.10";
 
-			src = pkgs.fetchurl {
-				url = "https://pypi.python.org/packages/a0/1a/9bb934f1274715083cfe8139d7af6fa78ca5437707781a1dcc39a21697b4/nose-testconfig-0.10.tar.gz";
-				sha256 = "1j4l3a77pwq6wgc5gfmhh52jba4sy9vbmy8sldxqg3wfxqh8lcjl";
-			};
+        src = pkgs.fetchurl {
+            url = "https://pypi.python.org/packages/a0/1a/9bb934f1274715083cfe8139d7af6fa78ca5437707781a1dcc39a21697b4/nose-testconfig-0.10.tar.gz";
+            sha256 = "1j4l3a77pwq6wgc5gfmhh52jba4sy9vbmy8sldxqg3wfxqh8lcjl";
+        };
 
-			buildInputs = with pythonPackages; [ nose ];
+        buildInputs = with pythonPackages; [ nose ];
 
-	};
+    };
 
 
     deepdish = pythonPackages.buildPythonPackage rec {
-    name = "deepdish-${version}";
-    version = "0.3.4";
+        name = "deepdish-${version}";
+        version = "0.3.4";
 
-    src = pkgs.fetchurl {
-        url = "mirror://pypi/d/deepdish/${name}.tar.gz";
-        sha256 = "198r0h27d8d0ikk79h2xc4jpaw2n602kpjvbm6mzx29l7zyr6f52";
-    };
+        src = pkgs.fetchurl {
+            url = "mirror://pypi/d/deepdish/${name}.tar.gz";
+            sha256 = "198r0h27d8d0ikk79h2xc4jpaw2n602kpjvbm6mzx29l7zyr6f52";
+        };
 
-    buildInputs = with self; [ simplegeneric tables scipy pandas six ];
+        buildInputs = with self; [ simplegeneric tables scipy pandas six ];
 
-    propagatedBuildInputs = with self; [ scipy tables ];
+        propagatedBuildInputs = with self; [ scipy tables ];
 
-    doCheck = false;
+        doCheck = false;
 
-    passthru = {
-    
-    };
+        passthru = {
+        
+        };
 
     };
 
     elephant = pythonPackages.buildPythonPackage rec {
-    name = "elephant-${version}";
-    version = "0.4.1";
+        name = "elephant-${version}";
+        version = "0.4.1";
 
-    src = pkgs.fetchurl {
-        url = "mirror://pypi/e/elephant/${name}.tar.gz";
-        sha256 = "10dc5v4ff2qsywlwnfnpagayqhjvrn6p6lbgpak0kp5crd21mcl6";
-    };
+        src = pkgs.fetchurl {
+            url = "mirror://pypi/e/elephant/${name}.tar.gz";
+            sha256 = "10dc5v4ff2qsywlwnfnpagayqhjvrn6p6lbgpak0kp5crd21mcl6";
+        };
 
-    buildInputs = with self; [ scipy six quantities neo ];
+        buildInputs = with self; [ scipy six quantities neo ];
 
-    propagatedBuildInputs = with self; [ scipy  six quantities neo ];
+        propagatedBuildInputs = with self; [ scipy  six quantities neo ];
 
-    passthru = {
+        passthru = {
     
-    };
+        };
 
     };
    
@@ -326,17 +326,17 @@ in
 
 
     neo = pythonPackages.buildPythonPackage rec {
-    name = "neo-${version}";
-    version = "0.5.1";
+        name = "neo-${version}";
+        version = "0.5.1";
 
-    src = pkgs.fetchurl {
-        url = "mirror://pypi/n/neo/${name}.tar.gz";
-        sha256 = "1yw0xlsyxglgvqqlp18wk197vhnslbr2pwaiv4nljljv7m3fqa32";
-    };
+        src = pkgs.fetchurl {
+            url = "mirror://pypi/n/neo/${name}.tar.gz";
+            sha256 = "1yw0xlsyxglgvqqlp18wk197vhnslbr2pwaiv4nljljv7m3fqa32";
+        };
 
-    buildInputs = with self; [ scipy quantities ];
+        buildInputs = with self; [ scipy quantities ];
 
-    propagatedBuildInputs = with self; [ scipy quantities ];
+        propagatedBuildInputs = with self; [ scipy quantities ];
 
     };
 
@@ -520,7 +520,7 @@ in
   };
 
   scikit-learn = callPackage ./scikit-learn {
-	blas = pkgs.openblasCompat;
+    blas = pkgs.openblasCompat;
   };
 
 
