@@ -12,7 +12,7 @@
 pythonPackages.buildPythonPackage rec {
 	name = "bglibpy-${version}";
 	
-	version = "2018.01-${src.rev}";
+	version = "2018.01-${stdenv.lib.substring 0 6 src.rev}";
 
 	src = fetchgitPrivate {
             url = config.bbp_git_ssh + "/sim/BGLibPy";
