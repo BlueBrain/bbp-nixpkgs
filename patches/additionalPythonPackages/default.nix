@@ -306,11 +306,21 @@ in
 
         propagatedBuildInputs = with self; [ scipy  six quantities neo ];
 
-        passthru = {
+    };
     
+    efel = pythonPackages.buildPythonPackage rec {
+        name = "efel-${version}";
+        version = "2.13.1";
+
+        src = pkgs.fetchurl {
+            url = "mirror://pypi/e/efel/${name}.tar.gz";
+            sha256 = "0kwkb3j91f9yrx3c5z0s9ip35s005v8ssbzp1spq160ga1ggknig";
         };
 
-    };
+
+        propagatedBuildInputs = with self; [ scipy neo six ];
+
+    };    
    
     peewee = self.buildPythonPackage rec {
      name = "peewee-${version}";
@@ -340,26 +350,6 @@ in
 
     };
 
-
-
-  # Backport from NixOS 16.09
-  prompt_toolkit = pythonPackages.buildPythonPackage rec {
-    name = "prompt_toolkit-${version}";
-    version = "1.0.9";
-
-    src = pkgs.fetchurl {
-      sha256 = "172r15k9kwdw2lnajvpz1632dd16nqz1kcal1p0lq5ywdarj6rfd";
-      url = "mirror://pypi/p/prompt_toolkit/${name}.tar.gz";
-    };
-  #  checkPhase = ''
-  #    rm prompt_toolkit/win32_types.py
-  #    py.test -k 'not test_pathcompleter_can_expanduser'
-  #  '';
-
-    buildInputs = with self; [ pytest ];
-    propagatedBuildInputs = with self; [ docopt six_1_11 wcwidth pygments ];
-
-  };
 
   cov_core = pythonPackages.buildPythonPackage rec {
     pname = "cov-core";
