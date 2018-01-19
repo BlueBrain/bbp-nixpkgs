@@ -17,7 +17,7 @@ let
 
         buildCommand = ''
             mkdir -p $out/
-            ln -s ${stdenv.cc.cc}/lib $out/lib
+            ln -s ${stdenv.cc.cc.lib}/lib $out/lib
             ln -s ${stdenv.cc.cc}/include $out/include
         '';
 
