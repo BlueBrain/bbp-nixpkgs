@@ -543,6 +543,36 @@ in
     doCheck = false;
   };
 
+  equation = pythonPackages.buildPythonPackage rec {
+    version = "1.2.01";
+    name = "Equation-${version}";
+
+    src = pkgs.fetchurl {
+      url = "https://pypi.python.org/packages/fd/0d/ede829e7c0c457b651de2792cd19a739e4885477f59832da54d2cc7a1982/Equation-${version}.tar.gz";
+      sha256 = "075qaabmxywmkmw48zyv8cff6by4z269g1b4kg8qyx3cgp21v8n8";
+    };
+
+    buildInputs = with pythonPackages; [ unittest2 ];
+
+    propagatedBuildInputs = with pythonPackages; [ numpy scipy ];
+  };
+
+  pynrrd = pythonPackages.buildPythonPackage rec {
+    version = "0.2.2";
+    name = "pynrrd-${version}";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "mhe";
+      repo = "pynrrd";
+      rev = "d9e89b9c736f6df0c434d62cfdf28c13f5c7fa99";
+      sha256 = "1jv53cxzwf85acnzlkwm7h1j1fylrsx8m3gsr5vln3yjl2v2wy5b";
+    };
+
+    buildInputs = with pythonPackages; [ unittest2 ];
+
+    propagatedBuildInputs = with pythonPackages; [ numpy ];
+  };
+
   add-site-dir = stdenv.mkDerivation rec {
     name = "register-site-packages";
     site-packages = pythonPackages.python.sitePackages;
