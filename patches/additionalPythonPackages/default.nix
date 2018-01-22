@@ -131,10 +131,10 @@ in
 
     hpcbench = pythonPackages.buildPythonPackage rec {
       name = "hpcbench-${version}";
-      version = "0.3.5";
+      version = "0.3.6";
       src = pkgs.fetchurl {
        url = "mirror://pypi/h/hpcbench/${name}.tar.gz";
-       sha256 = "1k51ysl7r97sb26jsnl0x5dm4wkpn77a2c23msk77vsq4dh8kv8m";
+       sha256 = "08a683rmv614y9yqs0g8c7qvczl01p9qnpisw12h0kjpnvldam2n";
       };
       # # For development purpose, and add "pkgs.git" dependency
       # src = pkgs.fetchgit {
