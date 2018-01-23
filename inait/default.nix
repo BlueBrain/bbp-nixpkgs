@@ -83,6 +83,7 @@ let
                     ++ set.hpc_circuit
                     ++ set.hpc_simulators
                     ++ set.python_base
+                    ++ set.python2_frameworks
                     ++ set.python3_base
                     ++ set.system_pkgs
                     ++ set.parallel_toolkit
