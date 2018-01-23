@@ -1207,9 +1207,14 @@ let
                pythonPkgs.pandas
                pythonPkgs.pytz
                pythonPkgs.dateutil
-               pythonPkgs.pip
+        
+               # network
                pythonPkgs.pycurl
+               pythonPkgs.urllib3
+
+               # setup and deployment
                pythonPkgs.setuptools
+               pythonPkgs.pip
                pythonPkgs.sh
                pythonPkgs.six
                pythonPkgs.six
