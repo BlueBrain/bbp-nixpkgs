@@ -2,16 +2,15 @@
 , config
 , fetchgitPrivate
 , pythonPackages
-, voxcell
 }:
 
 pythonPackages.buildPythonPackage rec {
-    name = "brainbuilder-${version}";
-    version = "0.5.6";
+    name = "voxcell-${version}";
+    version = "2.3.3";
 
     src = fetchgitPrivate {
-        url = config.bbp_git_ssh + "/nse/brainbuilder";
-        rev = "84f412845da7947643acd5a211a519b8980c7f06";
+        url = config.bbp_git_ssh + "/nse/voxcell";
+        rev = "084f02f90498c061efb4e7002bc5e625af8e3e68";
         sha256 = "0w445ab8lgk1djnf1a4b13m2kxwhvx60py31dlk3rqzmi01bclaa";
     };
 
@@ -20,17 +19,11 @@ pythonPackages.buildPythonPackage rec {
     ];
 
     propagatedBuildInputs = with pythonPackages; [
-        click
         h5py
-        lxml
         numpy
         pandas
-        pyyaml
-        requests
-        six
+        pynrrd
         scipy
-        tqdm
-
-        voxcell
+        six
     ];
 }
