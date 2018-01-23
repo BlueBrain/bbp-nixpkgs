@@ -11,11 +11,12 @@ pythonPackages.buildPythonPackage rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/nse/brainbuilder";
-        rev = "84f412845da7947643acd5a211a519b8980c7f06";
-        sha256 = "0w445ab8lgk1djnf1a4b13m2kxwhvx60py31dlk3rqzmi01bclaa";
+        rev = "47393793ed8cb6aad097df6044f7be20083b6b60";
+        sha256 = "04a9ak6zf1jjlf04xcxvf3vqa78aag2w7gfs63hlik29ymbv88p9";
     };
 
     buildInputs = with pythonPackages; [
+        mock
         nose
     ];
 

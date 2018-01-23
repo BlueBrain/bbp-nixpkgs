@@ -10,8 +10,8 @@ pythonPackages.buildPythonPackage rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/nse/voxcell";
-        rev = "084f02f90498c061efb4e7002bc5e625af8e3e68";
-        sha256 = "0w445ab8lgk1djnf1a4b13m2kxwhvx60py31dlk3rqzmi01bclaa";
+        rev = "b7dff2f38a1101373dbfb9f830004ef9e6e635c7";
+        sha256 = "0zr16pivj0yri9hkjlchaj3b5yka5cfn5sfn94m84hk3kcsv3svx";
     };
 
     buildInputs = with pythonPackages; [
