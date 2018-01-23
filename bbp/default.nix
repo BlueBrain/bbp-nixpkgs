@@ -46,8 +46,8 @@ let
         # define this derivation to NULL if used on BlueGeneQ
         noBGQ = argPkg: (if pkgs.isBlueGene then stdenv else argPkg);
 
-        
-        
+
+
         pkgsWithBGQGCC = if (pkgs.isBlueGene == true) then (pkgs // mergePkgs.bgq-map-gcc47) else pkgs;
         pkgsWithBGQXLC = if (pkgs.isBlueGene == true) then (pkgs // mergePkgs.bgq-map) else pkgs;
 
@@ -314,11 +314,11 @@ let
             bluepy_version = "0.11.2";
         };
 
-	pybinreports = callPackages ./nse/pybinreports {
-	};
+        pybinreports = callPackages ./nse/pybinreports {
+        };
 
-	bglibpy = callPackage ./nse/bglibpy {
-		bluepy = bluepy_latest;
+        bglibpy = callPackage ./nse/bglibpy {
+            bluepy = bluepy_latest;
         };
 
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
@@ -338,22 +338,23 @@ let
         };
 
         brainbuilder = callPackage ./nse/brainbuilder {
-	       	buildPythonPackage = pythonPackages.buildPythonPackage;
-		    numpy = pythonPackages.numpy;
-       };
+        };
 
-        voxcell = brainbuilder.voxcell;
-        brain-builder = brainbuilder.brain-builder;
-
-        workflow-cell-collection = callPackage ./nse/workflow/cell-collection {};
+        voxcell = callPackage ./nse/voxcell {
+        };
 
         nse-allpkgs = noBGQ (pkgs.buildEnv {
             name = "all-modules";
             paths =
                 [
-                    morphsyn bluejittersdk
-                    bluepy_latest bluerepairsdk muk morphscale voxcell
-                    brain-builder workflow-cell-collection
+                    bluejittersdk
+                    bluepy_latest
+                    bluerepairsdk
+                    brainbuilder
+                    morphscale
+                    morphsyn
+                    muk
+                    voxcell
                 ];
         });
 
@@ -484,7 +485,7 @@ let
 
         neuron-nomultisend = neuron.override {
             multiSend = false;
-        }; 
+        };
 
 
 
