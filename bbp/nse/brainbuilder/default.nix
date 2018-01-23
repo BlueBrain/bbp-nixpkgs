@@ -1,4 +1,4 @@
-{ config, fetchgitPrivate, buildPythonPackage, pythonPackages, pynrrd, voxcell, numpy }:
+{ config, fetchgitPrivate, buildPythonPackage, pythonPackages, voxcell, numpy }:
 
 let
   brainbuilder_src = fetchgitPrivate {
