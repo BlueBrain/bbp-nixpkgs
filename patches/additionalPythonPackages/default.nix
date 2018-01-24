@@ -364,48 +364,7 @@ in
     buildInputs = with self; [ coverage ];
   };
 
-
-  # backport from NixOS 16.09
-  backports_shutil_get_terminal_size = pythonPackages.buildPythonPackage rec {
-    name = "backports.shutil_get_terminal_size-${version}";
-    version = "1.0.0";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/b/backports.shutil_get_terminal_size/${name}.tar.gz";
-      sha256 = "713e7a8228ae80341c70586d1cc0a8caa5207346927e23d09dcbcaf18eadec80";
-    };
-
-  };
-
   tensorflow-tensorboard = with self; callPackage ./tensorflow-tensorboard {
-  };
-
-  # backport from NixOS 16.09
-
-  pathlib2 = pythonPackages.buildPythonPackage rec {
-    name = "pathlib2-${version}";
-    version = "2.1.0";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/p/pathlib2/${name}.tar.gz";
-      sha256 = "deb3a960c1d55868dfbcac98432358b92ba89d95029cddd4040db1f27405055c";
-    };
-
-    propagatedBuildInputs = with self; [ six_1_11 ];
-
-  };
-
-
-  # backport from NixOS 16.09
-  simplegeneric = pythonPackages.buildPythonPackage rec {
-    version = "0.8.1";
-    name = "simplegeneric-${version}";
-
-    src = pkgs.fetchurl {
-      url = "https://pypi.python.org/packages/source/s/simplegeneric/${name}.zip";
-      sha256 = "dc972e06094b9af5b855b3df4a646395e43d1c9d0d39ed345b7393560d0b9173";
-    };
-
   };
 
 
