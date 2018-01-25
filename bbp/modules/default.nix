@@ -160,6 +160,16 @@ let
             conflicts = conflicts-modules;
         };
 
+        babelstream = pkgs.envModuleGen rec {
+            name = "babelstream";
+            moduleFilePrefix = "nix/bench";
+            description = pkgs.babelstream.meta.description;
+            packages = [
+                pkgs.babelstream
+            ];
+            conflicts = conflicts-modules;
+        };
+
         stream = pkgs.envModuleGen rec {
             name = "stream";
             moduleFilePrefix = "nix/bench";
@@ -2515,6 +2525,7 @@ let
         benchs = pkgs.buildEnv {
             name = "all-benchs";
             paths = [
+                babelstream
                 hpl
                 ior
                 iperf

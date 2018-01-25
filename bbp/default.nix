@@ -241,6 +241,9 @@ let
             mpi = bbp-mpi;
         };
 
+        babelstream = callPackage ./benchmark/babelstream {
+        };
+
         hpl = callPackage ./benchmark/hpl {
             stdenv = stdenvIntelfSupported;
             mpi = bbp-mpi;
