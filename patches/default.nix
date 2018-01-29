@@ -347,10 +347,6 @@ let
 
         cython = pythonPackages.cython;
 
-
-        rocksdb = callPackage ./rocksdb {
-        };
-
         ## machine learning tools
         #tensorflow
         caffe2 = callPackage ./caffe2 {
