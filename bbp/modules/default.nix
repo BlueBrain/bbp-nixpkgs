@@ -2434,6 +2434,8 @@ let
                 ospray
                 ospray-devel
                 deflect
+                brayns
+                brayns-devel
             ];
 
             hpc_base = [
