@@ -10,7 +10,7 @@
 
 stdenv.mkDerivation rec {
   name = "placement-algorithm-${version}";
-  version = "0.1.0";
+  version = "2018.01-${stdenv.lib.substring 0 6 src.rev}";
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/placementAlgorithm";
