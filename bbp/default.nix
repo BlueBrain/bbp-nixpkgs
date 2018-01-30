@@ -244,6 +244,11 @@ let
         babelstream = callPackage ./benchmark/babelstream {
         };
 
+        nvidia-utilities = callPackage ./benchmark/nvidia-utilities {
+            cudatoolkit = cudatoolkit8;
+            stdenv = overrideCC stdenv gcc5;
+        };
+
         hpl = callPackage ./benchmark/hpl {
             stdenv = stdenvIntelfSupported;
             mpi = bbp-mpi;

@@ -190,6 +190,15 @@ let
             conflicts = conflicts-modules;
         };
 
+        nvidia-utilities = pkgs.envModuleGen rec {
+            name = "nvidia-utilities";
+	    moduleFilePrefix = "nix/bench";
+	    description = pkgs.nvidia-utilities.description;
+	    packages = [
+	        pkgs.nvidia-utilities
+	    ]
+	};
+
         hpctools = pkgs.envModuleGen rec {
             name = "hpctools";
             moduleFilePrefix = "nix/hpc";
@@ -2530,6 +2539,7 @@ let
                 ior
                 iperf
                 mdtest
+                nvidia-utilities
                 perftest
                 shoc
                 stream
