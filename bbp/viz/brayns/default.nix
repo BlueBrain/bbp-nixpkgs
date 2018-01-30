@@ -12,8 +12,6 @@
 , glew
 , vmmlib 
 , lunchbox
-, zerobuf ? null
-, lexis ? null
 , deflect ? null
 , rockets ? null
 , brion
@@ -24,20 +22,20 @@
 
 
 
-assert restInterface -> (rockets != null && zerobuf != null && lexis != null );
+assert restInterface -> (rockets != null);
 
 stdenv.mkDerivation rec {
 	name = "brayns-${version}";
-	version = "0.3.0-201712";
+	version = "0.4.0-201801";
 
 	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb
 					glew vmmlib lunchbox brion hdf5-cpp imagemagick deflect ]
-				  ++ (stdenv.lib.optional) (restInterface) [ zerobuf rockets lexis zerobuf.python  ];
+				  ++ (stdenv.lib.optional) (restInterface) [ rockets ];
 
 	src = fetchgit {
 		url  = "https://github.com/BlueBrain/Brayns.git";
-		rev = "c68b2f8f49164bc1862d20777bf557991d2291ae";
-		sha256 = "1xffnhbnhjg4jj4va7b22mxpygka2f4cvc6sf86ycssd8xrf447z";
+		rev = "ffc39492df08445b0969c03d1c8008b6720bbc2e";
+		sha256 = "18j7nnycs2ad8bz9l1svs26060mjij5xpn8yrg1gcrqdzgd1n1c5";
 	};
 
 
