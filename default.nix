@@ -16,26 +16,27 @@ let
 
 
     ## system
-    configSystem =
+    configAll =
     let
         pathExists = name:
             builtins ? pathExists && builtins.pathExists (toPath name);
 
-        configFile = getEnv "NIXPKGS_CONFIG";
+        envConfigFile = getEnv "NIXPKGS_CONFIG";
         homeDir = getEnv "HOME";
-        configFile2 = homeDir + "/.nixpkgs/config.nix";
+        homeConfigFile = homeDir + "/.nixpkgs/config.nix";
+        systemConfigFile = "/nix/var/config/config.nix";
 
-        configExpr =
-            if configFile != "" && pathExists configFile then import (toPath configFile)
-            else if homeDir != "" && pathExists configFile2 then import (toPath configFile2)
-            else {};
-
+        envConfig = if envConfigFile != "" && pathExists envConfigFile then import (toPath envConfigFile) else {};
+        homeConfig = if homeDir != "" && pathExists homeConfigFile then import (toPath homeConfigFile) else {};
+        systemConfig = if pathExists systemConfigFile then import (toPath systemConfigFile) else {};
+        
+        configExpr = systemConfig // homeConfig // envConfig;
 
     in
         configExpr // { allowUnfree = true; };
 
     ## import all config: blue gene override and others 
-    all-config = (import ./bluegene/config.nix) // generic-config // configSystem // config ;
+    all-config = (import ./bluegene/config.nix) // generic-config // configAll // config ;
 
     ## all standard upstream packages
     std-pkgs = args: (if builtins.pathExists ./base/default.nix
