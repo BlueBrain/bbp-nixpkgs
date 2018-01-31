@@ -373,15 +373,15 @@ let
             pythonPackages = patches-pkgs.python36Packages;
         };
 
-        tensorflow-gpu = callPackage ./tensorflow {
+        tensorflow-gpu = if (nvidia-drivers != null) then callPackage ./tensorflow {
             pythonPackages = patches-pkgs.python27Packages;
             cudaSupport = true;
             cudnn = cudnn;
-        };
+        } else null;
 
-        tensorflow-gpu-py3 = tensorflow-gpu.override {
+        tensorflow-gpu-py3 = if (nvidia-drivers != null) then tensorflow-gpu.override {
             pythonPackages = patches-pkgs.python34Packages;
-        };
+        } else null;
 
         cctz = callPackage ./cctz {
         };
