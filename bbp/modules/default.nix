@@ -2091,6 +2091,7 @@ let
             isLibrary = true;
             packages = [
                             pkgs.cudatoolkit8
+                            pkgs.cudnn
                        ];
             conflicts = [  cuda8 ];
             dependencies = [ opengl-driver gcc ];
@@ -2312,8 +2313,10 @@ let
                 caffe2
                 scikit-learn
                 tensorflow
-#                tensorflow-gpu
+                tensorflow-gpu
             ];
+    
+            
 
             python_base = [
                 python27-light
@@ -2354,6 +2357,7 @@ let
             system_pkgs = [
                 nss-wrapper
                 opengl-driver
+                cuda8
             ];
 
             parallel_toolkit = [
@@ -2598,7 +2602,6 @@ let
             papi
             # hpctoolkit
             dev-env-clang dev-env-icc
-            cuda8
 
             #gmsh
             blender
