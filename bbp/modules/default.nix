@@ -2313,7 +2313,7 @@ let
                 caffe2
                 scikit-learn
                 tensorflow
-                tensorflow-gpu
+#                tensorflow-gpu
             ];
     
             
