@@ -43,19 +43,14 @@ let
             gtk = pkgs.gtk;
         };
 
-        nvidia-x11-36757 = callPackage ./nvidia-driver/nvidia-viz-default.nix {
+        nvidia-x11-default = callPackage ./nvidia-driver/nvidia-viz-default.nix {
             libsOnly = true;
             kernel = null;
         };
 
-        nvidia-x11-38498 = callPackage ./nvidia-driver/nvidia-viz-default.nix {
-            libsOnly = true;
-            kernel = null;
-            driverVersion = "384.98";
-        };
 
         # set it up to default viz cluster version 
-        nvidia-drivers = nvidia-x11-36757;
+        nvidia-drivers = nvidia-x11-default;
         
 
         ## intel

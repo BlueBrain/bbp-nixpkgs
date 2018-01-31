@@ -4,7 +4,7 @@
   # nvidia-settings).  Used to support 32-bit binaries on 64-bit
   # Linux.
 , libsOnly ? false
-, driverVersion ? "367.57"
+, config
 }:
 
 with stdenv.lib;
@@ -12,6 +12,12 @@ with stdenv.lib;
 assert (!libsOnly) -> kernel != null;
 
 let
+
+  #
+  # take the nvidia driver version from system config file
+  # the version should be in the variable config.nvidia.driverVersion
+  #
+  driverVersion = if (config ? nvidia && config.nvidia ? driverVersion) then (config.nvidia.driverVersion) else null;
 
   driverInfo = if (driverVersion == "367.57") then
                 { 
@@ -24,13 +30,23 @@ let
                    sha256 = "1xc04whl13krvvr85sm8fchphfrz00w4cw3dcz5sn0ffav3hk68n";
         
                }
-               else throw "nvidia-x11 does not support platform ${stdenv.system}";
+               else if (driverVersion == "384.111") then
+               {
+                   versionNumber = "384.111";
+                   sha256 = "1mzajvsjggljhkfrika5qzaqcb5q0i1pddmikbz3galpqs9wkf2n";
+        
+               } 
+               else throw "nvidia-x11 version ${driverVersion} is not supported for ${stdenv.system}";
 
   # Policy: use the highest stable version as the default (on our master).
   inherit (stdenv.lib) makeLibraryPath;
 
 in
 
+if driverVersion == null
+then 
+    null
+else
 stdenv.mkDerivation rec {
 
   versionNumber = driverInfo.versionNumber;
