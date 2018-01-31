@@ -22,6 +22,7 @@ pythonPackages.buildPythonPackage rec {
 
     propagatedBuildInputs = with pythonPackages; [
         click
+        future
         h5py
         lxml
         numpy
