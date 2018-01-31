@@ -1387,6 +1387,7 @@ let
                             pkgs.automake
                             pkgs.autoconf
                             pkgs.libtool
+                            pkgs.libtool.lib
                        ];
             conflicts = [ "autotools" ];
         };
