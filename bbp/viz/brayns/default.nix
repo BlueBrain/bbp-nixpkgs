@@ -46,6 +46,8 @@ stdenv.mkDerivation rec {
 			"-DOSPRAY_ROOT=${ospray}"
 		    ];
 
+	# verbose mode for debugging
+	makeFlags = [ "VERBOSE=1" ];
 
   enableParallelBuilding = true;
 	
