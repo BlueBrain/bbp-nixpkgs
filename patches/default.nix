@@ -20,13 +20,14 @@ let
 
     bbp-virtualenv = callPackage ./bbp-virtualenv {};
 
-	# force usage of boost 159
+	# force usage of boost 163
+        # it contains both python numeric and numpy APIs
 	# until problems with rtneuron and FLATIndexer are solved
 	# TODO: migrate these two componentns to boost 165 
-	boost = boost159;
+	boost = boost163;
 
         # Boost with Python 3 support
-        boost-py3 = (boost159.overrideDerivation ( oldAttr: {
+        boost-py3 = (boost163.overrideDerivation ( oldAttr: {
             name = oldAttr.name + "-py3";
         })).override {
             python = python3;
