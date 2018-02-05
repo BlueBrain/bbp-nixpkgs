@@ -2211,7 +2211,8 @@ let
             ];
         };
 
-        tensorflow-gpu = let tf = pkgs.tensorflow-gpu; in pkgs.envModuleGen rec {
+        # Enable tensorflow gpu only if we have a proper nvidia GPU
+        tensorflow-gpu = if (pkgs.nvidia-drivers != null) then (let tf = pkgs.tensorflow-gpu; in pkgs.envModuleGen rec {
             name = "tensorflow-gpu";
             moduleFilePrefix = "nix/py27";
             setRoot = "TENSORFLOW";
@@ -2224,7 +2225,7 @@ let
             conflicts = [
                 tensorflow
             ];
-        };
+        }) else null;
 
         scikit-learn = pkgs.envModuleGen rec {
                 name = "scikit-learn";
