@@ -20,7 +20,7 @@ zlib }:
 
 stdenv.mkDerivation rec {
   name = "flatindexer-${version}";
-  version = "1.8.4-201711";
+  version = "1.8.5-201802";
   meta = {
     description = "facilitate SIMD programming";
     homepage = "https://bbpcode.epfl.ch/code/#/admin/projects/building/FLATIndex";
@@ -35,8 +35,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/FLATIndex";
-    rev = "849bb3f56bad2535fdc93a85ed9c229e5e4094e8";
-    sha256 = "137cjp7k2mgk40nxfmdqbj9amzbv5xvvnzvr00gxncda9rdi4rr7";
+    rev = "97c58776ca799eaae943db990c7af086e370aca7";
+    sha256 = "0xa67vj3i3mh7g4x62ip8h1a65miqp1caannf3dfmx5c0icavsmx";
   };
 
   buildInputs = [
