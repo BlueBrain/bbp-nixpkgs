@@ -16,7 +16,7 @@ let
 	  sha256 = "0mhcr7r1lclmcxkih7xc30dafr5gyafp6aij53a9jlk9v0b57bwg";
 	};
 	
-	jarvis_version = "0.6";
+	jarvis_version = "0.6-dev";
 
 	pyjarvis = pythonPackages.buildPythonPackage rec {
 	  name = "pyjarvis-${version}";
@@ -35,6 +35,11 @@ let
 	  src = jarvis_src;
 		
 	  buildInputs = [ cmake boost pkgconfig zeromq cppzmq ];
+
+	  postInstall = ''
+		mkdir -p $out/share/jarvis/config
+		cp ../config/jarvis_inait.toml $out/share/jarvis/config
+	  '';
 	
 	};
 	
