@@ -262,7 +262,6 @@ let
         };
 
         rtneuron = callPackage ./viz/rtneuron {
-		boost = boost159;
         };
 
         embree = callPackage ./viz/embree {
