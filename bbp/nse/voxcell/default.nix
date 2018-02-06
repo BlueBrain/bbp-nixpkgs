@@ -5,13 +5,13 @@
 }:
 
 pythonPackages.buildPythonPackage rec {
-    name = "voxcell-${version}";
+    pname = "voxcell";
     version = "2.3.3";
+    name = "${pname}-${version}";
 
-    src = fetchgitPrivate {
-        url = config.bbp_git_ssh + "/nse/voxcell";
-        rev = "b7dff2f38a1101373dbfb9f830004ef9e6e635c7";
-        sha256 = "0zr16pivj0yri9hkjlchaj3b5yka5cfn5sfn94m84hk3kcsv3svx";
+    src = pythonPackages.fetchBBPDevpi {
+      inherit pname version;
+      sha256 = "018bc23dcceb102b91c4f40ec35ef22de0e6dd3f41818bfd7ac5870eb8eecb24";
     };
 
     buildInputs = with pythonPackages; [
