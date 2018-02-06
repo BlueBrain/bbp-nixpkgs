@@ -10,27 +10,26 @@
 
 
 pythonPackages.buildPythonPackage rec {
-	name = "bglibpy-${version}";
-	
-	version = "2018.01-${stdenv.lib.substring 0 6 src.rev}";
+    pname = "bglibpy";
+    version = "3.2.33";
+    name = "${pname}-${version}";
 
-	src = fetchgitPrivate {
-            url = config.bbp_git_ssh + "/sim/BGLibPy";
-            rev = "4658871de80563463dc946fed57013e0a72eb137";
-            sha256 = "0w445ab8lgk1djnf1a4b13m2kxwhvx60py31dlk3rqzmi01bcl7m";
-        };
+    src = pythonPackages.fetchBBPDevpi {
+        inherit pname version;
+        sha256 = "9c6b8a876df080bf73ba73999d85a89349c487c47423c4e89847cd648c758167";
+    };
 
-	patches = [ ./patch_brain.patch ];
+    patches = [ ./patch_brain.patch ];
 
-	propagatedBuildInputs = [
-	    pythonPackages.numpy
-	    bluepy
-	    brion
-	    pybinreports
-	    neuron
-	];
+    propagatedBuildInputs = [
+        pythonPackages.numpy
+        bluepy
+        brion
+        pybinreports
+        neuron
+    ];
 
-	doCheck =false;
+    doCheck =false;
 }
 
 
