@@ -10,6 +10,7 @@
 , libXmu
 , libXi
 , glew
+, mesa
 , vmmlib 
 , lunchbox
 , deflect ? null
@@ -29,8 +30,10 @@ stdenv.mkDerivation rec {
 	version = "0.4.0-201801";
 
 	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb
-					glew vmmlib lunchbox brion hdf5-cpp imagemagick deflect ]
+					glew mesa vmmlib lunchbox brion hdf5-cpp imagemagick deflect ]
 				  ++ (stdenv.lib.optional) (restInterface) [ rockets ];
+
+	patches = [ ./001-BRAYNS-miss-opengllink.patch ];
 
 	src = fetchgit {
 		url  = "https://github.com/BlueBrain/Brayns.git";
