@@ -56,6 +56,16 @@ let
                 description = "Jarvis python bindings module";
                 packages = with pkgs.pythonPackages; ( getPyModRec [ pkgs.pyjarvis ] );
             };
+
+            jarvis = pkgs.envModuleGen rec {
+                name = "jarvis";
+                moduleFilePrefix = "nix/infra";
+                isLibrary = true;
+                description = "Jarvis server module";
+                packages = [ pkgs.jarvis.server ];
+            };
+            
+ 
             
            in8metrics = pkgs.envModuleGen rec {
                  name = "in8metrics";
@@ -79,7 +89,7 @@ let
                     ++ set.compilers
                     ++ set.dev_toolkit_pkgs
                     ++ set.nse_base
-                        ++ set.hpc_base
+                    ++ set.hpc_base
                     ++ set.hpc_circuit
                     ++ set.hpc_simulators
                     ++ set.python_base
@@ -90,6 +100,7 @@ let
 		    ++ set.editors
                 ++ [ 
                 neuroconnector 
+		jarvis
                 pyjarvis
                 in8metrics
                 dev-env-gcc
