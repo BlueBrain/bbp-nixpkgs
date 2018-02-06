@@ -492,6 +492,10 @@ in
   scikit-learn = callPackage ./scikit-learn {
     blas = pkgs.openblasCompat;
   };
+  
+  scikit-optimize = callPackage ./scikit-optimize {
+	inherit scikit-learn;
+  };  
 
 
   pyzmq4 = (pythonPackages.pyzmq.overrideDerivation ( oldAttr: {
