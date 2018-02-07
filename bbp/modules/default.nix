@@ -2451,6 +2451,8 @@ let
                 morphsyn
                 muk
                 pybinreports
+		bluepy_0_6_1
+		bluepy_0_9_6
             ];
 
             viz = [
