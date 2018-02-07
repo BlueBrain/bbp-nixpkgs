@@ -1,36 +1,32 @@
 {
   pythonPackages,
-  voxcell
+  bluepy
 }:
 
 pythonPackages.buildPythonPackage rec {
-    pname = "brainbuilder";
-    version = "0.5.7";
+    pname = "connectome-tools";
+    version = "0.2.4";
     name = "${pname}-${version}";
 
     src = pythonPackages.fetchBBPDevpi {
         inherit pname version;
-        sha256 = "e74e4d28558eb00f322d94799a6203f3733d9a16c36190eceeb19ddf7fc79b88";
+        sha256 = "11314213e7903e057afdb433cdb8bd8eb83b3c9167ad3186893037dac2f02b9b";
     };
 
     buildInputs = with pythonPackages; [
-        mock
         nose
     ];
 
     propagatedBuildInputs = with pythonPackages; [
         click
-        future
-        h5py
+        equation
         lxml
         numpy
         pandas
-        pyyaml
-        requests
-        six
-        scipy
-        tqdm
-
-        voxcell
+    ] ++ [
+        bluepy
     ];
+
+    # TODO: enable tests
+    doCheck = false;
 }
