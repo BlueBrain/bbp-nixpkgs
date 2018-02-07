@@ -20,13 +20,8 @@ let
 
     bbp-virtualenv = callPackage ./bbp-virtualenv {};
 
-	# force usage of boost 159
-	# until problems with rtneuron and FLATIndexer are solved
-	# TODO: migrate these two componentns to boost 165 
-	boost = boost159;
-
         # Boost with Python 3 support
-        boost-py3 = (boost159.overrideDerivation ( oldAttr: {
+        boost-py3 = (boost.overrideDerivation ( oldAttr: {
             name = oldAttr.name + "-py3";
         })).override {
             python = python3;
@@ -347,10 +342,6 @@ let
 
         cython = pythonPackages.cython;
 
-
-        rocksdb = callPackage ./rocksdb {
-        };
-
         ## machine learning tools
         #tensorflow
         caffe2 = callPackage ./caffe2 {
@@ -377,15 +368,15 @@ let
             pythonPackages = patches-pkgs.python36Packages;
         };
 
-        tensorflow-gpu = callPackage ./tensorflow {
+        tensorflow-gpu = if (nvidia-drivers != null) then callPackage ./tensorflow {
             pythonPackages = patches-pkgs.python27Packages;
             cudaSupport = true;
             cudnn = cudnn;
-        };
+        } else null;
 
-        tensorflow-gpu-py3 = tensorflow-gpu.override {
+        tensorflow-gpu-py3 = if (nvidia-drivers != null) then tensorflow-gpu.override {
             pythonPackages = patches-pkgs.python34Packages;
-        };
+        } else null;
 
         cctz = callPackage ./cctz {
         };

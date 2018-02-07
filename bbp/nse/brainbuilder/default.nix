@@ -6,13 +6,13 @@
 }:
 
 pythonPackages.buildPythonPackage rec {
-    name = "brainbuilder-${version}";
-    version = "0.5.6";
+    pname = "brainbuilder";
+    version = "0.5.7";
+    name = "${pname}-${version}";
 
-    src = fetchgitPrivate {
-        url = config.bbp_git_ssh + "/nse/brainbuilder";
-        rev = "47393793ed8cb6aad097df6044f7be20083b6b60";
-        sha256 = "04a9ak6zf1jjlf04xcxvf3vqa78aag2w7gfs63hlik29ymbv88p9";
+    src = pythonPackages.fetchBBPDevpi {
+        inherit pname version;
+        sha256 = "e74e4d28558eb00f322d94799a6203f3733d9a16c36190eceeb19ddf7fc79b88";
     };
 
     buildInputs = with pythonPackages; [
@@ -22,6 +22,7 @@ pythonPackages.buildPythonPackage rec {
 
     propagatedBuildInputs = with pythonPackages; [
         click
+        future
         h5py
         lxml
         numpy

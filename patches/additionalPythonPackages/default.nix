@@ -49,6 +49,12 @@ in
 
                             in  allPythonRecDep;
 
+  # function to fetch source tarball from BBP devpi server, given package name / version / sha256
+  fetchBBPDevpi = { pname, version, sha256 }:
+    let
+      url = "https://bbpteam.epfl.ch/repository/devpi/bbprelman/release/+f/${builtins.substring 0 3 sha256}/${builtins.substring 3 13 sha256}/${pname}-${version}.tar.gz";
+    in pkgs.fetchurl { inherit url sha256; };
+
   pythonAtLeast = stdenv.lib.versionAtLeast self.python.pythonVersion;
 
   callPackage = pkgs.newScope self;
@@ -288,7 +294,7 @@ in
         doCheck = false;
 
         passthru = {
-        
+
         };
 
     };
@@ -307,7 +313,7 @@ in
         propagatedBuildInputs = with self; [ scipy  six quantities neo ];
 
     };
-    
+
     efel = pythonPackages.buildPythonPackage rec {
         name = "efel-${version}";
         version = "2.13.1";
@@ -320,7 +326,7 @@ in
 
         propagatedBuildInputs = with self; [ scipy neo six ];
 
-    };    
+    };
 
     neuronpy = pythonPackages.buildPythonPackage rec {
         name = "neuronpy-${version}";
@@ -334,9 +340,9 @@ in
 
         propagatedBuildInputs = with self; [ scipy neo six ];
 
-    };    
- 
-   
+    };
+
+
     peewee = self.buildPythonPackage rec {
      name = "peewee-${version}";
      version = "2.10.2";
@@ -486,13 +492,17 @@ in
   scikit-learn = callPackage ./scikit-learn {
     blas = pkgs.openblasCompat;
   };
+  
+  scikit-optimize = callPackage ./scikit-optimize {
+	inherit scikit-learn;
+  };  
 
 
   pyzmq4 = (pythonPackages.pyzmq.overrideDerivation ( oldAttr: {
         buildInputs =  ( stdenv.lib.remove pkgs.zeromq3 oldAttr.buildInputs ) ++  [ pkgs.zeromq4 pythonPackages.pytest pythonPackages.tornado ];
- 
+
         propagatedBuildInputs =  ( stdenv.lib.remove pkgs.zeromq3 oldAttr.propagatedBuildInputs ) ++ [ pkgs.zeromq4 pythonPackages.pytest pythonPackages.tornado ];
- 
+
   }));
 
   jsonpath_ng = pythonPackages.buildPythonPackage rec {
@@ -518,33 +528,48 @@ in
   };
 
   equation = pythonPackages.buildPythonPackage rec {
+    pname = "Equation";
     version = "1.2.01";
-    name = "Equation-${version}";
+    name = "${pname}-${version}";
 
-    src = pkgs.fetchurl {
-      url = "https://pypi.python.org/packages/fd/0d/ede829e7c0c457b651de2792cd19a739e4885477f59832da54d2cc7a1982/Equation-${version}.tar.gz";
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
       sha256 = "075qaabmxywmkmw48zyv8cff6by4z269g1b4kg8qyx3cgp21v8n8";
     };
-
-    buildInputs = with pythonPackages; [ unittest2 ];
 
     propagatedBuildInputs = with pythonPackages; [ numpy scipy ];
   };
 
   pynrrd = pythonPackages.buildPythonPackage rec {
-    version = "0.2.2";
-    name = "pynrrd-${version}";
+    pname = "pynrrd";
+    version = "0.2.4";
+    name = "${pname}-${version}";
 
-    src = pkgs.fetchFromGitHub {
-      owner = "mhe";
-      repo = "pynrrd";
-      rev = "d9e89b9c736f6df0c434d62cfdf28c13f5c7fa99";
-      sha256 = "1jv53cxzwf85acnzlkwm7h1j1fylrsx8m3gsr5vln3yjl2v2wy5b";
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "1pkn5gxf037009wlndw08h3l45hn84ysha5c00m0a9hkz39s657i";
     };
 
-    buildInputs = with pythonPackages; [ unittest2 ];
-
     propagatedBuildInputs = with pythonPackages; [ numpy ];
+
+    # TODO: enable tests
+    doCheck = false;
+  };
+
+  luigi = pythonPackages.buildPythonPackage rec {
+    pname = "luigi";
+    version = "2.7.2";
+    name = "${pname}-${version}";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "02z0cn1zwxnady47g7kxp3q8v69v0v3ayqaam76f4jhg22wd475p";
+    };
+
+    propagatedBuildInputs = with pythonPackages; [ pythondaemon tornado ];
+
+    # TODO: enable tests
+    doCheck = false;
   };
 
   add-site-dir = stdenv.mkDerivation rec {
