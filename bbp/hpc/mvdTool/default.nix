@@ -64,16 +64,18 @@ stdenv.mkDerivation rec {
   '';
 
   docCss = ../../common/vizDoc/github-pandoc.css;
-  postInstall = (stdenv.lib.optional) (pandoc != null) [''
+  postInstall = [ 
+	"mkdir -p $doc/share"
+    ] ++ ((stdenv.lib.optional) (pandoc != null) [''
     mkdir -p $out/share/doc/morpho-mesher/html
     ${pandoc}/bin/pandoc -s -S --self-contained \
       -c ${docCss} ${src}/README.md \
       -o $out/share/doc/morpho-mesher/html/index.html
-  '' ];
+  '' ]);
 
   passthru = {
     pythonModule = pythonPackages.python;
   };
-  outputs = [ "out"  ] ++ (stdenv.lib.optional) (pandoc != null) [ "doc" ];
+  outputs = [ "out" "doc" ];
 
 }
