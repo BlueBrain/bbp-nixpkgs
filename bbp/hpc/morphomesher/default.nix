@@ -55,11 +55,12 @@ stdenv.mkDerivation rec {
   '';
 
   docCss = ../../common/vizDoc/github-pandoc.css;
-  postInstall = ''
+  postInstall = if (pandoc != null) then ''
     mkdir -p $out/share/doc/reportinglib/html
     ${pandoc}/bin/pandoc -s -S --self-contained \
       -c ${docCss} ${src}/README.md \
       -o $out/share/doc/reportinglib/html/index.html
-  '';
+  '' else '''';
+
   outputs = [ "out" "doc" ];
 }
