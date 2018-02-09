@@ -1,7 +1,5 @@
-{ stdenv
-, config
-, fetchgitPrivate
-, pythonPackages
+{ 
+  pythonPackages
 }:
 
 pythonPackages.buildPythonPackage rec {

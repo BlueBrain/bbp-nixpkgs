@@ -88,7 +88,6 @@ let
                     ++ set.dev_viz
                     ++ set.compilers
                     ++ set.dev_toolkit_pkgs
-                    ++ set.nse_base
                     ++ set.hpc_base
                     ++ set.hpc_circuit
                     ++ set.hpc_simulators
@@ -99,6 +98,11 @@ let
                     ++ set.parallel_toolkit
 		    ++ set.editors
                 ++ [ 
+		bluepy
+		bglibpy
+		pybinreports
+		neurom
+		 ] ++ [ 
                 neuroconnector 
 		jarvis
                 pyjarvis

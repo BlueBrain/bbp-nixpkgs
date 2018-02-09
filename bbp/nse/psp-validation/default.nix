@@ -1,36 +1,34 @@
 {
   pythonPackages,
-  voxcell
+  bglibpy,
+  bluepy
 }:
 
+
 pythonPackages.buildPythonPackage rec {
-    pname = "brainbuilder";
-    version = "0.5.7";
+    pname = "psp-validation";
+    version = "0.1.3";
     name = "${pname}-${version}";
 
     src = pythonPackages.fetchBBPDevpi {
         inherit pname version;
-        sha256 = "e74e4d28558eb00f322d94799a6203f3733d9a16c36190eceeb19ddf7fc79b88";
+        sha256 = "e5531510c6ab9fe7ac7e4b0dd59393a1235fca0ba8ef3482ff6c923ea786f18f";
     };
 
     buildInputs = with pythonPackages; [
-        mock
         nose
     ];
 
     propagatedBuildInputs = with pythonPackages; [
         click
-        future
         h5py
-        lxml
         numpy
-        pandas
-        pyyaml
-        requests
-        six
-        scipy
         tqdm
-
-        voxcell
+    ] ++ [
+        bglibpy
+        bluepy
     ];
+
+    # TODO: enable tests
+    doCheck = false;
 }
