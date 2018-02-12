@@ -1,4 +1,6 @@
-{ 
+{
+  config,
+  fetchgitPrivate,
   pythonPackages
 }:
 
@@ -7,9 +9,10 @@ pythonPackages.buildPythonPackage rec {
     version = "2.3.3";
     name = "${pname}-${version}";
 
-    src = pythonPackages.fetchBBPDevpi {
-      inherit pname version;
-      sha256 = "018bc23dcceb102b91c4f40ec35ef22de0e6dd3f41818bfd7ac5870eb8eecb24";
+    src = fetchgitPrivate {
+        url = config.bbp_git_ssh + "/nse/voxcell";
+        rev = "084f02f90498c061efb4e7002bc5e625af8e3e68";
+        sha256 = "1d3cln56764nxq7rlzng0vcfrkjg25aishqq1s80fpbg2idajid4";
     };
 
     buildInputs = with pythonPackages; [
