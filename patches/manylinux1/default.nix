@@ -4,6 +4,7 @@
 , xorg
 , glib
 , libxml2
+, zlib
 , buildEnv
 }:
 
@@ -36,10 +37,13 @@ let
                 ] 
 		  # ncurses
 		  ++ (ncurses.all)
-		  # gthread so
+		  # gthread2 requirement
 		  ++ (glib.all)
-		  # libxml so
-		  ++ (libxml2.all) ;
+		  # libxml2 requirement
+		  ++ (libxml2.all) 
+          ## zlib is not a requirement for manylinux
+          ## but still many python wheels takes the freedom to depend on it ...
+          ++ (zlib.all) ;
     };
     
     patch_wheels = stdenv.mkDerivation rec {
