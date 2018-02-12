@@ -339,14 +339,12 @@ let
         };
 
         connectome-tools = callPackage ./nse/connectome-tools {
-            bluepy = bluepy_latest;
         };
 
         placement-algorithm = callPackage ./nse/placement-algorithm {
         };
 
         psp-validation = callPackage ./nse/psp-validation {
-            bluepy = bluepy_latest;
         };
 
         voxcell = callPackage ./nse/voxcell {
