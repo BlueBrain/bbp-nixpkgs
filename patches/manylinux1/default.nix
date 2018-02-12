@@ -29,16 +29,17 @@ let
       
         paths = [ 
                     stdcpp_path
-                    ncurses
-                    # glib2.0 gobject gthread
-                    glib
                     # X11
                     xorg.libXrender
                     xorg.libX11
                     xorg.libXext
-                    # extension
-                    libxml2 
-                ];
+                ] 
+		  # ncurses
+		  ++ (ncurses.all)
+		  # gthread so
+		  ++ (glib.all)
+		  # libxml so
+		  ++ (libxml2.all) ;
     };
     
     patch_wheels = stdenv.mkDerivation rec {
