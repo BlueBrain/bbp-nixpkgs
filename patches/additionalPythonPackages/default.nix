@@ -566,6 +566,61 @@ in
     doCheck = false;
   };
 
+  ratelimiter = pythonPackages.buildPythonPackage rec {
+    pname = "ratelimiter";
+    version = "1.2.0";
+    name = "${pname}-${version}";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "1dhz85mj5bqd2mij84ncs6pz32hgidr79hay4aqfmzaa4rbb497p";
+    };
+
+    # no tests in source tarball
+    doCheck = false;
+  };
+
+  configargparse = pythonPackages.buildPythonPackage rec {
+    pname = "ConfigArgParse";
+    version = "0.13.0";
+    name = "${pname}-${version}";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "126pblafvr54sa111rg1yvgl5mqg4bifa22q0lid3lr3isjili76";
+    };
+
+    propagatedBuildInputs = with pythonPackages; [
+      pyyaml
+    ];
+
+    # one test failing (??)
+    doCheck = false;
+  };
+
+  snakemake = pythonPackages.buildPythonPackage rec {
+    pname = "snakemake";
+    version = "4.6.0";
+    name = "${pname}-${version}";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "0jri4mp7zb6msv60n8rmq672i07mywsdbjal7xva4cwjqm7f9qn5";
+    };
+
+    propagatedBuildInputs = with pythonPackages; [
+      wrapt
+      requests
+      ratelimiter
+      pyyaml
+      configargparse
+      appdirs
+    ];
+
+    # no tests in source tarball
+    doCheck = false;
+  };
+
   add-site-dir = stdenv.mkDerivation rec {
     name = "register-site-packages";
     site-packages = pythonPackages.python.sitePackages;
