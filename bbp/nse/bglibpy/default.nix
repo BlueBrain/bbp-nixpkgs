@@ -3,7 +3,6 @@
 , pythonPackages
 , bluepy
 , brion
-, pybinreports
 , neuron
 }:
 
@@ -20,7 +19,7 @@ pythonPackages.buildPythonPackage rec {
     };
 
     patches = [
-      ./patch_brain.patch
+      ./patch_setup.patch
       ./patch_version.patch
     ];
 
@@ -28,7 +27,6 @@ pythonPackages.buildPythonPackage rec {
         pythonPackages.numpy
         bluepy
         brion
-        pybinreports
         neuron
     ];
 
