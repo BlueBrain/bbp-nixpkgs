@@ -305,14 +305,14 @@ let
             bbpsdk = bbpsdk-legacy;
         };
 
-        bluepy = callPackage ./nse/bluepy {
+        bluepy_0_6_1 = callPackage ./nse/bluepy {
         };
 
         bluepy_0_9_6 = callPackage ./nse/bluepy {
             bluepy_version = "0.9.6";
         };
 
-        bluepy_latest = callPackage ./nse/bluepy {
+        bluepy = callPackage ./nse/bluepy {
             bluepy_version = "0.11.2";
         };
 
@@ -320,7 +320,6 @@ let
         };
 
         bglibpy = callPackage ./nse/bglibpy {
-            bluepy = bluepy_latest;
         };
 
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
@@ -340,14 +339,12 @@ let
         };
 
         connectome-tools = callPackage ./nse/connectome-tools {
-            bluepy = bluepy_latest;
         };
 
         placement-algorithm = callPackage ./nse/placement-algorithm {
         };
 
         psp-validation = callPackage ./nse/psp-validation {
-            bluepy = bluepy_latest;
         };
 
         voxcell = callPackage ./nse/voxcell {
@@ -358,7 +355,7 @@ let
             paths =
                 [
                     bluejittersdk
-                    bluepy_latest
+                    bluepy
                     bluerepairsdk
                     brainbuilder
                     morphscale

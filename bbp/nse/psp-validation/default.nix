@@ -1,4 +1,6 @@
 {
+  config,
+  fetchgitPrivate,
   pythonPackages,
   bglibpy,
   bluepy
@@ -10,9 +12,10 @@ pythonPackages.buildPythonPackage rec {
     version = "0.1.3";
     name = "${pname}-${version}";
 
-    src = pythonPackages.fetchBBPDevpi {
-        inherit pname version;
-        sha256 = "e5531510c6ab9fe7ac7e4b0dd59393a1235fca0ba8ef3482ff6c923ea786f18f";
+    src = fetchgitPrivate {
+        url = config.bbp_git_ssh + "/nse/psp-validation";
+        rev = "f440ada4fe94fda6f2b3f07ae680d8252ffe2b07";
+        sha256 = "0cnv83kb9c5dipnh4qxkii4wjfm99ifw3mp4dzpj23i3wzv7zmr2";
     };
 
     buildInputs = with pythonPackages; [

@@ -4,6 +4,7 @@
 , pythonPackages
 , bluepy_version ? "0.6.1-2017.02-c8255"
 , neurom
+, pybinreports
 }:
 
 
@@ -18,7 +19,7 @@ let
     info-version-0_9_6 = {
         version = "0.9.6";
         rev = "cf80c78ab2a5d6b0c87fcd75c7692b088d0587c6";
-        sha256 = "0ldn5hmgfyyslpvwyvch27y785jn73mjw15dj7idh1s8dkvacc29";
+        sha256 = "0i80fs37cs8930b1vb86h89f9gp6hpq0xx7cylyak58qq29wyqs8";
     };
 
     info-version-latest = {
@@ -66,6 +67,7 @@ let
 
 		            # nse
 			    neurom
+                            pybinreports
                           ];
 
 
