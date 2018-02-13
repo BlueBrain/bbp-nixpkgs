@@ -49,12 +49,6 @@ in
 
                             in  allPythonRecDep;
 
-  # function to fetch source tarball from BBP devpi server, given package name / version / sha256
-  fetchBBPDevpi = { pname, version, sha256 }:
-    let
-      url = "https://bbpteam.epfl.ch/repository/devpi/bbprelman/release/+f/${builtins.substring 0 3 sha256}/${builtins.substring 3 13 sha256}/${pname}-${version}.tar.gz";
-    in pkgs.fetchurl { inherit url sha256; };
-
   pythonAtLeast = stdenv.lib.versionAtLeast self.python.pythonVersion;
 
   callPackage = pkgs.newScope self;
@@ -492,10 +486,10 @@ in
   scikit-learn = callPackage ./scikit-learn {
     blas = pkgs.openblasCompat;
   };
-  
+
   scikit-optimize = callPackage ./scikit-optimize {
 	inherit scikit-learn;
-  };  
+  };
 
 
   pyzmq4 = (pythonPackages.pyzmq.overrideDerivation ( oldAttr: {
