@@ -305,15 +305,17 @@ let
             bbpsdk = bbpsdk-legacy;
         };
 
-        bluepy_0_6_1 = callPackage ./nse/bluepy {
+        bluepy_0_6_1 = callPackage ./nse/bluepy/legacy.nix {
         };
 
-        bluepy_0_9_6 = callPackage ./nse/bluepy {
+        bluepy_0_9_6 = callPackage ./nse/bluepy/legacy.nix {
             bluepy_version = "0.9.6";
         };
 
         bluepy = callPackage ./nse/bluepy {
-            bluepy_version = "0.11.2";
+        };
+
+        bluepy-configfile = callPackage ./nse/bluepy-configfile {
         };
 
         pybinreports = callPackages ./nse/pybinreports {
