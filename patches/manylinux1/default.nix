@@ -4,6 +4,7 @@
 , xorg
 , glib
 , libxml2
+, zlib
 , buildEnv
 }:
 
@@ -29,16 +30,20 @@ let
       
         paths = [ 
                     stdcpp_path
-                    ncurses
-                    # glib2.0 gobject gthread
-                    glib
                     # X11
                     xorg.libXrender
                     xorg.libX11
                     xorg.libXext
-                    # extension
-                    libxml2 
-                ];
+                ] 
+		  # ncurses
+		  ++ (ncurses.all)
+		  # gthread2 requirement
+		  ++ (glib.all)
+		  # libxml2 requirement
+		  ++ (libxml2.all) 
+          ## zlib is not a requirement for manylinux
+          ## but still many python wheels takes the freedom to depend on it ...
+          ++ (zlib.all) ;
     };
     
     patch_wheels = stdenv.mkDerivation rec {
