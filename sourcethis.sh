@@ -39,7 +39,7 @@ function BBPnixpkgsSetup {
 
 BBPnixpkgsSetup
 
-if [[ "$(hostname)" == *viz* ]]; then
+if [[ "$(hostname)" == *viz* || "$(hostname)" == *bbptadm* ]]; then
     vizClusterSSHSetup
 else
     LocalMachineSSHSetup
