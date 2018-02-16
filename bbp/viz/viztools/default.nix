@@ -28,12 +28,12 @@ pythonPackages.buildPythonPackage rec {
         seaborn
         websocket_client
         semver
+        zeroconf
     ];
 
     preConfigure = ''
 	sed -i 's@==@>=@g' requirements.txt
 	sed -i 's@0.44.0@0.40.0@g' requirements.txt
-	sed -i 's@zeroconf.*@@g' requirements.txt
 	sed -i 's@seaborn>=0.8.1@seaborn>=0.7.0@g' requirements.txt
 	sed -i 's@~=@>@g' requirements.txt
 
