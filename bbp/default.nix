@@ -291,6 +291,10 @@ let
             ospray = ospray-devel;
         };
 
+        viztools = callPackage ./viz/viztools {
+
+        };
+
         ##
         ## BBP NSE components
         ##
