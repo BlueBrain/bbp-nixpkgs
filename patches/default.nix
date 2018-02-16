@@ -18,7 +18,8 @@ let
             });
         };
 
-    bbp-virtualenv = callPackage ./bbp-virtualenv {};
+    	bbp-virtualenv = callPackage ./bbp-virtualenv {};
+    	bbp-virtualenv-py3 = bbp-virtualenv.override { python = python3; };
 
         # Boost with Python 3 support
         boost-py3 = (boost.overrideDerivation ( oldAttr: {
@@ -240,7 +241,7 @@ let
             slurm-llnl = null;
         };
 
-        mvapich2 = if ( builtins.pathExists  "/usr/bin/srun" ) then mvapich2-slurm else mvapich2-hydra;
+        mvapich2 = if ( config ? mpi && config.mpi ? withSlurmPlugin  && config.mpi.withSlurmPlugin ) then mvapich2-slurm else mvapich2-hydra;
 
 
         ## MVAPICH 2 support with RDMA / Infiniband
