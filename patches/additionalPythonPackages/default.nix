@@ -566,6 +566,36 @@ in
     doCheck = false;
   };
 
+  jsonschema-objets = pythonPackages.buildPythonPackage rec {
+    version = "1.4.2";
+    name = "jsonschema-objets-${version}";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "cwacek";
+      repo = "python-jsonschema-objects";
+      rev = "5b059f5c4138b4fd55e65ea45ffd142a49d04f9d";
+      sha256 = "0rdjhld51ani9x8y0jzn4lzlkdp8kzjs3njlz6wlkkg6qfs04r02";
+    };
+
+    preConfigure = ''
+	sed -i 's@==@>=@g' requirements.txt
+	sed -i 's@Markdown==@Markdown>=@g' setup.py
+    '';
+
+    buildInputs = with pythonPackages; [];
+
+    propagatedBuildInputs = with pythonPackages; [
+      jsonschema
+      six
+      inflection 
+      pandocfilters
+      markdown  
+    ];
+
+    doCheck = false;
+  };
+
+
   equation = pythonPackages.buildPythonPackage rec {
     pname = "Equation";
     version = "1.2.01";
