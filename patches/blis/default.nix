@@ -1,8 +1,14 @@
 { stdenv
 , fetchFromGitHub
+, python
+, perl
 }:
 
+let
+	blis_target = if (stdenv.system == "x86_64-linux") then "intel64"
+		      else "generic";
 
+in
 stdenv.mkDerivation rec {
   name = "blis-${version}";
   version = "0.2.0";  
@@ -10,42 +16,35 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
 	owner = "flame";
 	repo = "blis";
-	rev = "898614a555ea0aa7de4ca07bb3cb8f5708b6a002";
-	sha256 = "05dzcy32ddq4j4hzh3jarzr2ya0sd8qv6v26rxraxbl9yji9g7cn";
+	rev = "f07b176c84dc9ca38fb0d68805c28b69287c938a";
+	sha256 = "14zj5jlpdxsp9mlviqlbfkair197i85kvf6m0mjpgfiwh3mrphyw";
   };
 
-  patches = [
+  nativeBuildInputs = [ python perl ];
 
-		./enable-cblas-compat.patch
-
-	    ];
-
-  configureOpt = [      "--enable-debug=opt"
+  configureOpt = [      
+			"--enable-cblas"
+			"--enable-blas"
                         "--enable-shared"
                         "--enable-static" ];
 
  
   configureFlags = configureOpt ++ 
 		   [   
-			"auto" 
+			blis_target
 		   ]; 
                       
   enableParallelBuilding = true;  
-  
-  crossAttrs = {
-	###
-	## dont add --host and --build... not standard configure file
-	##
-	dontSetConfigureCross = true;
 
-	configureFlags = configureOpt ++ 
-		   (
-		   	if ( (stdenv.lib.attrByPath [ "cross" "config" ] "none" stdenv) == "powerpc64-bgq-linux" ) then [  "auto" ] ## generic impl for now 
-		   	else [ "auto" ] 
-	           );
+  passthru = {
+    blas = {
+      blas_libname = "blis";
+      cblas_libname = "blis";
+      cblas_header = "cblas.h";
+      include_prefix = "blis";
+    };
 
-
-  };
+  };  
 
 }
 

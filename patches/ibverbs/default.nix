@@ -1,27 +1,33 @@
 
-{ stdenv, fetchurl }:
+{ stdenv, fetchurl, libnl }:
 
 let
 
   verbs = rec {
-      version = "1.1.8";
+      version = "1.2.1";
       name = "libibverbs-${version}";
       url = "http://downloads.openfabrics.org/verbs/${name}.tar.gz";
-      sha256 = "13w2j5lrrqxxxvhpxbqb70x7wy0h8g329inzgfrvqv8ykrknwxkw";
-  };
+      sha256 = "0c63bb4bfcii5rrh633aa1qdfy0xf8dmv8zsfkm317cs9vrafln3";
+ };
 
   drivers = {
       libmlx4 = rec { 
-          version = "1.0.6";
+          version = "1.2.1";
           name = "libmlx4-${version}"; 
           url = "http://downloads.openfabrics.org/mlx4/${name}.tar.gz";
-          sha256 = "f680ecbb60b01ad893490c158b4ce8028a3014bb8194c2754df508d53aa848a8";
+          sha256 = "07nq8x4fh8wjsk0f82s8a65f6p5gn41vi7lb6kr47x3rrc5lwq34";
+      };
+      libmlx5 = rec { 
+          version = "1.2.1";
+          name = "libmlx5-${version}"; 
+          url = "http://downloads.openfabrics.org/mlx5/${name}.tar.gz";
+          sha256 = "0qkcwa6has0z1gig6305vy4v8c0cajr3727q78yds9m7r501fmfh";
       };
       libmthca = rec { 
           version = "1.0.6"; 
           name = "libmthca-${version}"; 
           url = "http://downloads.openfabrics.org/mthca/${name}.tar.gz";
-          sha256 = "cc8ea3091135d68233d53004e82b5b510009c821820494a3624e89e0bdfc855c";
+          sha256 = "0p45zjyy12afcair81424740j02ibcmyh11hslrq5mim244s73nc";
       };
   };
 
@@ -32,14 +38,17 @@ in stdenv.mkDerivation rec {
   srcs = [
     ( fetchurl { inherit (verbs) url sha256 ; } )
     ( fetchurl { inherit (drivers.libmlx4) url sha256 ; } )
+    ( fetchurl { inherit (drivers.libmlx5) url sha256 ; } )
     ( fetchurl { inherit (drivers.libmthca) url sha256 ; } )
   ];
+
+  configureFlags = "--without-resolve-neigh";
 
   sourceRoot = name;
 
   # Install userspace drivers
   postInstall = ''
-    for dir in ${drivers.libmlx4.name} ${drivers.libmthca.name} ; do
+    for dir in ${drivers.libmlx4.name} ${drivers.libmlx5.name} ${drivers.libmthca.name} ; do
       cd ../$dir
       export NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -I$out/include"
       export NIX_LDFLAGS="-rpath $out/lib $NIX_LDFLAGS -L$out/lib"

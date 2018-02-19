@@ -166,27 +166,72 @@ in
     };
 
     jinja2 = pythonPackages.buildPythonPackage rec {
-      name = "Jinja2-${version}";
+      pname = "Jinja2";
       version = "2.10";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/j/jinja2/${name}.tar.gz";
+      name = "${pname}-${version}";
+
+      src = pythonPackages.fetchPypi {
+        inherit pname version;
         sha256 = "190l36hfw3wb2n3n68yacjabxyb1pnxwn7vjx96cmjj002xy2jzq";
       };
-      propagatedBuildInputs = with self; [ markupsafe ];
+
+      buildInputs = with pythonPackages; [
+        pytest
+      ];
+
+      propagatedBuildInputs = with pythonPackages; [
+        markupsafe
+      ];
+
+      checkPhase = ''
+        pytest
+      '';
+    };
+
+    jinja2-cli = pythonPackages.buildPythonPackage rec {
+      pname = "jinja2-cli";
+      version = "0.6.0";
+      name = "${pname}-${version}";
+
+      src = pythonPackages.fetchPypi {
+        inherit pname version;
+        sha256 = "1dr7ciiic8vahizrh9jxg67adhxz7q6kyp100bgk7wd8x1yf26sb";
+      };
+
+      propagatedBuildInputs = with self; [
+        jinja2
+        pyyaml
+        xmltodict
+      ];
+
+      # TODO: enable tests
+      doCheck = false;
     };
 
     jinja2-time = pythonPackages.buildPythonPackage rec {
-      name = "jinja2-time-${version}";
+      pname = "jinja2-time";
       version = "0.2.0";
-      src = pkgs.fetchurl {
-        url = "mirror://pypi/j/jinja2-time/${name}.tar.gz";
+      name = "${pname}-${version}";
+
+      src = pythonPackages.fetchPypi {
+        inherit pname version;
         sha256 = "0h0dr7cfpjnjj8bgl2vk9063a53649pn37wnlkd8hxjy656slkni";
       };
-      propagatedBuildInputs = with self; [
+
+      buildInputs = with pythonPackages; [
+        freezegun
+        pytest
+      ];
+
+      propagatedBuildInputs = with pythonPackages; [
         arrow
         dateutil
         jinja2
       ];
+
+      checkPhase = ''
+        pytest
+      '';
     };
 
     poyo = pythonPackages.buildPythonPackage rec {
@@ -520,6 +565,36 @@ in
 
     doCheck = false;
   };
+
+  jsonschema-objets = pythonPackages.buildPythonPackage rec {
+    version = "1.4.2";
+    name = "jsonschema-objets-${version}";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "cwacek";
+      repo = "python-jsonschema-objects";
+      rev = "5b059f5c4138b4fd55e65ea45ffd142a49d04f9d";
+      sha256 = "0rdjhld51ani9x8y0jzn4lzlkdp8kzjs3njlz6wlkkg6qfs04r02";
+    };
+
+    preConfigure = ''
+	sed -i 's@==@>=@g' requirements.txt
+	sed -i 's@Markdown==@Markdown>=@g' setup.py
+    '';
+
+    buildInputs = with pythonPackages; [];
+
+    propagatedBuildInputs = with pythonPackages; [
+      jsonschema
+      six
+      inflection 
+      pandocfilters
+      markdown  
+    ];
+
+    doCheck = false;
+  };
+
 
   equation = pythonPackages.buildPythonPackage rec {
     pname = "Equation";
