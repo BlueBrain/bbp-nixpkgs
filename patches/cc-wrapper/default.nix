@@ -208,9 +208,17 @@ stdenv.mkDerivation {
     ''
 
     + optionalString cc.langFortran or false ''
-      wrap gfortran ${./cc-wrapper.sh} $ccPath/gfortran
-      ln -sv gfortran $out/bin/g77
-      ln -sv gfortran $out/bin/f77
+      if [ -e $ccPath/gfortran ]; then
+        wrap gfortran ${./cc-wrapper.sh} $ccPath/gfortran
+        ln -sv gfortran $out/bin/g77
+        ln -sv gfortran $out/bin/f77
+      elif [ -e $ccPath/ifort ]; then
+        wrap ifort ${./cc-wrapper.sh} $ccPath/ifort
+        ln -sv ifort $out/bin/gfortran
+        ln -sv ifort $out/bin/g77
+        ln -sv ifort $out/bin/f77
+      fi 
+
     ''
 
     + optionalString cc.langJava or false ''
