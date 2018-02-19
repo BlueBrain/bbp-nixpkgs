@@ -250,6 +250,11 @@ let
             blas = intelMKLIfSupported;
         };
 
+	mt-dgemm = callPackage ./benchmark/mt-dgemm {
+		blas = blis;
+        };
+
+
         iperf = callPackage ./benchmark/iperf {
         };
 
