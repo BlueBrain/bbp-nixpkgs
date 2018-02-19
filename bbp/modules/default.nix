@@ -2467,6 +2467,7 @@ let
         		pydot
         		pillow
         		ipyparallel
+                jinja2
             ];
 
             python2_frameworks = [
