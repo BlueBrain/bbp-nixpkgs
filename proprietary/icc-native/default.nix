@@ -53,6 +53,7 @@ let
     passthru = {
       isIcc = true;
       gcc  = stdenv.cc;
+      langFortran = true; 
     };
   };
 
