@@ -38,8 +38,8 @@ stdenv.mkDerivation rec {
 
   passthru = {
     blas = {
-      blas_libname = "blis";
-      cblas_libname = "blis";
+      blas_ldflags = "-lblis";
+      cblas_ldflags = "-lblis";
       cblas_header = "cblas.h";
       include_prefix = "blis";
     };
