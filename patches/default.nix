@@ -166,7 +166,6 @@ let
         };
 
         blis = callPackage ./blis {
-		stdenv = stdenvIntelfSupported;
         };
 
 

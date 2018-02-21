@@ -5,7 +5,7 @@
 }:
 
 let
-	blis_target = if (stdenv.system == "x86_64-linux") then "intel64"
+	blis_target = if (stdenv.system == "x86_64-linux") then "skx"
 		      else "generic";
 
 in
@@ -23,6 +23,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ python perl ];
 
   configureOpt = [      
+			"--enable-threading=openmp"
 			"--enable-cblas"
 			"--enable-blas"
                         "--enable-shared"
