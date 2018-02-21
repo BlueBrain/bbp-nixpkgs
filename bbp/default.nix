@@ -256,6 +256,14 @@ let
 		#blas = openblas;
         };
 
+	mt-dgemm-intel = callPackage ./benchmark/mt-dgemm {
+		#blas = blis;
+		blas = intel-mkl;
+        	stdenv = stdenvIntelfSupported;
+	};
+
+
+
 
         iperf = callPackage ./benchmark/iperf {
         };
