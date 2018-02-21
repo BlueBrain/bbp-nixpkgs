@@ -252,6 +252,8 @@ let
 
 	mt-dgemm = callPackage ./benchmark/mt-dgemm {
 		blas = blis;
+		#blas = intel-mkl;
+		#blas = openblas;
         };
 
 
