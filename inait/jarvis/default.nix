@@ -5,6 +5,7 @@
 , boost
 , cmake
 , zeromq
+, rocksdb
 , cppzmq
 , pythonPackages
  }:
@@ -12,11 +13,11 @@
 let
 	jarvis_src = fetchgitPrivate {
 	  url = config.inait_git_ssh + "/INFRA/Jarvis.git";
-	  rev = "85caec2ea062602569bde1f98d47ed00eef520e6";
-	  sha256 = "0jfqsq5izn3plx96cp4s8vg53p7cpgcvxbv1gcrbma3z5cg119kp";
+	  rev = "e26a26084ffbf1ff1fe3d31078cc284fe8e3ffc3";
+	  sha256 = "0igz396j263aqxp98yjdpra0rhwzgdrravbgq7x9d8dkj9w01ldn";
 	};
 	
-	jarvis_version = "0.6-dev";
+	jarvis_version = "1.0";
 
 	pyjarvis = pythonPackages.buildPythonPackage rec {
 	  name = "pyjarvis-${version}";
@@ -34,7 +35,7 @@ let
 		
 	  src = jarvis_src;
 		
-	  buildInputs = [ cmake boost pkgconfig zeromq cppzmq ];
+	  buildInputs = [ cmake boost rocksdb pkgconfig zeromq cppzmq ];
 
 	  postInstall = ''
 		mkdir -p $out/share/jarvis/config
