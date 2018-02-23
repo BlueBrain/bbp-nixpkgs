@@ -1,27 +1,29 @@
 {
   config,
   fetchgitPrivate,
-  pythonPackages
+  python3Packages
 }:
 
-pythonPackages.buildPythonPackage rec {
+python3Packages.buildPythonPackage rec {
     pname = "VizTools";
     version = "0.7.0";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/VizTools";
-        rev = "fcd1f5c1f3ff951221e90f15fcb85efc509e9a3b";
+        rev = "e8c07ac219876ce7caef4b884e384c553867cd63";
         sha256 = "03bzcb0db8ak5yiqf02afy2grbpdy30wmk49mi2lijs1yjh6rhmx";
     };
 
-    buildInputs = with pythonPackages; [
+    buildInputs = with python3Packages; [
         mock
         nose
     ];
 
-    propagatedBuildInputs = with pythonPackages; [
+    propagatedBuildInputs = with python3Packages; [
+        matplotlib
         pillow
+        pandas
         requests
         jsonschema-objets 
         scipy
