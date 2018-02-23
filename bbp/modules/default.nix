@@ -971,7 +971,7 @@ let
 
 
 	viztools = pkgs.envModuleGen rec {
-            name = "viztools";
+            name = "viztools-py3";
             moduleFilePrefix = "nix/viz";
 
             isLibrary = true;

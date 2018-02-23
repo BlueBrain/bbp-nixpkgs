@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
 	'';
 
 	buildPhase = ''
-		cc -fopenmp -O3 -march=native -DNDEBUG -o mt-dgemm ${if withCBLAS then ''-DUSE_CBLAS=1 -I${blas}/include/${blas.blas.include_prefix} ${blas.blas.cblas_ldflags}'' else ''''} -lpthread -lm -ldl  mt-dgemm.c 
+		cc -fopenmp -O3 -DNDEBUG -o mt-dgemm ${if withCBLAS then ''-DUSE_CBLAS=1 -I${blas}/include/${blas.blas.include_prefix} ${blas.blas.cblas_ldflags}'' else ''''} -lpthread  -ldl  mt-dgemm.c 
 
        '';
 
