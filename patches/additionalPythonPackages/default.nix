@@ -587,7 +587,7 @@ in
     propagatedBuildInputs = with pythonPackages; [
       jsonschema
       six
-      inflection 
+      inflection
       pandocfilters
       markdown  
     ];
