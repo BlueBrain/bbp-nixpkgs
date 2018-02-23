@@ -29,9 +29,18 @@ let
     '';
 
     preferLocalBuild = true;
+
     passthru = {
       isMKL = true;
       gcc = stdenv.cc;
+ 
+      blas = {
+        blas_ldflags = "-Wl,--no-as-needed -lmkl_intel_lp64 -lmkl_gnu_thread -lmkl_core -lpthread -lm -ldl";
+        cblas_ldflags = "-Wl,--no-as-needed -lmkl_intel_lp64 -lmkl_gnu_thread -lmkl_core -lpthread -lm -ldl";
+        cblas_header = "mkl_cblas.h";
+        include_prefix = "";
+      };
+
     };
   };
 

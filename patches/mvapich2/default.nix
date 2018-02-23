@@ -24,6 +24,7 @@ stdenv.mkDerivation rec {
     sha256 = "0cdi7cxmkfl1zhi0czmzm0mvh98vbgq8nn9y1d1kprixnb16y6kr";
   };
 
+
   configureFlags = [
     "--enable-debuginfo"
     "--enable-g=dbg"

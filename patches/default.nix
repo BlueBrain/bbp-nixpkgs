@@ -166,7 +166,6 @@ let
         };
 
         blis = callPackage ./blis {
-
         };
 
 
@@ -241,20 +240,12 @@ let
             slurm-llnl = null;
         };
 
-        mvapich2 = if ( builtins.pathExists  "/usr/bin/srun" ) then mvapich2-slurm else mvapich2-hydra;
+        mvapich2 = if ( config ? mpi && config.mpi ? withSlurmPlugin  && config.mpi.withSlurmPlugin ) then mvapich2-slurm else mvapich2-hydra;
 
 
         ## MVAPICH 2 support with RDMA / Infiniband
         mvapich2-rdma =  if (builtins.pathExists "/usr/include/infiniband/") then ((mvapich2.overrideDerivation (oldAttr: rec {
-
-            name = "mvapich2-rdma-${version}";
-            version = "2.2b";
-
-           src = fetchurl {
-             url = "http://mvapich.cse.ohio-state.edu/download/mvapich/mv2/mvapich2-${version}.tar.gz";
-             sha256 = "18nn9lcwd6g44rl3y6b5n25d1k4l2ksh1xjzw84r639q2hd6ki45";
-           };
-
+            name = "mvapich2-rdma-${oldAttr.version}";
         })).override {
             stdenv = enableDebugInfo stdenv;
             librdmacm = ibverbs-upstream;

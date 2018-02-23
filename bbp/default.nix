@@ -250,6 +250,21 @@ let
             blas = intelMKLIfSupported;
         };
 
+	mt-dgemm = callPackage ./benchmark/mt-dgemm {
+		blas = blis;
+		#blas = intel-mkl;
+		#blas = openblas;
+        };
+
+	mt-dgemm-intel = callPackage ./benchmark/mt-dgemm {
+		#blas = blis;
+		blas = intel-mkl;
+        	stdenv = stdenvIntelfSupported;
+	};
+
+
+
+
         iperf = callPackage ./benchmark/iperf {
         };
 
@@ -309,15 +324,17 @@ let
             bbpsdk = bbpsdk-legacy;
         };
 
-        bluepy_0_6_1 = callPackage ./nse/bluepy {
+        bluepy_0_6_1 = callPackage ./nse/bluepy/legacy.nix {
         };
 
-        bluepy_0_9_6 = callPackage ./nse/bluepy {
+        bluepy_0_9_6 = callPackage ./nse/bluepy/legacy.nix {
             bluepy_version = "0.9.6";
         };
 
         bluepy = callPackage ./nse/bluepy {
-            bluepy_version = "0.11.2";
+        };
+
+        bluepy-configfile = callPackage ./nse/bluepy-configfile {
         };
 
         pybinreports = callPackages ./nse/pybinreports {
@@ -469,8 +486,8 @@ let
         };
 
         learningengine = callPackage ./hpc/learningengine {
-            stdenv = stdenvIntelfSupported;
-            blas = intelMKLIfSupported;
+        #    stdenv = stdenvIntelfSupported;
+        #    blas = intelMKLIfSupported;
         };
 
         mod2c = callPackage ./hpc/mod2c {
