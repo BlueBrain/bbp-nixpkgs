@@ -23,6 +23,8 @@ let
 
 #	pandoc = if (config ? documentation && config.documentation == false) then null else std-pkgs.pandoc;
 
+#	pandoc = if (config ? documentation && config.documentation == false) then null else std-pkgs.pandoc;
+
         # Boost with Python 3 support
         boost-py3 = (boost.overrideDerivation ( oldAttr: {
             name = oldAttr.name + "-py3";
