@@ -55,12 +55,14 @@ stdenv.mkDerivation rec {
   '';
 
   docCss = ../../common/vizDoc/github-pandoc.css;
-  postInstall = if (pandoc != null) then ''
-    mkdir -p $out/share/doc/reportinglib/html
+  postInstall = ''
+    mkdir -p $out/share/doc/morphomesher/html
+   '' + (if (pandoc != null) then ''
     ${pandoc}/bin/pandoc -s -S --self-contained \
       -c ${docCss} ${src}/README.md \
-      -o $out/share/doc/reportinglib/html/index.html
-  '' else '''';
+      -o $out/share/doc/morphomesher/html/index.html
+  '' else ''
+  '');
 
   outputs = [ "out" "doc" ];
 }
