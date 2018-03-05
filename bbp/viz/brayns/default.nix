@@ -33,6 +33,8 @@ stdenv.mkDerivation rec {
 					glew mesa vmmlib lunchbox brion hdf5-cpp imagemagick deflect ]
 				  ++ (stdenv.lib.optional) (restInterface) [ rockets ];
 
+	patches = [ ./002-brayns-missing-libmagick.patch ];
+
 	src = fetchgit {
 		url  = "https://github.com/BlueBrain/Brayns.git";
 		rev = "b9af13183b934b654d04b4879ab30ad299e331e1";
