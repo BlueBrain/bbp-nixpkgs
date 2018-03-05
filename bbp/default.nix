@@ -342,6 +342,12 @@ let
 
         bglibpy = callPackage ./nse/bglibpy {
         };
+        
+
+       
+            
+        bluepyopt = callPackage ./nse/bluepyopt {
+        };
 
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
             bbpsdk = bbpsdk-legacy;
