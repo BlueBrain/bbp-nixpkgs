@@ -6,7 +6,7 @@
 
 pythonPackages.buildPythonPackage rec {
     pname = "BluePyOpt";
-    version = "1.6dev";
+    version = "1.6.27";
     name = "${pname}-${version}";
 
     src = fetchFromGitHub {
@@ -16,9 +16,9 @@ pythonPackages.buildPythonPackage rec {
         sha256 = "0b0bdwwfniwrrm3pd1nljp212kx9dn40kdjwn8n1zx8vwn41hmpw";
     };
 
-	preConfigure = ''
+    preConfigure = ''
 		sed -i 's@0.7.3@0.5@g' setup.py;
-	'';
+    '';
 
     propagatedBuildInputs = with pythonPackages; [
 		pandas
