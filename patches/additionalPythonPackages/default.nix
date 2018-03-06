@@ -428,18 +428,7 @@ in
   };
 
 
-  # backport from NixOS 16.09
-  pickleshare = pythonPackages.buildPythonPackage rec {
-    version = "0.5";
-    name = "pickleshare-${version}";
 
-    src = pkgs.fetchurl {
-      url = "https://pypi.python.org/packages/source/p/pickleshare/${name}.tar.gz";
-      sha256 = "c0be5745035d437dbf55a96f60b7712345b12423f7d0951bd7d8dc2141ca9286";
-    };
-
-    propagatedBuildInputs = with self; [pathpy];
-  };
 
   lazy = pythonPackages.buildPythonPackage rec {
     version = "1.3";
@@ -709,4 +698,47 @@ site.addsitedir(os.path.dirname(os.path.abspath(__file__)))
 EOF
     '';
   };
+  
+  
+  scoop = pythonPackages.buildPythonPackage rec {
+    pname = "scoop";
+    version = "0.7.1.1";
+    name = "${pname}-${version}";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "1d32ra1q1zaiank65qal0c33zrnx87i9fyijwdqi345cgd649dnq";
+    };
+
+	preConfigure = ''
+		sed -i "s@'argparse>=1.1',@@g" setup.py
+	'';
+
+    propagatedBuildInputs = with pythonPackages; [
+      pyzmq
+      greenlet
+      argparse
+    ];
+
+  };
+  
+    deap = pythonPackages.buildPythonPackage rec {
+		pname = "deap";
+		version = "1.2.2";
+		name = "${pname}-${version}";
+
+		src = pkgs.fetchFromGitHub {
+		  owner = "DEAP";
+	      repo = "deap";
+		  rev = version;
+		  sha256 = "0xwvj1s4bhh7cp0x0f416bfyalgxhl9km8nnyvxldxj475xkdbbf";
+		};
+
+
+		propagatedBuildInputs = with pythonPackages; [
+			
+		];
+
+  };
+
 }
