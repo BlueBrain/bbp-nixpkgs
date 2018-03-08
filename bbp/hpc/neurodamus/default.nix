@@ -23,8 +23,8 @@ let
 
   src-master = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "035728dd3474970721399e1906270359b7fa9bb2";
-        sha256 = "1lk1czj0b4fh92pbvk4dqp7y8vwgrwfshq0wpam9k2gsh9cd6kr9";
+        rev = "43ff6eb82af7cf0a3c63359d1dbf1f44cb8b49ef";
+        sha256 = "010lrl4ls2lgrqrz0n1z0j6kvrhb3fmzabf6k881cbxljs7pwy1c";
     };
 
   src-savestate = fetchgitPrivate {
@@ -35,8 +35,8 @@ let
 
   src-hippocampus = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "579f6ce9eeb40f73c4c864e189db0ebd7901a7ed";
-        sha256 = "0dfmfb9mfkbq9ckn9xvb8n2lkbvwvwbs8qb3gvb7gf14dh8aiwvm";
+        rev = "b9f232a40752c61c26a014f446ea530b628d1e36";
+        sha256 = "1zl2xs3czry3idgj9h8cdwv0pxc8x1vrpzdik7ka0n053w05n0s1";
   };
 
   src-simplification = fetchgitPrivate {
@@ -57,7 +57,7 @@ in
 
 stdenv.mkDerivation rec {
     name = "neurodamus${if coreNeuronMode then "-coreneuron" else ""}-${version}";
-    version = "1.9.0-201710";
+    version = "1.9.0-201803";
     meta = {
         description = "Neuron simulators wrapper";
         homepage = "https://bbpcode.epfl.ch/code/#/admin/projects/sim/neurodamus/bbp";
