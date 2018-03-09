@@ -551,6 +551,10 @@ let
          };
 
 
+        neurodamus-mousify = neurodamus.override {
+            branchName = "mousify";
+         };
+
         neuromapp = enableBGQ callPackage ./hpc/neuromapp {
             mpiRuntime = bbp-mpi;
         };
