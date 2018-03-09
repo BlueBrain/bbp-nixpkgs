@@ -1360,7 +1360,7 @@ let
                # python
                python36
                pythonPkgs.pip
-               pythonPkgs.virtualenv
+               pkgs.bbp-virtualenv-py3
             ];
             conflicts = [ python27-light python27-full ] ++ conflicts-modules;
             dependencies = [ nss-wrapper manylinux1-python ];
