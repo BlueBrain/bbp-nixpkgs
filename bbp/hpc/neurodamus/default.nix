@@ -63,7 +63,7 @@ in
 
 stdenv.mkDerivation rec {
     name = "neurodamus${if coreNeuronMode then "-coreneuron" else ""}-${version}";
-    version = "1.9.0-201710";
+    version = "1.9.0-201803";
     meta = {
         description = "Neuron simulators wrapper";
         homepage = "https://bbpcode.epfl.ch/code/#/admin/projects/sim/neurodamus/bbp";
