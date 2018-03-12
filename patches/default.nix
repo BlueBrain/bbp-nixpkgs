@@ -250,7 +250,7 @@ let
             stdenv = enableDebugInfo stdenv;
             librdmacm = ibverbs-upstream;
             libibverbs = rdmacm-upstream;
-            extraConfigureFlags = [ ];
+	    extraConfigureFlags = [ "--with-device=ch3:mrail:ib,tcp" ];
 
             ## InfiniBand driver ABI / API is not stable nor portable
             ## We need to compile both IB and mvapich2 locally
