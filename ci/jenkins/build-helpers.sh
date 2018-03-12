@@ -33,7 +33,12 @@ function initAllChannels {
 
 function installNixMonoUser {
 	echo "### install Nix in single user mode"
-	curl https://nixos.org/nix/install | bash
+	pushd $(mktemp -d)
+		export NIX_VERSION="1.11.16"
+		curl -L https://nixos.org/releases/nix/nix-${NIX_VERSION}/nix-${NIX_VERSION}-x86_64-linux.tar.bz2 -o nix-${NIX_VERSION}-x86_64-linux.tar.bz2
+		tar xf nix-${NIX_VERSION}-x86_64-linux.tar.bz2
+		./nix-${NIX_VERSION}-x86_64-linux/install	
+	popd
 	source $HOME/.nix-profile/etc/profile.d/nix.sh
 
 }
