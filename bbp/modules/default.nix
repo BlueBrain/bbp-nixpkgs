@@ -403,7 +403,7 @@ let
             dependencies = [ gcc neuron ];
         };
 
-        neurodamus-smousify = pkgs.envModuleGen rec {
+        neurodamus-mousify = pkgs.envModuleGen rec {
             name = "neurodamus-mousify";
             moduleFilePrefix = "nix/hpc";
             setRoot = "NEURODAMUS";
@@ -2654,6 +2654,7 @@ let
                 neurodamus
                 neurodamus-savestate
                 neurodamus-hippocampus
+                neurodamus-mousify
                 neurodamus-simplification
                 neuron
                 reportinglib
