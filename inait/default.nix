@@ -82,6 +82,7 @@ let
                 name = "inait";
                 paths = with pkgs.modules; set.vcs
                     ++ set.dbg
+		    ++ set.qa
                     ++ set.dev_base_pkgs
                     ++ set.ml_base
                     ++ set.sciences_base

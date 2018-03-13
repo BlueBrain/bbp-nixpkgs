@@ -342,6 +342,12 @@ let
 
         bglibpy = callPackage ./nse/bglibpy {
         };
+        
+
+       
+            
+        bluepyopt = callPackage ./nse/bluepyopt {
+        };
 
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
             bbpsdk = bbpsdk-legacy;
@@ -544,6 +550,10 @@ let
             branchName = "simplification";
          };
 
+
+        neurodamus-mousify = neurodamus.override {
+            branchName = "mousify";
+         };
 
         neuromapp = enableBGQ callPackage ./hpc/neuromapp {
             mpiRuntime = bbp-mpi;
