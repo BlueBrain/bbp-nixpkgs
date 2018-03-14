@@ -2248,6 +2248,7 @@ let
             isLibrary = true;
             packages = [
                             pkgs.cudatoolkit8
+                            pkgs.cudatoolkit8.lib
                             pkgs.cudnn
                        ];
 	    conflicts = [ cuda9 ];
@@ -2266,6 +2267,7 @@ let
             isLibrary = true;
             packages = [
                             pkgs.cudatoolkit9
+                            pkgs.cudatoolkit9.lib
                        ];
             conflicts = [  cuda8 ];
             dependencies = [ opengl-driver gcc ];
