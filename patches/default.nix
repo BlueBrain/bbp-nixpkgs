@@ -250,13 +250,20 @@ let
             stdenv = enableDebugInfo stdenv;
             librdmacm = ibverbs-upstream;
             libibverbs = rdmacm-upstream;
-            extraConfigureFlags = [ ];
+            extraConfigureFlags = [ "--with-device=ch3:nemesis" ];
 
-            ## InfiniBand driver ABI / API is not stable nor portable
-            ## We need to compile both IB and mvapich2 locally
-            ##
-            enforceLocalBuild = true;
         }) else mvapich2;
+
+	
+	udapl = callPackage ./udapl {
+		ibverbs = ibverbs-upstream;
+		librdmacm = rdmacm-upstream;
+	};
+ 
+	# openmpi
+	openmpi = callPackage ./openmpi {
+		libibverbs = ibverbs-upstream;
+	};
 
 
         libnss-native-plugins = callPackage ./nss-plugin {
