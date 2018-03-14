@@ -250,7 +250,11 @@ let
             stdenv = enableDebugInfo stdenv;
             librdmacm = ibverbs-upstream;
             libibverbs = rdmacm-upstream;
+<<<<<<< HEAD
             extraConfigureFlags = [ "--with-device=ch3:nemesis" ];
+=======
+	    extraConfigureFlags = [ "--with-device=ch3:mrail:ib,tcp" ];
+>>>>>>> 4a06c70f7f355cbfe38851ced44033e4a57f371c
 
         }) else mvapich2;
 
@@ -264,6 +268,18 @@ let
 	openmpi = callPackage ./openmpi {
 		libibverbs = ibverbs-upstream;
 	};
+
+
+
+
+	gpi2-rdma = callPackage ./gpi2 {
+		libibverbs = ibverbs-upstream;
+	};
+
+	gpi2 = callPackage ./gpi2 {
+		libibverbs = null;
+	};
+
 
 
         libnss-native-plugins = callPackage ./nss-plugin {
