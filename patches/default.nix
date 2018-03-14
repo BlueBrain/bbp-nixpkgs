@@ -250,11 +250,7 @@ let
             stdenv = enableDebugInfo stdenv;
             librdmacm = ibverbs-upstream;
             libibverbs = rdmacm-upstream;
-<<<<<<< HEAD
-            extraConfigureFlags = [ "--with-device=ch3:nemesis" ];
-=======
-	    extraConfigureFlags = [ "--with-device=ch3:mrail:ib,tcp" ];
->>>>>>> 4a06c70f7f355cbfe38851ced44033e4a57f371c
+	    extraConfigureFlags = [ "--with-device=ch3:mrail" ];
 
         }) else mvapich2;
 

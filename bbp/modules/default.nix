@@ -26,8 +26,7 @@ let
 
     default_mpi = mvapich2;
 
-    default_mpi_rdma = if (pkgs.bbp-mpi-rdma == pkgs.mvapich2-rdma) then mvapich2-rdma
-                      else null;
+    default_mpi_rdma = mvapich2-rdma;
 
 
 
