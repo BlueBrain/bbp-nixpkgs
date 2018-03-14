@@ -259,6 +259,18 @@ let
         }) else mvapich2;
 
 
+
+
+	gpi2-rdma = callPackage ./gpi2 {
+		libibverbs = ibverbs-upstream;
+	};
+
+	gpi2 = callPackage ./gpi2 {
+		libibverbs = null;
+	};
+
+
+
         libnss-native-plugins = callPackage ./nss-plugin {
 
         };
