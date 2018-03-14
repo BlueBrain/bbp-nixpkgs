@@ -272,22 +272,18 @@ let
         };
 
         embree = callPackage ./viz/embree {
-            stdenv = stdenvIntelfSupported;
         };
 
         ospray = callPackage ./viz/ospray {
-            stdenv = stdenvIntelfSupported;
             mpi = bbp-mpi;
         };
 
         ospray-devel = callPackage ./viz/ospray {
-            stdenv = stdenvIntelfSupported;
             mpi = bbp-mpi;
             devel = true;
         };
 
         ospray-modules = callPackage ./viz/ospray-modules {
-            stdenv = stdenvIntelfSupported;
         };
 
         brayns = callPackage ./viz/brayns {
