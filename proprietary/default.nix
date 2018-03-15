@@ -27,12 +27,13 @@ let
         };
 
         ## nvidia
-        inherit (callPackages ./cuda { inherit utils; })
+        inherit (callPackages ./cuda { })
         cudatoolkit6
         cudatoolkit65
         cudatoolkit7
         cudatoolkit75
-        cudatoolkit8;
+        cudatoolkit8
+        cudatoolkit9;
 
          ## nvidia openGL implementation
         # required on viz cluster with nvidia hardware
