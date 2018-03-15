@@ -280,22 +280,18 @@ let
         };
 
         embree = callPackage ./viz/embree {
-            stdenv = stdenvIntelfSupported;
         };
 
         ospray = callPackage ./viz/ospray {
-            stdenv = stdenvIntelfSupported;
             mpi = bbp-mpi-rdma;
         };
 
         ospray-devel = callPackage ./viz/ospray {
-            stdenv = stdenvIntelfSupported;
             mpi = bbp-mpi-rdma;
             devel = true;
         };
 
         ospray-modules = callPackage ./viz/ospray-modules {
-            stdenv = stdenvIntelfSupported;
         };
 
         brayns = callPackage ./viz/brayns {
@@ -341,6 +337,12 @@ let
         };
 
         bglibpy = callPackage ./nse/bglibpy {
+        };
+        
+
+       
+            
+        bluepyopt = callPackage ./nse/bluepyopt {
         };
 
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
@@ -544,6 +546,10 @@ let
             branchName = "simplification";
          };
 
+
+        neurodamus-mousify = neurodamus.override {
+            branchName = "mousify";
+         };
 
         neuromapp = enableBGQ callPackage ./hpc/neuromapp {
             mpiRuntime = bbp-mpi;
