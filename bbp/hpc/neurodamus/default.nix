@@ -23,8 +23,8 @@ let
 
   src-master = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "035728dd3474970721399e1906270359b7fa9bb2";
-        sha256 = "1lk1czj0b4fh92pbvk4dqp7y8vwgrwfshq0wpam9k2gsh9cd6kr9";
+        rev = "43ff6eb82af7cf0a3c63359d1dbf1f44cb8b49ef";
+        sha256 = "010lrl4ls2lgrqrz0n1z0j6kvrhb3fmzabf6k881cbxljs7pwy1c";
     };
 
   src-savestate = fetchgitPrivate {
@@ -35,14 +35,20 @@ let
 
   src-hippocampus = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "579f6ce9eeb40f73c4c864e189db0ebd7901a7ed";
-        sha256 = "0dfmfb9mfkbq9ckn9xvb8n2lkbvwvwbs8qb3gvb7gf14dh8aiwvm";
+        rev = "ad76fcb138af81ec17ca8407ca1423c1d194d567";
+        sha256 = "0b2v8r3ssnhhcq6w9k5lci2wblwhj17yyzxwwzw0nwiyiv9khbw4";
   };
 
   src-simplification = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "6ef13a2b5137aa892b0134118fe019a137d08e5f";
-        sha256 = "1ihj87xlw2g9q60srfr8y4ml5k076n4xhm855z94vkxqzq4hr9fj";
+        rev = "adae0b8e25f8de592e428459efa95b5eb2c893c1";
+        sha256 = "1xvpy15wp9p1l5x2vz409rh22mg9zqn5yjm81fki50v981hwmxg5";
+  };
+
+  src-mousify = fetchgitPrivate {
+        url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
+        rev = "eea523b8adae9d7abeff6cc76d10dc9d5fe37dae";
+        sha256 = "0y48sdsnj14fd48hyf04xycxsmksgc9k1dj4cj8hvzrdkch3fs61";
   };
 
 
@@ -57,7 +63,7 @@ in
 
 stdenv.mkDerivation rec {
     name = "neurodamus${if coreNeuronMode then "-coreneuron" else ""}-${version}";
-    version = "1.9.0-201710";
+    version = "1.9.0-201803";
     meta = {
         description = "Neuron simulators wrapper";
         homepage = "https://bbpcode.epfl.ch/code/#/admin/projects/sim/neurodamus/bbp";
@@ -78,6 +84,7 @@ stdenv.mkDerivation rec {
 		  else if ( branchName == "savestate" ) then src-savestate
           else if ( branchName == "hippocampus" ) then src-hippocampus
           else if ( branchName == "simplification" ) then src-simplification
+          else if ( branchName == "mousify" ) then src-mousify
 		  else if ( branchName == "default" ) then src-master
           else throw ( "neurodamus : not a valid branchName name " + branchName ) ;
 

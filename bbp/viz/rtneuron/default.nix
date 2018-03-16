@@ -43,8 +43,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/viz/RTNeuron";
-    rev = "a92b3135220a1dee6da43bae2f074e59a6984d63";
-    sha256 = "19kjbrczlnl59dxb9zsjhpcxp9lbvqink9cqih9gpwp3ihhp8k0w";
+    rev = "fb124d171c98a79a175ad1e4793093e95daf2e09";
+    sha256 = "0lw4qigv0w1p02h3fgmbkx8hs2lhzpv3gippq0ylf11yprr2ddlq";
   };
 
   cmakeFlags = [ "-DDISABLE_SUBPROJECTS=TRUE" ];
