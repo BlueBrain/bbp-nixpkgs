@@ -235,6 +235,7 @@ let
         };
 
         perftest = callPackage ./benchmark/perftest {
+        
         };
 
         shoc = callPackage ./benchmark/shoc {
@@ -250,22 +251,20 @@ let
             blas = intelMKLIfSupported;
         };
 
-	mt-dgemm = callPackage ./benchmark/mt-dgemm {
-		blas = blis;
-		#blas = intel-mkl;
-		#blas = openblas;
-        };
+        mt-dgemm = callPackage ./benchmark/mt-dgemm {
+            blas = blis;
+            };
 
-	mt-dgemm-intel = callPackage ./benchmark/mt-dgemm {
-		#blas = blis;
-		blas = intel-mkl;
-        	stdenv = stdenvIntelfSupported;
-	};
+        mt-dgemm-intel = callPackage ./benchmark/mt-dgemm {
+            blas = intel-mkl;
+            stdenv = stdenvIntelfSupported;
+        };
 
 
 
 
         iperf = callPackage ./benchmark/iperf {
+        
         };
 
         osgtransparency = callPackage ./viz/osgtransparency {
@@ -340,10 +339,14 @@ let
         };
         
 
-       
-            
         bluepyopt = callPackage ./nse/bluepyopt {
         };
+        
+        igorpy = callPackage ./nse/igorpy {
+        };          
+        
+        bluepyefe = callPackage ./nse/bluepyefe {
+        };        
 
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
             bbpsdk = bbpsdk-legacy;
