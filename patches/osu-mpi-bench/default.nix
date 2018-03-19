@@ -10,17 +10,32 @@ stdenv.mkDerivation rec {
 
     src = fetchurl {
         url  = "http://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-${version}.tar.gz";
-        sha256 = "1sjwq3n2hpd6lr25dwkdvqd871v1rmjdyisfwb85brqf1gawqxd6";
+        sha256 = "0h3k95rwd78cq463xii9a3qxf1qxd1bz4r6lr9n08lql52r3zb5h";
     };
 
     buildInputs = [ mpi ];
     
+
+   preConfigure = ''
+	export LDFLAGS="-lmpi"
+
+   '';
+
+   preBuild = ''
+	cd mpi
+   '';  
+  
     
-    
-  #  installPhase = ''
-  #      install -d $out/bin
-  #      install -D ./IMB-* $out/bin
-  #  '';
+    installPhase = ''
+	make install
+        mkdir -p $out/bin
+	
+	for i in $(ls $out/libexec/osu-micro-benchmarks/mpi/*/*)
+	do
+		echo "binary $i"
+		ln -s $i $out/bin/$(basename $i)
+        done
+    '';
 
     enableParallelBuilding = false;
 
