@@ -340,7 +340,11 @@ let
         };          
         
         bluepyefe = callPackage ./nse/bluepyefe {
+        };
+        
+        bluepymm = callPackage ./nse/bluepymm {
         };        
+
 
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
             bbpsdk = bbpsdk-legacy;
