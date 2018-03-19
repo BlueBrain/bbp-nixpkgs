@@ -250,13 +250,20 @@ let
             stdenv = enableDebugInfo stdenv;
             librdmacm = ibverbs-upstream;
             libibverbs = rdmacm-upstream;
-	    extraConfigureFlags = [ "--with-device=ch3:mrail:ib,tcp" ];
+	    extraConfigureFlags = [ "--with-device=ch3:mrail" ];
 
-            ## InfiniBand driver ABI / API is not stable nor portable
-            ## We need to compile both IB and mvapich2 locally
-            ##
-            enforceLocalBuild = true;
         }) else mvapich2;
+
+	
+	udapl = callPackage ./udapl {
+		ibverbs = ibverbs-upstream;
+		librdmacm = rdmacm-upstream;
+	};
+ 
+	# openmpi
+	openmpi = callPackage ./openmpi {
+		libibverbs = ibverbs-upstream;
+	};
 
 
 
