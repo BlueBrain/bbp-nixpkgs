@@ -1,15 +1,15 @@
-{ stdenv, boost, fetchgit, cmake, leveldb, lunchbox, pression }:
+{ stdenv, boost, fetchgit, cmake, ceph, leveldb, libmemcached, lunchbox, pression }:
 
 stdenv.mkDerivation rec {
   name = "keyv-${version}";
-  version = "1.1.0-dev201708";
+  version = "1.1.0-dev201803";
 
-  buildInputs = [ stdenv boost cmake lunchbox leveldb pression ];
+  buildInputs = [ stdenv boost cmake ceph leveldb libmemcached lunchbox pression ];
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/Keyv.git";
-    rev = "7951173ffb9602392a353c2c8bb6a8ea7bc2f831";
-    sha256 = "0zn9kk7zhjq7cfrczigsga2y77670ikqg8y3qpgpz0dx5ccij1g7";
+    rev = "12d7806a7d82c924a47c48a24abd917ade16bc3e";
+    sha256 = "1040idg0f9vh58531vblwbb41i4afcskg9ymi9kapjcibbykmrmi";
   };
   
   enableParallelBuilding = true;
@@ -17,6 +17,3 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = [ lunchbox leveldb pression ];
   
 }
-
-
-
