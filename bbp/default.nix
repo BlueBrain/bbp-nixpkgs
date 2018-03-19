@@ -14,7 +14,7 @@ let
 
         # if not available, map to default mpi library
         bbp-mpi = if pkgs.isBlueGene == true then ibm-mpi-xlc
-                else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2-rdma
+                else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2
                 else if (config.mpi.rdma == true or false ) then mvapich2-rdma
 		else mvapich2-hydra;
 
