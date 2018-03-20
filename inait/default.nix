@@ -119,6 +119,7 @@ let
                     ++ set.python_base
                     ++ set.python2_frameworks
                     ++ set.python3_base
+        	    ++ set.python3_frameworks
                     ++ set.system_pkgs
                     ++ set.parallel_toolkit
 		    ++ set.editors
