@@ -10,6 +10,8 @@ slurm-llnl ? null,
 libibverbs ? null,
 librdmacm ? null,
 enableXrc ? false,
+genRDMA ? "gen2",
+udapl ? null,
 gfortran ? null,
 enforceLocalBuild ? false,
 extraConfigureFlags ? []
@@ -33,7 +35,6 @@ stdenv.mkDerivation rec {
     "--enable-fast=O2"
     "--enable-shared"
     "--enable-sharedlibs=gcc"
-    "--enable-smpcoll"
     "--enable-threads=multiple"
     "--with-munge"
     ]
@@ -55,14 +56,16 @@ stdenv.mkDerivation rec {
       "--with-pm=none"
       "--with-pmi=slurm"
     ]
-    ++ (stdenv.lib.optional)  (libibverbs != null) [
+    ++ (stdenv.lib.optional) (genRDMA =="udapl") [
+	"--with-dapl-include=${udapl}/include" "--with-dapl-libpath=${udapl}/lib"
+   ] ++ (stdenv.lib.optional)  (libibverbs != null) [
       "--with-ibverbs-include=${libibverbs}/include"
       "--with-ibverbs-lib=${libibverbs}/lib"
     ]
     ++ (stdenv.lib.optional) (librdmacm != null) [
       "--with-mpe"
       "--enable-rdma-cm"
-      "--with-rdma=gen2"
+      "--with-rdma=${genRDMA}"
       "--with-ib-libpath=${librdmacm}/lib"
       "--with-ib-include=${librdmacm}/include"
     ]
@@ -74,6 +77,7 @@ stdenv.mkDerivation rec {
     hwloc
     libibverbs
     librdmacm
+    udapl
     numactl
     perl
     pkgconfig
