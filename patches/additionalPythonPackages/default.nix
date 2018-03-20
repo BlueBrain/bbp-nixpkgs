@@ -741,4 +741,21 @@ EOF
 
   };
 
+  gcovr = pythonPackages.buildPythonPackage rec {
+    name = "gcovr-${version}";
+    version = "3.4";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/g/gcovr/${name}.tar.gz";
+      sha256 = "05fn8p96wdzqx1wspdh0cw1didjc36gk9ypwcnqfyv0yic21n9f9";
+    };
+
+    meta = {
+      description = "A Python script for summarizing gcov data";
+      license = "BSD";
+    };
+  };
+
+
+
 }
