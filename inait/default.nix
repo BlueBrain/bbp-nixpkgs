@@ -21,15 +21,31 @@ let
         
         };
         
-        pyjarvis = jarvis.pyjarvis;
-        
         in8metrics = callPackage ./metrics {
 
         };
-
         
+        
+        
+        
+        
+        # additional python packages
+        # for any python 2, 3 version
+        inaitPythonPackages = pyPkgs:  pyPkgs // {
+        
+            pyjarvis = (jarvis.override {
+                    pythonPackages = pyPkgs;
+            }).pyjarvis;
+            
+        };
+        
+        pythonPackages =  (inaitPythonPackages pkgs.pythonPackages);
+        python27Packages = (inaitPythonPackages pkgs.python27Packages);
+        python3Packages =  (inaitPythonPackages pkgs.python3Packages);
+        python36Packages = (inaitPythonPackages pkgs.python36Packages);
 
     };
+
 
 
 
@@ -54,8 +70,16 @@ let
                 moduleFilePrefix = "nix/infra";
                 isLibrary = true;
                 description = "Jarvis python bindings module";
-                packages = with pkgs.pythonPackages; ( getPyModRec [ pkgs.pyjarvis ] );
+                packages = with pkgs.pythonPackages; ( getPyModRec [ pkgs.pythonPackages.pyjarvis ] );
             };
+            
+            pyjarvis-py3 = pkgs.envModuleGen rec {
+                name = "pyjarvis-py3";
+                moduleFilePrefix = "nix/infra";
+                isLibrary = true;
+                description = "Jarvis python bindings module";
+                packages = with pkgs.pythonPackages; ( getPyModRec [ pkgs.python3Packages.pyjarvis ] );
+            };            
 
             jarvis = pkgs.envModuleGen rec {
                 name = "jarvis";
