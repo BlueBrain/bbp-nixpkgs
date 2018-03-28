@@ -618,6 +618,7 @@ let
             name = "hpc-documentation";
             paths = [
                 cyme
+                coreneuron
                 functionalizer
                 highfive
                 learningengine

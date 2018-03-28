@@ -67,6 +67,7 @@ stdenv.mkDerivation rec {
     meta = {
         description = "Neuron simulators wrapper";
         homepage = "https://bbpcode.epfl.ch/code/#/admin/projects/sim/neurodamus/bbp";
+        repository = "ssh://tcarel@bbpcode.epfl.ch/sim/neurodamus/bbp";
         license = {
           fullName = "Copyright 2018, Blue Brain Project";
         };
