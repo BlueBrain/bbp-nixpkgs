@@ -6,14 +6,14 @@
 
 pythonPackages.buildPythonPackage rec {
     pname = "BluePyOpt";
-    version = "1.6.27";
+    version = "1.6.27-${builtins.substring 0 6 src.rev}";
     name = "${pname}-${version}";
 
     src = fetchFromGitHub {
         owner = "BlueBrain";
         repo = "BluePyOpt";
         rev = "e4b159bf325eaa7af914541e78a89c78632f1026";
-        sha256 = "0b0bdwwfniwrrm3pd1nljp212kx9dn40kdjwn8n1zx8vwn41hmpw";
+        sha256 = "14m73yl24m535laik9liyx22px1wxv7wbsdka7xg8kgrbjwfcxjp";
     };
 
     preConfigure = ''
