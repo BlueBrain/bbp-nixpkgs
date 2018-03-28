@@ -2518,6 +2518,15 @@ let
         };
 
 
+	java = pkgs.envModuleGen rec {
+		name = "java";
+		version = "1.8";
+		description = "java environment";
+		ignoreCollisions = true;
+		packages = [ pkgs.jdk pkgs.jre ];
+	};
+
+
         set = rec {
             vcs = [
                 git mercurial
@@ -2642,6 +2651,10 @@ let
 
 	    python3_frameworks = [
 		numba-py3
+	    ];
+
+	    java_base = [
+		java
 	    ];
 
            large_toolkit = [
@@ -2832,6 +2845,7 @@ let
             ++ set.system_pkgs
             ++ set.parallel_toolkit
             ++ set.editors
+	    ++ set.java_base
             ++ [
 
                 # hpc team
