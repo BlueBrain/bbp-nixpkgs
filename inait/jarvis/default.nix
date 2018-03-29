@@ -43,7 +43,7 @@ let
       '';
 
      doCheck = true;
-         checkPhase = '' ctest -V ''; 
+     checkPhase = '' ctest -V ''; 
     
     };
     
