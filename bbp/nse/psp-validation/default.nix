@@ -14,8 +14,8 @@ pythonPackages.buildPythonPackage rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/nse/psp-validation";
-        rev = "7a6411d41c85d8c1e2a2a2b8957e034a1275beb9";
-        sha256 = "0fzadcq7v754k59iqprlasah1jmiisywvk8nhzhkcqp42djn6vfv";
+        rev = "9c6d129008d507cf101723a3d9b01fa398cf9fee";
+        sha256 = "072y5m9hfqw1p6svpjva767biz3x1hqr8r129blm3zqn6567dzvj";
     };
 
     buildInputs = with pythonPackages; [

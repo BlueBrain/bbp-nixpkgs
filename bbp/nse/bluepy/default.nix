@@ -11,13 +11,13 @@
 
 pythonPackages.buildPythonPackage rec {
     pname = "bluepy";
-    version = "0.11.16";
+    version = "0.12.0";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/nse/bluepy";
-        rev = "9fe98a83b3ef3607a020b57095794a3817245ae5";
-        sha256 = "1yka8gi22d6vwjrqv67pknaxxhd956svcrjpa6a13z3pina32f8b";
+        rev = "7f399cf0aff2a40133acb5111e490600c8897e30";
+        sha256 = "0zvzn1fhchjaq04v9r8yiajbfz5w2gf57qxi43s6sc4f2axgf58r";
     };
 
     # TODO: remove once `bluepy` dependencies are revised
