@@ -1,10 +1,23 @@
-{ stdenv, boost, fetchgit, cmake, leveldb, lunchbox, pression }:
+{ stdenv
+, boost
+, config
+, fetchgit
+, cmake
+, ceph ? null
+, leveldb
+, libmemcached
+, lunchbox
+, pression 
+}:
 
+let
+	libceph = if ( config.keyv.useCeph or false ) then ceph else null;
+in
 stdenv.mkDerivation rec {
   name = "keyv-${version}";
   version = "1.1.0-dev201803";
 
-  buildInputs = [ stdenv boost cmake lunchbox leveldb pression ];
+  buildInputs = [ stdenv boost cmake libceph leveldb libmemcached lunchbox pression ];
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/Keyv.git";
@@ -17,6 +30,3 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = [ lunchbox leveldb pression ];
   
 }
-
-
-

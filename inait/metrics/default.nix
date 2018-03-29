@@ -2,7 +2,6 @@
 , config
 , fetchgitPrivate
 , pkgconfig
-, pyjarvis
 , pythonPackages
  }:
 
@@ -25,7 +24,7 @@ let
         cd client
       '';
 
-      propagatedBuildInputs = [ pyjarvis pythonPackages.peewee ];
+      propagatedBuildInputs = [ pythonPackages.pyjarvis pythonPackages.peewee ];
       
     };
 
@@ -39,7 +38,7 @@ let
         cd client
       '';
 
-      propagatedBuildInputs = [ pyjarvis pythonPackages.peewee ];
+      propagatedBuildInputs = [ pythonPackages.pyjarvis pythonPackages.peewee ];
       
     };
     
