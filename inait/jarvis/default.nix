@@ -13,8 +13,8 @@
 let
     jarvis_src = fetchgitPrivate {
       url = config.inait_git_ssh + "/INFRA/Jarvis.git";
-      rev = "618c1258711dcf9c36612d11f1ac9a67629a6e9c";
-      sha256 = "1dfvliiz2fcxw5k2i8mia3k6h0jly1ywh9g92qq6bi2l4fcl31fs";
+      rev = "937c0ceadece2314703a86024f66ffe17b1029d2";
+      sha256 = "14mj537jkp3zy09q67p74pr54lqf8k9nzlddi5d7zjy5nxznfd9l";
     };
     
     jarvis_version = "1.7";
