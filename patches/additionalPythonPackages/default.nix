@@ -110,6 +110,18 @@ in
       };
     };
 
+    clustershell = pythonPackages.buildPythonPackage rec {
+      name = "ClusterShell-${version}";
+      version = "1.8";
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/c/clustershell/${name}.tar.gz";
+        sha256 = "1bm0pq8w2rql9q9i2bhs865rqvb6zck3h3gkb1d0mh59arrr7p4m";
+      };
+      propagatedBuildInputs = with self; [
+        pyyaml
+      ];
+    };
+
     cookiecutter = pythonPackages.buildPythonPackage rec {
       name = "cookiecutter-${version}";
       version = "1.6.0";
