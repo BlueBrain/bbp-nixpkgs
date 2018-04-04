@@ -299,6 +299,11 @@ let
 
         };
 
+        bb5-utils = callPackage ./hpc/bb5-utils {
+            python = python3;
+            pythonPackages = python3Packages;
+       };
+
         ##
         ## BBP NSE components
         ##

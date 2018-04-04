@@ -10,8 +10,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "CNS-OIST";
     repo = "STEPS_Validation";
-    rev = "b2f28b2773bb8b1da79d0cc7bd81d8d042636034";
-    sha256 = "048iblc36nyxhbwcp3l4hpmq92fqajhxxclg7a2a1cwyycpdbz7q";
+    rev = "90be7798f40f7c0e6c72f4a29a3b0e84cc22cec8";
+    sha256 = "01r69vpskcx1xv1xfkllzg1ncn644yf2amwwcwsrj9lyb9gqafpn";
   };
 
   passthru = {
@@ -27,16 +27,14 @@ stdenv.mkDerivation rec {
     cat <<EOF > $out/bin/steps-validation
     #!/bin/sh -e
     export PYTHONPATH=${steps}
-    cd $src/validation
-    exec ${python_executable} run_validation_tests.py $@
+    exec ${python_executable} $src/validation/run_validation_tests.py $@
     EOF
     chmod +x $out/bin/steps-validation
 
     cat <<EOF > $out/bin/steps-mpi-validation
     #!/bin/sh -e
     export PYTHONPATH=${steps}
-    cd $src/validation
-    exec ${python_executable} run_validation_mpi_tests.py $@
+    exec ${python_executable} $src/validation/run_validation_mpi_tests.py $@
     EOF
     chmod +x $out/bin/steps-mpi-validation
   '';
