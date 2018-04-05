@@ -2316,7 +2316,7 @@ let
         }) else null;
 
 
-       cuda8 = pkgs.envModuleGen rec {
+       cuda8 = if (pkgs.nvidia-x11-default != null) then (pkgs.envModuleGen rec {
             name = "cuda8";
             version= "8.0";
             setRoot = "CUDA";
@@ -2327,15 +2327,15 @@ let
                             pkgs.cudatoolkit8.lib
                             pkgs.cudnn
                        ];
-        conflicts = [ cuda9 ];
+	    conflicts = [ cuda9 ];
             dependencies = [ opengl-driver gcc ];
             extraContent = ''
                 prepend-path LD_LIBRARY_PATH $targetEnv/lib/
                 prepend-path LD_LIBRARY_PATH $targetEnv/extras/CUPTI/lib64/
             '';
-        };
+        }) else null;
 
-       cuda9 = pkgs.envModuleGen rec {
+       cuda9 = if (pkgs.nvidia-x11-default != null) then (pkgs.envModuleGen rec {
             name = "cuda9";
             version= "9.0";
             setRoot = "CUDA";
@@ -2351,7 +2351,7 @@ let
                 prepend-path LD_LIBRARY_PATH $targetEnv/lib/
                 prepend-path LD_LIBRARY_PATH $targetEnv/extras/CUPTI/lib64/
             '';
-        };
+        }) else null;
 
 
 
