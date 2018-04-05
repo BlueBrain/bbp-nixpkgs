@@ -25,9 +25,9 @@ let
 	};
 
 	last-info = {
-		version = "3.0-dev2017.10";
-		rev = "5396f1e73b0b4df1691d1126a0dbdcfdb7100c7a";
-		sha256 = "1b2gjzyad2jwa9md8vhvi3m9x2xpywdx21m1pb4ld5hsxjw7nhnf";
+		version = "3.0-dev201804";
+		rev = "e5a858dc3e868225f5de61da6d15c710cad3252e";
+		sha256 = "06a4wivgqjc0bxg3qcm4grvwyq4g0jhydpkrbyvv3gx9fhis0n3d";
 	};
 
 	brion-info = if (legacyVersion) then legacy-info else last-info;
