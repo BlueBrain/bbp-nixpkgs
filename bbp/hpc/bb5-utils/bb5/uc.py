@@ -1,23 +1,26 @@
 """What is my use-case
 
 Usage:
-  whatismyuc [-r | --rack] [-n]
-  whatismyuc [-r | --rack] [-n] <node>
+  whatismyuc [-r | --rack] [-n] [-a | --all]
+  whatismyuc [-r | --rack] [-n] <node>...
   whatismyuc -h | --help
   whatismyuc --version
 
 Options:
   -h --help  Show this screen.
   -r --rack  Show node rack instead of use-case.
+  -a --all   Show use-case of all allocated nodes.
   -n         Show numerical value.
   --version  Show version.
 
 If node name is not given, content of SLURMD_NODENAME
-environment variable is used, otherwise machine's hostname
+environment variable is used (SLURM_NODELIST if --all option
+is passed), otherwise machine's hostname.
 """
 import os
 import re
 import socket
+import sys
 import unittest
 
 from ClusterShell.NodeSet import NodeSet
@@ -81,8 +84,22 @@ class UCResolver(object):
 def main():
   os.environ.update(BB5_CLUSTER)
   arguments = docopt.docopt(__doc__, version="1.0")
-  node = arguments.get('<node>') or os.environ.get('SLURMD_NODENAME',
-                                                   socket.gethostname())
+  nodes = arguments['<node>']
+  if not nodes:
+    if arguments['--all']:
+      nodes_str = os.environ.get('SLURM_NODELIST')
+      if nodes_str:
+        nodes = NodeSet(nodes_str)
+    else:
+      nodes = [
+        os.environ.get('SLURMD_NODENAME',
+                       socket.gethostname())
+      ]
+
+  if len(nodes) > 1:
+    print_format = "{node}:{data}"
+  else:
+    print_format = "{data}"
   resolver = UCResolver()
   if arguments['--rack']:
     str_prefix = "rack"
@@ -90,12 +107,16 @@ def main():
   else:
     str_prefix = "uc"
     method = resolver.uc
-  for result in method(node):
-    if arguments['-n']:
-      print(result)
+  for node in nodes:
+    for result in method(node):
+      if arguments['-n']:
+        print(print_format.format(node=node, data=result))
+      else:
+        print(print_format.format(node=node, data=str_prefix + result))
     else:
-      print(str_prefix + result)
+      print('Error: {node}: unknown {prefix}'.format(node=node,
+                                                     prefix=str_prefix),
+            file=sys.stderr)
 
-#SLURMD_NODENAME
 if __name__ == '__main__':
   main()
