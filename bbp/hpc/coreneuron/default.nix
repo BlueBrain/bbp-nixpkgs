@@ -1,4 +1,5 @@
 { stdenv
+, config
 , fetchgit
 , python
 , perl
@@ -15,6 +16,17 @@
 stdenv.mkDerivation rec {
   name = "coreneuron-${version}";
   version = "1.0.1-dev201710";
+
+  meta = {
+    description = "Optimized simulator engine for NEURON";
+    homepage = "https://github.com/BlueBrain/Coreneuron";
+    license = stdenv.lib.licenses.bsd3;
+    maintainers = with config.maintainers; [
+      jamesgkind
+      pramodskumbhar
+      fouriaux
+    ];
+  };
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/Coreneuron";
@@ -36,4 +48,10 @@ stdenv.mkDerivation rec {
                 "-DFRONTEND_CXX_COMPILER=${frontendCompiler}/bin/c++"
   ];
 
+  outputs = [ "out" "doc" ];
+
+  postInstall =  ''
+    mkdir -p $out/share/doc/coreneuron/html
+    echo '<html><head><meta http-equiv="refresh" content="0; URL=${src.url}"/></head></html>' >$out/share/doc/coreneuron/html/index.html
+  '';
 }

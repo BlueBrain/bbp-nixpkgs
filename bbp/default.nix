@@ -12,16 +12,11 @@ let
         # detect if the platform is with slurm or not
         has_slurm = builtins.pathExists "/usr/bin/srun";
 
-        # proper BBP default MPI library, depending of the platform
-        bbp-mpi = if pkgs.isBlueGene == true then ibm-mpi-xlc
-                else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2
-                else mvapich2-hydra;
-
-        # proper BBP default MPI library with RDMA support if available
         # if not available, map to default mpi library
-        bbp-mpi-rdma = if pkgs.isBlueGene == true then ibm-mpi-xlc
-                else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2-rdma
-                else mvapich2-hydra;
+        bbp-mpi = if pkgs.isBlueGene == true then ibm-mpi-xlc
+                else if (config ? isSlurmCluster == true)  then mvapich2
+                else if (config.mpi.rdma  or false ) then mvapich2-rdma
+		else mvapich2-hydra;
 
         # proper BBP default MPI library forced to GCC, necessary on some platforms
         bbp-mpi-gcc = if pkgs.isBlueGene == true then ibm-mpi
@@ -56,7 +51,7 @@ let
 
     mergePkgs = pkgs // rec {
 
-        inherit bbp-mpi bbp-mpi-rdma;
+        inherit bbp-mpi;
 
         intel-mpi-bench = pkgs.intel-mpi-bench.override {
             mpi = bbp-mpi;
@@ -66,9 +61,6 @@ let
             mpi = bbp-mpi;
         };
 
-        intel-mpi-bench-rdma = pkgs.intel-mpi-bench.override {
-            mpi = bbp-mpi-rdma;
-        };
 
         ## parallel hdf5
         phdf5 = pkgs.phdf5.override {
@@ -82,22 +74,22 @@ let
         ## override component that need bbp-mpi
         petsc = pkgs.petsc.override {
             stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
-            mpiRuntime = bbp-mpi-rdma;
+            mpiRuntime = bbp-mpi;
         };
 
 
         scorec = pkgs.scorec.override {
-            mpi = bbp-mpi-rdma;
+            mpi = bbp-mpi;
             parmetis = parmetis;
             zoltan = zoltan;
         };
 
         parmetis = pkgs.parmetis.override {
-            mpi = bbp-mpi-rdma;
+            mpi = bbp-mpi;
         };
 
         trilinos = pkgs.trilinos.override {
-            mpi = bbp-mpi-rdma;
+            mpi = bbp-mpi;
             parmetis = parmetis;
         };
 
@@ -235,6 +227,7 @@ let
         };
 
         perftest = callPackage ./benchmark/perftest {
+        
         };
 
         shoc = callPackage ./benchmark/shoc {
@@ -250,22 +243,20 @@ let
             blas = intelMKLIfSupported;
         };
 
-	mt-dgemm = callPackage ./benchmark/mt-dgemm {
-		blas = blis;
-		#blas = intel-mkl;
-		#blas = openblas;
-        };
+        mt-dgemm = callPackage ./benchmark/mt-dgemm {
+            blas = blis;
+            };
 
-	mt-dgemm-intel = callPackage ./benchmark/mt-dgemm {
-		#blas = blis;
-		blas = intel-mkl;
-        	stdenv = stdenvIntelfSupported;
-	};
+        mt-dgemm-intel = callPackage ./benchmark/mt-dgemm {
+            blas = intel-mkl;
+            stdenv = stdenvIntelfSupported;
+        };
 
 
 
 
         iperf = callPackage ./benchmark/iperf {
+        
         };
 
         osgtransparency = callPackage ./viz/osgtransparency {
@@ -283,11 +274,13 @@ let
         };
 
         ospray = callPackage ./viz/ospray {
-            mpi = bbp-mpi-rdma;
+            stdenv = stdenvIntelfSupported;
+            mpi = bbp-mpi;
         };
 
         ospray-devel = callPackage ./viz/ospray {
-            mpi = bbp-mpi-rdma;
+            stdenv = stdenvIntelfSupported;
+            mpi = bbp-mpi;
             devel = true;
         };
 
@@ -305,6 +298,11 @@ let
         viztools = callPackage ./viz/viztools {
 
         };
+
+        bb5-utils = callPackage ./hpc/bb5-utils {
+            python = python3;
+            pythonPackages = python3Packages;
+       };
 
         ##
         ## BBP NSE components
@@ -340,10 +338,18 @@ let
         };
         
 
-       
-            
         bluepyopt = callPackage ./nse/bluepyopt {
         };
+        
+        igorpy = callPackage ./nse/igorpy {
+        };          
+        
+        bluepyefe = callPackage ./nse/bluepyefe {
+        };
+        
+        bluepymm = callPackage ./nse/bluepymm {
+        };        
+
 
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
             bbpsdk = bbpsdk-legacy;
@@ -575,7 +581,7 @@ let
         };
 
         steps = enableBGQ-gcc47 callPackage ./hpc/steps {
-            mpiRuntime = if (mergePkgs.isBlueGene) then bbp-mpi-gcc else bbp-mpi-rdma;
+            mpiRuntime = if (mergePkgs.isBlueGene) then bbp-mpi-gcc else bbp-mpi;
 
             stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
 
@@ -617,6 +623,7 @@ let
             name = "hpc-documentation";
             paths = [
                 cyme
+                coreneuron
                 functionalizer
                 highfive
                 learningengine

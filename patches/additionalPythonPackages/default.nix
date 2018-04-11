@@ -110,6 +110,18 @@ in
       };
     };
 
+    clustershell = pythonPackages.buildPythonPackage rec {
+      name = "ClusterShell-${version}";
+      version = "1.8";
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/c/clustershell/${name}.tar.gz";
+        sha256 = "1bm0pq8w2rql9q9i2bhs865rqvb6zck3h3gkb1d0mh59arrr7p4m";
+      };
+      propagatedBuildInputs = with self; [
+        pyyaml
+      ];
+    };
+
     cookiecutter = pythonPackages.buildPythonPackage rec {
       name = "cookiecutter-${version}";
       version = "1.6.0";
@@ -131,16 +143,16 @@ in
 
     hpcbench = pythonPackages.buildPythonPackage rec {
       name = "hpcbench-${version}";
-      version = "0.3.6";
+      version = "0.4";
       src = pkgs.fetchurl {
        url = "mirror://pypi/h/hpcbench/${name}.tar.gz";
-       sha256 = "08a683rmv614y9yqs0g8c7qvczl01p9qnpisw12h0kjpnvldam2n";
+       sha256 = "00q97hvjs13r1w5bnhak1lphy3wxml1vl3qd2v7z3zadr5jvb5lm";
       };
       # # For development purpose, and add "pkgs.git" dependency
       # src = pkgs.fetchgit {
       #   url = "https://github.com/tristan0x/hpcbench.git";
-      #   rev = "f0978baea4b3863567b7ae07c9a592f0f316a56a";
-      #   sha256 = "16l7x69rbn0g1kdl7zk7zaqlgyymib58pm1irwkyr0w4cjifqyvq";
+      #   rev = "65e1f0dc65e3c874a69164d93096e533cc2bbdd8";
+      #   sha256 = "00q97hvjs13r1w5bnhak1lphy3wxml1vl3qd2v7z3zadr5jvb5lm";
       #   leaveDotGit = true;
       # };
       propagatedBuildInputs = with self; [
@@ -148,6 +160,7 @@ in
         cookiecutter
         docopt
         jinja2
+        mock
         numpy
         py-elasticsearch
         pyyaml
@@ -740,5 +753,22 @@ EOF
 		];
 
   };
+
+  gcovr = pythonPackages.buildPythonPackage rec {
+    name = "gcovr-${version}";
+    version = "3.4";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/g/gcovr/${name}.tar.gz";
+      sha256 = "05fn8p96wdzqx1wspdh0cw1didjc36gk9ypwcnqfyv0yic21n9f9";
+    };
+
+    meta = {
+      description = "A Python script for summarizing gcov data";
+      license = "BSD";
+    };
+  };
+
+
 
 }

@@ -29,8 +29,8 @@ let
 
   src-savestate = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "e8c6bfc02e58e58633a869000a1d1da4c9e3d4d5";
-        sha256 = "11hg1aqj6j4j43psz20v7dlvyxrmsy2hp45qdhiw6y00gmyzgm4j";
+        rev = "537672d392c5d1bf759c39b1ab04a5fa47a9c1b3";
+        sha256 = "0dbblarxdh40qjh03ww55yf31mvamc4ksxjb8jqhjimpijpn3139";
   };
 
   src-hippocampus = fetchgitPrivate {
@@ -63,10 +63,11 @@ in
 
 stdenv.mkDerivation rec {
     name = "neurodamus${if coreNeuronMode then "-coreneuron" else ""}-${version}";
-    version = "1.9.0-201803";
+    version = "1.9.0-201803dev";
     meta = {
         description = "Neuron simulators wrapper";
         homepage = "https://bbpcode.epfl.ch/code/#/admin/projects/sim/neurodamus/bbp";
+        repository = "ssh://tcarel@bbpcode.epfl.ch/sim/neurodamus/bbp";
         license = {
           fullName = "Copyright 2018, Blue Brain Project";
         };
@@ -88,7 +89,7 @@ stdenv.mkDerivation rec {
 		  else if ( branchName == "default" ) then src-master
           else throw ( "neurodamus : not a valid branchName name " + branchName ) ;
 
-    patches = if (branchName == "simplification" || branchName == "savestate") then [ ./gcc-6-security-fix.patch ] else [ ];
+    patches = if (branchName == "simplification" ) then [ ./gcc-6-security-fix.patch ] else [ ];
 
 
     CFLAGS="-O2 -g";
