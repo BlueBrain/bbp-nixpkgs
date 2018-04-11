@@ -35,7 +35,14 @@ let
                    versionNumber = "384.111";
                    sha256 = "1mzajvsjggljhkfrika5qzaqcb5q0i1pddmikbz3galpqs9wkf2n";
         
+               }
+	       else if (driverVersion == "390.30") then
+               {
+                   versionNumber = "390.30";
+                   sha256 = "10vyd0xh2li13k8zzkfj2adm71i1dmyg110pqfwqcaj77hdb8k6a";
+        
                } 
+ 
                else throw "nvidia-x11 version ${driverVersion} is not supported for ${stdenv.system}";
 
   # Policy: use the highest stable version as the default (on our master).
@@ -55,7 +62,7 @@ stdenv.mkDerivation rec {
   builder = ./nvidia-viz-builder.sh;
 
   src = fetchurl {
-        url = "http://us.download.nvidia.com/XFree86/Linux-x86_64/${versionNumber}/NVIDIA-Linux-x86_64-${versionNumber}-no-compat32.run";
+        urls = [ "http://us.download.nvidia.com/XFree86/Linux-x86_64/${versionNumber}/NVIDIA-Linux-x86_64-${versionNumber}.run" "http://fr.download.nvidia.com/tesla/${versionNumber}/NVIDIA-Linux-x86_64-${versionNumber}.run" ];
         sha256 = driverInfo.sha256;
   };
 
