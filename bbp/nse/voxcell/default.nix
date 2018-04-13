@@ -6,13 +6,13 @@
 
 pythonPackages.buildPythonPackage rec {
     pname = "voxcell";
-    version = "2.3.3";
+    version = "2.3.4";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/nse/voxcell";
-        rev = "084f02f90498c061efb4e7002bc5e625af8e3e68";
-        sha256 = "1d3cln56764nxq7rlzng0vcfrkjg25aishqq1s80fpbg2idajid4";
+        rev = "54cdefe0ce1ca4b2cf140cee94527c16655a73eb";
+        sha256 = "0im7wg6w51rv0zfv0d1j1habqly1w8kp1y64rxmplh6slhpalpcd";
     };
 
     buildInputs = with pythonPackages; [
