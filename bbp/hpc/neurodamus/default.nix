@@ -145,7 +145,9 @@ stdenv.mkDerivation rec {
     # current one is not able to work outside of build directory
     # and reference statically this one
     docCss = ../../common/vizDoc/github-pandoc.css;
-    postInstall = ''
+    postInstall = [ 
+	"mkdir -p $doc/share/doc"
+    ] ++ (stdenv.lib.optional) (pandoc != null) [ ''
         echo building HTML README
         mkdir -p $out/share/doc/neurodamus/html
         if [ -f ${src}/README.txt ] ; then
@@ -156,7 +158,7 @@ stdenv.mkDerivation rec {
             # Not all branches have a README.txt
             touch $out/share/doc/neurodamus/html/index.html
         fi
-    '';
+    '' ];
 
   outputs = [ "out" "doc" ];
   propagatedBuildInputs = [ which hdf5 reportinglib ];
