@@ -1358,11 +1358,17 @@ let
                pkgs.bbp-virtualenv
                pythonPkgs.cython
                pythonPkgs.deepdish
+               pythonPkgs.docopt
+               pythonPkgs.freezegun
                pythonPkgs.enum34
                pythonPkgs.h5py
+               pythonPkgs.jinja2
                pythonPkgs.matplotlib
                pythonPkgs.pyparsing
+               pythonPkgs.pyyaml
+               pythonPkgs.requests
                pythonPkgs.seaborn
+               pythonPkgs.statsmodels
 
                # add all python3 backports in the same directory
                pythonPkgs.backports_functools_lru_cache
@@ -1422,10 +1428,16 @@ let
                pkgs.bbp-virtualenv-py3
                pythonPkgs.cython
                pythonPkgs.deepdish
+               pythonPkgs.docopt
+               pythonPkgs.freezegun
                pythonPkgs.h5py
+               pythonPkgs.jinja2
                pythonPkgs.matplotlib
                pythonPkgs.pyparsing
+               pythonPkgs.pyyaml
+               pythonPkgs.requests
                pythonPkgs.seaborn
+               pythonPkgs.statsmodels
 
                pythonPkgs.cycler
                pythonPkgs.numpy
