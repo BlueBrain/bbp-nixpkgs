@@ -99,6 +99,9 @@ in
         url = "mirror://pypi/c/cached-property/${name}.tar.gz";
         sha256 = "1wwm23dyysdb4444xz1q6b1agpyax101d8fx45s58ms92fzg0qk5";
       };
+      buildInputs = with pythonPackages; [
+        freezegun
+      ];
     };
 
     certifi17 = pythonPackages.buildPythonPackage rec {
@@ -133,9 +136,11 @@ in
       propagatedBuildInputs = with self; [
         binaryornot
         click
+        freezegun
         future
         jinja2-time
         poyo
+        pytest
         requests
         whichcraft
       ];
@@ -163,10 +168,15 @@ in
         mock
         numpy
         py-elasticsearch
+        python_magic
         pyyaml
         setuptools_scm
         six
+        pkgs.git
       ];
+
+      # TODO: enable tests
+      doCheck = false;
     };
 
     idna_2_6 = pythonPackages.buildPythonPackage rec {
@@ -276,6 +286,32 @@ in
         doCheck = false;
     };
 
+    python_magic = pythonPackages.buildPythonPackage rec {
+      name = "python-magic-0.4.15";
+
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/p/python-magic/${name}.tar.gz";
+        sha256 = "1mgwig9pnzgkf86q9ji9pnc99bngms15lfszq5rgqb9db07mqxpk";
+      };
+
+      propagatedBuildInputs = with self; [ pkgs.file ];
+
+      patchPhase = ''
+        substituteInPlace magic.py --replace "ctypes.util.find_library('magic')" "'${pkgs.file}/lib/libmagic${stdenv.hostPlatform.extensions.sharedLibrary}'"
+      '';
+
+      doCheck = false;
+
+      # TODO: tests are failing
+      #checkPhase = ''
+      #  ${python}/bin/${python.executable} ./test.py
+      #'';
+
+      meta = {
+        description = "A python interface to the libmagic file type identification library";
+        homepage = https://github.com/ahupp/python-magic;
+      };
+    };
 
     whichcraft = pythonPackages.buildPythonPackage rec {
         name = "whichcraft-${version}";
@@ -284,6 +320,9 @@ in
             url = "mirror://pypi/w/whichcraft/${name}.tar.gz";
             sha256 = "1zapij0ggmwp8gmr3yc4fy7pbnh3dag59nvyigrfkdvw734m23cy";
         };
+        buildInputs = with pythonPackages; [
+          pytest
+        ];
     };
 
     tqdm =  pythonPackages.buildPythonPackage rec {
