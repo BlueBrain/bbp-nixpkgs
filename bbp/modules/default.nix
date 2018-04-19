@@ -1364,6 +1364,7 @@ let
                pythonPkgs.h5py
                pythonPkgs.jinja2
                pythonPkgs.matplotlib
+               pythonPkgs.memory_profiler
                pythonPkgs.pyparsing
                pythonPkgs.pyyaml
                pythonPkgs.requests
@@ -1433,6 +1434,7 @@ let
                pythonPkgs.h5py
                pythonPkgs.jinja2
                pythonPkgs.matplotlib
+               pythonPkgs.memory_profiler
                pythonPkgs.pyparsing
                pythonPkgs.pyyaml
                pythonPkgs.requests
