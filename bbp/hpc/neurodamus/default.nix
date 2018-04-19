@@ -120,7 +120,6 @@ stdenv.mkDerivation rec {
         #refactor
 
         mkdir -p $out/{bin,lib,share}
-        mv hoclib/neuronHDF5/convert.sh $out/bin
         mv */special $out/bin/
         mv */.libs/*.so* $out/lib/ || true
         mv */.libs/*.a $out/lib/ || true
@@ -131,6 +130,10 @@ stdenv.mkDerivation rec {
         grep -v "\-dll" $out/bin/special > ./special.tmp
         cp ./special.tmp $out/bin/special
         echo " \"\''${NRNIV}\" -dll \"$out/lib/libnrnmech.so\" \"\$@\" " >> $out/bin/special
+    '' else ''
+    '') +
+    (if (branchName == "default") then ''
+        mv hoclib/neuronHDF5/convert.sh $out/bin
     '' else ''
     '') +
     ''runHook postInstall
