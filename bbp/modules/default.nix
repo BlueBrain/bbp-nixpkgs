@@ -1365,11 +1365,13 @@ let
                pythonPkgs.jinja2
                pythonPkgs.matplotlib
                pythonPkgs.memory_profiler
+               pythonPkgs.numexpr
                pythonPkgs.pyparsing
                pythonPkgs.pyyaml
                pythonPkgs.requests
                pythonPkgs.seaborn
                pythonPkgs.statsmodels
+               pythonPkgs.subprocess32
 
                # add all python3 backports in the same directory
                pythonPkgs.backports_functools_lru_cache
@@ -1435,6 +1437,7 @@ let
                pythonPkgs.jinja2
                pythonPkgs.matplotlib
                pythonPkgs.memory_profiler
+               pythonPkgs.numexpr
                pythonPkgs.pyparsing
                pythonPkgs.pyyaml
                pythonPkgs.requests
