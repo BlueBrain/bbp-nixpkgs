@@ -23,8 +23,8 @@ let
 
   src-master = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "43ff6eb82af7cf0a3c63359d1dbf1f44cb8b49ef";
-        sha256 = "010lrl4ls2lgrqrz0n1z0j6kvrhb3fmzabf6k881cbxljs7pwy1c";
+        rev = "60d5266cd28ead96e62be43f9404ee8410693691";
+        sha256 = "1f41mij588yb0w9f9m39n1xk3vh37739zc6w38r151ijxhq4pd4y";
     };
 
   src-savestate = fetchgitPrivate {
@@ -120,6 +120,7 @@ stdenv.mkDerivation rec {
         #refactor
 
         mkdir -p $out/{bin,lib,share}
+        mv hoclib/neuronHDF5/convert.sh $out/bin
         mv */special $out/bin/
         mv */.libs/*.so* $out/lib/ || true
         mv */.libs/*.a $out/lib/ || true
