@@ -29,6 +29,7 @@
 , bkcharts
 , pillow
 , selenium
+, packaging
 }:
 
 buildPythonPackage rec {
@@ -65,6 +66,7 @@ buildPythonPackage rec {
     tornado
     colorama
     bkcharts
+    packaging
   ]
   ++ lib.optionals ( !isPy3k ) [ futures ]
   ++ lib.optionals ( !isPy3k && !isPyPy ) [ websocket_client ]
