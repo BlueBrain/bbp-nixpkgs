@@ -1356,6 +1356,7 @@ let
                mpi4py-py27-bbp
                pkgs.python27Full
                pkgs.bbp-virtualenv
+               pythonPkgs.bokeh
                pythonPkgs.cython
                pythonPkgs.deepdish
                pythonPkgs.docopt
@@ -1429,6 +1430,7 @@ let
                pkgs.python36
 
                pkgs.bbp-virtualenv-py3
+               pythonPkgs.bokeh
                pythonPkgs.cython
                pythonPkgs.deepdish
                pythonPkgs.docopt
