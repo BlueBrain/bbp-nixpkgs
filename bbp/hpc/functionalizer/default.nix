@@ -55,7 +55,11 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  outputs = [ "out" ] ++ stdenv.lib.optional generateDoc "doc";
+  postInstall = ''
+	mkdir -p $doc/share
+  '';
+
+  outputs = [ "out" "doc" ];
 
   crossAttrs = {
     ## enforce mpiwrapper in cross compilation mode for bgq

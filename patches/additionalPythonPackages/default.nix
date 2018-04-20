@@ -562,7 +562,7 @@ in
 
     propagatedBuildInputs = with self; [
       py4j_0_10_4
-      pypandoc
+#      pypandoc
       setuptools
     ];
 

@@ -2946,6 +2946,41 @@ let
             ];
         };
 
+	## For HBP installations
+        hbp = pkgs.buildEnv {
+        name = "hbp-modules";
+        paths =
+            set.vcs
+            ++ set.dbg
+            ++ set.dev_base_pkgs
+            ++ set.sciences_base
+            ++ set.dev_viz
+            ++ set.compilers
+            ++ set.dev_toolkit_pkgs
+            ++ set.viz
+            ++ set.nse_base
+            ++ set.nse_legacy
+            ++ set.hpc_base
+            ++ set.hpc_circuit
+            ++ set.hpc_simulators
+            ++ set.python_base
+            ++ set.python2_frameworks
+            ++ set.python3_base
+            ++ set.system_pkgs
+            ++ set.parallel_toolkit
+	    ++ set.editors
+            ++ [
+
+                # hpc team
+                # dev env
+                dev-env-gcc
+                dev-env-python27
+            ];
+        };
+
+
+
+
         ## benchmark utilities
 
         benchs = pkgs.buildEnv {
