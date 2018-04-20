@@ -55,6 +55,8 @@ in
 
   bootstrapped-pip =  callPackage ./bootstrapped-pip { };
 
+  bokeh = callPackage ./bokeh {};
+
     funcsigs1_0_2 = self.buildPythonPackage rec {
         name = "funcsigs-1.0.2";
 
