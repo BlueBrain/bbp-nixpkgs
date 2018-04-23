@@ -1358,6 +1358,7 @@ let
                pkgs.bbp-virtualenv
                pythonPkgs.bokeh
                pythonPkgs.cython
+               pythonPkgs.dask
                pythonPkgs.deepdish
                pythonPkgs.docopt
                pythonPkgs.freezegun
@@ -1432,6 +1433,7 @@ let
                pkgs.bbp-virtualenv-py3
                pythonPkgs.bokeh
                pythonPkgs.cython
+               pythonPkgs.dask
                pythonPkgs.deepdish
                pythonPkgs.docopt
                pythonPkgs.freezegun
