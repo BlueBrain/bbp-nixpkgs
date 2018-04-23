@@ -810,6 +810,30 @@ EOF
     };
   };
 
+  attrs = pythonPackages.buildPythonPackage rec {
+    name = "${pname}-${version}";
+    pname = "attrs";
+    version = "17.4.0";
 
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "1jafnn1kzd6qhxgprhx6y6ik1r5m2rilx25syzcmq03azp660y8w";
+    };
+
+    # macOS needs clang for testing
+    buildInputs = with self; [
+      pytest hypothesis zope_interface pympler coverage six
+    ] ++ stdenv.lib.optionals (stdenv.isDarwin) [ clang ];
+
+    checkPhase = ''
+      py.test
+    '';
+
+    meta = with stdenv.lib; {
+      description = "Python attributes without boilerplate";
+      homepage = https://github.com/hynek/attrs;
+      license = licenses.mit;
+    };
+  };
 
 }
