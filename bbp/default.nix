@@ -379,6 +379,15 @@ let
         voxcell = callPackage ./nse/voxcell {
         };
 
+        entity-management = callPackage ./nse/entity-management {
+        };
+
+        entity-management_0_1_1 = callPackage ./nse/entity-management {
+            version = "0.1.1";
+            rev = "04a007f97e9889b278bbb0cddaac79dd907faaba";
+            sha256 = "0c0kl682fsw41s80g0h25adcwaf7rd3zp2y4nss3fbi8dxqby7m4";
+        };
+
         nse-allpkgs = noBGQ (pkgs.buildEnv {
             name = "all-modules";
             paths =
