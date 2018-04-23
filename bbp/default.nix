@@ -310,6 +310,9 @@ let
         neurom = callPackage ./nse/neurom {
         };
 
+        bbp-morphology-workflow = callPackage ./nse/bbp-morphology-workflow {
+        };
+
         morphsyn = callPackage ./nse/morphsyn {
             vtk = vtk7;
         };
