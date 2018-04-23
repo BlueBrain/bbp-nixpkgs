@@ -5,28 +5,26 @@ set -e
 # list all available modules
 module av nix
 
-
 #
 # basic testing on a python full environment
 #
 
 function basic_scientific_python_testing {
+    for module in numpy pandas matpltlib.pyplot scipy pycurl bokeh dask numexpr ;
+    echo "- import numpy"
+    ${PYTHON_EXEC} -c "import numpy"
 
-echo "- import numpy"
-${PYTHON_EXEC} -c "import numpy"
+    echo "- import pandas"
+    ${PYTHON_EXEC} -c "import pandas"
 
-echo "- import pandas"
-${PYTHON_EXEC} -c "import pandas"
+    echo "- import matplotlib"
+    ${PYTHON_EXEC} -c "import matplotlib.pyplot as plt"
 
-echo "- import matplotlib"
-${PYTHON_EXEC} -c "import matplotlib.pyplot as plt"
+    echo "- import scipy"
+    ${PYTHON_EXEC} -c "import scipy"
 
-echo "- import scipy"
-${PYTHON_EXEC} -c "import scipy"
-
-echo "- import pycurl"
-${PYTHON_EXEC} - <<EOF
-
+    echo "- import pycurl"
+    ${PYTHON_EXEC} - <<EOF
 import pycurl
 
 f = open('/dev/null', 'wb')
@@ -36,48 +34,43 @@ c.setopt(c.WRITEDATA, f)
 c.perform()
 c.close()
 print("execute pycurl with success")
-
 EOF
-
 }
-
-
 
 #
 # basic testing in a python light environment
+#
 
 function basic_python_light_env {
-rm -rf ~/.cache/pip
+    rm -rf ~/.cache/pip
 
-pushd $(mktemp -d)
+    pushd $(mktemp -d)
 
-echo "- create virtualenv $PWD/venv"
-virtualenv venv
-source venv/bin/activate
+    echo "- create virtualenv $PWD/venv"
+    virtualenv venv
+    source venv/bin/activate
 
-echo "- install the world with pip"
+    echo "- install the world with pip"
 
-pip install numpy 
-pip install scipy 
-pip install pandas
-pip install matplotlib
-patch_wheels
+    pip install numpy
+    pip install scipy
+    pip install pandas
+    pip install matplotlib
+    patch_wheels
 
-echo "end pip installation "
+    echo "end pip installation "
 
-${PYTHON_EXEC} - <<EOF
+    ${PYTHON_EXEC} - <<EOF
 import numpy
 import scipy
 import pandas
 import matplotlib
 EOF
 
-echo "import world with success"
+    echo "import world with success"
 
-popd
+    popd
 }
-#
-
 
 #
 # test set python 2 full
