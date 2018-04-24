@@ -588,7 +588,15 @@ let
             conflicts = conflicts-modules;
         };
 
-
+        singularity = pkgs.envModuleGen rec {
+            name = "singularity";
+            moduleFilePrefix = "nix";
+            description = pkgs.hpl.meta.description;
+            packages = [
+                pkgs.singularity
+            ];
+            conflicts = conflicts-modules;
+        };
 
         hpc = pkgs.envModuleGen {
             name = "HPCrelease";
@@ -2767,6 +2775,7 @@ let
                 opengl-driver
                 cuda8
                 cuda9
+                singularity
             ];
 
             parallel_toolkit = [
