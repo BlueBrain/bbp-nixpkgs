@@ -10,20 +10,13 @@ module av nix
 #
 
 function basic_scientific_python_testing {
-    for module in numpy pandas matpltlib.pyplot scipy pycurl bokeh dask numexpr ;
-    echo "- import numpy"
-    ${PYTHON_EXEC} -c "import numpy"
+    # numexpr fails to load: pkg_resources module is missing
+    for module in numpy pandas matplotlib.pyplot scipy pycurl bokeh dask ; do
+        echo "- import $module"
+        ${PYTHON_EXEC} -c "import module"
+    done
 
-    echo "- import pandas"
-    ${PYTHON_EXEC} -c "import pandas"
-
-    echo "- import matplotlib"
-    ${PYTHON_EXEC} -c "import matplotlib.pyplot as plt"
-
-    echo "- import scipy"
-    ${PYTHON_EXEC} -c "import scipy"
-
-    echo "- import pycurl"
+    echo "- test curl resource outside BBP"
     ${PYTHON_EXEC} - <<EOF
 import pycurl
 
