@@ -1437,6 +1437,7 @@ let
                pythonPkgs.docopt
                pythonPkgs.freezegun
                pythonPkgs.h5py
+               pythonPkgs.jinja2
                pythonPkgs.markupsafe
                pythonPkgs.matplotlib
                pythonPkgs.memory_profiler
