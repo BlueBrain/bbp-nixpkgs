@@ -1384,6 +1384,7 @@ let
                pythonPkgs.seaborn
                pythonPkgs.statsmodels
                pythonPkgs.subprocess32
+               pythonPkgs.toolz
 
                # add all python3 backports in the same directory
                pythonPkgs.backports_functools_lru_cache
@@ -1456,6 +1457,7 @@ let
                pythonPkgs.requests
                pythonPkgs.seaborn
                pythonPkgs.statsmodels
+               pythonPkgs.toolz
 
                pythonPkgs.cycler
                pythonPkgs.numpy

@@ -54,6 +54,15 @@ df = sns.load_dataset('iris')
 sns_plot = sns.pairplot(df, hue='species', size=2.5)
 sns_plot.savefig("seaborn.png")
 EOF
+
+    echo "- test dask"
+    ${PYTHON_EXEC} - <<EOF
+import dask.array as da
+
+x = da.random.normal(10, 0.1, size=(20000, 20000), chunks=(1000, 1000))
+y = x.mean(axis=0)[::100]
+y.compute()
+EOF
 }
 
 #
