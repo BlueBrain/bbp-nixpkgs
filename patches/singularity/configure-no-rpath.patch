@@ -1,0 +1,16 @@
+diff --git a/configure.ac b/configure.ac
+index 0a53a2e5..2a72ef3d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -40,11 +40,6 @@ AM_PROG_CC_C_O
+ AC_ENABLE_SHARED
+ AC_PROG_LIBTOOL(libtool)
+ 
+-# Setting rpath if necessary
+-if test "$libdir" = "\${exec_prefix}/lib"; then
+-    LDFLAGS="$LDFLAGS -Wl,-rpath -Wl,\$(libdir)"
+-fi
+-
+ AC_MSG_CHECKING([for namespace: CLONE_NEWPID])
+ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#define _GNU_SOURCE
+                                      #include <sched.h>

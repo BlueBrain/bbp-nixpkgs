@@ -132,8 +132,10 @@ let
 
         # llvm 3.9 backport
         llvmPackages_3_9 = llvmPackages_39;
-        
-        
+
+        # singularity = callPackage ./singularity {
+        # };
+
         # ispc compiler for brayns
         ispc = callPackage ./ispc {
             # require clang compiler
