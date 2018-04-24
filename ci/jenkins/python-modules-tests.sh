@@ -10,20 +10,12 @@ module av nix
 #
 
 function basic_scientific_python_testing {
-    for module in numpy pandas matpltlib.pyplot scipy pycurl bokeh dask numexpr ;
-    echo "- import numpy"
-    ${PYTHON_EXEC} -c "import numpy"
+    for module in numpy pandas matplotlib.pyplot scipy pycurl bokeh dask seaborn numexpr; do
+        echo "- import $module"
+        ${PYTHON_EXEC} -c "import $module"
+    done
 
-    echo "- import pandas"
-    ${PYTHON_EXEC} -c "import pandas"
-
-    echo "- import matplotlib"
-    ${PYTHON_EXEC} -c "import matplotlib.pyplot as plt"
-
-    echo "- import scipy"
-    ${PYTHON_EXEC} -c "import scipy"
-
-    echo "- import pycurl"
+    echo "- test curl resource outside BBP"
     ${PYTHON_EXEC} - <<EOF
 import pycurl
 
@@ -34,6 +26,33 @@ c.setopt(c.WRITEDATA, f)
 c.perform()
 c.close()
 print("execute pycurl with success")
+EOF
+
+    echo "- test bokeh"
+    ${PYTHON_EXEC} - <<EOF
+from bokeh.plotting import figure, output_file, save
+
+# prepare some data
+x = [1, 2, 3, 4, 5]
+y = [6, 7, 2, 4, 5]
+
+# output to static HTML file
+output_file("seaborn.html")
+
+# create a new plot with a title and axis labels
+p = figure(title="simple line example", x_axis_label='x', y_axis_label='y')
+
+# add a line renderer with legend and line thickness
+p.line(x, y, legend="Temp.", line_width=2)
+save(p)
+EOF
+
+    echo "- test seaborn"
+    ${PYTHON_EXEC} - <<EOF
+import seaborn as sns
+df = sns.load_dataset('iris')
+sns_plot = sns.pairplot(df, hue='species', size=2.5)
+sns_plot.savefig("seaborn.png")
 EOF
 }
 
