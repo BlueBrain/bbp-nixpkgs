@@ -66,6 +66,7 @@ function basic_python_light_env {
     pushd $(mktemp -d)
 
     echo "- create virtualenv $PWD/venv"
+    echo "  virtualenv is " `which virtualenv`
     virtualenv venv
     source venv/bin/activate
 
