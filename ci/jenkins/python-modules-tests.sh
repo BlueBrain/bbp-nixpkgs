@@ -13,7 +13,7 @@ function basic_scientific_python_testing {
     # numexpr fails to load: pkg_resources module is missing
     for module in numpy pandas matplotlib.pyplot scipy pycurl bokeh dask ; do
         echo "- import $module"
-        ${PYTHON_EXEC} -c "import module"
+        ${PYTHON_EXEC} -c "import $module"
     done
 
     echo "- test curl resource outside BBP"
