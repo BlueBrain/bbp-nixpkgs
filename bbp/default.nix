@@ -227,7 +227,7 @@ let
         };
 
         perftest = callPackage ./benchmark/perftest {
-        
+
         };
 
         shoc = callPackage ./benchmark/shoc {
@@ -256,7 +256,7 @@ let
 
 
         iperf = callPackage ./benchmark/iperf {
-        
+
         };
 
         osgtransparency = callPackage ./viz/osgtransparency {
@@ -339,19 +339,19 @@ let
 
         bglibpy = callPackage ./nse/bglibpy {
         };
-        
+
 
         bluepyopt = callPackage ./nse/bluepyopt {
         };
-        
+
         igorpy = callPackage ./nse/igorpy {
-        };          
-        
+        };
+
         bluepyefe = callPackage ./nse/bluepyefe {
         };
-        
+
         bluepymm = callPackage ./nse/bluepymm {
-        };        
+        };
 
 
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
@@ -568,6 +568,10 @@ let
         neurodamus-mousify = neurodamus.override {
             branchName = "mousify";
          };
+
+        neurodamus-bare = neurodamus.override {
+            branchName = "bare";
+        };
 
         neuromapp = enableBGQ callPackage ./hpc/neuromapp {
             mpiRuntime = bbp-mpi;
