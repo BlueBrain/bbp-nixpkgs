@@ -51,6 +51,11 @@ let
         sha256 = "0y48sdsnj14fd48hyf04xycxsmksgc9k1dj4cj8hvzrdkch3fs61";
   };
 
+  src-bare = fetchgitPrivate {
+        url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
+        rev = "77bb85b26d7f67935b62c8873e03225c2f12367d";
+        sha256 = "05gbpa6snad1gxk8s0ahz0b4xr7i5x4hpjrhxjkxjcxvhiybnprb";
+  };
 
   src-coreneuron = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
@@ -86,6 +91,7 @@ stdenv.mkDerivation rec {
           else if ( branchName == "hippocampus" ) then src-hippocampus
           else if ( branchName == "simplification" ) then src-simplification
           else if ( branchName == "mousify" ) then src-mousify
+          else if ( branchName == "bare" ) then src-bare
 		  else if ( branchName == "default" ) then src-master
           else throw ( "neurodamus : not a valid branchName name " + branchName ) ;
 
