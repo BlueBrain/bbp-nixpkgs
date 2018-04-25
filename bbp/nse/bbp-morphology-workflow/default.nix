@@ -1,14 +1,14 @@
 {
+  bbpsdk-legacy,
+  bluejittersdk,
+  bluerepairsdk,
   config,
   fetchgitPrivate,
-  pythonPackages,
-  neurom,
-  neurodamus,
-  bbpsdk-legacy,
-  muk,
-  bluerepairsdk,
   morphscale,
-  bluejittersdk,
+  muk,
+  neurodamus,
+  neurom,
+  pythonPackages,
 }:
 
 pythonPackages.buildPythonPackage rec {
@@ -23,24 +23,26 @@ pythonPackages.buildPythonPackage rec {
     };
 
     checkInputs = with pythonPackages; [
-        pylint
         coverage
-        pycodestyle
         mock
         nose
+        pycodestyle
+        pylint
     ];
 
     propagatedBuildInputs = with pythonPackages; [
-        neurom
-        neurodamus
         bbpsdk-legacy
-        muk
+        bluejittersdk
         bluerepairsdk
         morphscale
-        bluejittersdk
+        muk
+        neurodamus
+        neurom
     ];
 
     checkPhase = ''
+        runHook preCheck
         nosetests morphology_repair_workflow/tests
+        runHook postCheck
     '';
 }
