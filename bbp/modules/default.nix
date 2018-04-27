@@ -2393,6 +2393,15 @@ let
                             pkgs.clang
                        ];
             conflicts = [ gcc  gcc72 icc];
+
+            extraContent = ''
+                append-path --delim " " NIX_x86_64_unknown_linux_gnu_CXXSTDLIB_LINK "-L${pkgs.gcc.cc.lib}/lib" 
+		append-path --delim " " NIX_x86_64_unknown_linux_gnu_CXXSTDLIB_LINK "-stdlib=libstdc++"
+                setenv NIX_x86_64_unknown_linux_gnu_CXXSTDLIB_COMPILE "-isystem ${pkgs.gcc.cc}/include/c++/6.4.0 -isystem ${pkgs.gcc.cc}/include/c++/6.4.0/x86_64-unknown-linux-gnu -isystem ${pkgs.gcc.cc}/include/c++/6.4.0 -isystem ${pkgs.gcc.cc}/include/c++/6.4.0/x86_64-unknown-linux-gnu"
+            '';
+
+
+
         };
 
         icc = if (pkgs.WrappedICC != null) then (pkgs.envModuleGen rec {
