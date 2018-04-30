@@ -129,6 +129,8 @@ let
         #       inherit (stdenvAdapters) overrideCC;
         # };
 
+        likwid = callPackage ./likwid {
+        };
 
         # llvm 3.9 backport
         llvmPackages_3_9 = llvmPackages_39;
