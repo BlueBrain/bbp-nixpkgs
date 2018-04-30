@@ -1395,6 +1395,8 @@ let
                pkgs.bbp-virtualenv
                mpi4py-py27-bbp
                pythonPkgs.bokeh
+               pythonPkgs.certifi
+               pythonPkgs.chardet
                pythonPkgs.cython
                pythonPkgs.dask
                pythonPkgs.deepdish
@@ -1402,6 +1404,7 @@ let
                pythonPkgs.enum34
                pythonPkgs.freezegun
                pythonPkgs.h5py
+               pythonPkgs.idna
                pythonPkgs.jinja2
                pythonPkgs.markupsafe
                pythonPkgs.matplotlib
@@ -1415,6 +1418,7 @@ let
                pythonPkgs.statsmodels
                pythonPkgs.subprocess32
                pythonPkgs.toolz
+               pythonPkgs.tornado
 
                # add all python3 backports in the same directory
                pythonPkgs.backports_functools_lru_cache
@@ -1470,12 +1474,15 @@ let
                pkgs.python36
                pkgs.bbp-virtualenv-py3
                pythonPkgs.bokeh
+               pythonPkgs.certifi
+               pythonPkgs.chardet
                pythonPkgs.cython
                pythonPkgs.dask
                pythonPkgs.deepdish
                pythonPkgs.docopt
                pythonPkgs.freezegun
                pythonPkgs.h5py
+               pythonPkgs.idna
                pythonPkgs.jinja2
                pythonPkgs.markupsafe
                pythonPkgs.matplotlib
@@ -1488,6 +1495,7 @@ let
                pythonPkgs.seaborn
                pythonPkgs.statsmodels
                pythonPkgs.toolz
+               pythonPkgs.tornado
 
                pythonPkgs.cycler
                pythonPkgs.numpy
