@@ -478,11 +478,51 @@ in
     buildInputs = with self; [ coverage ];
   };
 
-  tensorflow-tensorboard = with self; callPackage ./tensorflow-tensorboard {
+  tensorflow-tensorboard = callPackage ./tensorflow-tensorboard { };
+
+  tensorflow =
+    if stdenv.isDarwin
+    then callPackage ./tensorflow/bin.nix {
+    }
+    else callPackage ./tensorflow rec {
+      cudaSupport = pkgs.config.cudaSupport or false;
+      inherit (pkgs.linuxPackages) nvidia_x11;
+      cudatoolkit = pkgs.cudatoolkit9;
+      cudnn = pkgs.cudnn_cudatoolkit9;
+      inherit tensorflow-tensorboard absl-py;
+    };
+
+    absl-py = pythonPackages.buildPythonPackage rec {
+      pname = "absl-py";
+      version = "0.2.0";
+      name = "${pname}-${version}";
+
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/${builtins.substring 0 1 pname}/${pname}/${name}.tar.gz";
+        sha256 = "1v1pxyc715zyba9axw97lg3jcwiajqq50s26b7cm8zdraj2dimvk";
+      };
+
+      propagatedBuildInputs = with self; [ six ];
+
+      # checks use bazel; should be revisited
+      doCheck = false;
+
+      meta = {
+        description = "Abseil Python Common Libraries";
+        homepage = "https://github.com/abseil/abseil-py";
+        license = stdenv.lib.licenses.asl20;
+        maintainers = with stdenv.lib.maintainers; [ danharaj ];
+      };
+    };
+
+
+  tensorflowWithoutCuda = tensorflow.override {
+    cudaSupport = false;
   };
 
-
-
+  tensorflowWithCuda = tensorflow.override {
+    cudaSupport = true;
+  };
 
   lazy = pythonPackages.buildPythonPackage rec {
     version = "1.3";
