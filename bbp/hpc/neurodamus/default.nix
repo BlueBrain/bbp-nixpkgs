@@ -23,14 +23,14 @@ let
 
   src-master = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "43ff6eb82af7cf0a3c63359d1dbf1f44cb8b49ef";
-        sha256 = "010lrl4ls2lgrqrz0n1z0j6kvrhb3fmzabf6k881cbxljs7pwy1c";
+        rev = "60d5266cd28ead96e62be43f9404ee8410693691";
+        sha256 = "1f41mij588yb0w9f9m39n1xk3vh37739zc6w38r151ijxhq4pd4y";
     };
 
   src-savestate = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "e8c6bfc02e58e58633a869000a1d1da4c9e3d4d5";
-        sha256 = "11hg1aqj6j4j43psz20v7dlvyxrmsy2hp45qdhiw6y00gmyzgm4j";
+        rev = "537672d392c5d1bf759c39b1ab04a5fa47a9c1b3";
+        sha256 = "0dbblarxdh40qjh03ww55yf31mvamc4ksxjb8jqhjimpijpn3139";
   };
 
   src-hippocampus = fetchgitPrivate {
@@ -51,6 +51,11 @@ let
         sha256 = "0y48sdsnj14fd48hyf04xycxsmksgc9k1dj4cj8hvzrdkch3fs61";
   };
 
+  src-bare = fetchgitPrivate {
+        url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
+        rev = "77bb85b26d7f67935b62c8873e03225c2f12367d";
+        sha256 = "05gbpa6snad1gxk8s0ahz0b4xr7i5x4hpjrhxjkxjcxvhiybnprb";
+  };
 
   src-coreneuron = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
@@ -63,10 +68,11 @@ in
 
 stdenv.mkDerivation rec {
     name = "neurodamus${if coreNeuronMode then "-coreneuron" else ""}-${version}";
-    version = "1.9.0-201803";
+    version = "1.9.0-201803dev";
     meta = {
         description = "Neuron simulators wrapper";
         homepage = "https://bbpcode.epfl.ch/code/#/admin/projects/sim/neurodamus/bbp";
+        repository = "ssh://tcarel@bbpcode.epfl.ch/sim/neurodamus/bbp";
         license = {
           fullName = "Copyright 2018, Blue Brain Project";
         };
@@ -85,10 +91,11 @@ stdenv.mkDerivation rec {
           else if ( branchName == "hippocampus" ) then src-hippocampus
           else if ( branchName == "simplification" ) then src-simplification
           else if ( branchName == "mousify" ) then src-mousify
+          else if ( branchName == "bare" ) then src-bare
 		  else if ( branchName == "default" ) then src-master
           else throw ( "neurodamus : not a valid branchName name " + branchName ) ;
 
-    patches = if (branchName == "simplification" || branchName == "savestate") then [ ./gcc-6-security-fix.patch ] else [ ];
+    patches = if (branchName == "simplification" ) then [ ./gcc-6-security-fix.patch ] else [ ];
 
 
     CFLAGS="-O2 -g";
@@ -129,6 +136,10 @@ stdenv.mkDerivation rec {
         grep -v "\-dll" $out/bin/special > ./special.tmp
         cp ./special.tmp $out/bin/special
         echo " \"\''${NRNIV}\" -dll \"$out/lib/libnrnmech.so\" \"\$@\" " >> $out/bin/special
+    '' else ''
+    '') +
+    (if (branchName == "default") then ''
+        mv hoclib/neuronHDF5/convert.sh $out/bin
     '' else ''
     '') +
     ''runHook postInstall

@@ -55,6 +55,8 @@ in
 
   bootstrapped-pip =  callPackage ./bootstrapped-pip { };
 
+  bokeh = callPackage ./bokeh {};
+
     funcsigs1_0_2 = self.buildPythonPackage rec {
         name = "funcsigs-1.0.2";
 
@@ -99,6 +101,9 @@ in
         url = "mirror://pypi/c/cached-property/${name}.tar.gz";
         sha256 = "1wwm23dyysdb4444xz1q6b1agpyax101d8fx45s58ms92fzg0qk5";
       };
+      buildInputs = with pythonPackages; [
+        freezegun
+      ];
     };
 
     certifi17 = pythonPackages.buildPythonPackage rec {
@@ -108,6 +113,18 @@ in
         url = "mirror://pypi/c/certifi/${name}.tar.gz";
         sha256 = "1h0k6sy3p4csfdayghg2wjbnb1hfz27i5qbr0c7v8dhira8l5isy";
       };
+    };
+
+    clustershell = pythonPackages.buildPythonPackage rec {
+      name = "ClusterShell-${version}";
+      version = "1.8";
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/c/clustershell/${name}.tar.gz";
+        sha256 = "1bm0pq8w2rql9q9i2bhs865rqvb6zck3h3gkb1d0mh59arrr7p4m";
+      };
+      propagatedBuildInputs = with self; [
+        pyyaml
+      ];
     };
 
     cookiecutter = pythonPackages.buildPythonPackage rec {
@@ -121,9 +138,11 @@ in
       propagatedBuildInputs = with self; [
         binaryornot
         click
+        freezegun
         future
         jinja2-time
         poyo
+        pytest
         requests
         whichcraft
       ];
@@ -131,16 +150,16 @@ in
 
     hpcbench = pythonPackages.buildPythonPackage rec {
       name = "hpcbench-${version}";
-      version = "0.3.6";
+      version = "0.5";
       src = pkgs.fetchurl {
        url = "mirror://pypi/h/hpcbench/${name}.tar.gz";
-       sha256 = "08a683rmv614y9yqs0g8c7qvczl01p9qnpisw12h0kjpnvldam2n";
+       sha256 = "169nwnnsy7wpwx0q016p2zcali4zyiczflxz39dzfqdrn6zsfdq3";
       };
       # # For development purpose, and add "pkgs.git" dependency
       # src = pkgs.fetchgit {
       #   url = "https://github.com/tristan0x/hpcbench.git";
-      #   rev = "f0978baea4b3863567b7ae07c9a592f0f316a56a";
-      #   sha256 = "16l7x69rbn0g1kdl7zk7zaqlgyymib58pm1irwkyr0w4cjifqyvq";
+      #   rev = "65e1f0dc65e3c874a69164d93096e533cc2bbdd8";
+      #   sha256 = "00q97hvjs13r1w5bnhak1lphy3wxml1vl3qd2v7z3zadr5jvb5lm";
       #   leaveDotGit = true;
       # };
       propagatedBuildInputs = with self; [
@@ -148,12 +167,18 @@ in
         cookiecutter
         docopt
         jinja2
+        mock
         numpy
         py-elasticsearch
+        python_magic
         pyyaml
         setuptools_scm
         six
+        pkgs.git
       ];
+
+      # TODO: enable tests
+      doCheck = false;
     };
 
     idna_2_6 = pythonPackages.buildPythonPackage rec {
@@ -263,6 +288,32 @@ in
         doCheck = false;
     };
 
+    python_magic = pythonPackages.buildPythonPackage rec {
+      name = "python-magic-0.4.15";
+
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/p/python-magic/${name}.tar.gz";
+        sha256 = "1mgwig9pnzgkf86q9ji9pnc99bngms15lfszq5rgqb9db07mqxpk";
+      };
+
+      propagatedBuildInputs = with self; [ pkgs.file ];
+
+      patchPhase = ''
+        substituteInPlace magic.py --replace "ctypes.util.find_library('magic')" "'${pkgs.file}/lib/libmagic${stdenv.hostPlatform.extensions.sharedLibrary}'"
+      '';
+
+      doCheck = false;
+
+      # TODO: tests are failing
+      #checkPhase = ''
+      #  ${python}/bin/${python.executable} ./test.py
+      #'';
+
+      meta = {
+        description = "A python interface to the libmagic file type identification library";
+        homepage = https://github.com/ahupp/python-magic;
+      };
+    };
 
     whichcraft = pythonPackages.buildPythonPackage rec {
         name = "whichcraft-${version}";
@@ -271,6 +322,9 @@ in
             url = "mirror://pypi/w/whichcraft/${name}.tar.gz";
             sha256 = "1zapij0ggmwp8gmr3yc4fy7pbnh3dag59nvyigrfkdvw734m23cy";
         };
+        buildInputs = with pythonPackages; [
+          pytest
+        ];
     };
 
     tqdm =  pythonPackages.buildPythonPackage rec {
@@ -739,6 +793,47 @@ EOF
 			
 		];
 
+  };
+
+  gcovr = pythonPackages.buildPythonPackage rec {
+    name = "gcovr-${version}";
+    version = "3.4";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/g/gcovr/${name}.tar.gz";
+      sha256 = "05fn8p96wdzqx1wspdh0cw1didjc36gk9ypwcnqfyv0yic21n9f9";
+    };
+
+    meta = {
+      description = "A Python script for summarizing gcov data";
+      license = "BSD";
+    };
+  };
+
+  attrs = pythonPackages.buildPythonPackage rec {
+    name = "${pname}-${version}";
+    pname = "attrs";
+    version = "17.4.0";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "1jafnn1kzd6qhxgprhx6y6ik1r5m2rilx25syzcmq03azp660y8w";
+    };
+
+    # macOS needs clang for testing
+    buildInputs = with self; [
+      pytest hypothesis zope_interface pympler coverage six
+    ] ++ stdenv.lib.optionals (stdenv.isDarwin) [ clang ];
+
+    checkPhase = ''
+      py.test
+    '';
+
+    meta = with stdenv.lib; {
+      description = "Python attributes without boilerplate";
+      homepage = https://github.com/hynek/attrs;
+      license = licenses.mit;
+    };
   };
 
 }
