@@ -310,6 +310,12 @@ let
         neurom = callPackage ./nse/neurom {
         };
 
+        morphio-python = callPackage ./nse/morphio-python {
+        };
+
+        morphio = callPackage ./nse/morphio {
+        };
+
         bbp-morphology-workflow = callPackage ./nse/bbp-morphology-workflow {
         };
 

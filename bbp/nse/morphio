@@ -1,0 +1,46 @@
+{ stdenv
+, git
+, pythonPackages
+, fetchgitPrivate
+, cmake
+, hdf5
+, highfive
+}:
+
+let
+    # create a python environment with numpy for numpy bindings tests
+    python_test_env = pythonPackages.python.buildEnv.override {
+      extraLibs = [
+        pythonPackages.cython
+        pythonPackages.numpy
+      ];
+
+    };
+in
+  stdenv.mkDerivation rec {
+    name = "morphio-${version}";
+    version = "0.9.1";
+
+    src = fetchgitPrivate {
+      url = "git@github.com:BlueBrain/morphio.git";
+      rev = "c557a06e0867b4e9befb2095d802cc42d99a8ded";
+      sha256 = "0bx97kbfaysgxn7caf8vagyyfwyrldaybgvsd3d68spyldk6wmqd";
+    };
+
+    buildInputs = [
+      cmake
+      hdf5
+      git
+      stdenv
+    ];
+
+    nativeBuildInputs = [ python_test_env ];
+
+    preConfigure = ''
+	# add setuptools to the path
+	# and fix the date issue with setuptools (https://github.com/NixOS/nixpkgs/issues/270 )
+	export PYTHONPATH=${pythonPackages.bootstrapped-pip}/lib/${pythonPackages.python.libPrefix}/site-packages:$PYTHONPATH
+   '';
+
+    enableParallelBuilding = true;
+ }
