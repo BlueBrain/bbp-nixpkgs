@@ -1376,7 +1376,7 @@ let
                pkgs.bbp-virtualenv
                pythonPkgs.pip
             ];
-            conflicts = [ python36-full python36-light ] ++ conflicts-modules;
+            conflicts = [ python27-full python36-full python36-light ] ++ conflicts-modules;
             dependencies = [ nss-wrapper manylinux1-python ];
         };
 
@@ -1443,7 +1443,7 @@ let
                pythonPkgs.six
                pythonPkgs.tables
             ];
-            conflicts = [ python36-full python36-light ] ++ conflicts-modules;
+            conflicts = [ python27-light python36-full python36-light ] ++ conflicts-modules;
             dependencies = [ nss-wrapper gcc manylinux1-python ];
         };
 
@@ -1515,7 +1515,7 @@ let
                pythonPkgs.six
                pythonPkgs.tables
             ];
-            conflicts = [ python27-light python27-full ] ++ conflicts-modules;
+            conflicts = [ python27-light python27-full python36-light ] ++ conflicts-modules;
             dependencies = [ nss-wrapper gcc ];
         };
 
