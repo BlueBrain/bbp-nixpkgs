@@ -1516,7 +1516,7 @@ let
                pythonPkgs.tables
             ];
             conflicts = [ python27-light python27-full python36-light ] ++ conflicts-modules;
-            dependencies = [ nss-wrapper gcc ];
+            dependencies = [ nss-wrapper gcc manylinux1-python ];
         };
 
         cython = pkgs.envModuleGen rec {
