@@ -339,10 +339,6 @@ let
 
         };
 
-        # vtk 7.0 backport
-        vtk7 = callPackage ./vtk {
-
-        };
 
         # itk 4.40
         itk = callPackage ./itk {
