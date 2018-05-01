@@ -2768,7 +2768,6 @@ let
                 phdf5
                 hdf5-cpp
                 gsl
-                julia
             ];
 
             ml_base = [
@@ -2781,7 +2780,9 @@ let
                 keras
             ];
 
-
+	    julia_base = [
+		julia
+	    ];
 
             python_base = [
                 python27-light
@@ -3014,7 +3015,8 @@ let
             ++ set.system_pkgs
             ++ set.parallel_toolkit
             ++ set.editors
-        ++ set.java_base
+            ++ set.julia_base
+            ++ set.java_base
             ++ [
 
                 # hpc team
