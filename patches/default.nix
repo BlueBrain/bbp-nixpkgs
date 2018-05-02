@@ -18,7 +18,9 @@ let
             });
         };
 
-    	bbp-virtualenv = callPackage ./bbp-virtualenv {};
+        bbp-virtualenv = callPackage ./bbp-virtualenv {
+            manylinux1 = manylinux1;
+        };
     	bbp-virtualenv-py3 = bbp-virtualenv.override { python = python3; };
 
         # Boost with Python 3 support

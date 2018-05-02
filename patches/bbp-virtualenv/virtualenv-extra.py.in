@@ -1,0 +1,70 @@
+"""
+Virtualenv hooks
+"""
+
+import distutils.sysconfig
+import fileinput
+import glob
+import os.path as osp
+import os
+import stat
+import textwrap
+
+
+PIP_WRAPPER = """\
+#!/bin/bash -e
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PIP="$(basename "${BASH_SOURCE[0]}")"
+"$DIR/../bin/$PIP" $@
+VIRTUAL_ENV="$DIR/.." "@patch_wheels_path@"
+"""
+
+
+def extend_parser(optparse_parser):
+    """You can add or remove options from the parser here."""
+
+
+def adjust_options(options, args):
+    """
+    You can change options here, or change the args (if you accept
+    different kinds of arguments, be sure you modify ``args`` so it is
+    only ``[DEST_DIR]``).
+    """
+
+
+def after_install(options, home_dir):
+    """After everything is installed, this function is called."""
+    # Make this virtualenv manylinux compatible
+    major_minor = distutils.sysconfig.get_python_version()
+    lib_dir = osp.join(home_dir, 'lib', 'python' + major_minor)
+    manylinux_mod = osp.join(lib_dir, '_manylinux.py')
+    if not osp.exists(manylinux_mod):
+        with open(manylinux_mod, 'w') as ostr:
+            ostr.write('manylinux1_compatible = True\n')
+
+    # wrap pip executables to call `patch_wheels' at the end
+    bin_wrap = osp.join(home_dir, '.bin-wrap')
+    os.makedirs(bin_wrap)
+    for pip_script in glob.glob(osp.join(home_dir, 'bin', 'pip*')):
+        st = os.stat(pip_script)
+        if not st.st_mode & stat.S_IEXEC:
+            continue
+        pip_name = osp.basename(pip_script)
+        pip_wrapper = osp.join(bin_wrap, pip_name)
+        if pip_name == 'pip':
+            with open(pip_wrapper, 'w') as ostr:
+                logger.info('wrapping script %s', pip_script)
+                ostr.write(PIP_WRAPPER)
+            os.chmod(pip_wrapper, st.st_mode)
+        else:
+            os.symlink('pip', pip_wrapper)
+
+    # add bin-wrap to the PATH in activate
+    activate_path = osp.join(home_dir, 'bin', 'activate')
+    file = fileinput.FileInput(activate_path, inplace=True)
+    try:
+        for line in file:
+            sys.stdout.write(line.replace('PATH="$VIRTUAL_ENV/bin:$PATH"',
+                             'PATH="$VIRTUAL_ENV/.bin-wrap:$VIRTUAL_ENV/bin:$PATH"'))
+    finally:
+        file.close()
