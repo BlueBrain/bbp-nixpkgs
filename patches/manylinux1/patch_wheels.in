@@ -27,23 +27,23 @@ function patch_python_wheel {
     WHEEL_OWN_DIR="$(dirname ${WHEEL_PATH})"
     #echo "$WHEEL_RPATH"
 
-    # redefine ld to the nix one
-    # silence error, when module does not have interpreter 
-    ${PATCHELF_BIN} --set-interpreter ${LD_SO_PATH} ${WHEEL_PATH} 2> /dev/null
+    # test if we already patched the RPATH
+    if [[ ! $WHEEL_RPATH == $MANYLINUX_LIBDIR:* ]] ; then
+        echo "Patch LD_PATH for wheel / python module $i"
 
-    # redefine the RPATH to the nix one inside manylinux1
-    ${PATCHELF_BIN} --set-rpath "${MANYLINUX_LIBDIR}:${WHEEL_OWN_DIR}:${WHEEL_RPATH}" ${WHEEL_PATH}
+        # redefine ld to the nix one
+        # silence error, when module does not have interpreter
+        ${PATCHELF_BIN} --set-interpreter ${LD_SO_PATH} ${WHEEL_PATH} 2> /dev/null
 
+        # redefine the RPATH to the nix one inside manylinux1
+        ${PATCHELF_BIN} --set-rpath "${MANYLINUX_LIBDIR}:${WHEEL_OWN_DIR}:${WHEEL_RPATH}" ${WHEEL_PATH}
+    fi
 }
 
 
 for i in $LIST_MODULES
 do
-echo "Patch LD_PATH for wheel / python module $i"
-
-patch_python_wheel $i
-
-
+    patch_python_wheel $i
 done
 
 
