@@ -314,7 +314,6 @@ let
         };
 
         morphsyn = callPackage ./nse/morphsyn {
-            vtk = vtk7;
         };
 
         bluejittersdk = callPackage ./nse/bluejittersdk {
