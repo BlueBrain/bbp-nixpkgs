@@ -1,5 +1,6 @@
 {
   blas,
+  buildinfo,
   fetchurl,
   mpi,
   stdenv,
@@ -9,6 +10,12 @@
 stdenv.mkDerivation rec {
   name = "hpl-${version}";
   version = "2.2";
+
+  bi = buildinfo {
+    metas = {
+      inherit version;
+    };
+  };
 
   meta = with stdenv.lib; {
     description = "portable HPC Linpack Benchmark";
@@ -81,5 +88,9 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/bin
     cp bin/${hplarch}/xhpl $out/bin
+  '';
+
+  postInstall = ''
+    ${bi.annotate} $out
   '';
 }

@@ -131,6 +131,9 @@ let
 
         };
 
+        buildinfo = callPackage ./common/buildinfo {
+        };
+
         ##
         ## BBP viz components
         ##

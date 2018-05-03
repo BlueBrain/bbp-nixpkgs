@@ -1,0 +1,46 @@
+#!/usr/bin/python3
+
+import argparse
+import logging
+import os
+import os.path as osp
+import stat
+import subprocess
+
+
+LOGGER = logging.getLogger('buildinfo')
+
+
+def annotate(path, annotation):
+    if osp.isdir(path):
+        for file in os.listdir(path):
+            annotate(osp.join(path, file), annotation)
+    st = os.stat(path)
+    if not st.st_mode & stat.S_IEXEC:
+        return
+    LOGGER.info("annotating %s", path)
+    subprocess.call([
+        'objcopy',
+        '-I', 'elf64-x86-64',
+        '-O', 'elf64-x86-64',
+        '--add-section', 'build_info=' + annotation,
+        path
+    ])
+
+def main():
+    logging.basicConfig(level=logging.INFO)
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        'path',
+        help='Executable or directory containing executables to annotate'
+    )
+    parser.add_argument(
+        'json', metavar='FILE',
+        help="Annotation file"
+    )
+    args = parser.parse_args()
+    annotate(args.path, args.json)
+
+
+if __name__ == '__main__':
+    main()
