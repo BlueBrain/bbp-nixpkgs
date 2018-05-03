@@ -130,8 +130,9 @@ let
 		neurom
 		 ] ++ [ 
                 neuroconnector 
-		jarvis
+        		jarvis
                 pyjarvis
+                pyjarvis-py3
                 in8metrics
                 dev-env-gcc
                 dev-env-python27
