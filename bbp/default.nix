@@ -643,20 +643,22 @@ let
         hpc-doc = callPackage ./common/vizDoc {
             name = "hpc-documentation";
             paths = [
-                cyme
                 coreneuron
+                cyme
+                flatindexer
                 functionalizer
                 highfive
                 learningengine
                 morphomesher
                 morphotool
                 mvdtool
+                nest
                 neurodamus
                 neuromapp
                 pytouchreader
-                flatindexer
                 reportinglib
                 spykfunc
+                steps
                 touchdetector
             ];
         };

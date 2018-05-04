@@ -1,5 +1,6 @@
 {
   blas
+, config
 , cmake
 , cython
 , fetchFromGitHub
@@ -53,6 +54,23 @@ stdenv.mkDerivation rec {
     sha256 = "1ldlkmy71m2x72rhyz1qy0j7cgf7jk8xn77vmxc2vd986kp1575b";
   };
 
+  meta = {
+    description = "STochastic Engine for Pathway Simulation";
+    longDescription = ''
+      STEPS is a package for exact stochastic simulation of
+      reaction-diffusion systems in arbitrarily complex 3D geometries.
+      Our core simulation algorithm is an implementation of Gillespie's SSA,
+      extended to deal with diffusion of molecules over the elements of a 3D
+      tetrahedral mesh.
+    '';
+    platforms = stdenv.lib.platforms.all;
+    homepage = http://steps.sourceforge.net;
+    license = stdenv.lib.licenses.gpl2;
+    maintainers = [
+      "the NEST Initiative"
+    ];
+  };
+
   enableParallelBuilding = true;
 
   preConfigure = ''
@@ -78,6 +96,8 @@ stdenv.mkDerivation rec {
   postInstall = ''
     mkdir -p $out/${python.sitePackages}
     ln -s $out/steps $out/${python.sitePackages}/steps
+    mkdir -p $out/share/doc/steps/html
+    echo '<html><head><meta http-equiv="refresh" content="0; URL=${meta.homepage}"/></head></html>' >$out/share/doc/steps/html/index.html
   '';
 
   doCheck = false;
@@ -87,4 +107,6 @@ stdenv.mkDerivation rec {
   passthru = {
 	  python-env = steps-python-env;
   };
+
+  outputs = [ "out" "doc" ];
 }
