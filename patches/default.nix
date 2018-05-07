@@ -129,6 +129,8 @@ let
         #       inherit (stdenvAdapters) overrideCC;
         # };
 
+        likwid = callPackage ./likwid {
+        };
 
         # llvm 3.9 backport
         llvmPackages_3_9 = llvmPackages_39;
@@ -337,10 +339,6 @@ let
 
         };
 
-        # vtk 7.0 backport
-        vtk7 = callPackage ./vtk {
-
-        };
 
         # itk 4.40
         itk = callPackage ./itk {
@@ -370,26 +368,6 @@ let
         ;
 
         cudnn = cudnn6_cudatoolkit8;
-
-        tensorflow = callPackage ./tensorflow {
-            pythonPackages = patches-pkgs.python27Packages;
-            cudaSupport = false;
-            cudnn = null;
-        };
-
-        tensorflow-py3 = tensorflow.override {
-            pythonPackages = patches-pkgs.python36Packages;
-        };
-
-        tensorflow-gpu = if (nvidia-drivers != null) then callPackage ./tensorflow {
-            pythonPackages = patches-pkgs.python27Packages;
-            cudaSupport = true;
-            cudnn = cudnn;
-        } else null;
-
-        tensorflow-gpu-py3 = if (nvidia-drivers != null) then tensorflow-gpu.override {
-            pythonPackages = patches-pkgs.python34Packages;
-        } else null;
 
         cctz = callPackage ./cctz {
         };

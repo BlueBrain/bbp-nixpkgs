@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
   src = fetchgitExternal {
     url = "https://github.com/BlueBrain/cyme.git";
     rev = "eb4734b8a5c183027c4bb9a2cd4947fbc59ec8d5";
-    sha256 = "1ji8wn6wwwk6gc8l04i2cx55w051ia7r6pw4lrjxs11zb5s5cwmd";
+    sha256 = "1rcfwwpqy5a0rc073apgkzhcbmknk82hpx986zqpvpz80mi4nbp3";
   };
 
   buildInputs = [ stdenv boost cmake ];
