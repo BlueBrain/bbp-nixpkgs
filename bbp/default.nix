@@ -310,6 +310,12 @@ let
         neurom = callPackage ./nse/neurom {
         };
 
+        morphio-python = callPackage ./nse/morphio-python {
+        };
+
+        morphio = callPackage ./nse/morphio {
+        };
+
         bbp-morphology-workflow = callPackage ./nse/bbp-morphology-workflow {
         };
 
@@ -637,20 +643,22 @@ let
         hpc-doc = callPackage ./common/vizDoc {
             name = "hpc-documentation";
             paths = [
-                cyme
                 coreneuron
+                cyme
+                flatindexer
                 functionalizer
                 highfive
                 learningengine
                 morphomesher
                 morphotool
                 mvdtool
+                nest
                 neurodamus
                 neuromapp
                 pytouchreader
-                flatindexer
                 reportinglib
                 spykfunc
+                steps
                 touchdetector
             ];
         };
