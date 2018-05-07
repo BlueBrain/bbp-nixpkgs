@@ -24,6 +24,11 @@ let
                     versionNumber = "367.57";
                     sha256 = "1r6nbm201psrs4xxw8826kl1li10wbhjbfwvp924ninsl6v8ljmr";
                 }
+		else if (driverVersion == "375.39") then
+                { 
+                    versionNumber = "375.39";
+                    sha256 = "19w5v81f770rqjrvdwz11k015zli2y8f4x10ydqxcy0nhhh5mgli";
+                }
                else if (driverVersion == "384.98") then
                {
                    versionNumber = "384.98";
