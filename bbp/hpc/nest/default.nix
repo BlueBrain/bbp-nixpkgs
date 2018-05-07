@@ -59,6 +59,6 @@ stdenv.mkDerivation rec {
 
   postInstall = ''
     mkdir -p $out/share/doc/nest/html
-    echo '<html><head><meta http-equiv="refresh" content="0; URL=${meta.homepage}"/></head></html>' >$out/share/doc/nest/index.html
+    echo '<html><head><meta http-equiv="refresh" content="0; URL=${meta.homepage}"/></head></html>' >$out/share/doc/nest/html/index.html
   '';
 }
