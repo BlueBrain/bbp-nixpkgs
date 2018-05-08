@@ -276,12 +276,14 @@ let
         ospray = callPackage ./viz/ospray {
             stdenv = stdenvIntelfSupported;
             mpi = bbp-mpi;
+	    qt4 = null;
         };
 
         ospray-devel = callPackage ./viz/ospray {
             stdenv = stdenvIntelfSupported;
             mpi = bbp-mpi;
             devel = true;
+	    qt4 = null;
         };
 
         ospray-modules = callPackage ./viz/ospray-modules {
