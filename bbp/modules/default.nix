@@ -2981,7 +2981,7 @@ let
             ];
 
             hpc_larges = [
-            #    steps
+                steps
                 neuromapp
             ];
         };
