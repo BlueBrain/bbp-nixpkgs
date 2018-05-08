@@ -10,7 +10,7 @@
 
 stdenv.mkDerivation rec {
   name = "bluejittersdk-${version}";
-  version = "34c9e";
+  version = "${builtins.substring 0 6 src.rev}";
   buildInputs = [ stdenv boost cmake hdf5-cpp pkgconfig gsl bbpsdk ];
 
   src = fetchgitExternal {
