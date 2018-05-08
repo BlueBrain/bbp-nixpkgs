@@ -3046,7 +3046,6 @@ let
             ++ set.python_base
             ++ set.python2_frameworks
             ++ set.python3_base
-            ++ set.system_pkgs
             ++ set.parallel_toolkit
 	    ++ set.editors
             ++ [
@@ -3059,7 +3058,11 @@ let
 		# required for rtneuron usage
 		pyqt5
 		qt5
-            ];
+
+                nss-wrapper
+                opengl-driver
+
+	    ];
         };
 
 
