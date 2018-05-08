@@ -32,7 +32,7 @@ let
 in
 stdenv.mkDerivation rec {
   name = "steps-${version}";
-  version = "3.2-20171031";
+  version = "3.3.0";
 
   nativeBuildInputs = [ cmake swig python ];
 
@@ -50,8 +50,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = "ssh://git@github.com/CNS-OIST/HBP_STEPS.git";
-    rev = "fc40cde67d759b82e95a09102d29203f1475321c";
-    sha256 = "1ldlkmy71m2x72rhyz1qy0j7cgf7jk8xn77vmxc2vd986kp1575b";
+    rev = "5edef4f589efa49ecfaaeebc3599985df03f4126";
+    sha256 = "1xg8ibxdwv6s0lhgd5zifgq2n77lhmvlnw75vck20p3xkg1xbmga";
   };
 
   meta = {
