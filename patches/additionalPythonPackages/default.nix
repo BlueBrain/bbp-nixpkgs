@@ -55,6 +55,53 @@ in
 
   bootstrapped-pip =  callPackage ./bootstrapped-pip { };
 
+  bb5 = self.buildPythonPackage (rec {
+    name = "bb5";
+    version = "0.1a";
+    src = pkgs.fetchgitPrivate {
+        url = "git@github.com:tristan0x/pybb5.git";
+        rev = "5bf172e74fc966dcae85b7142bac368301d384dd";
+        sha256 = "07443dngqm5lpjpcjdmwzw14jwgpgnaafrknw2pjp175b7sj07sc";
+        leaveDotGit = true;
+    };
+
+    buildInputs = with pythonPackages; [
+      coverage
+      mock
+      pep8
+      pkgs.git
+      pycodestyle
+      pyscaffold
+      pytest
+      pytestcov
+      setuptools_scm
+      sphinx
+      vcrpy
+    ];
+
+    propagatedBuildInputs = with pythonPackages; [
+      clustershell
+      docopt
+      requests
+      six
+    ];
+  });
+
+  pyscaffold = self.buildPythonPackage rec {
+    name = "PyScaffold-${version}";
+    version = "2.5.11";
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/p/pyscaffold/${name}.tar.gz";
+      sha256 = "0qgf13vd594gqi6ssvai3hcr03akn9a7nrj9ar1xqm71426sfaqc";
+    };
+
+    buildInputs = with pythonPackages; [
+      six
+    ];
+
+    doCheck = false;
+  };
+
   bokeh = callPackage ./bokeh {};
 
     funcsigs1_0_2 = self.buildPythonPackage rec {
@@ -672,7 +719,7 @@ in
       six
       inflection
       pandocfilters
-      markdown  
+      markdown
     ];
 
     doCheck = false;
@@ -792,8 +839,8 @@ site.addsitedir(os.path.dirname(os.path.abspath(__file__)))
 EOF
     '';
   };
-  
-  
+
+
   scoop = pythonPackages.buildPythonPackage rec {
     pname = "scoop";
     version = "0.7.1.1";
@@ -815,7 +862,7 @@ EOF
     ];
 
   };
-  
+
     deap = pythonPackages.buildPythonPackage rec {
 		pname = "deap";
 		version = "1.2.2";
@@ -830,7 +877,7 @@ EOF
 
 
 		propagatedBuildInputs = with pythonPackages; [
-			
+
 		];
 
   };
