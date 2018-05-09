@@ -58,4 +58,8 @@ stdenv.mkDerivation rec {
     platforms = platforms.linux;
     maintainers = [ maintainers.jbedo ];
   };
+
+  postInstall = ''
+    echo 'bind path = /gpfs' >>$out/etc/singularity/singularity.conf
+  '';
 }
