@@ -31,7 +31,7 @@ let
 
   tfFeature = x: if x then "1" else "0";
 
-  version = "1.5.0";
+  version = "1.8.0";
 
   pkg = buildBazelPackage rec {
     name = "tensorflow-build-${version}";
@@ -101,7 +101,7 @@ let
         rm -rf $bazelOut/external/{bazel_tools,\@bazel_tools.marker,local_*,\@local_*}
       '';
 
-      sha256 = "1nc98aqrp14q7llypcwaa0kdn9xi7r0p1mnd3vmmn1m299py33ca";
+      sha256 = "0k31skb2ka0aks6xmggzd0v3pm8j1a6w8ywd6caqznkwha2r7g5x";
     };
 
     buildAttrs = {
