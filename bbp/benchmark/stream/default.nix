@@ -46,8 +46,6 @@ stdenv.mkDerivation rec {
     "-mcmodel=medium"
   ] ++ stdenv.lib.optionals ( stdenv ? isICC )  [
     "-shared-intel"
-    "-mtune=native"
-    "-march=native"
     "-ffreestanding"
     "-qopenmp"
     "-qopt-streaming-stores always"
