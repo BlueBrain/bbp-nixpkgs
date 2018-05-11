@@ -442,6 +442,10 @@ let
             hpctools = hpctools-xlc;
         };
 
+        converters = callPackage ./hpc/converters {
+            mpiRuntime = bbp-mpi;
+        };
+
         spykfunc = callPackage ./hpc/spykfunc {
         };
 
@@ -483,9 +487,12 @@ let
 
         };
 
-
         highfive = callPackage ./hpc/highfive {
 
+        };
+
+        highfive-phdf5 = highfive.override {
+            hdf5 = phdf5;
         };
 
         flatindexer = callPackage ./hpc/FLATIndexer {

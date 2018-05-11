@@ -18,6 +18,8 @@ stdenv.mkDerivation rec {
     sha256 = "1xp1aq0vbj2aynwl3izfibrxi69aj2awmg7mcbp7d40j2kgpxfpz";
   };
 
+  enableParallelBuilding = true;
+
   buildInputs = [
     boost
     cmake
