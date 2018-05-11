@@ -401,6 +401,16 @@ let
 
         yaml-cpp = callPackage ./yaml-cpp {
         };
+
+	arrow = callPackage ./arrow {
+        };
+
+	parquet-cpp = callPackage ./parquet {
+		inherit arrow;
+        };
+
+
+
     };
 
     additionalPythonPackages = MergePkgs.callPackage ./additionalPythonPackages ({
