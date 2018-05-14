@@ -53,6 +53,7 @@ stdenv.mkDerivation rec {
     };
     maintainers = [
       config.maintainers.ferdonline
+      config.maintainers.matz-e
     ];
   };
 }
