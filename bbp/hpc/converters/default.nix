@@ -49,7 +49,7 @@ stdenv.mkDerivation rec {
     homepage = "https://bbpcode.epfl.ch/code/#/admin/projects/building/Functionalizer";
     repository = "ssh://bbpcode.epfl.ch/building/Functionalizer";
     license = {
-      fullName = "Copyright 2012, Blue Brain Project";
+      fullName = "Copyright 2018, Blue Brain Project";
     };
     maintainers = [
       config.maintainers.ferdonline
