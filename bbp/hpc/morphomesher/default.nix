@@ -47,6 +47,8 @@ stdenv.mkDerivation rec {
     "-DUNIT_TESTS=OFF"
     "-DHADOKEN_UNIT_TESTS:BOOL=OFF"
   ];
+
+  # CGAL compilation takes so much memory that parallel build with fail on most machine
   enableParallelBuilding = false;
 
   doCheck = true;
