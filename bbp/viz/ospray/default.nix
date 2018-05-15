@@ -6,10 +6,10 @@
 , embree
 , doxygen
 , tbb
+, glfw
 , mesa
 , freeglut
 , readline
-, qt4
 , mpi
 , devel ? false
 }:
@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
 	name = "ospray-${version}";
 	version = ospray-info.version;
 
-	buildInputs = [ pkgconfig embree tbb ispc mesa freeglut readline qt4 mpi ];
+	buildInputs = [ pkgconfig glfw embree tbb ispc mesa freeglut readline mpi ];
 
 	nativeBuildInputs = [ doxygen cmake ];
 
@@ -50,6 +50,8 @@ stdenv.mkDerivation rec {
     cmakeFlags = [ "-DOSPRAY_ZIP_MODE=OFF"                   #disable bundle dependencies
                    "-Dembree_DIR=${embree}" 
                    "-DEMBREE_MAX_ISA=AVX2"
+                   "-DOSPRAY_ENABLE_APPS=FALSE"
+                   "-DOSPRAY_MODULE_MPI_APPS=FALSE"
                    "-DTBB_ROOT=${tbb}"
                    "-DOSPRAY_MODULE_MPI=ON"
                    "-DCMAKE_INSTALL_INCLUDEDIR=include/"
