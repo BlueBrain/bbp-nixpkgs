@@ -653,6 +653,7 @@ in
       py4j_0_10_4
       pypandoc
       setuptools
+      simplegeneric
     ];
 
     doCheck = false;
