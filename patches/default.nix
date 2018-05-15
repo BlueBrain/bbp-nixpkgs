@@ -412,8 +412,12 @@ let
 		inherit arrow;
         };
 
+        spark-bbp = callPackage ./spark {
+          sparkOrigin = spark;
+        };
 
-
+        hadoop-bbp = callPackage ./hadoop {
+        };
     };
 
     additionalPythonPackages = MergePkgs.callPackage ./additionalPythonPackages ({
