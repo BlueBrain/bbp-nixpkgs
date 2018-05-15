@@ -1,0 +1,26 @@
+{ stdenv
+, git
+, pythonPackages
+, fetchgitPrivate
+, cmake
+, hdf5
+, highfive
+}:
+
+pythonPackages.buildPythonPackage rec {
+    name = "morphio-python-${version}";
+    version = "0.9.1";
+
+    src = fetchgitPrivate {
+      url = "git@github.com:BlueBrain/morphio.git";
+      rev = "c557a06e0867b4e9befb2095d802cc42d99a8ded";
+      sha256 = "0bx97kbfaysgxn7caf8vagyyfwyrldaybgvsd3d68spyldk6wmqd";
+    };
+
+    buildInputs = [
+      cmake
+      hdf5
+      git
+      stdenv
+    ];
+ }

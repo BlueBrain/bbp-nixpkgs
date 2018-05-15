@@ -8,7 +8,7 @@
 
 stdenv.mkDerivation rec {
   name = "morphsyn-${version}";
-  version = "9040c";
+  version = "${builtins.substring 0 6 src.rev}";
   buildInputs = [ stdenv boost cmake hdf5-cpp vtk ];
 
   src = fetchgitPrivate {

@@ -18,7 +18,9 @@ let
             });
         };
 
-    	bbp-virtualenv = callPackage ./bbp-virtualenv {};
+        bbp-virtualenv = callPackage ./bbp-virtualenv {
+            manylinux1 = manylinux1;
+        };
     	bbp-virtualenv-py3 = bbp-virtualenv.override { python = python3; };
 
 	pandoc = if (config ? documentation && config.documentation == false) then null else std-pkgs.pandoc;
@@ -342,10 +344,6 @@ let
 
         };
 
-        # vtk 7.0 backport
-        vtk7 = callPackage ./vtk {
-
-        };
 
         # itk 4.40
         itk = callPackage ./itk {
@@ -375,26 +373,6 @@ let
         ;
 
         cudnn = cudnn6_cudatoolkit8;
-
-        tensorflow = callPackage ./tensorflow {
-            pythonPackages = patches-pkgs.python27Packages;
-            cudaSupport = false;
-            cudnn = null;
-        };
-
-        tensorflow-py3 = tensorflow.override {
-            pythonPackages = patches-pkgs.python36Packages;
-        };
-
-        tensorflow-gpu = if (nvidia-drivers != null) then callPackage ./tensorflow {
-            pythonPackages = patches-pkgs.python27Packages;
-            cudaSupport = true;
-            cudnn = cudnn;
-        } else null;
-
-        tensorflow-gpu-py3 = if (nvidia-drivers != null) then tensorflow-gpu.override {
-            pythonPackages = patches-pkgs.python34Packages;
-        } else null;
 
         cctz = callPackage ./cctz {
         };
@@ -426,6 +404,16 @@ let
 
         yaml-cpp = callPackage ./yaml-cpp {
         };
+
+	arrow = callPackage ./arrow {
+        };
+
+	parquet-cpp = callPackage ./parquet {
+		inherit arrow;
+        };
+
+
+
     };
 
     additionalPythonPackages = MergePkgs.callPackage ./additionalPythonPackages ({

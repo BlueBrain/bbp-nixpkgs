@@ -299,22 +299,22 @@ let
 
         };
 
-        bb5-utils = callPackage ./hpc/bb5-utils {
-            python = python3;
-            pythonPackages = python3Packages;
-       };
-
         ##
         ## BBP NSE components
         ##
         neurom = callPackage ./nse/neurom {
         };
 
+        morphio-python = callPackage ./nse/morphio-python {
+        };
+
+        morphio = callPackage ./nse/morphio {
+        };
+
         bbp-morphology-workflow = callPackage ./nse/bbp-morphology-workflow {
         };
 
         morphsyn = callPackage ./nse/morphsyn {
-            vtk = vtk7;
         };
 
         bluejittersdk = callPackage ./nse/bluejittersdk {
@@ -641,20 +641,22 @@ let
         hpc-doc = callPackage ./common/vizDoc {
             name = "hpc-documentation";
             paths = [
-                cyme
                 coreneuron
+                cyme
+                flatindexer
                 functionalizer
                 highfive
                 learningengine
                 morphomesher
                 morphotool
                 mvdtool
+                nest
                 neurodamus
                 neuromapp
                 pytouchreader
-                flatindexer
                 reportinglib
                 spykfunc
+                steps
                 touchdetector
             ];
         };
