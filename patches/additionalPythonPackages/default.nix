@@ -641,12 +641,12 @@ in
   };
 
   pyspark = pythonPackages.buildPythonPackage rec {
-    version = "2.2.0";
+    version = "2.2.1";
     name = "pyspark-${version}";
 
     src = pkgs.fetchurl {
-      url = "mirror://pypi/p/pyspark/${name}.post0.tar.gz";
-      sha256 = "0g1slgd24wx3hnkvqxjdd9pcqid5x1yc5pl6kn9i5kh8hq8r9jcx";
+      url = "mirror://pypi/p/pyspark/${name}.tar.gz";
+      sha256 = "1l26rmqn49kw1pk1hm2bxqqp9larv8imd0jbhw4vmwi54ca7z2kb";
     };
 
     propagatedBuildInputs = with self; [
@@ -654,6 +654,72 @@ in
       pypandoc
       setuptools
       simplegeneric
+    ];
+
+    doCheck = false;
+  };
+
+  sparkmanager = pythonPackages.buildPythonPackage rec {
+    version = "0.5.3";
+    pname = "sparkmanager";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "1zfmy5d9gbpj0fws5apb0fhdjm45wkpl973nnq7qchwh87dhcg0p";
+    };
+
+    preConfigure = ''
+        sed -i "/pytest-runner/d" setup.py
+    '';
+
+    propagatedBuildInputs = with self; [
+      pyspark
+      six
+    ];
+
+    doCheck = false;
+  };
+
+  jprops = pythonPackages.buildPythonPackage rec {
+    version = "2.0.2";
+    pname = "jprops";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "0b2v7m6pw9kb2qyp8qani7r1g63zi8agwj1ak0zhmkdn6cc275yj";
+    };
+
+    doCheck = false;
+  };
+
+  funcsigs = pythonPackages.buildPythonPackage rec {
+    version = "1.0.2";
+    pname = "funcsigs";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "0l4g5818ffyfmfs1a924811azhjj8ax9xd1cffr1mzd3ycn0zfx7";
+    };
+
+    doCheck = false;
+  };
+
+  snakebite = pythonPackages.buildPythonPackage rec {
+    version = "2.11.0";
+    pname = "snakebite";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "12lpmq2s4934r0n4nl3w6c63vb1nx56pkmb2xrccdfacjjs3hlh8";
+    };
+
+    preConfigure = ''
+        sed -i "s@\s*'argparse']@]@g" setup.py
+    '';
+
+    propagatedBuildInputs = with self; [
+      argparse
+      protobuf
     ];
 
     doCheck = false;
