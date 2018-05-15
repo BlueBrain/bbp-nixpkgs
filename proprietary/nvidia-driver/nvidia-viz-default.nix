@@ -24,6 +24,11 @@ let
                     versionNumber = "367.57";
                     sha256 = "1r6nbm201psrs4xxw8826kl1li10wbhjbfwvp924ninsl6v8ljmr";
                 }
+		else if (driverVersion == "375.39") then
+                { 
+                    versionNumber = "375.39";
+                    sha256 = "19w5v81f770rqjrvdwz11k015zli2y8f4x10ydqxcy0nhhh5mgli";
+                }
                else if (driverVersion == "384.98") then
                {
                    versionNumber = "384.98";
@@ -35,7 +40,14 @@ let
                    versionNumber = "384.111";
                    sha256 = "1mzajvsjggljhkfrika5qzaqcb5q0i1pddmikbz3galpqs9wkf2n";
         
+               }
+	       else if (driverVersion == "390.30") then
+               {
+                   versionNumber = "390.30";
+                   sha256 = "10vyd0xh2li13k8zzkfj2adm71i1dmyg110pqfwqcaj77hdb8k6a";
+        
                } 
+ 
                else throw "nvidia-x11 version ${driverVersion} is not supported for ${stdenv.system}";
 
   # Policy: use the highest stable version as the default (on our master).
@@ -55,7 +67,7 @@ stdenv.mkDerivation rec {
   builder = ./nvidia-viz-builder.sh;
 
   src = fetchurl {
-        url = "http://us.download.nvidia.com/XFree86/Linux-x86_64/${versionNumber}/NVIDIA-Linux-x86_64-${versionNumber}-no-compat32.run";
+        urls = [ "http://us.download.nvidia.com/XFree86/Linux-x86_64/${versionNumber}/NVIDIA-Linux-x86_64-${versionNumber}.run" "http://fr.download.nvidia.com/tesla/${versionNumber}/NVIDIA-Linux-x86_64-${versionNumber}.run" ];
         sha256 = driverInfo.sha256;
   };
 

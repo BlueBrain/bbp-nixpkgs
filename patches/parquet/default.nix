@@ -29,6 +29,6 @@ stdenv.mkDerivation rec {
 	"-DTHRIFT_HOME=${thrift}"
 	"-DARROW_HOME=${arrow}"
 	"-DPARQUET_USE_SSE=OFF"
-#       "-DPARQUET_BUILD_TESTS=
+       "-DPARQUET_BUILD_TESTS=OFF"
   ];
 }
