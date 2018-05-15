@@ -14,7 +14,7 @@
 , zstd }:
 
 stdenv.mkDerivation rec {
-  name = "converters-${version}";
+  name = "parquet-converters-${version}";
   version = "0.1.0";
 
   buildInputs = [ arrow boost highfive-phdf5 mpiRuntime parquet-cpp phdf5 snappy syntool thrift zstd ];
