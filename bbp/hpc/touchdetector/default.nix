@@ -53,7 +53,9 @@ stdenv.mkDerivation rec {
 
   docCss = ../../common/vizDoc/github-pandoc.css;
   postInstall = [
-	"mkdir -p $doc/share"
+	''
+	mkdir -p $doc/share
+	''
    ] ++ (stdenv.lib.optional ) (pandoc != null) [ ''
     install -D ../LICENSE.txt $out/share/doc/TouchDetector/LICENSE.txt ;
     mkdir -p $out/share/doc/TouchDetector/html
