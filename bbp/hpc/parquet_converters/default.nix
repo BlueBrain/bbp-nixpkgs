@@ -25,8 +25,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/Functionalizer";
-    rev = "096ff187f25683219b8c372c38b07888f6d89f70";
-    sha256 = "0pm07c752nh7wjxagipk0sfmlir2b2jscwgs4bm9r89rnjdwfzg4";
+    rev = "ce633399af9ccd38ecc65f6ef72048e5c62bf359";
+    sha256 = "0vk5lf46fj7br9v4kr5y4aj0z2ilj2ph8dc3m75zkmdiwgyv3a2r";
   };
 
   cmakeFlags = [
