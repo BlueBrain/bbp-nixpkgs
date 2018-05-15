@@ -437,7 +437,7 @@ let
             hpctools = hpctools-xlc;
         };
 
-        converters = callPackage ./hpc/converters {
+        parquet-converters = callPackage ./hpc/parquet_converters {
             mpiRuntime = bbp-mpi;
         };
 
