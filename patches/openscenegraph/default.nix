@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, cmake, pkgconfig, doxygen, unzip
+{ stdenv, lib, fetchFromGitHub, cmake, pkgconfig, doxygen, unzip
 , freetype, libjpeg, jasper, libxml2, zlib, gdal, curl, libX11
 , cairo, poppler, librsvg, libpng, libtiff, libXrandr
 , xineLib, boost
@@ -11,9 +11,11 @@ stdenv.mkDerivation rec {
   name = "openscenegraph-${version}";
   version = "3.2.3";
 
-  src = fetchurl {
-    url = "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-${version}.zip";
-    sha256 = "0gic1hy7fhs27ipbsa5862q120a9y4bx176nfaw2brcjp522zvb9";
+  src = fetchFromGitHub {
+    owner = "openscenegraph";
+    repo = "OpenSceneGraph";
+    rev = "OpenSceneGraph-${version}";
+    sha256 = "07pwap7dgiy3incc0im7bydkvwg8qdy522v1l4xi07s24d6vikw2";
   };
 
   nativeBuildInputs = [ pkgconfig cmake doxygen unzip ];

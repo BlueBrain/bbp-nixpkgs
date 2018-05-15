@@ -23,6 +23,9 @@ let
         };
     	bbp-virtualenv-py3 = bbp-virtualenv.override { python = python3; };
 
+	pandoc = if (config ? documentation && config.documentation == false) then null else std-pkgs.pandoc;
+
+
         # Boost with Python 3 support
         boost-py3 = (boost.overrideDerivation ( oldAttr: {
             name = oldAttr.name + "-py3";

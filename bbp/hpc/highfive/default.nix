@@ -4,7 +4,7 @@
   cmake,
   fetchFromGitHub,
   hdf5,
-  pandoc? null,
+  pandoc ? null,
   stdenv,
   zlib,
 }:

@@ -52,15 +52,19 @@ stdenv.mkDerivation rec {
   ++ stdenv.lib.optional generateDoc [ "-DTOUCHDETECTOR_DOCUMENTATION=TRUE" ];
 
   docCss = ../../common/vizDoc/github-pandoc.css;
-  postInstall = ''
+  postInstall = [
+	''
+	mkdir -p $doc/share
+	''
+   ] ++ (stdenv.lib.optional ) (pandoc != null) [ ''
     install -D ../LICENSE.txt $out/share/doc/TouchDetector/LICENSE.txt ;
     mkdir -p $out/share/doc/TouchDetector/html
     ${pandoc}/bin/pandoc -s -S --self-contained \
       -c ${docCss} ${src}/README.md \
       -o $out/share/doc/TouchDetector/html/index.html
-  '';
+  ''];
 
-  outputs =  [ "out" ] ++ stdenv.lib.optional generateDoc "doc";
+  outputs =  [ "out" "doc" ];
 
   crossAttrs = {
     ## enforce mpiwrapper in cross compilation mode for bgq

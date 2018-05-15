@@ -475,7 +475,10 @@ let
         };
 
         morphomesher = callPackage ./hpc/morphomesher {
-
+		# we use clang to compile morpho mesher
+		# due to the very high memory consumption at compiled time
+		# implied by CGAL
+		stdenv = clangStdenv;
         };
 
         syntool = callPackage ./hpc/syntool {
