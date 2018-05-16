@@ -10,20 +10,20 @@
 
 stdenv.mkDerivation rec {
   name = "omega_h-${version}";
-  version = "9.5.1";
+  version = "9.13.5";
 
   src = fetchFromGitHub {
     owner = "ibaned";
     repo = "omega_h";
     rev = "v${version}";
-    sha256 = "0v6mqmzj59d985265d1nks7fzdhnb389n9d5kx237wc2nf8fwcwn";
+    sha256 = "0j76fg1bf2zjg9jm4zf8plqxmd7ys7a09zdddg76qj7v99yv5j7l";
   };
 
   omega_h-data = fetchFromGitHub {
     owner = "ibaned";
     repo = "omega_h-data";
-    rev = "8ebcefaa1cf6924f3040bfc9664bbda45527ac94";
-    sha256 = "0jaxs8nh225nigbnxdgm41l6k4sbz7g02nwsv5s7nvx61mnb6bdg";
+    rev = "9ef1f41c06d196b3b814215569fe39ba939ae3ca";
+    sha256 = "01c0nknwqrxskpnqbi68zliyabs864h6lbs6gr4m7kxykz74m2vc";
   };
 
   passthru = {
