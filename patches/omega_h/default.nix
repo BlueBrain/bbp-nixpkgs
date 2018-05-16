@@ -62,9 +62,13 @@ stdenv.mkDerivation rec {
     "-DOmega_h_USE_DOLFIN:BOOL=FALSE"
     "-DOmega_h_USE_Gmodel:BOOL=ON"
     "-DOmega_h_USE_libMeshb:BOOL=ON"
-    "-DOmega_h_USE_MPI:BOOL=ON"
   ]
-  ++ stdenv.lib.optional (trilinos.mpi != null) "-DOmega_h_USE_Trilinos:BOOL=ON"
+  ++ stdenv.lib.optional (trilinos.mpi != null) [
+    "-DOmega_h_USE_MPI:BOOL=ON"
+    "-DCMAKE_C_COMPILER=mpicc"
+    "-DCMAKE_CXX_COMPILER=mpic++"
+    "-DOmega_h_USE_Trilinos:BOOL=ON"
+  ]
   ++ stdenv.lib.optional trilinos.buildSharedLibs "-DBUILD_SHARED_LIBS:BOOL=ON"
   ;
 

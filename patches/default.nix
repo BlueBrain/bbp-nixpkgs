@@ -388,7 +388,7 @@ let
             libmeshb = patches-pkgs.libmeshb;
             trilinos = trilinos.override {
                 buildSharedLibs = true;
-                mpi = mpich2;
+                mpi = mvapich2;
                 withKokkos = true;
                 withTeuchos = true;
                 withZoltan = true;
