@@ -22,7 +22,7 @@ let
   driverInfo = if (driverVersion == "367.57") then
                 { 
                     versionNumber = "367.57";
-                    sha256 = "1r6nbm201psrs4xxw8826kl1li10wbhjbfwvp924ninsl6v8ljmr";
+                    sha256 = "0lc87bgr29l9idhy2a4bsplkwx9r0dz9kjhcc5xq2xqkkyr5sqd1";
                 }
 		else if (driverVersion == "375.39") then
                 { 
@@ -38,7 +38,7 @@ let
                else if (driverVersion == "384.111") then
                {
                    versionNumber = "384.111";
-                   sha256 = "1mzajvsjggljhkfrika5qzaqcb5q0i1pddmikbz3galpqs9wkf2n";
+                   sha256 = "1c8pw297pdp194hxbbjhk901w5s3ixihg92696l3pw3zsd96v245";
         
                }
 	       else if (driverVersion == "390.30") then
