@@ -57,11 +57,11 @@ in
 
   bb5 = self.buildPythonPackage (rec {
     name = "bb5";
-    version = "0.1a";
+    version = "0.1";
     src = pkgs.fetchgitPrivate {
         url = "git@github.com:tristan0x/pybb5.git";
-        rev = "ccc39b4035c9de6795526e56803553923200c24a";
-        sha256 = "03g5pskwp8l91sk9mqzvsys3hqbwbbgyc8qq9rscdq5mqj90ixcf";
+        rev = "v" + version;
+        sha256 = "1gvmp1v9pdqzxxmslr8wk81fzh3lcz55l3rqsrsqgm08ggpgzihq";
         leaveDotGit = true;
     };
 
