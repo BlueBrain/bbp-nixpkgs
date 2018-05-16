@@ -22,7 +22,12 @@ let
   driverInfo = if (driverVersion == "367.57") then
                 { 
                     versionNumber = "367.57";
-                    sha256 = "1r6nbm201psrs4xxw8826kl1li10wbhjbfwvp924ninsl6v8ljmr";
+                    sha256 = "0lc87bgr29l9idhy2a4bsplkwx9r0dz9kjhcc5xq2xqkkyr5sqd1";
+                }
+		else if (driverVersion == "375.39") then
+                { 
+                    versionNumber = "375.39";
+                    sha256 = "19w5v81f770rqjrvdwz11k015zli2y8f4x10ydqxcy0nhhh5mgli";
                 }
                else if (driverVersion == "384.98") then
                {
@@ -33,9 +38,16 @@ let
                else if (driverVersion == "384.111") then
                {
                    versionNumber = "384.111";
-                   sha256 = "1mzajvsjggljhkfrika5qzaqcb5q0i1pddmikbz3galpqs9wkf2n";
+                   sha256 = "1c8pw297pdp194hxbbjhk901w5s3ixihg92696l3pw3zsd96v245";
+        
+               }
+	       else if (driverVersion == "390.30") then
+               {
+                   versionNumber = "390.30";
+                   sha256 = "10vyd0xh2li13k8zzkfj2adm71i1dmyg110pqfwqcaj77hdb8k6a";
         
                } 
+ 
                else throw "nvidia-x11 version ${driverVersion} is not supported for ${stdenv.system}";
 
   # Policy: use the highest stable version as the default (on our master).
@@ -55,7 +67,7 @@ stdenv.mkDerivation rec {
   builder = ./nvidia-viz-builder.sh;
 
   src = fetchurl {
-        url = "http://us.download.nvidia.com/XFree86/Linux-x86_64/${versionNumber}/NVIDIA-Linux-x86_64-${versionNumber}-no-compat32.run";
+        urls = [ "http://us.download.nvidia.com/XFree86/Linux-x86_64/${versionNumber}/NVIDIA-Linux-x86_64-${versionNumber}.run" "http://fr.download.nvidia.com/tesla/${versionNumber}/NVIDIA-Linux-x86_64-${versionNumber}.run" ];
         sha256 = driverInfo.sha256;
   };
 

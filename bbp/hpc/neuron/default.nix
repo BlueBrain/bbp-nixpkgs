@@ -10,9 +10,9 @@ let
     neuron-info = {
         versionMajor = "7";
         versionMinor = "5";
-        versionDate = "2018-03-16";
-        rev = "f0c8828a50c601b13ea7d52e07206fb2b281d93d";
-        sha256 = "0pb8zc02ada6923f8swchk4f04ql6q91cpwd9gc9lf1zb3f99shz";
+        versionDate = "2018-05-01";
+        rev = "6819979820ecb26394f2c1930eeb5fdd43cb7856";
+        sha256 = "1bzssvafm7zdmvp7gkglcl0k487wwmvlfk4lfvs8xqqd9rmr57dq";
     };
 
     neuron-src = rec {

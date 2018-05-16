@@ -8,8 +8,10 @@
     FrancescoCasalegno = "Casalegno Francesco <francesco.casalegno@epfl.ch>";
     jamesgkind = "James Gonzalo King <jamesgonzalo.king@epfl.ch>";
     jplanasc = "Judit Planas <judit.planas@epfl.ch>";
+    matze = "Matthias Wolf <matthias.wolf@epfl.ch>";
     pramodskumbhar = "Kumbhar Pramod Shivaji <pramod.kumbhar@epfl.ch>";
     sharkovsky = "Cremonesi Francesco <francesco.cremonesi@epfl.ch>";
+    smelchio = "Samuel Melchior <samuel.melchior@epfl.ch>";
     shurikasa = "Ovcharenko Aleksandr <aleksandr.ovcharenko@epfl.ch>";
     till = "Till Schumann <till.schumann@epfl.ch>";
     timocafe = "Ewart Timothée <timothee.ewart@epfl.ch>";

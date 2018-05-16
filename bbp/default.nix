@@ -299,22 +299,22 @@ let
 
         };
 
-        bb5-utils = callPackage ./hpc/bb5-utils {
-            python = python3;
-            pythonPackages = python3Packages;
-       };
-
         ##
         ## BBP NSE components
         ##
         neurom = callPackage ./nse/neurom {
         };
 
+        morphio-python = callPackage ./nse/morphio-python {
+        };
+
+        morphio = callPackage ./nse/morphio {
+        };
+
         bbp-morphology-workflow = callPackage ./nse/bbp-morphology-workflow {
         };
 
         morphsyn = callPackage ./nse/morphsyn {
-            vtk = vtk7;
         };
 
         bluejittersdk = callPackage ./nse/bluejittersdk {
@@ -437,6 +437,10 @@ let
             hpctools = hpctools-xlc;
         };
 
+        parquet-converters = callPackage ./hpc/parquet_converters {
+            mpiRuntime = bbp-mpi;
+        };
+
         spykfunc = callPackage ./hpc/spykfunc {
         };
 
@@ -471,16 +475,22 @@ let
         };
 
         morphomesher = callPackage ./hpc/morphomesher {
-
+		# we use clang to compile morpho mesher
+		# due to the very high memory consumption at compiled time
+		# implied by CGAL
+		stdenv = clangStdenv;
         };
 
         syntool = callPackage ./hpc/syntool {
 
         };
 
-
         highfive = callPackage ./hpc/highfive {
 
+        };
+
+        highfive-phdf5 = highfive.override {
+            hdf5 = phdf5;
         };
 
         flatindexer = callPackage ./hpc/FLATIndexer {
@@ -638,20 +648,22 @@ let
         hpc-doc = callPackage ./common/vizDoc {
             name = "hpc-documentation";
             paths = [
-                cyme
                 coreneuron
+                cyme
+                flatindexer
                 functionalizer
                 highfive
                 learningengine
                 morphomesher
                 morphotool
                 mvdtool
+                nest
                 neurodamus
                 neuromapp
                 pytouchreader
-                flatindexer
                 reportinglib
                 spykfunc
+                steps
                 touchdetector
             ];
         };

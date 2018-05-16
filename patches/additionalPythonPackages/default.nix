@@ -55,6 +55,53 @@ in
 
   bootstrapped-pip =  callPackage ./bootstrapped-pip { };
 
+  bb5 = self.buildPythonPackage (rec {
+    name = "bb5";
+    version = "0.1";
+    src = pkgs.fetchgitPrivate {
+        url = "git@github.com:tristan0x/pybb5.git";
+        rev = "v" + version;
+        sha256 = "1gvmp1v9pdqzxxmslr8wk81fzh3lcz55l3rqsrsqgm08ggpgzihq";
+        leaveDotGit = true;
+    };
+
+    buildInputs = with pythonPackages; [
+      coverage
+      mock
+      pep8
+      pkgs.git
+      pycodestyle
+      pyscaffold
+      pytest
+      pytestcov
+      setuptools_scm
+      sphinx
+      vcrpy
+    ];
+
+    propagatedBuildInputs = with pythonPackages; [
+      clustershell
+      docopt
+      requests
+      six
+    ];
+  });
+
+  pyscaffold = self.buildPythonPackage rec {
+    name = "PyScaffold-${version}";
+    version = "2.5.11";
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/p/pyscaffold/${name}.tar.gz";
+      sha256 = "0qgf13vd594gqi6ssvai3hcr03akn9a7nrj9ar1xqm71426sfaqc";
+    };
+
+    buildInputs = with pythonPackages; [
+      six
+    ];
+
+    doCheck = false;
+  };
+
   bokeh = callPackage ./bokeh {};
 
     funcsigs1_0_2 = self.buildPythonPackage rec {
@@ -478,11 +525,51 @@ in
     buildInputs = with self; [ coverage ];
   };
 
-  tensorflow-tensorboard = with self; callPackage ./tensorflow-tensorboard {
+  tensorflow-tensorboard = callPackage ./tensorflow-tensorboard { };
+
+  tensorflow =
+    if stdenv.isDarwin
+    then callPackage ./tensorflow/bin.nix {
+    }
+    else callPackage ./tensorflow rec {
+      cudaSupport = pkgs.config.cudaSupport or false;
+      inherit (pkgs.linuxPackages) nvidia_x11;
+      cudatoolkit = pkgs.cudatoolkit9;
+      cudnn = pkgs.cudnn_cudatoolkit9;
+      inherit tensorflow-tensorboard absl-py;
+    };
+
+    absl-py = pythonPackages.buildPythonPackage rec {
+      pname = "absl-py";
+      version = "0.2.0";
+      name = "${pname}-${version}";
+
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/${builtins.substring 0 1 pname}/${pname}/${name}.tar.gz";
+        sha256 = "1v1pxyc715zyba9axw97lg3jcwiajqq50s26b7cm8zdraj2dimvk";
+      };
+
+      propagatedBuildInputs = with self; [ six ];
+
+      # checks use bazel; should be revisited
+      doCheck = false;
+
+      meta = {
+        description = "Abseil Python Common Libraries";
+        homepage = "https://github.com/abseil/abseil-py";
+        license = stdenv.lib.licenses.asl20;
+        maintainers = with stdenv.lib.maintainers; [ danharaj ];
+      };
+    };
+
+
+  tensorflowWithoutCuda = tensorflow.override {
+    cudaSupport = false;
   };
 
-
-
+  tensorflowWithCuda = tensorflow.override {
+    cudaSupport = true;
+  };
 
   lazy = pythonPackages.buildPythonPackage rec {
     version = "1.3";
@@ -566,6 +653,7 @@ in
       py4j_0_10_4
       pypandoc
       setuptools
+      simplegeneric
     ];
 
     doCheck = false;
@@ -632,7 +720,7 @@ in
       six
       inflection
       pandocfilters
-      markdown  
+      markdown
     ];
 
     doCheck = false;
@@ -752,8 +840,8 @@ site.addsitedir(os.path.dirname(os.path.abspath(__file__)))
 EOF
     '';
   };
-  
-  
+
+
   scoop = pythonPackages.buildPythonPackage rec {
     pname = "scoop";
     version = "0.7.1.1";
@@ -775,7 +863,7 @@ EOF
     ];
 
   };
-  
+
     deap = pythonPackages.buildPythonPackage rec {
 		pname = "deap";
 		version = "1.2.2";
@@ -790,7 +878,7 @@ EOF
 
 
 		propagatedBuildInputs = with pythonPackages; [
-			
+
 		];
 
   };

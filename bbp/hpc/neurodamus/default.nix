@@ -23,8 +23,8 @@ let
 
   src-master = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "60d5266cd28ead96e62be43f9404ee8410693691";
-        sha256 = "1f41mij588yb0w9f9m39n1xk3vh37739zc6w38r151ijxhq4pd4y";
+        rev = "e2bd9d2be6d2aead3bd8e91f3a058efc49c689b7";
+        sha256 = "1q91sdpshc07gn92d44z4g7cw5l8wpsjwak92nmjg9x1mm5yassc";
     };
 
   src-savestate = fetchgitPrivate {
@@ -35,8 +35,8 @@ let
 
   src-hippocampus = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "ad76fcb138af81ec17ca8407ca1423c1d194d567";
-        sha256 = "0b2v8r3ssnhhcq6w9k5lci2wblwhj17yyzxwwzw0nwiyiv9khbw4";
+        rev = "70c2e928e533deea3ae25d88fe00b6bd1874d5ee";
+        sha256 = "0mvwsljjx6m7swksynv212f54diic9845s1cfrkmj86m9jwz5m0g";
   };
 
   src-simplification = fetchgitPrivate {
@@ -155,7 +155,9 @@ stdenv.mkDerivation rec {
     # current one is not able to work outside of build directory
     # and reference statically this one
     docCss = ../../common/vizDoc/github-pandoc.css;
-    postInstall = ''
+    postInstall = [ 
+	"mkdir -p $doc/share/doc"
+    ] ++ (stdenv.lib.optional) (pandoc != null) [ ''
         echo building HTML README
         mkdir -p $out/share/doc/neurodamus/html
         if [ -f ${src}/README.txt ] ; then
@@ -166,7 +168,7 @@ stdenv.mkDerivation rec {
             # Not all branches have a README.txt
             touch $out/share/doc/neurodamus/html/index.html
         fi
-    '';
+    '' ];
 
   outputs = [ "out" "doc" ];
   propagatedBuildInputs = [ which hdf5 reportinglib ];

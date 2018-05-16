@@ -4,19 +4,19 @@
   cmake,
   fetchFromGitHub,
   hdf5,
-  pandoc? null,
+  pandoc ? null,
   stdenv,
   zlib,
 }:
 
 stdenv.mkDerivation rec {
   name = "highfive-${version}";
-  version = "1.4-dev201710";
+  version = "1.4-dev201805";
 
   src = fetchFromGitHub {
     owner = "BlueBrain";
     repo = "HighFive";
-    rev = "fce248203ca88c412fb32d5cb862628352d0bfe5";
+    rev = "6be97a0efcc618f1033a3745ff4030dc28cdd167";
     sha256 = "00wkkaplj2506zdci25axqvgs5lfnm45hm7ps6l4f7bmk8r39zl6";
   };
 

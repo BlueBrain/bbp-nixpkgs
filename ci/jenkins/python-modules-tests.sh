@@ -28,6 +28,16 @@ c.close()
 print("execute pycurl with success")
 EOF
 
+    echo "- test requests outside BBP"
+    ${PYTHON_EXEC} - <<EOF
+import sys
+import requests
+
+r = requests.get('http://pycurl.io/')
+if r.status_code != 200:
+    sys.exit(1)
+EOF
+
     echo "- test bokeh"
     ${PYTHON_EXEC} - <<EOF
 from bokeh.plotting import figure, output_file, save

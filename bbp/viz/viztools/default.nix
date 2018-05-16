@@ -20,6 +20,10 @@ python3Packages.buildPythonPackage rec {
         nose
     ];
 
+    preConfigure = ''
+        sed -i 's/0.44.0/0.40.0/g' requirements.txt
+    '';
+
     propagatedBuildInputs = with python3Packages; [
         matplotlib
         pillow
