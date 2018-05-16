@@ -25,13 +25,13 @@ let
 in
 stdenv.mkDerivation rec {
     name = "trilinos${pluginNames}-${version}";
-    version = "12.12.1";
+    version = "13.0.0-master";
 
     src = fetchFromGitHub {
         owner = "trilinos";
         repo = "Trilinos";
-        rev = "89b8c7f016c247568f7c9c1f32d250c8d2683de0";
-        sha256 = "1smz3wlpfyjn0czmpl8bj4hw33p1zi9nnfygpsx7jl1523nypa1n";
+        rev = "996e8c2c2423564955e16a322b8b786121c5d2f0";
+        sha256 = "1nmpf22lbf6wf3jqlzc9bc2iw433pblp9fizxg4szp22hbl33h6i";
     };
 
     preConfigure = ''
