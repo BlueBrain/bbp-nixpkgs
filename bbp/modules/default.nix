@@ -2470,7 +2470,7 @@ let
                        ];
             conflicts = [ openblas ];
             extraContent = ''
-              setenv MKL_ROOT $targetEnv
+              setenv MKLROOT $targetEnv
             '';
         }) else null;
 
