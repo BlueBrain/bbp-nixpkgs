@@ -2469,6 +2469,9 @@ let
                             pkgs.intel-mkl
                        ];
             conflicts = [ openblas ];
+            extraContent = ''
+              setenv MKL_ROOT $targetEnv
+            '';
         }) else null;
 
 
