@@ -893,6 +893,27 @@ in
     doCheck = false;
   };
 
+  tess = pythonPackages.buildPythonPackage rec {
+    pname = "tess";
+    version = "0.2.2";
+    name = "${pname}-${version}";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "0j2ih1j6rysy234ghca9axnhscp17ap2alwgr5irn3caii8231p8";
+    };
+
+    buildInputs = with pythonPackages; [
+      cython
+      nose
+    ];
+
+    propagatedBuildInputs = with pythonPackages; [
+    ];
+
+    doCheck = false;
+  };
+
   add-site-dir = stdenv.mkDerivation rec {
     name = "register-site-packages";
     site-packages = pythonPackages.python.sitePackages;
