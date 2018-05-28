@@ -13,13 +13,13 @@
 
 pythonPackages.buildPythonPackage rec {
     pname = "bbp-morphology-workflow";
-    version = "0.0.3.dev1";
+    version = "0.0.3";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/platform/bbp-morphology-workflow";
-        rev = "4808570b7914dc621db45a2709f62cfcea73d57c";
-        sha256 = "0adll1vz0nb1y9rrmv8w8r8h66pb9nb4id1vidpxs0aa9j19cba5";
+        rev = "41fa55dd9d6ea899844068336d4abf46952f04fc";
+        sha256 = "04gvw5gb8cxsbr95025z00lxi5839sclvzmdmmzic7vyclnrh7z4";
     };
 
     checkInputs = with pythonPackages; [
