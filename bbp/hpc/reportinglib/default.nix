@@ -13,8 +13,8 @@ stdenv.mkDerivation rec {
   version = "2.4.2-2018.03";
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/sim/reportinglib/bbp";
-    rev = "0cfeb24f614c905f02cb180b9dfc8bd64bbd7c40";
-    sha256 = "0ynskhnmf2dp9y5p9msigrp0aw0yy1ifs3c6d3x17iaf1lgimgy0";
+    rev = "a2afa0fcf994efa1570bb267c7d24e9a53ed5622";
+    sha256 = "1mc5qrp1qazcsb6d6v5933vz07ca3wsbpbk06qlw6imq1vf0hx6q";
   };
 
   buildInputs = [ stdenv cmake boost pkgconfig  mpiRuntime];
