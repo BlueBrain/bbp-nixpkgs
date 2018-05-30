@@ -2,14 +2,14 @@
 
 stdenv.mkDerivation rec {
   name = "vmmlib-${version}";
-  version = "1.13.0-201801";
+  version = "1.13.0-201805";
 
   buildInputs = [ stdenv cmake doxygen];
 
   src = fetchgit {
     url = "https://github.com/Eyescale/vmmlib.git";
-    rev= "d7681fec9ee1bd28c429eef5287c672a7dba39bf";
-    sha256 = "1q3gb2ba07w28rgdrncv2fjwklbpk5gjnbmw99ld61285jng8dcf";
+    rev= "6bfad3cc80b3a83131927d857b4606e92cef36cb";
+    sha256 = "0azs47958jycmlx3y2k5hgxffh9dx3wv28lych6yw273w0icizk6";
   };
 
 

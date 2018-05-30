@@ -16,14 +16,14 @@
 
 let 
 	devel-info = {
-		version = "1.4-devel";
-		rev = "e629d949e26db22cf33e1e19b609319c2389a828";
+		version = "1.5-devel";
+		rev = "d388b484b5159a57239cacf2466256e71d74d719";
 		sha256 = "0srrj6147bgfrlkkicfw3km8y6ipjam86qnkvijl47qfqgfxa7xc";
 	};
 
 	release-info = {
-		version = "1.4.2";
-		rev = "b3895aa7441b54166df005f20578fb5106226bb9";
+		version = "1.5.0";
+		rev = "67a827eef56136aa49acae013889a1050d6c27de";
 		sha256 = "1ap3n1444j3b70sv16l5hc62nn3mxiisz00gdlxql8yc43d533bx";
 	};
 
