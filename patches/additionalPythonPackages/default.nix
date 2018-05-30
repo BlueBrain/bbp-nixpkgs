@@ -1,4 +1,5 @@
-{ stdenv
+{ config
+, stdenv
 , pythonPackages
 , pkgs
 }:
@@ -536,6 +537,9 @@ in
       inherit (pkgs.linuxPackages) nvidia_x11;
       cudatoolkit = pkgs.cudatoolkit9;
       cudnn = pkgs.cudnn_cudatoolkit9;
+      sse42Support = if (config ? cpu) then config.cpu.sse42 or false else false;
+      avx2Support = if (config ? cpu) then config.cpu.avx2 or false else false;
+      fmaSupport = if (config ? cpu) then config.cpu.avx512 or false else false;
       inherit tensorflow-tensorboard absl-py;
     };
 
