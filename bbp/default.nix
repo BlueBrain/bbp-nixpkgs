@@ -299,6 +299,14 @@ let
 
         };
 
+        topologyviewer = callPackage ./viz/topologyviewer {
+
+        };
+
+        membranelessorganelles = callPackage ./viz/membranelessorganelles {
+
+        };
+
         ##
         ## BBP NSE components
         ##
