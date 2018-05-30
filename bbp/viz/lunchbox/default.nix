@@ -17,9 +17,9 @@ let
         };
 
         last-info = {
-                version = "1.16.0-dev201708";
-                rev = "80c14e04666aeb64eb69c605663b3065252339c5";
-                sha256 = "0cgb6jckbkjh50ds275zfwp5lpf2nfd4aq7s9qdp76fib18fbbkn";
+                version = "1.16.0-dev201805";
+                rev = "ab0c1e30f0deafaf5b0e97cf625cc7d2ceeb6e61";
+                sha256 = "06089lzspvdpc0j17g1bjlw4f1i42j0kjxl76bqcpl2qklnmcs6b";
         };
 
         lunchbox-info = if (legacyVersion) then legacy-info else last-info;

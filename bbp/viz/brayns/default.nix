@@ -9,6 +9,7 @@
 , freeglut
 , libXmu
 , libXi
+, libuv
 , glew
 , mesa
 , vmmlib 
@@ -27,18 +28,16 @@ assert restInterface -> (rockets != null);
 
 stdenv.mkDerivation rec {
 	name = "brayns-${version}";
-	version = "0.5.0-201802";
+	version = "0.6.0-201805";
 
-	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb
+	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb libuv
 					glew mesa vmmlib lunchbox brion hdf5-cpp imagemagick deflect ]
 				  ++ (stdenv.lib.optional) (restInterface) [ rockets ];
 
-	patches = [ ./002-brayns-missing-libmagick.patch ];
-
 	src = fetchgit {
 		url  = "https://github.com/BlueBrain/Brayns.git";
-		rev = "b9af13183b934b654d04b4879ab30ad299e331e1";
-		sha256 = "0q2ayp2q4cgf0n8dgkmvfh11g54qkkya21g1dnj36ky7f45iyx1g";
+		rev = "0f263933e0a24b05867669a9f2c2a25a33cc5d1d";
+        sha256 = "0443al3q24kqqiwmqw4gdgdafzv1ia2lg4zhq8pyqj3424cgj0l0";
 	};
 
 
