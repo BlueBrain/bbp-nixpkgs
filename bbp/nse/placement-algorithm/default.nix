@@ -24,12 +24,12 @@ in
 
 stdenv.mkDerivation rec {
   name = "placement-algorithm-${version}";
-  version = "2018.02.13-${stdenv.lib.substring 0 6 src.rev}";
+  version = "2018.05.31-${stdenv.lib.substring 0 6 src.rev}";
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/placementAlgorithm";
-    rev = "22a030e90a612ae01594c43e3d88ed6710009013";
-    sha256 = "1dj1x08axsywy8hjv6h2q8agrrbbphf5wx30jd8w5a1jvv7iahsk";
+    rev = "5648e1cf52b5fe938dfc5c5a0b9fb968e8576031";
+    sha256 = "0yhyfangkk4ywkjk1psh1pa9qm47x8g4c2lih5wpnng5k0f86n7m";
   };
 
   buildInputs = [
