@@ -197,7 +197,7 @@ in
 
     hpcbench = pythonPackages.buildPythonPackage rec {
       name = "hpcbench-${version}";
-      version = "0.5";
+      version = "0.6";
       src = pkgs.fetchurl {
        url = "mirror://pypi/h/hpcbench/${name}.tar.gz";
        sha256 = "169nwnnsy7wpwx0q016p2zcali4zyiczflxz39dzfqdrn6zsfdq3";
