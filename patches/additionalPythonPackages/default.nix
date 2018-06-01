@@ -143,10 +143,10 @@ in
 
     cached-property = pythonPackages.buildPythonPackage rec {
       name = "cached-property-${version}";
-      version = "1.3.1";
+      version = "1.4.2";
       src = pkgs.fetchurl {
         url = "mirror://pypi/c/cached-property/${name}.tar.gz";
-        sha256 = "1wwm23dyysdb4444xz1q6b1agpyax101d8fx45s58ms92fzg0qk5";
+        sha256 = "0fd1c3w9wp4rcls947bc8780fyhby0935fn7ghy3153j1dj3w2dz";
       };
       buildInputs = with pythonPackages; [
         freezegun
