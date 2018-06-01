@@ -915,6 +915,29 @@ in
     doCheck = false;
   };
 
+  numpy-quaternion = pythonPackages.buildPythonPackage rec {
+    pname = "numpy-quaternion";
+    version = "2018.5.17.10.19.59";
+    name = "${pname}-${version}";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "09my5qshkvwfjwghp8pqx59qccn298xs3y6fs6c0lhwhnn648kf1";
+    };
+
+    buildInputs = with pythonPackages; [
+      pytest
+    ];
+
+    propagatedBuildInputs = with pythonPackages; [
+      numpy
+    ];
+
+    checkPhase = ''
+      pytest
+    '';
+  };
+
   add-site-dir = stdenv.mkDerivation rec {
     name = "register-site-packages";
     site-packages = pythonPackages.python.sitePackages;
