@@ -200,7 +200,7 @@ in
       version = "0.6";
       src = pkgs.fetchurl {
        url = "mirror://pypi/h/hpcbench/${name}.tar.gz";
-       sha256 = "169nwnnsy7wpwx0q016p2zcali4zyiczflxz39dzfqdrn6zsfdq3";
+       sha256 = "136vrvjwsaimpmd0rbzf48j5c70shhy8hzxikmigbfhhq867ryqr";
       };
       # # For development purpose, and add "pkgs.git" dependency
       # src = pkgs.fetchgit {
@@ -211,6 +211,7 @@ in
       # };
       propagatedBuildInputs = with self; [
         cached-property
+        clustershell
         cookiecutter
         docopt
         jinja2
