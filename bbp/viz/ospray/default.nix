@@ -17,14 +17,14 @@
 let 
 	devel-info = {
 		version = "1.5-devel";
-		rev = "d388b484b5159a57239cacf2466256e71d74d719";
-		sha256 = "0srrj6147bgfrlkkicfw3km8y6ipjam86qnkvijl47qfqgfxa7xc";
+		rev = "67a827eef56136aa49acae013889a1050d6c27de";
+		sha256 = "1ap3n1444j3b70sv16l5hc62nn3mxiisz00gdlxql8yc43d533bx";
 	};
 
 	release-info = {
 		version = "1.5.0";
 		rev = "67a827eef56136aa49acae013889a1050d6c27de";
-		sha256 = "1ap3n1444j3b70sv16l5hc62nn3mxiisz00gdlxql8yc43d533bx";
+		sha256 = "1ncjf84yvmmm5nw38dl5aqy1qbzhddnfwsn1mqvdh12v29lwp8gv";
 	};
 
 	ospray-info = if (devel) then devel-info else release-info;
@@ -45,11 +45,9 @@ stdenv.mkDerivation rec {
 		sha256 = ospray-info.sha256;
 	};
 
-
-
     cmakeFlags = [ "-DOSPRAY_ZIP_MODE=OFF"                   #disable bundle dependencies
                    "-Dembree_DIR=${embree}" 
-                   "-DEMBREE_MAX_ISA=AVX2"
+                   "-DEMBREE_MAX_ISA=AVX512"
                    "-DOSPRAY_ENABLE_APPS=FALSE"
                    "-DOSPRAY_MODULE_MPI_APPS=FALSE"
                    "-DTBB_ROOT=${tbb}"

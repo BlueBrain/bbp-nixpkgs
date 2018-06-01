@@ -299,11 +299,15 @@ let
 
         };
 
-        topologyviewer = callPackage ./viz/topologyviewer {
+        topology-viewer = callPackage ./viz/topology-viewer {
 
         };
 
-        membranelessorganelles = callPackage ./viz/membranelessorganelles {
+        membraneless-organelles = callPackage ./viz/membraneless-organelles {
+
+        };
+
+        brayns-research-modules = callPackage ./viz/brayns-research-modules {
 
         };
 

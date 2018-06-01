@@ -25,7 +25,7 @@ let
 	};
 
 	last-info = {
-		version = "3.0-dev201805";
+		version = "3.0-dev201806";
 		rev = "64134873f12e5be634b2b54087ba4b98a0374f1c";
 		sha256 = "0bf0sq1qfqjrrr2scn6c7nw0vvqi3lwxd67h84w8v4j6ldsi2ann";
 	};
