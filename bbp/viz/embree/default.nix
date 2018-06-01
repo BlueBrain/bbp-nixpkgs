@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
         owner = "embree";
         repo = "embree";
         rev = "cb61322db3bb7082caed21913ad14869b436fe78";
-        sha256 = "1qh6qz79gphgr1ffj7i2qy3sa373bay9xahhsd7ba909s845qh7i";
+        sha256 = "0q3r724r58j4b6cbyy657fsb78z7a2c7d5mwdp7552skynsn2mn9";
     };
     
 

@@ -8,7 +8,7 @@
 
 stdenv.mkDerivation rec {
   name = "rockets-${version}";
-  version = "0.1.0-dev201805";
+  version = "0.1.0-dev201806";
 
   buildInputs = [ stdenv boost cmake libwebsockets ];
 
