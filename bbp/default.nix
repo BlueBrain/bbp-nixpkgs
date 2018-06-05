@@ -271,6 +271,7 @@ let
         };
 
         embree = callPackage ./viz/embree {
+            stdenv = stdenvIntelfSupported;
         };
 
         ospray = callPackage ./viz/ospray {
@@ -285,10 +286,11 @@ let
         };
 
         ospray-modules = callPackage ./viz/ospray-modules {
+            stdenv = stdenvIntelfSupported;
         };
 
         brayns = callPackage ./viz/brayns {
-
+            stdenv = stdenvIntelfSupported;
         };
 
         brayns-devel = callPackage ./viz/brayns {
@@ -307,8 +309,12 @@ let
 
         };
 
-        brayns-research-modules = callPackage ./viz/brayns-research-modules {
+        molecular-systems = callPackage ./viz/molecular-systems {
 
+        };
+
+        brayns-research-modules = callPackage ./viz/brayns-research-modules {
+            stdenv = stdenvIntelfSupported;
         };
 
         ##
