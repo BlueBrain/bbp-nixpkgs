@@ -2,7 +2,7 @@
 fetchgit,
 boost, 
 cmake, 
-servus, 
+servus,
 lunchbox, 
 keyv,
 vmmlib,
@@ -25,9 +25,9 @@ let
 	};
 
 	last-info = {
-		version = "3.0-dev201804";
-		rev = "e5a858dc3e868225f5de61da6d15c710cad3252e";
-		sha256 = "06a4wivgqjc0bxg3qcm4grvwyq4g0jhydpkrbyvv3gx9fhis0n3d";
+		version = "3.0-dev201806";
+		rev = "64134873f12e5be634b2b54087ba4b98a0374f1c";
+		sha256 = "0bf0sq1qfqjrrr2scn6c7nw0vvqi3lwxd67h84w8v4j6ldsi2ann";
 	};
 
 	brion-info = if (legacyVersion) then legacy-info else last-info;
