@@ -31,6 +31,7 @@ stdenv.mkDerivation rec {
 
   cmakeFlags = [
     "-DLIB_SUFFIX="
+    "-DNEURONPARQUET_USE_MPI=ON"
   ];
 
   enableParallelBuilding = true;
