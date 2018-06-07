@@ -6,11 +6,11 @@
 
 stdenv.mkDerivation rec {
     name = "osu-mpi-benchmark-${version}";
-    version = "5.3.2";
+    version = "5.4.2";
 
     src = fetchurl {
         url  = "http://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-${version}.tar.gz";
-        sha256 = "0h3k95rwd78cq463xii9a3qxf1qxd1bz4r6lr9n08lql52r3zb5h";
+        sha256 = "d6da4d9a560f74fb5681f13b474e4e455e46b5df44dabd8b11dc45c27eaa28d1";
     };
 
     buildInputs = [ mpi ];
