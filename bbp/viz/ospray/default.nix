@@ -47,7 +47,6 @@ stdenv.mkDerivation rec {
 
     cmakeFlags = [ "-DOSPRAY_ZIP_MODE=OFF"                   #disable bundle dependencies
                    "-Dembree_DIR=${embree}" 
-                   "-DEMBREE_MAX_ISA=AVX512"
                    "-DOSPRAY_ENABLE_APPS=FALSE"
                    "-DOSPRAY_MODULE_MPI_APPS=FALSE"
                    "-DTBB_ROOT=${tbb}"

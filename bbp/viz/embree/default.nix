@@ -28,8 +28,9 @@ stdenv.mkDerivation rec {
                     mesa libpng libXmu libXi imagemagick ];
 
     cmakeFlags = [
-			"-DCMAKE_INSTALL_INCLUDEDIR=include/"
-			"-DCMAKE_INSTALL_LIBDIR=lib/"
+            "-DCMAKE_INSTALL_INCLUDEDIR=include/"
+            "-DEMBREE_MAX_ISA=AVX512SKX"
+            "-DCMAKE_INSTALL_LIBDIR=lib/"
 		];
 
 }

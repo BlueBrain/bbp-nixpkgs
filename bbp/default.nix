@@ -271,29 +271,30 @@ let
         };
 
         embree = callPackage ./viz/embree {
-            stdenv = stdenvIntelfSupported;
+            stdenv = stdenvIntelIfSupportedElseClang;
         };
 
         ospray = callPackage ./viz/ospray {
-            stdenv = stdenvIntelfSupported;
+            stdenv = stdenvIntelIfSupportedElseClang;
             mpi = bbp-mpi;
         };
 
         ospray-devel = callPackage ./viz/ospray {
-            stdenv = stdenvIntelfSupported;
+            stdenv = stdenvIntelIfSupportedElseClang;
             mpi = bbp-mpi;
             devel = true;
         };
 
         ospray-modules = callPackage ./viz/ospray-modules {
-            stdenv = stdenvIntelfSupported;
+            stdenv = stdenvIntelIfSupportedElseClang;
         };
 
         brayns = callPackage ./viz/brayns {
-            stdenv = stdenvIntelfSupported;
+            stdenv = stdenvIntelIfSupportedElseClang;
         };
 
         brayns-devel = callPackage ./viz/brayns {
+            stdenv = stdenvIntelIfSupportedElseClang;
             ospray = ospray-devel;
         };
 
@@ -309,12 +310,16 @@ let
 
         };
 
+        brain-atlas = callPackage ./viz/brain-atlas {
+
+        };
+
         molecular-systems = callPackage ./viz/molecular-systems {
 
         };
 
         brayns-research-modules = callPackage ./viz/brayns-research-modules {
-            stdenv = stdenvIntelfSupported;
+            stdenv = stdenvIntelIfSupportedElseClang;
         };
 
         ##

@@ -7,6 +7,7 @@
 , ospray
 , tbb
 , freeglut
+, freeimage
 , libXmu
 , libXi
 , libuv
@@ -18,8 +19,8 @@
 , rockets ? null
 , brion
 , hdf5-cpp
-, imagemagick
 , restInterface ? true
+, libarchive
 }:
 
 
@@ -31,13 +32,13 @@ stdenv.mkDerivation rec {
 	version = "0.6.0-201806";
 
 	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb libuv
-					glew mesa vmmlib lunchbox brion hdf5-cpp imagemagick deflect ]
+					glew mesa vmmlib lunchbox brion hdf5-cpp freeimage deflect libarchive]
 				  ++ (stdenv.lib.optional) (restInterface) [ rockets ];
 
 	src = fetchgit {
 		url  = "https://github.com/BlueBrain/Brayns.git";
-		rev = "81740410ef40376753362b50a2eda93ec911fe30";
-                sha256 = "13506jxb60kf35a1kpfg4c38md9l0x1izswbark1vy0wdwh1xmrr";
+		rev = "5d407694f30d26d5e2ae05dc959197384bb51648";
+		sha256 = "1b2m5g3bbqpa16xp3qzij2c0bq24rbn7s40s0q03r4npzpsc1bzi";
 	};
 
 
