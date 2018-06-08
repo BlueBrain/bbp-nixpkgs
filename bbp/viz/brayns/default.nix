@@ -8,6 +8,7 @@
 , tbb
 , freeglut
 , freeimage
+, libjpeg_turbo
 , libXmu
 , libXi
 , libuv
@@ -32,7 +33,7 @@ stdenv.mkDerivation rec {
 	version = "0.6.0-201806";
 
 	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb libuv
-					glew mesa vmmlib lunchbox brion hdf5-cpp freeimage deflect libarchive]
+					glew mesa vmmlib lunchbox brion hdf5-cpp freeimage deflect libarchive libjpeg_turbo]
 				  ++ (stdenv.lib.optional) (restInterface) [ rockets ];
 
 	src = fetchgit {
