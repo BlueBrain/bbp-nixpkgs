@@ -2475,6 +2475,8 @@ let
             extraContent = ''
                 append-path --delim " " NIX_CFLAGS_COMPILE "-I${pkgs.gcc.cc}/include"
                 append-path --delim " " NIX_LDFLAGS "-L${pkgs.gcc.cc}/lib"
+                setenv "MPICC_CC" "${pkgs.gcc.cc}/bin/gcc"
+                setenv "MPICXX_CXX" "${pkgs.gcc.cc}/bin/g++"
             '';
 
         };
@@ -2495,8 +2497,10 @@ let
 
             extraContent = ''
                 append-path --delim " " NIX_x86_64_unknown_linux_gnu_CXXSTDLIB_LINK "-L${pkgs.gcc.cc.lib}/lib" 
-        		append-path --delim " " NIX_x86_64_unknown_linux_gnu_CXXSTDLIB_LINK "-stdlib=libstdc++"
+        		    append-path --delim " " NIX_x86_64_unknown_linux_gnu_CXXSTDLIB_LINK "-stdlib=libstdc++"
                 setenv NIX_x86_64_unknown_linux_gnu_CXXSTDLIB_COMPILE "-isystem ${pkgs.gcc.cc}/include/c++/6.4.0 -isystem ${pkgs.gcc.cc}/include/c++/6.4.0/x86_64-unknown-linux-gnu -isystem ${pkgs.gcc.cc}/include/c++/6.4.0 -isystem ${pkgs.gcc.cc}/include/c++/6.4.0/x86_64-unknown-linux-gnu"
+                setenv "MPICC_CC" "${pkgs.clang.cc}/bin/clang"
+                setenv "MPICXX_CXX" "${pkgs.clang.cc}/bin/clang++"
             '';
 
 
