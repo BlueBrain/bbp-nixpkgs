@@ -309,6 +309,10 @@ let
 
         };
 
+        brain-atlas = callPackage ./viz/brain-atlas {
+
+        };
+
         molecular-systems = callPackage ./viz/molecular-systems {
 
         };

@@ -10,15 +10,15 @@
 }:
 
 stdenv.mkDerivation rec {
-    name = "topology-viewer-${version}";
+    name = "brain-atlas-${version}";
     version = "0.1.0-201806";
 
     buildInputs = [ stdenv pkgconfig cmake boost highfive vmmlib brayns ];
 
     src = fetchgitPrivate {
-        url = config.bbp_git_ssh + "/viz/Brayns-UC-TopologyViewer";
-        rev = "5d5b6871315e3c8e48f85820950ff739e00edec6";
-        sha256 = "0qhky2f85w4l7n2gzv10iy6yq4qscl0x3b7ppsjlx19w9vzz2289";
+        url = config.bbp_git_ssh + "/viz/Brayns-UC-BrainAtlas";
+        rev = "c0e9516ce83833be2defadd2764e5677e9cd5ec7";
+        sha256 = "1802hwnsk5bb79i4yyih6xgq4v3y9inxv2q61wk92y78niqi0yjv";
     };
 
     enableParallelBuilding = true;
