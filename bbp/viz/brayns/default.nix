@@ -20,6 +20,7 @@
 , brion
 , hdf5-cpp
 , restInterface ? true
+, libarchive
 }:
 
 
@@ -31,7 +32,7 @@ stdenv.mkDerivation rec {
 	version = "0.6.0-201806";
 
 	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb libuv
-					glew mesa vmmlib lunchbox brion hdf5-cpp freeimage deflect ]
+					glew mesa vmmlib lunchbox brion hdf5-cpp freeimage deflect libarchive]
 				  ++ (stdenv.lib.optional) (restInterface) [ rockets ];
 
 	src = fetchgit {
