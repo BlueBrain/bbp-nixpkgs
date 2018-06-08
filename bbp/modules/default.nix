@@ -1328,6 +1328,8 @@ let
                             pkgs.brayns
                        ];
             conflicts = conflicts-modules;
+            # for ospray-modules plugins loaded by ospray inside LD_LIBRARY_PATH
+            extraContent = "prepend-path LD_LIBRARY_PATH $targetEnv/lib/";
         };
 
         brayns-devel = pkgs.envModuleGen rec {
@@ -1340,6 +1342,8 @@ let
                             pkgs.brayns-devel
                        ];
             conflicts = conflicts-modules;
+            # for ospray-modules plugins loaded by ospray inside LD_LIBRARY_PATH
+            extraContent = "prepend-path LD_LIBRARY_PATH $targetEnv/lib/";
         };
 
         deflect = pkgs.envModuleGen rec {
@@ -1364,6 +1368,8 @@ let
                             pkgs.topology-viewer
                        ];
             conflicts = conflicts-modules;
+            # for ospray-modules plugins loaded by ospray inside LD_LIBRARY_PATH
+            extraContent = "prepend-path LD_LIBRARY_PATH $targetEnv/lib/";
         };
 
         membraneless-organelles = pkgs.envModuleGen rec {
@@ -1376,6 +1382,8 @@ let
                             pkgs.membraneless-organelles
                        ];
             conflicts = conflicts-modules;
+            # for ospray-modules plugins loaded by ospray inside LD_LIBRARY_PATH
+            extraContent = "prepend-path LD_LIBRARY_PATH $targetEnv/lib/";
         };
 
         brain-atlas = pkgs.envModuleGen rec {
@@ -1388,6 +1396,8 @@ let
                             pkgs.brain-atlas
                        ];
             conflicts = conflicts-modules;
+            # for ospray-modules plugins loaded by ospray inside LD_LIBRARY_PATH
+            extraContent = "prepend-path LD_LIBRARY_PATH $targetEnv/lib/";
         };
 
         brayns-research-modules = pkgs.envModuleGen rec {
@@ -1400,6 +1410,8 @@ let
                             pkgs.brayns-research-modules
                        ];
             conflicts = conflicts-modules;
+            # for ospray-modules plugins loaded by ospray inside LD_LIBRARY_PATH
+            extraContent = "prepend-path LD_LIBRARY_PATH $targetEnv/lib/";
         };
 
         viz = pkgs.envModuleGen {
