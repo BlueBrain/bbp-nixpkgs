@@ -18,8 +18,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/Deflect";
-    rev = "574bc3d3c5ba4f60297fe3c4f167992582c4773a";
-    sha256 = "1pnb24fv710f1a0z78w6594gbyxm8gdpywmwb3nr0sj6hw8a2wb5";
+    rev = "4af58e75786eeca5d07485e9e6544ed8b84b1e63";
+    sha256 = "1lg38jgz61rhiqbykyjik8zwpqrs1qnzs610ahmy8v9vgp6bpyy0";
   };
   
   enableParallelBuilding = true;
