@@ -24,9 +24,9 @@ stdenv.mkDerivation rec {
   ];
 
   src = fetchgitPrivate {
-    url = config.bbp_git_ssh + "/building/Functionalizer";
-    rev = "ce633399af9ccd38ecc65f6ef72048e5c62bf359";
-    sha256 = "0vk5lf46fj7br9v4kr5y4aj0z2ilj2ph8dc3m75zkmdiwgyv3a2r";
+    url = config.bbp_git_ssh + "/building/ParquetConverters";
+    rev = "82b5d8d287f68c8c8bd6868846a884b6d7e4e532";
+    sha256 = "02il97zs614khd8mlgczgi2vzgy5y76rs3674gpl8spx7cpwhv3h";
   };
 
   cmakeFlags = [
@@ -40,7 +40,6 @@ stdenv.mkDerivation rec {
   preConfigure = "
     export CC=mpicc
     export CXX=mpic++
-    cd neuron_parquet
   ";
 
   meta = {

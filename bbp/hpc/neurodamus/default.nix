@@ -29,14 +29,14 @@ let
 
   src-savestate = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "537672d392c5d1bf759c39b1ab04a5fa47a9c1b3";
-        sha256 = "0dbblarxdh40qjh03ww55yf31mvamc4ksxjb8jqhjimpijpn3139";
+        rev = "a32826ae6ef264084f99e208fcbf0f7f42c5ce1e";
+        sha256 = "1kw3yz85wx94s5r05in13vyz7x04j8ais5rb7f06i88s718an6wg";
   };
 
   src-hippocampus = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "70c2e928e533deea3ae25d88fe00b6bd1874d5ee";
-        sha256 = "0mvwsljjx6m7swksynv212f54diic9845s1cfrkmj86m9jwz5m0g";
+        rev = "64e4ea2caab29e7e20b94b43d3ff233192d20eed";
+        sha256 = "195sx4g53kzl9yp7qz4pwpnhpxn096rqgxk198h9606clznha30z";
   };
 
   src-simplification = fetchgitPrivate {
