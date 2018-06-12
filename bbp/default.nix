@@ -137,15 +137,9 @@ let
             pression = pression-legacy;
         };
 
-        zerobuf = callPackage ./viz/zerobuf {};
-
         cppnetlib = callPackage ./viz/cppnetlib {};
 
-        zeroeq = callPackage ./viz/zeroeq {};
-
         rockets = callPackage ./viz/rockets {};
-
-        lexis = callPackage ./viz/lexis {};
 
         brion = callPackage ./viz/brion {};
 
