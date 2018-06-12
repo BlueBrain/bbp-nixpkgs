@@ -204,10 +204,6 @@ let
 
         rtneuron = callPackage ./viz/rtneuron {};
 
-        rtneuron2 = callPackage ./viz/rtneuron {
-            legacyVersion = true;
-        };
-
         embree = callPackage ./viz/embree {
             stdenv = stdenvIntelIfSupportedElseClang;
         };
