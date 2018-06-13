@@ -418,6 +418,9 @@ let
 
         hadoop-bbp = callPackage ./hadoop {
         };
+
+	yo = callPackage ./yo {
+	};
     };
 
     additionalPythonPackages = MergePkgs.callPackage ./additionalPythonPackages ({
