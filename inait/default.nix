@@ -114,7 +114,6 @@ let
                     ++ set.compilers
                     ++ set.dev_toolkit_pkgs
                     ++ set.hpc_base
-                    ++ set.hpc_circuit
                     ++ set.hpc_simulators
                     ++ set.python_base
                     ++ set.python2_frameworks
