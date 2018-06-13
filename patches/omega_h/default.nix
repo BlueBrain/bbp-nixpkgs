@@ -5,7 +5,8 @@
   libmeshb,
   stdenv,
   trilinos,
-  zlib
+  zlib,
+  extra_cmake_flags ? []
 }:
 
 stdenv.mkDerivation rec {
@@ -47,6 +48,9 @@ stdenv.mkDerivation rec {
   buildInputs = [
     cmake
     gmodel
+  ];
+
+  propagatedBuildInputs = [
     libmeshb
     trilinos
     trilinos.mpi
@@ -69,6 +73,7 @@ stdenv.mkDerivation rec {
     "-DCMAKE_CXX_COMPILER=mpic++"
     "-DOmega_h_USE_Trilinos:BOOL=ON"
   ]
+  ++ extra_cmake_flags
   ++ stdenv.lib.optional trilinos.buildSharedLibs "-DBUILD_SHARED_LIBS:BOOL=ON"
   ;
 
