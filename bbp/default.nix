@@ -14,13 +14,12 @@ let
 
         # if not available, map to default mpi library
         bbp-mpi = if pkgs.isBlueGene == true then ibm-mpi-xlc
-                else if (config ? isSlurmCluster == true)  then mvapich2
-                else if (config.mpi.rdma  or false ) then mvapich2-rdma
-                else mvapich2-hydra;
+                  else if (config ? isSlurmCluster == true)  then mvapich2
+                  else if (config.mpi.rdma  or false ) then mvapich2-rdma
+                  else mvapich2-hydra;
 
         # proper BBP default MPI library forced to GCC, necessary on some platforms
-        bbp-mpi-gcc = if pkgs.isBlueGene == true then ibm-mpi
-                                else bbp-mpi;
+        bbp-mpi-gcc = if pkgs.isBlueGene == true then ibm-mpi else bbp-mpi;
 
         # callpackage mapper
         callPackage = newScope mergePkgs;
@@ -599,7 +598,7 @@ let
 
         inherit enableBGQ;
         };
-        in
-        mergePkgs;
+    in
+    mergePkgs;
 in
   (pkgFun std-pkgs)
