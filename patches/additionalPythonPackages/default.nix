@@ -61,7 +61,7 @@ in
     src = pkgs.fetchgitPrivate {
         url = "git@github.com:BlueBrain/pybb5.git";
         rev = "v" + version;
-        sha256 = "1pi331sai9358gqsjjmhh8jwp38x1k9840w19x3fgnyiamgqgjgc";
+        sha256 = "0xz6js4kwlpim3d3kh2q93d6nplk14k1p9wbqq5a0cyh67qx98cf";
         leaveDotGit = true;
     };
 
