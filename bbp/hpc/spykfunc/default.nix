@@ -12,7 +12,6 @@ with stdenv.lib; let
   all_deps = with pythonPackages; [
       bb5
       docopt
-      funcsigs
       future
       hdfs
       h5py

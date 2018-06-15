@@ -57,16 +57,17 @@ in
 
   bb5 = self.buildPythonPackage (rec {
     name = "bb5";
-    version = "0.1";
+    version = "0.2";
     src = pkgs.fetchgitPrivate {
-        url = "git@github.com:tristan0x/pybb5.git";
+        url = "git@github.com:BlueBrain/pybb5.git";
         rev = "v" + version;
-        sha256 = "1gvmp1v9pdqzxxmslr8wk81fzh3lcz55l3rqsrsqgm08ggpgzihq";
+        sha256 = "11knn9g05ijmh7x33q7ihackfs8gapff2fjs9r01r7awz6v2q7z5";
         leaveDotGit = true;
     };
 
     buildInputs = with pythonPackages; [
       coverage
+      freezegun
       mock
       pep8
       pkgs.git
@@ -74,6 +75,7 @@ in
       pyscaffold
       pytest
       pytestcov
+      pytest-mock
       setuptools_scm
       sphinx
       vcrpy
@@ -82,7 +84,10 @@ in
     propagatedBuildInputs = with pythonPackages; [
       clustershell
       docopt
+      matplotlib
+      pandas
       requests
+      seaborn
       six
     ];
   });
