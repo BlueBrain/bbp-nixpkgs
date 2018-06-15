@@ -67,6 +67,7 @@ in
 
     buildInputs = with pythonPackages; [
       coverage
+      freezegun
       mock
       pep8
       pkgs.git
