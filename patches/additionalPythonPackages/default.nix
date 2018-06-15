@@ -57,11 +57,11 @@ in
 
   bb5 = self.buildPythonPackage (rec {
     name = "bb5";
-    version = "0.1";
+    version = "0.2";
     src = pkgs.fetchgitPrivate {
-        url = "git@github.com:tristan0x/pybb5.git";
+        url = "git@github.com:BlueBrain/pybb5.git";
         rev = "v" + version;
-        sha256 = "1gvmp1v9pdqzxxmslr8wk81fzh3lcz55l3rqsrsqgm08ggpgzihq";
+        sha256 = "1pi331sai9358gqsjjmhh8jwp38x1k9840w19x3fgnyiamgqgjgc";
         leaveDotGit = true;
     };
 
@@ -82,7 +82,10 @@ in
     propagatedBuildInputs = with pythonPackages; [
       clustershell
       docopt
+      matplotlib
+      pandas
       requests
+      seaborn
       six
     ];
   });
