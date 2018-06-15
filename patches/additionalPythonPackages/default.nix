@@ -74,6 +74,7 @@ in
       pyscaffold
       pytest
       pytestcov
+      pytest-mock
       setuptools_scm
       sphinx
       vcrpy
