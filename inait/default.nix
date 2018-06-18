@@ -106,7 +106,7 @@ let
                 name = "inait";
                 paths = with pkgs.modules; set.vcs
                     ++ set.dbg
-		    ++ set.qa
+        		    ++ set.qa
                     ++ set.dev_base_pkgs
                     ++ set.ml_base
                     ++ set.sciences_base
@@ -118,7 +118,7 @@ let
                     ++ set.python_base
                     ++ set.python2_frameworks
                     ++ set.python3_base
-        	    ++ set.python3_frameworks
+        	        ++ set.python3_frameworks
                     ++ set.system_pkgs
                     ++ set.parallel_toolkit
 		    ++ set.editors

@@ -1,20 +1,22 @@
 {
   boost,
   cmake,
+  python,
+  pkgconfig,
   fetchFromGitHub,
   stdenv
 }:
 
 stdenv.mkDerivation rec {
   name = "yo-${version}";
-  version = "0.1";
+  version = "0.2";
 
   src = fetchFromGitHub {
     owner = "adevress";
     repo = "yo";
-    rev = "9453789dcbea651831c0e4c7af86e740088fcdf0";
+    rev = "8058fbc4251dd5bfd788ea58b3d58e934626f6a8";
     fetchSubmodules = true;
-    sha256 = "1mq54h144n2lrm91b69i6i65s2v0kmqkpjv9m2xbs6zs5s8cbywb";
+    sha256 = "0y64di0jwmqiq5a7ir7m9s93vy5gc13k3afalcar7nw10lirz4pr";
   };
 
   meta = {
@@ -28,6 +30,8 @@ stdenv.mkDerivation rec {
   buildInputs = [
     boost
     cmake
+    python
+    pkgconfig
   ];
 
 }
