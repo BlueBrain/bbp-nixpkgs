@@ -3,8 +3,8 @@
 , python36Packages
 , config
 , version ? "0.1.2"
-, rev ? "932d165c612da98f456b4ca21ef652ef31ce3f2a"
-, sha256 ? "0b13ipyhrdh7j6c70dx9qaba21hpgn6k5bp2m0hi1zdpbirnqypb"
+, rev ? "e4a529e14ea15f9f7f97090bd98beb843fb8d884"
+, sha256 ? "1ngilamz6gyp2l9hxlvsb0sshxjjdvq2k5rx6rjr23w66xyyh5iw"
 }:
 
 python36Packages.buildPythonPackage rec {
