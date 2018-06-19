@@ -7,6 +7,7 @@
 , highfive
 , pandoc
 , python
+, useMPI ? false
 }:
 
 stdenv.mkDerivation rec {
@@ -21,6 +22,8 @@ stdenv.mkDerivation rec {
   };
   cmakeFlags =  [
     "-DSYNAPSE_TOOL_DOCUMENTATION:BOOL=ON"
+  ] ++ stdenv.lib.optional useMPI [
+    "-DSYNTOOL_WITH_MPI=ON"
   ];
 
   buildInputs = [
