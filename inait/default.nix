@@ -36,7 +36,10 @@ let
             pyjarvis = (jarvis.override {
                     pythonPackages = pyPkgs;
             }).pyjarvis;
-            
+
+	    ultron =  callPackage ./ultron {
+
+	    };         
         };
         
         pythonPackages =  (inaitPythonPackages pkgs.pythonPackages);
@@ -100,6 +103,23 @@ let
             };
             
 
+           ultron = pkgs.envModuleGen rec {
+                 name = "ultron";
+                 moduleFilePrefix = "nix/py27";
+                 isLibrary = true;
+                 description = "ultron python bindings module";
+                 packages = with pkgs.pythonPackages; ( getPyModRec [ ultron ] );
+            };
+ 
+
+           ultron-py3 = pkgs.envModuleGen rec {
+                 name = "ultron";
+                 moduleFilePrefix = "nix/py36";
+                 isLibrary = true;
+                 description = "ultron python bindings module";
+                 packages = with pkgs.python3Packages; ( getPyModRec [ ultron ] );
+            };
+ 
 
             inait = pkgs.buildEnv {
 
@@ -128,15 +148,18 @@ let
 		pybinreports
 		neurom
 		 ] ++ [ 
-                neuroconnector 
-        		jarvis
-                pyjarvis
-                pyjarvis-py3
-                in8metrics
-                dev-env-gcc
-                dev-env-python27
-                dev-env-icc
-                dev-env-clang   
+	                neuroconnector 
+       			jarvis
+	                pyjarvis
+
+	                pyjarvis-py3
+			in8metrics
+			dev-env-gcc
+			dev-env-python27
+			dev-env-icc
+			dev-env-clang   
+			ultron
+			ultron-py3
             ];
 
             };
