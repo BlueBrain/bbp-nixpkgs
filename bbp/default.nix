@@ -514,6 +514,11 @@ let
 
         };
 
+        syntool-phdf5 = callPackage ./hpc/syntool {
+            hdf5 = phdf5;
+            useMPI = true;
+        };
+
         highfive = callPackage ./hpc/highfive {
 
         };
