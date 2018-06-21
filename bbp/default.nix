@@ -322,6 +322,10 @@ let
             stdenv = stdenvIntelIfSupportedElseClang;
         };
 
+        morphology-synthesis = callPackage ./viz/morphology-synthesis {
+
+        };
+
         ##
         ## BBP NSE components
         ##
