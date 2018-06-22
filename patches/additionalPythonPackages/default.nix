@@ -989,11 +989,11 @@ EOF
   attrs = pythonPackages.buildPythonPackage rec {
     name = "${pname}-${version}";
     pname = "attrs";
-    version = "17.4.0";
+    version = "18.1.0";
 
     src = pythonPackages.fetchPypi {
       inherit pname version;
-      sha256 = "1jafnn1kzd6qhxgprhx6y6ik1r5m2rilx25syzcmq03azp660y8w";
+      sha256 = "0yzqz8wv3w1srav5683a55v49i0szkm47dyrnkd56fqs8j8ypl70";
     };
 
     # macOS needs clang for testing

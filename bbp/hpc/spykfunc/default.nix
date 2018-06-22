@@ -57,7 +57,7 @@ in
       };
       maintainers = [
         config.maintainers.ferdonline
-        config.maintainers.matze
+        config.maintainers.matz-e
       ];
     };
     src = fetchgitPrivate {
