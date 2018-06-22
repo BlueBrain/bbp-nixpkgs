@@ -478,6 +478,7 @@ let
         };
 
         spykfunc-py3 = spykfunc.override {
+            spark-bbp = spark-bbp-py3;
             pythonPackages = python3Packages;
         };
 

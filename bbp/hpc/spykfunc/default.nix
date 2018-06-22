@@ -10,9 +10,11 @@
 
 with stdenv.lib; let
   all_deps = with pythonPackages; [
+      bb5
       docopt
       funcsigs
       future
+      hdfs
       h5py
       jprops
       lazy_property
@@ -20,13 +22,13 @@ with stdenv.lib; let
       progress
       pyspark
       requests
-      snakebite
       sparkmanager
       spark-bbp
       sphinx
       sphinx_rtd_theme
     ]
     ++ optionals enum34Required [ enum34 ]
+    ++ optionals pathlib2Required [ pathlib2 ]
     ;
 
   python-env = pythonPackages.python.buildEnv.override {
@@ -34,11 +36,12 @@ with stdenv.lib; let
   };
   python = pythonPackages.python;
   enum34Required = !versionAtLeast python.pythonVersion "3.4";
+  pathlib2Required = !versionAtLeast python.pythonVersion "3.6";
 in
 
   stdenv.mkDerivation rec {
     name = "spykfunc-${version}";
-    version = "0.8.2";
+    version = "0.9.0";
     meta = {
       description = "New Functionalizer implementation on top of Spark";
       longDescription = ''
@@ -62,8 +65,8 @@ in
     };
     src = fetchgitPrivate {
       url = config.bbp_git_ssh + "/building/Spykfunc";
-      rev = "8dea1b95153c23c535ca1a6d7387bdef6a96fc6a";
-      sha256 = "02mc2zda4l7627xq31z9s66l334c1a74sgf38zcw31c5ph525hbx";
+      rev = "da51d670399b71eca787fe8eedbb0d94883bc17f";
+      sha256 = "02mzrs5ri2iyfbyrrryqwgc9sb03xgd4va43cdrlv0783nc0r5xg";
     };
     buildInputs = [ boost hdf5 highfive ];
     nativeBuildInputs = [
@@ -73,9 +76,8 @@ in
 
     propagatedBuildInputs = all_deps;
 
-    preConfigure = if !enum34Required then
-      ''sed -i '/enum34;python_version/d' setup.py''
-    else null;
+    preConfigure = optionalString (!enum34Required) "\nsed -i '/enum34;python_version/d' setup.py"
+                 + optionalString (!pathlib2Required) "\nsed -i '/pathlib2/d' setup.py";
 
     buildPhase = ''
       runHook preBuild
