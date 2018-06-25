@@ -7,13 +7,13 @@
 
 pythonPackages.buildPythonPackage rec {
     pname = "brainbuilder";
-    version = "0.6.0";
+    version = "0.6.1";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/nse/brainbuilder";
-        rev = "a403f8d2a16c8c553e19ed24e6f77ac8fa0ed50b";
-        sha256 = "0jrzrsfv08pni4fga6076a79n4ydmwwwz96nrawa9bv41ss03y1v";
+        rev = "13af80c571e33238ba435955f48be29fe8b85f96";
+        sha256 = "0kdpi2v8wvgin239dr4bglkin3fp8qqfh83rg3n3gaa3gsqw0gck";
     };
 
     buildInputs = with pythonPackages; [

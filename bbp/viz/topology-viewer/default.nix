@@ -17,8 +17,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/Brayns-UC-TopologyViewer";
-        rev = "5d5b6871315e3c8e48f85820950ff739e00edec6";
-        sha256 = "0qhky2f85w4l7n2gzv10iy6yq4qscl0x3b7ppsjlx19w9vzz2289";
+        rev = "0eb25a824360ebd496c0cf7e1cc0ec486131e0f4";
+        sha256 = "0irq9x3vr6sgggp88sa4dfj82jsxis4fpy9vkknsvala0ab9svak";
     };
 
     enableParallelBuilding = true;
