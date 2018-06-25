@@ -11,15 +11,14 @@
 
 stdenv.mkDerivation rec {
   name = "highfive-${version}";
-  version = "1.4-dev201805";
+  version = "2.0-dev201806";
 
   src = fetchFromGitHub {
     owner = "BlueBrain";
     repo = "HighFive";
-    rev = "6be97a0efcc618f1033a3745ff4030dc28cdd167";
-    sha256 = "00wkkaplj2506zdci25axqvgs5lfnm45hm7ps6l4f7bmk8r39zl6";
+    rev = "3194c819690e884e35990e9f2d4f02bc403ca270";
+    sha256 = "1x818jam6886qg56xchp3m93kc9mwh088lrjrbxlja7fq6byzzkg";
   };
-
 
   buildInputs = [
     boost
@@ -30,13 +29,13 @@ stdenv.mkDerivation rec {
   ] ++ stdenv.lib.optional (pandoc != null) pandoc;
 
   enableParallelBuilding = true;
-    
+
   cmakeFlags = [
     "-DUNIT_TESTS:BOOL=TRUE"
   ] ++ stdenv.lib.optional (pandoc != null) "-DHIGH_FIVE_DOCUMENTATION:BOOL=TRUE";
-    
+
   doCheck = true;
-  
+
   checkTarget = "test";
 
   outputs = [ "out" ] ++ stdenv.lib.optional (pandoc != null) "doc";

@@ -4,10 +4,9 @@
 , cmake
 , servus
 , pkgconfig
-, doxygen 
+, doxygen
 , legacyVersion ? false
 }:
-
 
 let
         legacy-info = {
@@ -35,7 +34,7 @@ stdenv.mkDerivation rec {
     rev = lunchbox-info.rev;
     sha256 = lunchbox-info.sha256;
   };
- 
+
 
   cmakeFlags = [ "-DCOMMON_DISABLE_WERROR=TRUE" ];
 
@@ -53,8 +52,5 @@ stdenv.mkDerivation rec {
 	# disable thread -> will fail when executed on machine with low resource
 	ctest -V -E "(perf|Thread|thread)"
   '';
-  
+
 }
-
-
-
