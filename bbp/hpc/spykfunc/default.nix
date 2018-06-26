@@ -41,7 +41,7 @@ in
 
   stdenv.mkDerivation rec {
     name = "spykfunc-${version}";
-    version = "0.9.0";
+    version = "0.9.1";
     meta = {
       description = "New Functionalizer implementation on top of Spark";
       longDescription = ''
@@ -65,8 +65,8 @@ in
     };
     src = fetchgitPrivate {
       url = config.bbp_git_ssh + "/building/Spykfunc";
-      rev = "da51d670399b71eca787fe8eedbb0d94883bc17f";
-      sha256 = "02mzrs5ri2iyfbyrrryqwgc9sb03xgd4va43cdrlv0783nc0r5xg";
+      rev = "7df733b607a0ac4780e48e368ef58f630281ebba";
+      sha256 = "18f09fqszsp4ddrrkdclf8fs98gmfr22d1bjj9bwy8vcvlsdiaws";
     };
     buildInputs = [ boost hdf5 highfive ];
     nativeBuildInputs = [
