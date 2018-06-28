@@ -204,10 +204,6 @@ let
 
         rtneuron = callPackage ./viz/rtneuron {};
 
-        rtneuron2 = callPackage ./viz/rtneuron {
-            legacyVersion = true;
-        };
-
         embree = callPackage ./viz/embree {
             stdenv = stdenvIntelIfSupportedElseClang;
         };
@@ -248,10 +244,6 @@ let
 
         brayns-research-modules = callPackage ./viz/brayns-research-modules {
             stdenv = stdenvIntelIfSupportedElseClang;
-        };
-
-        morphology-synthesis = callPackage ./viz/morphology-synthesis {
-
         };
 
         ##
@@ -402,7 +394,6 @@ let
         };
 
         spykfunc-py3 = spykfunc.override {
-            spark-bbp = spark-bbp-py3;
             pythonPackages = python3Packages;
         };
 
