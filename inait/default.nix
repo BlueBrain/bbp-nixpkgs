@@ -108,7 +108,7 @@ let
                  moduleFilePrefix = "nix/py27";
                  isLibrary = true;
                  description = "ultron python bindings module";
-                 packages = with pkgs.pythonPackages; ( getPyModRec [ ultron ] );
+                 packages = with pkgs.pythonPackages; ( getPyModRec [ pkgs.pythonPackages.ultron ] );
             };
  
 
@@ -117,7 +117,7 @@ let
                  moduleFilePrefix = "nix/py36";
                  isLibrary = true;
                  description = "ultron python bindings module";
-                 packages = with pkgs.python3Packages; ( getPyModRec [ ultron ] );
+                 packages = with pkgs.python3Packages; ( getPyModRec [ pkgs.python3Packages.ultron ] );
             };
  
 

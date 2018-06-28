@@ -7,7 +7,7 @@
 
 pythonPackages.buildPythonPackage rec {
 	name = "ultron-${version}";
-	version = "${builtins.substring 0 6 src.rev}";
+	version = "0.1-${builtins.substring 0 6 src.rev}";
 
 	src = fetchgitPrivate {
 		url = config.inait_git_ssh + "/PIPELINE/ultron.git";
