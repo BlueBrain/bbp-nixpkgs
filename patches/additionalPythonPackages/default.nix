@@ -839,6 +839,26 @@ in
     doCheck = false;
   };
 
+    metis = pythonPackages.buildPythonPackage rec {
+        pname = "metis";
+        version = "0.2a4";
+        name = "${pname}-${version}";
+
+        src = pythonPackages.fetchPypi {
+          inherit pname version;
+          sha256 = "0kzrqzlgq4q6kg5af9mfm0rix7p7ig2lgi5j5z7557v96n3hn43x";
+        };
+
+        preConfigure = ''
+            sed -i "s@'METIS_DLL'@'METIS_DLL','${pkgs.metis}/lib/libmetis.so'@g" metis.py
+        '';
+
+        propagatedBuildInputs = with pythonPackages; [ pkgs.metis ];
+
+  };
+
+
+
   ratelimiter = pythonPackages.buildPythonPackage rec {
     pname = "ratelimiter";
     version = "1.2.0";
