@@ -661,12 +661,12 @@ in
   };
 
   sparkmanager = pythonPackages.buildPythonPackage rec {
-    version = "0.5.3";
+    version = "0.5.8";
     pname = "sparkmanager";
 
     src = pythonPackages.fetchPypi {
       inherit pname version;
-      sha256 = "1zfmy5d9gbpj0fws5apb0fhdjm45wkpl973nnq7qchwh87dhcg0p";
+      sha256 = "0ib98xrjppvyhy1x45f96hpdpzlsfyqp99r7hvhlbwd020d65m53";
     };
 
     preConfigure = ''
@@ -701,6 +701,24 @@ in
       inherit pname version;
       sha256 = "0l4g5818ffyfmfs1a924811azhjj8ax9xd1cffr1mzd3ycn0zfx7";
     };
+
+    doCheck = false;
+  };
+
+  hdfs = pythonPackages.buildPythonPackage rec {
+    version = "2.1.0";
+    pname = "hdfs";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "1ijbnhcnrrk2wdsvgwf3sxfl0mqvn871391kgcjc7d83rfffj3x4";
+    };
+
+    propagatedBuildInputs = with self; [
+      docopt
+      requests
+      six
+    ];
 
     doCheck = false;
   };
@@ -933,6 +951,29 @@ in
     ];
 
     doCheck = false;
+  };
+
+  numpy-quaternion = pythonPackages.buildPythonPackage rec {
+    pname = "numpy-quaternion";
+    version = "2018.5.17.10.19.59";
+    name = "${pname}-${version}";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "09my5qshkvwfjwghp8pqx59qccn298xs3y6fs6c0lhwhnn648kf1";
+    };
+
+    buildInputs = with pythonPackages; [
+      pytest
+    ];
+
+    propagatedBuildInputs = with pythonPackages; [
+      numpy
+    ];
+
+    checkPhase = ''
+      pytest
+    '';
   };
 
   add-site-dir = stdenv.mkDerivation rec {

@@ -1,11 +1,11 @@
-{ stdenv, 
-fetchgit, 
-boost, 
-cmake, 
-pkgconfig, 
-lunchbox,
-pression
- }:
+{ stdenv
+, fetchgit
+, boost
+, cmake
+, pkgconfig
+, lunchbox
+, pression
+}:
 
 stdenv.mkDerivation rec {
   name = "collage-${version}";
@@ -19,11 +19,8 @@ stdenv.mkDerivation rec {
     sha256 = "1cm91dmbjjx0qylsjh9rqjmmcgcfbwhciydj1y25s0nlwnkrh665";
   };
 
-
   enableParallelBuilding = true;
 
   propagatedBuildInputs = [ lunchbox pression ];
-  
+
 }
-
-

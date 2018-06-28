@@ -16,10 +16,6 @@ pythonPackages.buildPythonPackage rec {
         sha256 = "14m73yl24m535laik9liyx22px1wxv7wbsdka7xg8kgrbjwfcxjp";
     };
 
-    preConfigure = ''
-        sed -i 's@0.7.3@0.5@g' setup.py;
-    '';
-
     propagatedBuildInputs = with pythonPackages; [
         pandas
         matplotlib

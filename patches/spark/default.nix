@@ -32,7 +32,6 @@ with stdenv.lib;
     export JAVA_HOME="${jre}"
     export SPARK_HOME="$out"
     export PYSPARK_PYTHON="${pythonPackages.python}/bin/${pythonPackages.python.executable}"
-    export PYTHONPATH="\$PYTHONPATH:$PYTHONPATH"
     EOF
   '';
 })
