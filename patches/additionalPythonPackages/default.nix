@@ -8,8 +8,7 @@ let
 
     self = pythonPackages;
 
-in
- rec {
+    pythonPackageAdditionals = rec {
 
     # For a given list of python modules
     # return all there dependencies
@@ -542,7 +541,8 @@ in
       inherit (pkgs.linuxPackages) nvidia_x11;
       cudatoolkit = pkgs.cudatoolkit9;
       cudnn = pkgs.cudnn_cudatoolkit9;
-      inherit tensorflow-tensorboard absl-py;
+      nccl = pkgs.nccl;
+      pythonPackages = allPythonPackages;
     };
 
     absl-py = pythonPackages.buildPythonPackage rec {
@@ -567,6 +567,56 @@ in
         maintainers = with stdenv.lib.maintainers; [ danharaj ];
       };
     };
+
+    astunparse = pythonPackages.buildPythonPackage rec {
+      pname = "astunparse";
+      version = "1.5.0";
+      name = "${pname}-${version}";
+
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/${builtins.substring 0 1 pname}/${pname}/${name}.tar.gz";
+        sha256 = "1kc9lm2jvfcip3z8snj04dar5a9jh857a704m6lvcv4xclm3rpsm";
+      };
+
+      doCheck = false;
+
+      propagatedBuildInputs = with self; [ six ];
+
+    };
+
+
+
+    gast = pythonPackages.buildPythonPackage rec {
+      pname = "gast";
+      version = "0.2.0";
+      name = "${pname}-${version}";
+
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/${builtins.substring 0 1 pname}/${pname}/${name}.tar.gz";
+        sha256 = "0c296xm1vz9x4w4inmdl0k8mnc0i9arw94si2i7pglpc461r0s3h";
+      };
+
+      propagatedBuildInputs = with self; [ six simplegeneric astunparse ];
+
+    };
+
+    grpcio = pythonPackages.buildPythonPackage rec {
+      pname = "grpcio";
+      version = "1.12.1";
+      name = "${pname}-${version}";
+
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/${builtins.substring 0 1 pname}/${pname}/${name}.tar.gz";
+        sha256 = "03prydm3m02krin778gwcyvlagsnfki4j8fd6rjm5a4ss3gslkzi";
+      };
+
+      propagatedBuildInputs = with self; [ six ] ++ stdenv.lib.optionals ( ! isPy3k ) [ futures enum34 ];
+
+    };
+
+
+
+
 
 
   tensorflowWithoutCuda = tensorflow.override {
@@ -1096,4 +1146,10 @@ EOF
     };
   };
 
-}
+  };
+
+   allPythonPackages = self // pythonPackageAdditionals;
+
+
+  in
+	pythonPackageAdditionals

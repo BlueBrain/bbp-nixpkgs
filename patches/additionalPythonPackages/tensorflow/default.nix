@@ -2,13 +2,13 @@
 , buildPythonPackage, isPy3k, pythonOlder, pythonAtLeast
 , which, swig, binutils, glibcLocales
 , python, jemalloc, openmpi
-, numpy, six, protobuf, tensorflow-tensorboard, backports_weakref, mock, enum34, absl-py
-, cudaSupport ? false, nvidia_x11 ? null, cudatoolkit ? null, cudnn ? null
+, pythonPackages
+, cudaSupport ? false, nvidia_x11 ? null, cudatoolkit ? null, cudnn ? null, nccl ? null
 # XLA without CUDA is broken
 , xlaSupport ? cudaSupport
 # Default from ./configure script
 , cudaCapabilities ? [ "3.5" "5.2" "7.0" ]
-, sse42Support ? false
+, avxSupport ? true
 , avx2Support ? false
 , fmaSupport ? false
 }:
@@ -40,27 +40,30 @@ let
       owner = "tensorflow";
       repo = "tensorflow";
       rev = "v${version}";
-      sha256 = "1c4djsaip901nasm7a6dsimr02bsv70a7b1g0kysb4n39qpdh22q";
+      sha256 = "18hydad4d61qg5ji7frcbmhb1l09s122n9hl7ic0nqq6j786acvv";
     };
 
     patches = [
-      # Fix build with Bazel >= 0.10
-      (fetchpatch {
-        url = "https://github.com/tensorflow/tensorflow/commit/6fcfab770c2672e2250e0f5686b9545d99eb7b2b.patch";
-        sha256 = "0p61za1mx3a7gj1s5lsps16fcw18iwnvq2b46v1kyqfgq77a12vb";
+	# Fix compilation issues with GCC 6.4.0
+	(fetchpatch {
+        url = "https://patch-diff.githubusercontent.com/raw/tensorflow/tensorflow/pull/18434.patch";
+        sha256 = "0lpfq66bqijxnn80zfxpcj4f7j01a32avjxcfz2fhlivj4qyar96";
       })
-      (fetchpatch {
-        url = "https://github.com/tensorflow/tensorflow/commit/3f57956725b553d196974c9ad31badeb3eabf8bb.patch";
-        sha256 = "11dja5gqy0qw27sc9b6yw9r0lfk8dznb32vrqqfcnypk2qmv26va";
-      })
+
     ];
 
     nativeBuildInputs = [ swig which ];
 
-    buildInputs = [ python jemalloc openmpi glibcLocales numpy ]
-      ++ lib.optionals cudaSupport [ cudatoolkit cudnn nvidia_x11 ];
+    buildInputs = [ python jemalloc openmpi glibcLocales pythonPackages.numpy ]
+      ++ lib.optionals cudaSupport [ cudatoolkit cudnn nvidia_x11 nccl ];
 
-    preConfigure = ''
+    propagatedBuildInputs = [ pythonPackages.astor pythonPackages.numpy pythonPackages.six pythonPackages.protobuf pythonPackages.absl-py ]
+                 ++ lib.optional (!isPy3k) pythonPackages.mock
+                 ++ lib.optionals (pythonOlder "3.4") [ pythonPackages.backports_weakref pythonPackages.enum34 ];
+
+    preTFConfigure = ''
+      set -x
+      echo "hello world"
       patchShebangs configure
 
       export PYTHON_BIN_PATH="${python.interpreter}"
@@ -79,20 +82,34 @@ let
         export TF_CUDNN_VERSION=${cudnn.majorVersion}
         export GCC_HOST_COMPILER_PATH=${cudatoolkit.cc}/bin/gcc
         export TF_CUDA_COMPUTE_CAPABILITIES=${lib.concatStringsSep "," cudaCapabilities}
+        export NCCL_INSTALL_PATH="${nccl}"
+	export TF_NCCL_VERSION="1.3"
       ''}
 
       mkdir -p "$PYTHON_LIB_PATH"
+    '';
+
+    dontAddPrefix = true;
+
+    configurePhase = ''
+		eval "$preTFConfigure"
+
+		mkdir -p $out
+		./configure --workspace=$out 
+		
+		export NIX_TF_ADD_FLAGS="-O2 -ftree-vectorize ${if avxSupport then ''-mavx'' else ''''}"
+		export NIX_TF_ADD_FLAGS="$NIX_TF_ADD_FLAGS ${if avx2Support then ''-mavx2'' else ''''}"
+		export NIX_TF_ADD_FLAGS="$NIX_TF_ADD_FLAGS ${if fmaSupport then ''-mfma'' else ''''}"
+
+		export NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE $NIX_TF_ADD_FLAGS"
+		export NIX_CXXFLAGS_COMPILE="$NIX_CXXFLAGS_COMPILE $NIX_CFLAGS_COMPILE"
     '';
 
     NIX_LDFLAGS = lib.optionals cudaSupport [ "-lcublas" "-lcudnn" "-lcuda" "-lcudart" ];
 
     hardeningDisable = [ "all" ];
 
-    bazelFlags = [ "--config=opt" ]
-                 ++ lib.optional sse42Support "--copt=-msse4.2"
-                 ++ lib.optional avx2Support "--copt=-mavx2"
-                 ++ lib.optional fmaSupport "--copt=-mfma"
-                 ++ lib.optional cudaSupport "--config=cuda";
+    bazelFlags = [ ] ++  lib.optional cudaSupport "--config=cuda";
 
     bazelTarget = "//tensorflow/tools/pip_package:build_pip_package";
 
@@ -136,10 +153,15 @@ in buildPythonPackage rec {
     sed -i '/enum34/d' setup.py
   '';
 
-  propagatedBuildInputs = [ numpy six protobuf absl-py ]
-                 ++ lib.optional (!isPy3k) mock
-                 ++ lib.optionals (pythonOlder "3.4") [ backports_weakref enum34 ]
-                 ++ lib.optional withTensorboard tensorflow-tensorboard;
+  propagatedBuildInputs = [ pythonPackages.gast pythonPackages.termcolor
+			    pythonPackages.astor pythonPackages.numpy 
+			    pythonPackages.tensorflow-tensorboard
+			    pythonPackages.grpcio
+			    pythonPackages.six pythonPackages.protobuf pythonPackages.absl-py ]
+                 ++ lib.optional (!isPy3k) pythonPackages.mock
+                 ++ lib.optionals (pythonOlder "3.4") [ pythonPackages.backports_weakref pythonPackages.enum34 ];
+
+ 
 
   # Actual tests are slow and impure.
   checkPhase = ''

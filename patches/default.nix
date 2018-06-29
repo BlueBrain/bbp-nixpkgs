@@ -425,6 +425,9 @@ let
 
 	yo = callPackage ./yo {
 	};
+
+	nccl = callPackage ./nccl {
+	};
     };
 
     additionalPythonPackages = MergePkgs.callPackage ./additionalPythonPackages ({
