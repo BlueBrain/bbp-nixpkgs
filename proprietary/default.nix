@@ -17,6 +17,10 @@ let
 			cc = gcc;
     	};
 
+        hpe-mpi = callPackage ./hpe-mpi {
+            inherit utils;
+            ibverbs = libibverbs;
+        };
 
         patchelf_rewire = callPackage ./patchelf_rewire {
 
