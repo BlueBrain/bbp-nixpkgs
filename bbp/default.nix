@@ -52,6 +52,10 @@ let
             mpi = bbp-mpi;
         };
 
+        hpe-mpi = pkgs.hpe-mpi.override {
+            ibverbs = ibverbs-upstream;
+        };
+
         osu-mpi-bench = pkgs.osu-mpi-bench.override {
             mpi = bbp-mpi;
         };
