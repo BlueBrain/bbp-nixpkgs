@@ -307,6 +307,10 @@ let
             liblapackLibName = "openblas";
         };
 
+	petsc-32 = petsc.override {
+		with64bits = false;
+	};
+
         trilinos = callPackage ./trilinos {
             mpi = pkgs.openmpi;
             parmetis = parmetis;
