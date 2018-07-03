@@ -47,6 +47,14 @@ let
                    sha256 = "10vyd0xh2li13k8zzkfj2adm71i1dmyg110pqfwqcaj77hdb8k6a";
         
                } 
+	       else if (driverVersion == "390.67") then
+               {
+                   versionNumber = "390.67";
+                   sha256 = "0np6xj93fali2hss8xsdlmy5ykjgn4hx6mzjr8dpbdi0fhdcmwkd";
+        
+               } 
+
+
  
                else throw "nvidia-x11 version ${driverVersion} is not supported for ${stdenv.system}";
 
