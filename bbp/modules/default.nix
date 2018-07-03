@@ -1497,6 +1497,7 @@ let
                pythonPkgs.kiwisolver
                pythonPkgs.markupsafe
                pythonPkgs.matplotlib
+               pythonPkgs.kiwisolver
                pythonPkgs.memory_profiler
                pythonPkgs.numexpr
                pythonPkgs.packaging
@@ -1576,6 +1577,7 @@ let
                pythonPkgs.kiwisolver
                pythonPkgs.markupsafe
                pythonPkgs.matplotlib
+               pythonPkgs.kiwisolver
                pythonPkgs.memory_profiler
                pythonPkgs.numexpr
                pythonPkgs.packaging
