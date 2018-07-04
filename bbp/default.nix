@@ -250,6 +250,8 @@ let
 
         molecular-systems = callPackage ./viz/molecular-systems {};
 
+        diffusion-tensor-imaging = callPackage ./viz/diffusion-tensor-imaging {};
+
         brayns-research-modules = callPackage ./viz/brayns-research-modules {
             stdenv = stdenvIntelIfSupportedElseClang;
         };
