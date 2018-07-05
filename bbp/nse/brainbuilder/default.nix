@@ -7,13 +7,13 @@
 
 pythonPackages.buildPythonPackage rec {
     pname = "brainbuilder";
-    version = "0.5.10";
+    version = "0.6.2";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/nse/brainbuilder";
-        rev = "3e02b258dd294f56d3570d4781528dcd113eae7f";
-        sha256 = "0rjncrca955xyk93j62fxpqhwqrwmm2171hra9m6l9vw8qpiknxd";
+        rev = "cec8a2343d0be8ac70e9c4dc0da622fe02cd007d";
+        sha256 = "1ws8wmz9xq5mbl2639jicj32hr1n6jysdsmppgb5b1dqv9s2k22c";
     };
 
     buildInputs = with pythonPackages; [
@@ -27,13 +27,14 @@ pythonPackages.buildPythonPackage rec {
         h5py
         lxml
         numpy
+        numpy-stl
         pandas
         pyyaml
-        requests
         six
         scipy
+        tess
         tqdm
-
+    ] ++ [
         voxcell
     ];
 

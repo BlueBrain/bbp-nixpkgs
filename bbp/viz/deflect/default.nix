@@ -4,7 +4,7 @@
 , boost
 , freeglut
 , libXi
-, libXmu 
+, libXmu
 , mesa
 , libjpeg_turbo
 , qt
@@ -12,14 +12,14 @@
 
 stdenv.mkDerivation rec {
   name = "deflect-${version}";
-  version = "0.14.0";
+  version = "0.14.1";
 
   buildInputs = [ stdenv cmake boost freeglut mesa libjpeg_turbo libXi libXmu qt.qtbase ];
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/Deflect";
-    rev = "cc4c7329c173673811d4b75e0770310d7c5d268d";
-    sha256 = "0lnpq0r3358jq1far6wcfqpj9hpgzqgh00nd4nbkv5y0qqlihmv4";
+    rev = "4af58e75786eeca5d07485e9e6544ed8b84b1e63";
+    sha256 = "1lg38jgz61rhiqbykyjik8zwpqrs1qnzs610ahmy8v9vgp6bpyy0";
   };
   
   enableParallelBuilding = true;

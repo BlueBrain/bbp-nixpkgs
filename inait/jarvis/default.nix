@@ -26,7 +26,8 @@ let
       src = jarvis_src;
 
       propagatedBuildInputs = [ pythonPackages.pyzmq4 ];
-      
+    
+      doCheck = false;  
     };
     
     server = stdenv.mkDerivation rec {

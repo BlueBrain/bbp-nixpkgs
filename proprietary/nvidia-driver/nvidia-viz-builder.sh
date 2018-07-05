@@ -59,6 +59,11 @@ installPhase() {
         done
     fi
 
+    # add backfix for vglrun and GLX version for recent nvidia driver
+    # the .0 version of GLX is missing for these 
+    ln -s $out/lib/libGLX_nvidia.so $out/lib/libGLX_nvidia.so.0 || true
+
+
     # All libs except GUI-only are in $out now, so fixup them.
     for libname in `find "$out/lib/" -name '*.so.*'`
     do

@@ -14,13 +14,13 @@
 
 stdenv.mkDerivation rec {
     name = "embree-${version}";
-    version = "2.17.1";
+    version = "2.17.4";
 
     src = fetchFromGitHub {
         owner = "embree";
         repo = "embree";
-        rev = "90e49f243703877c7714814d6eaa5aa3422a5839";
-        sha256 = "1qh6qz79gphgr1ffj7i2qy3sa373bay9xahhsd7ba909s845qh7i";
+        rev = "cb61322db3bb7082caed21913ad14869b436fe78";
+        sha256 = "0q3r724r58j4b6cbyy657fsb78z7a2c7d5mwdp7552skynsn2mn9";
     };
     
 
@@ -28,8 +28,9 @@ stdenv.mkDerivation rec {
                     mesa libpng libXmu libXi imagemagick ];
 
     cmakeFlags = [
-			"-DCMAKE_INSTALL_INCLUDEDIR=include/"
-			"-DCMAKE_INSTALL_LIBDIR=lib/"
+            "-DCMAKE_INSTALL_INCLUDEDIR=include/"
+            "-DEMBREE_MAX_ISA=AVX512SKX"
+            "-DCMAKE_INSTALL_LIBDIR=lib/"
 		];
 
 }

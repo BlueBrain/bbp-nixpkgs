@@ -17,6 +17,10 @@ let
 			cc = gcc;
     	};
 
+        hpe-mpi = callPackage ./hpe-mpi {
+            inherit utils;
+            ibverbs = libibverbs;
+        };
 
         patchelf_rewire = callPackage ./patchelf_rewire {
 
@@ -74,6 +78,8 @@ let
         stdenvICC = (overrideCC stdenv WrappedICC) // {  isICC = true; };
 
         stdenvIntelfSupported = if (WrappedICC != null) then stdenvICC else stdenv;
+
+        stdenvIntelIfSupportedElseClang = if (WrappedICC != null) then stdenvICC else clangStdenv;
 
         intelMKLIfSupported = if (WrappedICC != null) then intel-mkl else pkgs.blas;
 	};

@@ -14,13 +14,12 @@ let
 
         # if not available, map to default mpi library
         bbp-mpi = if pkgs.isBlueGene == true then ibm-mpi-xlc
-                else if (config ? isSlurmCluster == true) || (has_slurm) then mvapich2
-                else if (config.mpi.rdma  or false ) then mvapich2-rdma
-		else mvapich2-hydra;
+                  else if (config ? isSlurmCluster == true)  then mvapich2
+                  else if (config.mpi.rdma  or false ) then mvapich2-rdma
+                  else mvapich2-hydra;
 
         # proper BBP default MPI library forced to GCC, necessary on some platforms
-        bbp-mpi-gcc = if pkgs.isBlueGene == true then ibm-mpi
-                                else bbp-mpi;
+        bbp-mpi-gcc = if pkgs.isBlueGene == true then ibm-mpi else bbp-mpi;
 
         # callpackage mapper
         callPackage = newScope mergePkgs;
@@ -34,20 +33,16 @@ let
         # all the required cross-compilation magic for BlueGene/Q
         enableBGQ = caller: file: (enableBGQ-proto caller file mergePkgs.bgq-map);
 
-
         # same than enableBGQ, but provide a GNU GCC environment
         enableBGQ-gcc47 = caller: file: (enableBGQ-proto  caller file mergePkgs.bgq-map-gcc47);
 
         # define this derivation to NULL if used on BlueGeneQ
         noBGQ = argPkg: (if pkgs.isBlueGene then stdenv else argPkg);
 
-
-
         pkgsWithBGQGCC = if (pkgs.isBlueGene == true) then (pkgs // mergePkgs.bgq-map-gcc47) else pkgs;
         pkgsWithBGQXLC = if (pkgs.isBlueGene == true) then (pkgs // mergePkgs.bgq-map) else pkgs;
 
         nativeAllPkgs = pkgs;
-
 
     mergePkgs = pkgs // rec {
 
@@ -57,10 +52,13 @@ let
             mpi = bbp-mpi;
         };
 
+        hpe-mpi = pkgs.hpe-mpi.override {
+            ibverbs = ibverbs-upstream;
+        };
+
         osu-mpi-bench = pkgs.osu-mpi-bench.override {
             mpi = bbp-mpi;
         };
-
 
         ## parallel hdf5
         phdf5 = pkgs.phdf5.override {
@@ -76,7 +74,6 @@ let
             stdenv = enableDebugInfo  pkgsWithBGQGCC.stdenv;
             mpiRuntime = bbp-mpi;
         };
-
 
         scorec = pkgs.scorec.override {
             mpi = bbp-mpi;
@@ -96,30 +93,22 @@ let
         zoltan = trilinos;
 
 
-
         ##
         ## git / cmake external for viz components
         ##
-        fetchgitExternal = callPackage ./config/fetchGitExternal{
-
-        };
+        fetchgitExternal = callPackage ./config/fetchGitExternal {};
 
         ##
         ## cmake externals for viz components
         ## might cause not deterministic builds
         ##
-        cmake-external = callPackage ./config/cmake-external{
-
-        };
-
+        cmake-external = callPackage ./config/cmake-external {};
 
 
         ##
         ## BBP common components
         ##
-        bbpsdk = callPackage ./common/bbpsdk {
-
-        };
+        bbpsdk = callPackage ./common/bbpsdk {};
 
         bbpsdk-legacy = bbpsdk.override {
             legacyVersion = true;
@@ -127,65 +116,35 @@ let
             lunchbox = lunchbox-legacy;
         };
 
-        vmmlib = callPackage ./common/vmmlib {
-
-        };
+        vmmlib = callPackage ./common/vmmlib {};
 
         ##
         ## BBP viz components
         ##
-        #
-
         opengl = mesa;
 
         qt = qt59;
 
-        servus = callPackage ./viz/servus {
+        servus = callPackage ./viz/servus {};
 
-        };
-
-        lunchbox = callPackage ./viz/lunchbox {
-
-        };
+        lunchbox = callPackage ./viz/lunchbox {};
 
         lunchbox-legacy = callPackage ./viz/lunchbox {
             legacyVersion = true;
         };
 
-
-
-        keyv = callPackage ./viz/keyv {
-
-        };
+        keyv = callPackage ./viz/keyv {};
 
         keyv-legacy = callPackage ./viz/keyv {
             lunchbox = lunchbox-legacy;
             pression = pression-legacy;
         };
 
-        zerobuf = callPackage ./viz/zerobuf {
+        cppnetlib = callPackage ./viz/cppnetlib {};
 
-        };
+        rockets = callPackage ./viz/rockets {};
 
-        cppnetlib = callPackage ./viz/cppnetlib {
-
-        };
-
-        zeroeq = callPackage ./viz/zeroeq {
-
-        };
-
-        rockets = callPackage ./viz/rockets {
-
-        };
-
-        lexis = callPackage ./viz/lexis {
-
-        };
-
-        brion = callPackage ./viz/brion {
-
-        };
+        brion = callPackage ./viz/brion {};
 
         brion-py3 = brion.override {
             pythonPackages = python3Packages;
@@ -198,26 +157,17 @@ let
             keyv = keyv-legacy;
         };
 
-
-        pression = callPackage ./viz/pression {
-
-        };
+        pression = callPackage ./viz/pression {};
 
         pression-legacy = callPackage ./viz/pression {
             lunchbox = lunchbox-legacy;
         };
 
-        collage = callPackage ./viz/collage {
+        collage = callPackage ./viz/collage {};
 
-        };
+        deflect = callPackage ./viz/deflect {};
 
-        deflect = callPackage ./viz/deflect {
-
-        };
-
-        hwsd = callPackage ./viz/hwsd {
-
-        };
+        hwsd = callPackage ./viz/hwsd {};
 
         ior = callPackage ./benchmark/ior {
             mpi = bbp-mpi;
@@ -226,9 +176,7 @@ let
             };
         };
 
-        perftest = callPackage ./benchmark/perftest {
-        
-        };
+        perftest = callPackage ./benchmark/perftest {};
 
         shoc = callPackage ./benchmark/shoc {
             mpi = bbp-mpi;
@@ -252,57 +200,67 @@ let
             stdenv = stdenvIntelfSupported;
         };
 
+        iperf = callPackage ./benchmark/iperf {};
 
+        osgtransparency = callPackage ./viz/osgtransparency {};
 
+        equalizer = callPackage ./viz/equalizer {};
 
-        iperf = callPackage ./benchmark/iperf {
-        
-        };
+        rtneuron = callPackage ./viz/rtneuron {};
 
-        osgtransparency = callPackage ./viz/osgtransparency {
-
-        };
-
-        equalizer = callPackage ./viz/equalizer {
-
-        };
-
-        rtneuron = callPackage ./viz/rtneuron {
+        rtneuron2 = callPackage ./viz/rtneuron {
+            legacyVersion = true;
         };
 
         embree = callPackage ./viz/embree {
+            stdenv = stdenvIntelIfSupportedElseClang;
         };
 
         ospray = callPackage ./viz/ospray {
-            stdenv = stdenvIntelfSupported;
+            stdenv = stdenvIntelIfSupportedElseClang;
             mpi = bbp-mpi;
         };
 
         ospray-devel = callPackage ./viz/ospray {
-            stdenv = stdenvIntelfSupported;
+            stdenv = stdenvIntelIfSupportedElseClang;
             mpi = bbp-mpi;
             devel = true;
         };
 
         ospray-modules = callPackage ./viz/ospray-modules {
+            stdenv = stdenvIntelIfSupportedElseClang;
         };
 
         brayns = callPackage ./viz/brayns {
-
+            stdenv = stdenvIntelIfSupportedElseClang;
         };
 
         brayns-devel = callPackage ./viz/brayns {
+            stdenv = stdenvIntelIfSupportedElseClang;
             ospray = ospray-devel;
         };
 
-        viztools = callPackage ./viz/viztools {
+        viztools = callPackage ./viz/viztools {};
 
+        topology-viewer = callPackage ./viz/topology-viewer {};
+
+        emsim = callPackage ./viz/emsim {};
+
+        membraneless-organelles = callPackage ./viz/membraneless-organelles {};
+
+        brain-atlas = callPackage ./viz/brain-atlas {};
+
+        molecular-systems = callPackage ./viz/molecular-systems {};
+
+        diffusion-tensor-imaging = callPackage ./viz/diffusion-tensor-imaging {};
+
+        brayns-research-modules = callPackage ./viz/brayns-research-modules {
+            stdenv = stdenvIntelIfSupportedElseClang;
         };
 
-        bb5-utils = callPackage ./hpc/bb5-utils {
-            python = python3;
-            pythonPackages = python3Packages;
-       };
+        morphology-synthesis = callPackage ./viz/morphology-synthesis {
+
+        };
 
         ##
         ## BBP NSE components
@@ -310,8 +268,16 @@ let
         neurom = callPackage ./nse/neurom {
         };
 
+        morphio-python = callPackage ./nse/morphio-python {
+        };
+
+        morphio = callPackage ./nse/morphio {
+        };
+
+        bbp-morphology-workflow = callPackage ./nse/bbp-morphology-workflow {
+        };
+
         morphsyn = callPackage ./nse/morphsyn {
-            vtk = vtk7;
         };
 
         bluejittersdk = callPackage ./nse/bluejittersdk {
@@ -336,20 +302,18 @@ let
 
         bglibpy = callPackage ./nse/bglibpy {
         };
-        
 
         bluepyopt = callPackage ./nse/bluepyopt {
         };
-        
+
         igorpy = callPackage ./nse/igorpy {
-        };          
-        
+        };
+
         bluepyefe = callPackage ./nse/bluepyefe {
         };
-        
-        bluepymm = callPackage ./nse/bluepymm {
-        };        
 
+        bluepymm = callPackage ./nse/bluepymm {
+        };
 
         bluerepairsdk = callPackage ./nse/bluerepairsdk {
             bbpsdk = bbpsdk-legacy;
@@ -379,6 +343,21 @@ let
         voxcell = callPackage ./nse/voxcell {
         };
 
+        entity-management = callPackage ./nse/entity-management {
+        };
+
+        entity-management_0_1_2 = callPackage ./nse/entity-management {
+            version = "0.1.2";
+            rev = "8ad173a6feedab22101c8b3288654a2214c38257";
+            sha256 = "1583vys4b9j2vrk3vaycdkrj2gb5j90fpf102mg1c2vfzi4cfz8g";
+        };
+
+        entity-management_0_1_1 = callPackage ./nse/entity-management {
+            version = "0.1.1";
+            rev = "04a007f97e9889b278bbb0cddaac79dd907faaba";
+            sha256 = "0c0kl682fsw41s80g0h25adcwaf7rd3zp2y4nss3fbi8dxqby7m4";
+        };
+
         nse-allpkgs = noBGQ (pkgs.buildEnv {
             name = "all-modules";
             paths =
@@ -400,14 +379,12 @@ let
 
 
 
-
         ##
         ## BBP HPC components
         ##
         helloworld = enableBGQ-gcc47 callPackage ./common/helloworld {
             mpi = bbp-mpi;
         };
-
 
         hpctools-xlc = enableBGQ callPackage ./hpc/hpctools {
             mpiRuntime = bbp-mpi;
@@ -425,10 +402,15 @@ let
             hpctools = hpctools-xlc;
         };
 
+        parquet-converters = callPackage ./hpc/parquet_converters {
+            mpiRuntime = bbp-mpi;
+        };
+
         spykfunc = callPackage ./hpc/spykfunc {
         };
 
         spykfunc-py3 = spykfunc.override {
+            spark-bbp = spark-bbp-py3;
             pythonPackages = python3Packages;
         };
 
@@ -442,33 +424,34 @@ let
             mpiRuntime = bbp-mpi;
         };
 
-        pytouchreader = callPackage ./hpc/pytouchreader {
-
-        };
+        pytouchreader = callPackage ./hpc/pytouchreader {};
 
         mdtest = callPackage ./benchmark/mdtest {
             mpi = bbp-mpi;
         };
 
-        mvdtool = callPackage ./hpc/mvdTool {
+        mvdtool = callPackage ./hpc/mvdTool {};
 
-        };
-
-        morphotool = callPackage ./hpc/morphotool {
-
-        };
+        morphotool = callPackage ./hpc/morphotool {};
 
         morphomesher = callPackage ./hpc/morphomesher {
-
+            # we use clang to compile morpho mesher
+            # due to the very high memory consumption at compiled time
+            # implied by CGAL
+            stdenv = clangStdenv;
         };
 
-        syntool = callPackage ./hpc/syntool {
+        syntool = callPackage ./hpc/syntool {};
 
+        syntool-phdf5 = callPackage ./hpc/syntool {
+            hdf5 = phdf5;
+            useMPI = true;
         };
 
+        highfive = callPackage ./hpc/highfive {};
 
-        highfive = callPackage ./hpc/highfive {
-
+        highfive-phdf5 = highfive.override {
+            hdf5 = phdf5;
         };
 
         flatindexer = callPackage ./hpc/FLATIndexer {
@@ -483,24 +466,18 @@ let
             numpy = python3Packages.numpy;
         };
 
-        bbptestdata = callPackage ./tests/BBPTestData {
-
-        };
+        bbptestdata = callPackage ./tests/BBPTestData {};
 
         ### simulation
 
-        cyme = callPackage ./hpc/cyme {
-
-        };
+        cyme = callPackage ./hpc/cyme {};
 
         learningengine = callPackage ./hpc/learningengine {
         #    stdenv = stdenvIntelfSupported;
         #    blas = intelMKLIfSupported;
         };
 
-        mod2c = callPackage ./hpc/mod2c {
-
-        };
+        mod2c = callPackage ./hpc/mod2c {};
 
         coreneuron = enableBGQ callPackage ./hpc/coreneuron {
             mpiRuntime = bbp-mpi;
@@ -512,7 +489,6 @@ let
             mpiRuntime = bbp-mpi;
         };
 
-
         neuron = enableBGQ callPackage ./hpc/neuron {
             stdenv = (enableDebugInfo pkgsWithBGQXLC.stdenv);
             mpiRuntime = bbp-mpi;
@@ -522,9 +498,6 @@ let
         neuron-nomultisend = neuron.override {
             multiSend = false;
         };
-
-
-
 
         reportinglib = enableBGQ callPackage ./hpc/reportinglib {
             mpiRuntime = bbp-mpi;
@@ -539,7 +512,6 @@ let
             coreNeuronMode = true;
          };
 
-
         neurodamus-savestate = neurodamus.override {
             branchName = "savestate";
          };
@@ -552,19 +524,19 @@ let
             branchName = "simplification";
          };
 
-
         neurodamus-mousify = neurodamus.override {
             branchName = "mousify";
          };
+
+        neurodamus-bare = neurodamus.override {
+            branchName = "bare";
+        };
 
         neuromapp = enableBGQ callPackage ./hpc/neuromapp {
             mpiRuntime = bbp-mpi;
         };
 
-        mods-src = callPackage ./hpc/neurodamus/corebluron.nix{
-
-        };
-
+        mods-src = callPackage ./hpc/neurodamus/corebluron.nix {};
 
 
         nest = enableBGQ callPackage ./hpc/nest {
@@ -612,7 +584,6 @@ let
             stdenv = stdenvIntelfSupported;
         };
 
-
         mpi4py-py27-bbp = pythonPackages.mpi4py.override {
             mpi = bbp-mpi;
         };
@@ -622,27 +593,29 @@ let
         hpc-doc = callPackage ./common/vizDoc {
             name = "hpc-documentation";
             paths = [
-                cyme
                 coreneuron
+                cyme
+                flatindexer
                 functionalizer
                 highfive
                 learningengine
                 morphomesher
                 morphotool
                 mvdtool
+                nest
                 neurodamus
                 neuromapp
                 pytouchreader
-                flatindexer
                 reportinglib
                 spykfunc
+                steps
                 touchdetector
             ];
         };
 
         inherit enableBGQ;
         };
-        in
-        mergePkgs;
+    in
+    mergePkgs;
 in
   (pkgFun std-pkgs)

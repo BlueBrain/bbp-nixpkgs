@@ -18,7 +18,7 @@ let
 in
 
 stdenv.mkDerivation rec {
-  name = "PETSc-${version}";
+  name = "PETSc-${version}${if (with64bits) then "-64b" else "32b"}";
   version = "3.7";
 
   src = fetchgit {

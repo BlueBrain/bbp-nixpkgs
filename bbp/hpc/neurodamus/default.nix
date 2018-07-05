@@ -23,20 +23,20 @@ let
 
   src-master = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "43ff6eb82af7cf0a3c63359d1dbf1f44cb8b49ef";
-        sha256 = "010lrl4ls2lgrqrz0n1z0j6kvrhb3fmzabf6k881cbxljs7pwy1c";
+        rev = "e2bd9d2be6d2aead3bd8e91f3a058efc49c689b7";
+        sha256 = "1q91sdpshc07gn92d44z4g7cw5l8wpsjwak92nmjg9x1mm5yassc";
     };
 
   src-savestate = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "537672d392c5d1bf759c39b1ab04a5fa47a9c1b3";
-        sha256 = "0dbblarxdh40qjh03ww55yf31mvamc4ksxjb8jqhjimpijpn3139";
+        rev = "a32826ae6ef264084f99e208fcbf0f7f42c5ce1e";
+        sha256 = "1kw3yz85wx94s5r05in13vyz7x04j8ais5rb7f06i88s718an6wg";
   };
 
   src-hippocampus = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
-        rev = "ad76fcb138af81ec17ca8407ca1423c1d194d567";
-        sha256 = "0b2v8r3ssnhhcq6w9k5lci2wblwhj17yyzxwwzw0nwiyiv9khbw4";
+        rev = "64e4ea2caab29e7e20b94b43d3ff233192d20eed";
+        sha256 = "195sx4g53kzl9yp7qz4pwpnhpxn096rqgxk198h9606clznha30z";
   };
 
   src-simplification = fetchgitPrivate {
@@ -51,6 +51,11 @@ let
         sha256 = "0y48sdsnj14fd48hyf04xycxsmksgc9k1dj4cj8hvzrdkch3fs61";
   };
 
+  src-bare = fetchgitPrivate {
+        url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
+        rev = "77bb85b26d7f67935b62c8873e03225c2f12367d";
+        sha256 = "05gbpa6snad1gxk8s0ahz0b4xr7i5x4hpjrhxjkxjcxvhiybnprb";
+  };
 
   src-coreneuron = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/neurodamus/bbp";
@@ -86,6 +91,7 @@ stdenv.mkDerivation rec {
           else if ( branchName == "hippocampus" ) then src-hippocampus
           else if ( branchName == "simplification" ) then src-simplification
           else if ( branchName == "mousify" ) then src-mousify
+          else if ( branchName == "bare" ) then src-bare
 		  else if ( branchName == "default" ) then src-master
           else throw ( "neurodamus : not a valid branchName name " + branchName ) ;
 
@@ -132,6 +138,10 @@ stdenv.mkDerivation rec {
         echo " \"\''${NRNIV}\" -dll \"$out/lib/libnrnmech.so\" \"\$@\" " >> $out/bin/special
     '' else ''
     '') +
+    (if (branchName == "default") then ''
+        mv hoclib/neuronHDF5/convert.sh $out/bin
+    '' else ''
+    '') +
     ''runHook postInstall
     '';
 
@@ -145,7 +155,9 @@ stdenv.mkDerivation rec {
     # current one is not able to work outside of build directory
     # and reference statically this one
     docCss = ../../common/vizDoc/github-pandoc.css;
-    postInstall = ''
+    postInstall = [ 
+	"mkdir -p $doc/share/doc"
+    ] ++ (stdenv.lib.optional) (pandoc != null) [ ''
         echo building HTML README
         mkdir -p $out/share/doc/neurodamus/html
         if [ -f ${src}/README.txt ] ; then
@@ -156,7 +168,7 @@ stdenv.mkDerivation rec {
             # Not all branches have a README.txt
             touch $out/share/doc/neurodamus/html/index.html
         fi
-    '';
+    '' ];
 
   outputs = [ "out" "doc" ];
   propagatedBuildInputs = [ which hdf5 reportinglib ];

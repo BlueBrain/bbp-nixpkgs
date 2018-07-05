@@ -18,8 +18,13 @@ let
             });
         };
 
-    	bbp-virtualenv = callPackage ./bbp-virtualenv {};
+        bbp-virtualenv = callPackage ./bbp-virtualenv {
+            manylinux1 = manylinux1;
+        };
     	bbp-virtualenv-py3 = bbp-virtualenv.override { python = python3; };
+
+	pandoc = if (config ? documentation && config.documentation == false) then null else std-pkgs.pandoc;
+
 
         # Boost with Python 3 support
         boost-py3 = (boost.overrideDerivation ( oldAttr: {
@@ -129,11 +134,15 @@ let
         #       inherit (stdenvAdapters) overrideCC;
         # };
 
+        likwid = callPackage ./likwid {
+        };
 
         # llvm 3.9 backport
         llvmPackages_3_9 = llvmPackages_39;
-        
-        
+
+        singularity = callPackage ./singularity {
+        };
+
         # ispc compiler for brayns
         ispc = callPackage ./ispc {
             # require clang compiler
@@ -298,6 +307,10 @@ let
             liblapackLibName = "openblas";
         };
 
+	petsc-32 = petsc.override {
+		with64bits = false;
+	};
+
         trilinos = callPackage ./trilinos {
             mpi = pkgs.openmpi;
             parmetis = parmetis;
@@ -335,10 +348,6 @@ let
 
         };
 
-        # vtk 7.0 backport
-        vtk7 = callPackage ./vtk {
-
-        };
 
         # itk 4.40
         itk = callPackage ./itk {
@@ -369,26 +378,6 @@ let
 
         cudnn = cudnn6_cudatoolkit8;
 
-        tensorflow = callPackage ./tensorflow {
-            pythonPackages = patches-pkgs.python27Packages;
-            cudaSupport = false;
-            cudnn = null;
-        };
-
-        tensorflow-py3 = tensorflow.override {
-            pythonPackages = patches-pkgs.python36Packages;
-        };
-
-        tensorflow-gpu = if (nvidia-drivers != null) then callPackage ./tensorflow {
-            pythonPackages = patches-pkgs.python27Packages;
-            cudaSupport = true;
-            cudnn = cudnn;
-        } else null;
-
-        tensorflow-gpu-py3 = if (nvidia-drivers != null) then tensorflow-gpu.override {
-            pythonPackages = patches-pkgs.python34Packages;
-        } else null;
-
         cctz = callPackage ./cctz {
         };
 
@@ -403,7 +392,7 @@ let
             libmeshb = patches-pkgs.libmeshb;
             trilinos = trilinos.override {
                 buildSharedLibs = true;
-                mpi = mpich2;
+                mpi = mvapich2;
                 withKokkos = true;
                 withTeuchos = true;
                 withZoltan = true;
@@ -419,6 +408,27 @@ let
 
         yaml-cpp = callPackage ./yaml-cpp {
         };
+
+	arrow = callPackage ./arrow {
+        };
+
+	parquet-cpp = callPackage ./parquet {
+		inherit arrow;
+        };
+
+        spark-bbp = callPackage ./spark {
+          sparkOrigin = spark;
+        };
+
+        spark-bbp-py3 = spark-bbp.override {
+          pythonPackages = python3Packages;
+        };
+
+        hadoop-bbp = callPackage ./hadoop {
+        };
+
+	yo = callPackage ./yo {
+	};
     };
 
     additionalPythonPackages = MergePkgs.callPackage ./additionalPythonPackages ({

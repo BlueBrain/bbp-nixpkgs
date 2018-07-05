@@ -55,6 +55,55 @@ in
 
   bootstrapped-pip =  callPackage ./bootstrapped-pip { };
 
+  bb5 = self.buildPythonPackage (rec {
+    name = "bb5";
+    version = "0.1";
+    src = pkgs.fetchgitPrivate {
+        url = "git@github.com:tristan0x/pybb5.git";
+        rev = "v" + version;
+        sha256 = "1gvmp1v9pdqzxxmslr8wk81fzh3lcz55l3rqsrsqgm08ggpgzihq";
+        leaveDotGit = true;
+    };
+
+    buildInputs = with pythonPackages; [
+      coverage
+      mock
+      pep8
+      pkgs.git
+      pycodestyle
+      pyscaffold
+      pytest
+      pytestcov
+      setuptools_scm
+      sphinx
+      vcrpy
+    ];
+
+    propagatedBuildInputs = with pythonPackages; [
+      clustershell
+      docopt
+      requests
+      six
+    ];
+  });
+
+  pyscaffold = self.buildPythonPackage rec {
+    name = "PyScaffold-${version}";
+    version = "2.5.11";
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/p/pyscaffold/${name}.tar.gz";
+      sha256 = "0qgf13vd594gqi6ssvai3hcr03akn9a7nrj9ar1xqm71426sfaqc";
+    };
+
+    buildInputs = with pythonPackages; [
+      six
+    ];
+
+    doCheck = false;
+  };
+
+  bokeh = callPackage ./bokeh {};
+
     funcsigs1_0_2 = self.buildPythonPackage rec {
         name = "funcsigs-1.0.2";
 
@@ -94,11 +143,14 @@ in
 
     cached-property = pythonPackages.buildPythonPackage rec {
       name = "cached-property-${version}";
-      version = "1.3.1";
+      version = "1.4.2";
       src = pkgs.fetchurl {
         url = "mirror://pypi/c/cached-property/${name}.tar.gz";
-        sha256 = "1wwm23dyysdb4444xz1q6b1agpyax101d8fx45s58ms92fzg0qk5";
+        sha256 = "0fd1c3w9wp4rcls947bc8780fyhby0935fn7ghy3153j1dj3w2dz";
       };
+      buildInputs = with pythonPackages; [
+        freezegun
+      ];
     };
 
     certifi17 = pythonPackages.buildPythonPackage rec {
@@ -133,9 +185,11 @@ in
       propagatedBuildInputs = with self; [
         binaryornot
         click
+        freezegun
         future
         jinja2-time
         poyo
+        pytest
         requests
         whichcraft
       ];
@@ -143,29 +197,36 @@ in
 
     hpcbench = pythonPackages.buildPythonPackage rec {
       name = "hpcbench-${version}";
-      version = "0.3.6";
+      version = "0.6";
       src = pkgs.fetchurl {
        url = "mirror://pypi/h/hpcbench/${name}.tar.gz";
-       sha256 = "08a683rmv614y9yqs0g8c7qvczl01p9qnpisw12h0kjpnvldam2n";
+       sha256 = "136vrvjwsaimpmd0rbzf48j5c70shhy8hzxikmigbfhhq867ryqr";
       };
       # # For development purpose, and add "pkgs.git" dependency
       # src = pkgs.fetchgit {
       #   url = "https://github.com/tristan0x/hpcbench.git";
-      #   rev = "f0978baea4b3863567b7ae07c9a592f0f316a56a";
-      #   sha256 = "16l7x69rbn0g1kdl7zk7zaqlgyymib58pm1irwkyr0w4cjifqyvq";
+      #   rev = "65e1f0dc65e3c874a69164d93096e533cc2bbdd8";
+      #   sha256 = "00q97hvjs13r1w5bnhak1lphy3wxml1vl3qd2v7z3zadr5jvb5lm";
       #   leaveDotGit = true;
       # };
       propagatedBuildInputs = with self; [
         cached-property
+        clustershell
         cookiecutter
         docopt
         jinja2
+        mock
         numpy
         py-elasticsearch
+        python_magic
         pyyaml
         setuptools_scm
         six
+        pkgs.git
       ];
+
+      # TODO: enable tests
+      doCheck = false;
     };
 
     idna_2_6 = pythonPackages.buildPythonPackage rec {
@@ -275,6 +336,32 @@ in
         doCheck = false;
     };
 
+    python_magic = pythonPackages.buildPythonPackage rec {
+      name = "python-magic-0.4.15";
+
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/p/python-magic/${name}.tar.gz";
+        sha256 = "1mgwig9pnzgkf86q9ji9pnc99bngms15lfszq5rgqb9db07mqxpk";
+      };
+
+      propagatedBuildInputs = with self; [ pkgs.file ];
+
+      patchPhase = ''
+        substituteInPlace magic.py --replace "ctypes.util.find_library('magic')" "'${pkgs.file}/lib/libmagic${stdenv.hostPlatform.extensions.sharedLibrary}'"
+      '';
+
+      doCheck = false;
+
+      # TODO: tests are failing
+      #checkPhase = ''
+      #  ${python}/bin/${python.executable} ./test.py
+      #'';
+
+      meta = {
+        description = "A python interface to the libmagic file type identification library";
+        homepage = https://github.com/ahupp/python-magic;
+      };
+    };
 
     whichcraft = pythonPackages.buildPythonPackage rec {
         name = "whichcraft-${version}";
@@ -283,6 +370,9 @@ in
             url = "mirror://pypi/w/whichcraft/${name}.tar.gz";
             sha256 = "1zapij0ggmwp8gmr3yc4fy7pbnh3dag59nvyigrfkdvw734m23cy";
         };
+        buildInputs = with pythonPackages; [
+          pytest
+        ];
     };
 
     tqdm =  pythonPackages.buildPythonPackage rec {
@@ -436,11 +526,51 @@ in
     buildInputs = with self; [ coverage ];
   };
 
-  tensorflow-tensorboard = with self; callPackage ./tensorflow-tensorboard {
+  tensorflow-tensorboard = callPackage ./tensorflow-tensorboard { };
+
+  tensorflow =
+    if stdenv.isDarwin
+    then callPackage ./tensorflow/bin.nix {
+    }
+    else callPackage ./tensorflow rec {
+      cudaSupport = pkgs.config.cudaSupport or false;
+      inherit (pkgs.linuxPackages) nvidia_x11;
+      cudatoolkit = pkgs.cudatoolkit9;
+      cudnn = pkgs.cudnn_cudatoolkit9;
+      inherit tensorflow-tensorboard absl-py;
+    };
+
+    absl-py = pythonPackages.buildPythonPackage rec {
+      pname = "absl-py";
+      version = "0.2.0";
+      name = "${pname}-${version}";
+
+      src = pkgs.fetchurl {
+        url = "mirror://pypi/${builtins.substring 0 1 pname}/${pname}/${name}.tar.gz";
+        sha256 = "1v1pxyc715zyba9axw97lg3jcwiajqq50s26b7cm8zdraj2dimvk";
+      };
+
+      propagatedBuildInputs = with self; [ six ];
+
+      # checks use bazel; should be revisited
+      doCheck = false;
+
+      meta = {
+        description = "Abseil Python Common Libraries";
+        homepage = "https://github.com/abseil/abseil-py";
+        license = stdenv.lib.licenses.asl20;
+        maintainers = with stdenv.lib.maintainers; [ danharaj ];
+      };
+    };
+
+
+  tensorflowWithoutCuda = tensorflow.override {
+    cudaSupport = false;
   };
 
-
-
+  tensorflowWithCuda = tensorflow.override {
+    cudaSupport = true;
+  };
 
   lazy = pythonPackages.buildPythonPackage rec {
     version = "1.3";
@@ -512,18 +642,103 @@ in
   };
 
   pyspark = pythonPackages.buildPythonPackage rec {
-    version = "2.2.0";
+    version = "2.2.1";
     name = "pyspark-${version}";
 
     src = pkgs.fetchurl {
-      url = "mirror://pypi/p/pyspark/${name}.post0.tar.gz";
-      sha256 = "0g1slgd24wx3hnkvqxjdd9pcqid5x1yc5pl6kn9i5kh8hq8r9jcx";
+      url = "mirror://pypi/p/pyspark/${name}.tar.gz";
+      sha256 = "1l26rmqn49kw1pk1hm2bxqqp9larv8imd0jbhw4vmwi54ca7z2kb";
     };
 
     propagatedBuildInputs = with self; [
       py4j_0_10_4
       pypandoc
       setuptools
+      simplegeneric
+    ];
+
+    doCheck = false;
+  };
+
+  sparkmanager = pythonPackages.buildPythonPackage rec {
+    version = "0.5.8";
+    pname = "sparkmanager";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "0ib98xrjppvyhy1x45f96hpdpzlsfyqp99r7hvhlbwd020d65m53";
+    };
+
+    preConfigure = ''
+        sed -i "/pytest-runner/d" setup.py
+    '';
+
+    propagatedBuildInputs = with self; [
+      pyspark
+      six
+    ];
+
+    doCheck = false;
+  };
+
+  jprops = pythonPackages.buildPythonPackage rec {
+    version = "2.0.2";
+    pname = "jprops";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "0b2v7m6pw9kb2qyp8qani7r1g63zi8agwj1ak0zhmkdn6cc275yj";
+    };
+
+    doCheck = false;
+  };
+
+  funcsigs = pythonPackages.buildPythonPackage rec {
+    version = "1.0.2";
+    pname = "funcsigs";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "0l4g5818ffyfmfs1a924811azhjj8ax9xd1cffr1mzd3ycn0zfx7";
+    };
+
+    doCheck = false;
+  };
+
+  hdfs = pythonPackages.buildPythonPackage rec {
+    version = "2.1.0";
+    pname = "hdfs";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "1ijbnhcnrrk2wdsvgwf3sxfl0mqvn871391kgcjc7d83rfffj3x4";
+    };
+
+    propagatedBuildInputs = with self; [
+      docopt
+      requests
+      six
+    ];
+
+    doCheck = false;
+  };
+
+  snakebite = pythonPackages.buildPythonPackage rec {
+    version = "2.11.0";
+    pname = "snakebite";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "12lpmq2s4934r0n4nl3w6c63vb1nx56pkmb2xrccdfacjjs3hlh8";
+    };
+
+    preConfigure = ''
+        sed -i "s@\s*'argparse']@]@g" setup.py
+    '';
+
+    propagatedBuildInputs = with self; [
+      argparse
+      protobuf
     ];
 
     doCheck = false;
@@ -590,7 +805,7 @@ in
       six
       inflection
       pandocfilters
-      markdown  
+      markdown
     ];
 
     doCheck = false;
@@ -641,6 +856,26 @@ in
     # TODO: enable tests
     doCheck = false;
   };
+
+    metis = pythonPackages.buildPythonPackage rec {
+        pname = "metis";
+        version = "0.2a4";
+        name = "${pname}-${version}";
+
+        src = pythonPackages.fetchPypi {
+          inherit pname version;
+          sha256 = "0kzrqzlgq4q6kg5af9mfm0rix7p7ig2lgi5j5z7557v96n3hn43x";
+        };
+
+        preConfigure = ''
+            sed -i "s@'METIS_DLL'@'METIS_DLL','${pkgs.metis}/lib/libmetis.so'@g" metis.py
+        '';
+
+        propagatedBuildInputs = with pythonPackages; [ pkgs.metis ];
+
+  };
+
+
 
   ratelimiter = pythonPackages.buildPythonPackage rec {
     pname = "ratelimiter";
@@ -697,6 +932,50 @@ in
     doCheck = false;
   };
 
+  tess = pythonPackages.buildPythonPackage rec {
+    pname = "tess";
+    version = "0.2.2";
+    name = "${pname}-${version}";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "0j2ih1j6rysy234ghca9axnhscp17ap2alwgr5irn3caii8231p8";
+    };
+
+    buildInputs = with pythonPackages; [
+      cython
+      nose
+    ];
+
+    propagatedBuildInputs = with pythonPackages; [
+    ];
+
+    doCheck = false;
+  };
+
+  numpy-quaternion = pythonPackages.buildPythonPackage rec {
+    pname = "numpy-quaternion";
+    version = "2018.5.17.10.19.59";
+    name = "${pname}-${version}";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "09my5qshkvwfjwghp8pqx59qccn298xs3y6fs6c0lhwhnn648kf1";
+    };
+
+    buildInputs = with pythonPackages; [
+      pytest
+    ];
+
+    propagatedBuildInputs = with pythonPackages; [
+      numpy
+    ];
+
+    checkPhase = ''
+      pytest
+    '';
+  };
+
   add-site-dir = stdenv.mkDerivation rec {
     name = "register-site-packages";
     site-packages = pythonPackages.python.sitePackages;
@@ -710,8 +989,8 @@ site.addsitedir(os.path.dirname(os.path.abspath(__file__)))
 EOF
     '';
   };
-  
-  
+
+
   scoop = pythonPackages.buildPythonPackage rec {
     pname = "scoop";
     version = "0.7.1.1";
@@ -733,7 +1012,7 @@ EOF
     ];
 
   };
-  
+
     deap = pythonPackages.buildPythonPackage rec {
 		pname = "deap";
 		version = "1.2.2";
@@ -748,7 +1027,7 @@ EOF
 
 
 		propagatedBuildInputs = with pythonPackages; [
-			
+
 		];
 
   };
@@ -768,6 +1047,30 @@ EOF
     };
   };
 
+  attrs = pythonPackages.buildPythonPackage rec {
+    name = "${pname}-${version}";
+    pname = "attrs";
+    version = "18.1.0";
 
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "0yzqz8wv3w1srav5683a55v49i0szkm47dyrnkd56fqs8j8ypl70";
+    };
+
+    # macOS needs clang for testing
+    buildInputs = with self; [
+      pytest hypothesis zope_interface pympler coverage six
+    ] ++ stdenv.lib.optionals (stdenv.isDarwin) [ clang ];
+
+    checkPhase = ''
+      py.test
+    '';
+
+    meta = with stdenv.lib; {
+      description = "Python attributes without boilerplate";
+      homepage = https://github.com/hynek/attrs;
+      license = licenses.mit;
+    };
+  };
 
 }

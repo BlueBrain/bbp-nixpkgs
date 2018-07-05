@@ -36,7 +36,10 @@ let
             pyjarvis = (jarvis.override {
                     pythonPackages = pyPkgs;
             }).pyjarvis;
-            
+
+	    ultron =  callPackage ./ultron {
+
+	    };         
         };
         
         pythonPackages =  (inaitPythonPackages pkgs.pythonPackages);
@@ -78,7 +81,7 @@ let
                 moduleFilePrefix = "nix/infra";
                 isLibrary = true;
                 description = "Jarvis python bindings module";
-                packages = with pkgs.pythonPackages; ( getPyModRec [ pkgs.python3Packages.pyjarvis ] );
+                packages = with pkgs.python3Packages; ( getPyModRec [ pkgs.python3Packages.pyjarvis ] );
             };            
 
             jarvis = pkgs.envModuleGen rec {
@@ -100,13 +103,30 @@ let
             };
             
 
+           ultron = pkgs.envModuleGen rec {
+                 name = "ultron";
+                 moduleFilePrefix = "nix/py27";
+                 isLibrary = true;
+                 description = "ultron python bindings module";
+                 packages = with pkgs.pythonPackages; ( getPyModRec [ pkgs.pythonPackages.ultron ] );
+            };
+ 
+
+           ultron-py3 = pkgs.envModuleGen rec {
+                 name = "ultron";
+                 moduleFilePrefix = "nix/py36";
+                 isLibrary = true;
+                 description = "ultron python bindings module";
+                 packages = with pkgs.python3Packages; ( getPyModRec [ pkgs.python3Packages.ultron ] );
+            };
+ 
 
             inait = pkgs.buildEnv {
 
                 name = "inait";
                 paths = with pkgs.modules; set.vcs
                     ++ set.dbg
-		    ++ set.qa
+        		    ++ set.qa
                     ++ set.dev_base_pkgs
                     ++ set.ml_base
                     ++ set.sciences_base
@@ -114,12 +134,11 @@ let
                     ++ set.compilers
                     ++ set.dev_toolkit_pkgs
                     ++ set.hpc_base
-                    ++ set.hpc_circuit
                     ++ set.hpc_simulators
                     ++ set.python_base
                     ++ set.python2_frameworks
                     ++ set.python3_base
-        	    ++ set.python3_frameworks
+        	        ++ set.python3_frameworks
                     ++ set.system_pkgs
                     ++ set.parallel_toolkit
 		    ++ set.editors
@@ -129,14 +148,18 @@ let
 		pybinreports
 		neurom
 		 ] ++ [ 
-                neuroconnector 
-		jarvis
-                pyjarvis
-                in8metrics
-                dev-env-gcc
-                dev-env-python27
-                dev-env-icc
-                dev-env-clang   
+	                neuroconnector 
+       			jarvis
+	                pyjarvis
+
+	                pyjarvis-py3
+			in8metrics
+			dev-env-gcc
+			dev-env-python27
+			dev-env-icc
+			dev-env-clang   
+			ultron
+			ultron-py3
             ];
 
             };

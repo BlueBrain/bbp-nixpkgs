@@ -10,18 +10,14 @@
 
 stdenv.mkDerivation rec {
   name = "bluejittersdk-${version}";
-  version = "34c9e";
+  version = "${builtins.substring 0 6 src.rev}";
   buildInputs = [ stdenv boost cmake hdf5-cpp pkgconfig gsl bbpsdk ];
 
   src = fetchgitExternal {
     url = config.bbp_git_ssh + "/platform/BlueJitterSDK";
-    rev = "e9f0b2e2c8b8061995b233d2d2fac5d093034c9e";
-    sha256 = "1gsklk4a1j6vws7kzmwhcgxkdb6lj5mfn3a3hjjpic01sxxipyb1";
+    rev = "eb836393e49a2b9cff954e57dd04218535b50e78";
+    sha256 = "1lawy45qfmizrm6sxmkx63q7jjimk9if5clpd2vyrl2w7k8hq1hy";
   };
 
-
-  patches = [ ./patch_cpp11.patch ./bbpsdk_dep.patch ];
-
   cmakeFlags = [ "-DCOMMON_PACKAGE_USE_QUIET=FALSE" ];
-
 }
