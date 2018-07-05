@@ -13,11 +13,11 @@
 let
     jarvis_src = fetchgitPrivate {
       url = config.inait_git_ssh + "/INFRA/Jarvis.git";
-      rev = "b111e88097fa01245f26d94ad7febd714c74de13";
-      sha256 = "04qgn3p4b7z0gzyq9wbprhr03c0y01qlzf388pakkdv3wq8zmi33";
+      rev = "e4934121a1038996c3b987dce661dc7c925bc3a6";
+      sha256 = "1g5xhfj3dqxad7p5khgbiqipjyv7gh3sxx5f9qsgxqm7kjpfh0mb";
     };
     
-    jarvis_version = "1.11";
+    jarvis_version = "1.13";
 
     pyjarvis = pythonPackages.buildPythonPackage rec {
       name = "pyjarvis-${version}";
