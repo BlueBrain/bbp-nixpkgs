@@ -244,6 +244,8 @@ let
 
         topology-viewer = callPackage ./viz/topology-viewer {};
 
+        emsim = callPackage ./viz/emsim {};
+
         membraneless-organelles = callPackage ./viz/membraneless-organelles {};
 
         brain-atlas = callPackage ./viz/brain-atlas {};

@@ -9,13 +9,13 @@ let
 in
 pythonPackages.buildPythonPackage rec {
 	name = "neuroM-${version}";
-	version = "1.4.5";
+	version = "1.4.8";
 
 	src = fetchFromGitHub {
 		owner = "BlueBrain";
 		repo = "NeuroM";
-		rev = "10b10751e288328495e14c6185dd08d04224f1d3";
-		sha256 = "059b2bqx004nf23nb305d3mg7vp255z11l26n6xvd0v1ahx1liwk";
+		rev = "04f48747785265aa7a4f7b0750c1447cae408468";
+		sha256 = "1qi8d2r4nzp41mddng2qxpkz20zvx6khw7g9ly3nkpg6v9anby9z";
 
 	};
 
