@@ -1443,6 +1443,7 @@ let
                             pkgs.deflect
                             pkgs.collage
                             pkgs.embree
+                            pkgs.emsim
                             pkgs.ospray
                             pkgs.equalizer
                             pkgs.keyv
@@ -3066,6 +3067,7 @@ let
                 equalizer
                 bbpsdk-legacy
                 embree
+                emsim
                 ospray
                 ospray-devel
                 topology-viewer
