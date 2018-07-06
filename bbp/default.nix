@@ -248,9 +248,13 @@ let
 
         membraneless-organelles = callPackage ./viz/membraneless-organelles {};
 
+        meshball = callPackage ./viz/meshball {};
+
         brain-atlas = callPackage ./viz/brain-atlas {};
 
         molecular-systems = callPackage ./viz/molecular-systems {};
+
+        diffusion-tensor-imaging = callPackage ./viz/diffusion-tensor-imaging {};
 
         brayns-research-modules = callPackage ./viz/brayns-research-modules {
             stdenv = stdenvIntelIfSupportedElseClang;
