@@ -34,8 +34,8 @@ let
   version3-info = {
     version = "3.0.0";
     url = "https://github.com/BlueBrain/RTNeuron.git";
-    rev = "eab793fcef1a1a52bcd8566f268078a852decead";
-    sha256 = "13qkigdakhii4s5jzc768fx6m6z2pnlzcyjacqw1lyh6imvj9syl";
+    rev = "2fde2a18ec8efb30e2fb83bb309edcdd82e12b7b";
+    sha256 = "0ac2rnnxbs9jp3sjsr3zq50yrlr6q97bka9kklb9zc3inx66xgl9";
     buildInputs = [];
     fetchFunction = fetchgit;
   };
