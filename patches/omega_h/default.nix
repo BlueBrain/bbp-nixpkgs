@@ -11,13 +11,13 @@
 
 stdenv.mkDerivation rec {
   name = "omega_h-${version}";
-  version = "9.13.5";
+  version = "9.13.11";
 
   src = fetchFromGitHub {
     owner = "ibaned";
     repo = "omega_h";
     rev = "v${version}";
-    sha256 = "0j76fg1bf2zjg9jm4zf8plqxmd7ys7a09zdddg76qj7v99yv5j7l";
+    sha256 = "099cizpx3zszyi88p6r3plir501mf1jv05d103fxfcpp2b9a521r";
   };
 
   omega_h-data = fetchFromGitHub {
