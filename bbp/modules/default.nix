@@ -1459,7 +1459,6 @@ let
                             pkgs.brayns-research-modules
                             pkgs.molecular-systems
                             pkgs.morphology-synthesis
-                            pkgs.diffusion-tensor-imaging
                        ];
             conflicts = conflicts-modules;
 
@@ -3078,7 +3077,6 @@ let
                 morphology-synthesis
                 meshball
                 brain-atlas
-                diffusion-tensor-imaging
                 brayns-research-modules
                 deflect
                 brayns
