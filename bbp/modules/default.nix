@@ -1897,7 +1897,8 @@ let
             conflicts = conflicts-modules ++ [ "qt" ];
 
             extraContent = ''
-        prepend-path QML2_IMPORT_PATH $targetEnv/lib/qt5/qml
+        prepend-path QML2_IMPORT_PATH $targetEnv/lib/qt-5.9/qml
+        prepend-path QT_PLUGIN_PATH $targetEnv/lib/qt-5.9/plugins
 
         '';
         };
