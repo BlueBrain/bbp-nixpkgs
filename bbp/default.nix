@@ -254,10 +254,6 @@ let
 
         molecular-systems = callPackage ./viz/molecular-systems {};
 
-        brayns-research-modules = callPackage ./viz/brayns-research-modules {
-            stdenv = stdenvIntelIfSupportedElseClang;
-        };
-
         morphology-synthesis = callPackage ./viz/morphology-synthesis {
 
         };
