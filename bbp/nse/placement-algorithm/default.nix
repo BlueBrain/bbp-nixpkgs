@@ -28,8 +28,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/placementAlgorithm";
-    rev = "aaa4309256a50dfcc475f0b9fcde74ba410d4aad";
-    sha256 = "0dsgmqa0kyq9m5v58lmv7zrw2d5hw576xlix058b2bi2jw76vdh0";
+    rev = "9954144db2a76916cedb6ea2fabe99acf831bab2";
+    sha256 = "0s156sk6dgym0wpaakigqhxkfnz5nwpzvgiw2y5fr2ix24dc498l";
   };
 
   buildInputs = [
