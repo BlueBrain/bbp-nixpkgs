@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
   src = fetchgit {
     url = "https://bitbucket.org/petsc/petsc";
     rev = "2c0821f3de96fea3e6a1a9ad8163ac8c8ba17bb0";
-    sha256 = "19lgnscnf3pwnya82l5alf4ma039d58crv02pjjw83mx3pwkhnxd";
+    sha256 = "0dhmdkyq4f7pi3q6r9rprq06iykzs29whhglaxk2bfff1xmklkfp";
   };
 
 
