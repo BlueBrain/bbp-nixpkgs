@@ -242,10 +242,6 @@ let
 
         molecular-systems = callPackage ./viz/molecular-systems {};
 
-        brayns-research-modules = callPackage ./viz/brayns-research-modules {
-            stdenv = stdenvIntelIfSupportedElseClang;
-        };
-
         ##
         ## BBP NSE components
         ##
