@@ -6,13 +6,13 @@
 
 pythonPackages.buildPythonPackage rec {
     pname = "voxcell";
-    version = "2.4.1";
+    version = "2.5.1";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/nse/voxcell";
-        rev = "0f4b5839dd60235f0d3a70abf1629bdb8e650b6d";
-        sha256 = "1kcrjnh8xxxa9r8iv8mkryi2bllpr1dpcdld0mavm1p04449cl2x";
+        rev = "7482bbe7469308e3cb4296ed1b9edfed1731ba9c";
+        sha256 = "1js3bsml7rdjyx5y37jn0nrddk6547pq4piqrvaacyrhb7c7m1lr";
     };
 
     buildInputs = with pythonPackages; [
@@ -20,6 +20,7 @@ pythonPackages.buildPythonPackage rec {
     ];
 
     propagatedBuildInputs = with pythonPackages; [
+        future
         h5py
         numba
         numpy
