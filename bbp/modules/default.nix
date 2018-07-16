@@ -3305,7 +3305,7 @@ let
             # hpctoolkit
             dev-env-clang dev-env-icc
 
-            #gmsh
+            gmsh
             blender
             intel-mpi-bench-rdma
             osu-mpi-bench-rdma
