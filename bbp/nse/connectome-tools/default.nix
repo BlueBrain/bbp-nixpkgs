@@ -7,13 +7,13 @@
 
 pythonPackages.buildPythonPackage rec {
     pname = "connectome-tools";
-    version = "0.2.6";
+    version = "0.2.7";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/nse/connectome-tools";
-        rev = "4bbf1a8dfcc1f0c34ffe2bebd4e5a385520dbea5";
-        sha256 = "0qx6lmq8px1wigs2y0zbi8gn44pm6mbzqavlhkpclk6399bazyzv";
+        rev = "f1f6c8cc0a4a32e8726380b2ba87025bf26d0c52";
+        sha256 = "1s4ldgw9kg2da2gq1n956fby3yilkzhibxjs2aysj8h0qqqmvvy6";
     };
 
     buildInputs = with pythonPackages; [
