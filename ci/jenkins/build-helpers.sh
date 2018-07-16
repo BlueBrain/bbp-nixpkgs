@@ -9,7 +9,7 @@ export BBP_NETWORK_PROXY="http://bbpproxy.epfl.ch:80/"
 ## number of cores for -j
 ## use ncore if present
 ## or try to get it from /proc if not
-if [[ "$(which ncore 2> /dev/null)x" != "x" ]]; then
+if [[ "$(which ncore &>/dev/null)x" != "x" ]]; then
 	NCORES="$(ncore)"
 elif [ -f /proc/cpuinfo ] ;then
 	NCORES="$(grep -c "processor" /proc/cpuinfo)"
