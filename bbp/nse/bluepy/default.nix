@@ -4,20 +4,22 @@
   pythonPackages,
   bluepy-configfile,
   brion,
+  entity-management,
   flatindexer,
-  neurom
+  neurom,
+  voxcell
 }:
 
 
 pythonPackages.buildPythonPackage rec {
     pname = "bluepy";
-    version = "0.12.0";
+    version = "0.12.5";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/nse/bluepy";
-        rev = "7f399cf0aff2a40133acb5111e490600c8897e30";
-        sha256 = "0zvzn1fhchjaq04v9r8yiajbfz5w2gf57qxi43s6sc4f2axgf58r";
+        rev = "834babaf6778f9b7474e5b824dd98e0d8be90c16";
+        sha256 = "0kvkyhzlp29i3sr999h9i7jns4xxjfd9cz0121kib6mihvd2p3xv";
     };
 
     # TODO: remove once `bluepy` dependencies are revised
@@ -51,8 +53,10 @@ pythonPackages.buildPythonPackage rec {
     ] ++ [
         bluepy-configfile
         brion
+        entity-management
         flatindexer
         neurom
+        voxcell
     ];
 
     checkPhase = ''
