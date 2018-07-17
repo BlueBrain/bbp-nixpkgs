@@ -19,12 +19,12 @@ in
 
 stdenv.mkDerivation rec {
   name = "PETSc-${version}${if (with64bits) then "-64b" else "32b"}";
-  version = "3.7";
+  version = "3.9";
 
   src = fetchgit {
     url = "https://bitbucket.org/petsc/petsc";
-    rev = "2c0821f3de96fea3e6a1a9ad8163ac8c8ba17bb0";
-    sha256 = "0dhmdkyq4f7pi3q6r9rprq06iykzs29whhglaxk2bfff1xmklkfp";
+    rev = "v3.9.3";
+    sha256 = "1bkrvxjmhqs6ssq998x23lw7dqq6fb8kn9k1bifikcmqzk0gx8kx";
   };
 
 
