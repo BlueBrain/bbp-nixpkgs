@@ -62,11 +62,6 @@ let
 
         };
 
-        gmsh = callPackage ./gmsh {
-            fltk = fltk13;
-            opencascade = null;
-        };
-
         ## opencollada compiled in shared library for blender python modules
         opencollada-shared = opencollada.overrideDerivation ( oldAttr: {
             name = oldAttr.name + "-shared";
