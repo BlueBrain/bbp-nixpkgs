@@ -300,11 +300,12 @@ let
             blasLibName = "openblas";
             liblapack = openblasCompat;
             liblapackLibName = "openblas";
+            pkgs = patches;
         };
 
-	petsc-32 = petsc.override {
-		with64bits = false;
-	};
+    	petsc-32 = petsc.override {
+    		with64bits = false;
+    	};
 
         trilinos = callPackage ./trilinos {
             mpi = pkgs.openmpi;
@@ -380,6 +381,10 @@ let
             cctz = patches-pkgs.cctz;
             gtest = gtest1_8;
             gmock = gtest1_8;
+        };
+
+        hypre = callPackage ./hypre {
+            mpi = mvapich2;
         };
 
         omega_h = callPackage ./omega_h {
