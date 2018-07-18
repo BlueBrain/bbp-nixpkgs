@@ -532,6 +532,13 @@ let
             branchName = "bare";
         };
 
+        neurodamus-syntool = callPackage ./hpc/neurodamus {
+            mpiRuntime = bbp-mpi;
+            nrnEnv = mergePkgs.neuron;
+            synapseTool= syntool;
+        };
+
+
         neuromapp = enableBGQ callPackage ./hpc/neuromapp {
             mpiRuntime = bbp-mpi;
         };
