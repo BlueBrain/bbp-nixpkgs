@@ -422,6 +422,10 @@ let
 
         pytouchreader = callPackage ./hpc/pytouchreader {};
 
+        pytouchreader-py3 = pytouchreader.override {
+            pythonPackages = python3Packages;
+        };
+
         mdtest = callPackage ./benchmark/mdtest {
             mpi = bbp-mpi;
         };
