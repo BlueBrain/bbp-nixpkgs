@@ -12,6 +12,7 @@
 , nrnEnv
 , coreNeuronMode ? false
 , branchName ? "default"
+, synapseTool ? null
 }:
 
 assert coreNeuronMode -> (branchName == "default");
@@ -83,7 +84,7 @@ stdenv.mkDerivation rec {
         ];
     };
 
-    buildInputs = [ stdenv which pkgconfig hdf5 ncurses zlib mpiRuntime reportinglib nrnEnv ];
+    buildInputs = [ stdenv which pkgconfig hdf5 ncurses zlib mpiRuntime reportinglib nrnEnv synapseTool ];
 
 
     src = if (coreNeuronMode) then src-coreneuron
@@ -101,6 +102,12 @@ stdenv.mkDerivation rec {
     CFLAGS="-O2 -g";
     CXXFLAGS="-O2 -g";
 
+    ModIncFlags="-I ${reportinglib}/include -I ${hdf5}/include " + 
+            stdenv.lib.optionalString (synapseTool != null) "-I ${synapseTool}/include -DENABLE_SYNTOOL=1";
+    ModLoadFlags="-L${reportinglib}/lib -lreportinglib -L${hdf5}/lib -lhdf5 " + 
+            stdenv.lib.optionalString (synapseTool != null) "-L${synapseTool}/lib -lsyn2";
+
+
     buildPhase = ''
         mkdir -p $out
 
@@ -116,7 +123,7 @@ stdenv.mkDerivation rec {
 
         # build
         echo "build using nrnivmodl $(which nrnivmodl) ..."
-        nrnivmodl -incflags '-I ${reportinglib}/include -I ${hdf5}/include' -loadflags '-L${reportinglib}/lib -lreportinglib -L${hdf5}/lib -lhdf5' modlib
+        nrnivmodl -incflags '${ModIncFlags}' -loadflags '${ModLoadFlags}' modlib
 
     '';
 
