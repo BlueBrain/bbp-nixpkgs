@@ -10,9 +10,10 @@
 , ncurses
 , reportinglib
 , nrnEnv
+, syntool
 , coreNeuronMode ? false
 , branchName ? "default"
-, synapseTool ? null
+, withSyntool ? false
 }:
 
 assert coreNeuronMode -> (branchName == "default");
@@ -84,7 +85,8 @@ stdenv.mkDerivation rec {
         ];
     };
 
-    buildInputs = [ stdenv which pkgconfig hdf5 ncurses zlib mpiRuntime reportinglib nrnEnv synapseTool ];
+    buildInputs = [ stdenv which pkgconfig hdf5 ncurses zlib mpiRuntime reportinglib nrnEnv ]
+                    ++ stdenv.lib.optional withSyntool [  syntool ];
 
 
     src = if (coreNeuronMode) then src-coreneuron
@@ -103,9 +105,9 @@ stdenv.mkDerivation rec {
     CXXFLAGS="-O2 -g";
 
     ModIncFlags="-I ${reportinglib}/include -I ${hdf5}/include " + 
-            stdenv.lib.optionalString (synapseTool != null) "-I ${synapseTool}/include -DENABLE_SYNTOOL=1";
+            stdenv.lib.optionalString withSyntool "-I ${syntool}/include -DENABLE_SYNTOOL=1";
     ModLoadFlags="-L${reportinglib}/lib -lreportinglib -L${hdf5}/lib -lhdf5 " + 
-            stdenv.lib.optionalString (synapseTool != null) "-L${synapseTool}/lib -lsyn2";
+            stdenv.lib.optionalString withSyntool "-L${syntool}/lib -lsyn2";
 
 
     buildPhase = ''
