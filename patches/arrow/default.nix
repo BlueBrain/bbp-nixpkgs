@@ -7,6 +7,7 @@
   rapidjson,
   flatbuffers,
   zstd,
+  python,
   fetchFromGitHub,
   stdenv
 }:
@@ -22,13 +23,13 @@ let
 in
 stdenv.mkDerivation rec {
   name = "arrow-${version}";
-  version = "0.8.0";
+  version = "0.9.0";
 
   src = fetchFromGitHub {
     owner = "apache";
     repo = "arrow";
     rev = "apache-arrow-${version}";
-    sha256 = "0ggbbvmfwn1bqv8f4j4xsj4s22l9cnx94b2vj4ybr295w0d7ixp5";
+    sha256 = "1znk2aj3qd7a1jvwp4dx1ri4963rz21vx3mv7px24nglqv7vg7c3";
   };
 
   preConfigure = ''
@@ -44,6 +45,8 @@ stdenv.mkDerivation rec {
   buildInputs = [
     arrow_env
     boost
+    python.pkgs.python
+    python.pkgs.numpy
     cmake
   ];
 
@@ -52,6 +55,7 @@ stdenv.mkDerivation rec {
 	"-DARROW_BUILD_TESTS=OFF"
 	"-DARROW_WITH_BROTLI=OFF"
 	"-DARROW_WITH_LZ4=OFF"
+	"-DARROW_PYTHON=ON"
 	"-DZLIB_HOME=${arrow_env}"
 	"-DSNAPPY_HOME=${arrow_env}"
 	"-DRAPIDJSON_HOME=${arrow_env}"
