@@ -11,13 +11,14 @@ with stdenv.lib;
   RSupport = false;
   mesosSupport = false;
 }).overrideAttrs ( oldAttr: rec {
-  version = "2.2.1";
+  version = "2.3.2-rc2";
   hadoopVersion = "hadoop2.7";
 
   name = "spark-${version}-bbp";
+  tarball = "spark-2.3.2-bin-rc2-patched.tgz";
   src = fetchzip {
-    url = "https://github.com/matz-e/bbp-spark/releases/download/${version}/${name}-bin-${hadoopVersion}.tgz";
-    sha256 = "1lhp3jcrx7s1c6ph0wkc99vprbhq6qb3cqa88gwdwq6gf34j57yq";
+    url = "https://github.com/matz-e/bbp-spark/releases/download/v${version}/${tarball}";
+    sha256 = "0wwh9azz74bagr2cgi406zzwxc64f5f9bx32viai26ww33niwfgl";
   };
 
   installPhase = ''

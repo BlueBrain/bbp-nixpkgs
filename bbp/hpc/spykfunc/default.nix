@@ -19,6 +19,7 @@ with stdenv.lib; let
       lazy_property
       lxml
       progress
+      pyarrow
       pyspark
       requests
       sparkmanager
@@ -40,7 +41,7 @@ in
 
   stdenv.mkDerivation rec {
     name = "spykfunc-${version}";
-    version = "0.9.1";
+    version = "0.10.1";
     meta = {
       description = "New Functionalizer implementation on top of Spark";
       longDescription = ''
@@ -64,8 +65,8 @@ in
     };
     src = fetchgitPrivate {
       url = config.bbp_git_ssh + "/building/Spykfunc";
-      rev = "7df733b607a0ac4780e48e368ef58f630281ebba";
-      sha256 = "18f09fqszsp4ddrrkdclf8fs98gmfr22d1bjj9bwy8vcvlsdiaws";
+      rev = "db2641fd05861efe1ee4bccb39bd9122c4012e19";
+      sha256 = "1bd1awkddcsxvmwkxvg1cjpd51az9gfylf67dabz21vmri4218l0";
     };
     buildInputs = [ boost hdf5 highfive ];
     nativeBuildInputs = [
