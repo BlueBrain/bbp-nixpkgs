@@ -960,12 +960,12 @@ in
 
   numpy-quaternion = pythonPackages.buildPythonPackage rec {
     pname = "numpy-quaternion";
-    version = "2018.5.17.10.19.59";
+    version = "2018.7.5.21.55.13";
     name = "${pname}-${version}";
 
     src = pythonPackages.fetchPypi {
       inherit pname version;
-      sha256 = "09my5qshkvwfjwghp8pqx59qccn298xs3y6fs6c0lhwhnn648kf1";
+      sha256 = "1rqwcd1dhfgld2p2z9r5g1764pcdafljj7my42wj6gs3k04bf226";
     };
 
     buildInputs = with pythonPackages; [
