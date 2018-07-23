@@ -441,9 +441,9 @@ let
             stdenv = clangStdenv;
         };
 
-        syntool = callPackage ./hpc/syntool {};
+        synapsetool = callPackage ./hpc/synapsetool {};
 
-        syntool-phdf5 = callPackage ./hpc/syntool {
+        synapsetool-phdf5 = callPackage ./hpc/synapsetool {
             hdf5 = phdf5;
             useMPI = true;
         };
