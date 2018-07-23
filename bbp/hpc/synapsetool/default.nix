@@ -11,7 +11,7 @@
 }:
 
 stdenv.mkDerivation rec {
-    name = "syn-tool-${version}";
+    name = "synapsetool-${version}";
     version = "0.2";
 
 
