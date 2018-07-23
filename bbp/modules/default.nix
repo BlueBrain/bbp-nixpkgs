@@ -3137,6 +3137,7 @@ let
                 neurodamus-mousify
                 neurodamus-bare
                 neurodamus-simplification
+                neurodamus-syntool
                 neuron
                 reportinglib
                 nest
