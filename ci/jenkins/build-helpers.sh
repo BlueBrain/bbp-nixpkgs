@@ -26,7 +26,8 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
 
 ## Mimic "readlink -f" behavior because the option not available on MacOS.
 function readlink_f {
-	local -r TARGET_FILE="$1" cwd="$PWD" PHYS_DIR RESULT
+	local -r cwd="$PWD"
+	local TARGET_FILE="$1"
 
 	cd `dirname $TARGET_FILE`
 	TARGET_FILE=`basename $TARGET_FILE`
@@ -41,8 +42,8 @@ function readlink_f {
 
 	# Compute the canonicalized name by finding the physical path
 	# for the directory we're in and appending the target file.
-	PHYS_DIR=`pwd -P`
-	RESULT=$PHYS_DIR/$TARGET_FILE
+	local -r PHYS_DIR=`pwd -P`
+	local -r RESULT=$PHYS_DIR/$TARGET_FILE
 	cd "$cwd"
 	echo $RESULT
 }
