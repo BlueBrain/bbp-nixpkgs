@@ -1507,6 +1507,7 @@ let
                pythonPkgs.h5py
                pythonPkgs.idna
                pythonPkgs.jinja2
+               pythonPkgs.kiwisolver
                pythonPkgs.markupsafe
                pythonPkgs.matplotlib
                pythonPkgs.memory_profiler
@@ -1585,6 +1586,7 @@ let
                pythonPkgs.h5py
                pythonPkgs.idna
                pythonPkgs.jinja2
+               pythonPkgs.kiwisolver
                pythonPkgs.markupsafe
                pythonPkgs.matplotlib
                pythonPkgs.memory_profiler
