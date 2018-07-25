@@ -24,6 +24,28 @@ let NCORES=${NCORES}+2
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
 
+## Mimic "readlink -f" behavior because the option not available on MacOS.
+function readlink_f {
+	local -r TARGET_FILE="$1" cwd="$PWD" PHYS_DIR RESULT
+
+	cd `dirname $TARGET_FILE`
+	TARGET_FILE=`basename $TARGET_FILE`
+
+	# Iterate down a (possible) chain of symlinks
+	while [ -L "$TARGET_FILE" ]
+	do
+	    TARGET_FILE=`readlink $TARGET_FILE`
+	    cd `dirname $TARGET_FILE`
+	    TARGET_FILE=`basename $TARGET_FILE`
+	done
+
+	# Compute the canonicalized name by finding the physical path
+	# for the directory we're in and appending the target file.
+	PHYS_DIR=`pwd -P`
+	RESULT=$PHYS_DIR/$TARGET_FILE
+	cd "$cwd"
+	echo $RESULT
+}
 
 function initAllChannels {
 	echo "### Install default BBP channel for nix-cache configuration"
@@ -99,7 +121,7 @@ function copyClosuresToCache {
 
 
 function loadNixpkgsEnv {
-	export NIXPKGS_DIR="$(readlink  -f ${SCRIPT_DIR}/../../sourcethis.sh)"
+	export NIXPKGS_DIR="$(readlink_f ${SCRIPT_DIR}/../../sourcethis.sh)"
 
 	echo "### load and use BBPpkgs: ${NIXPKGS_DIR} "
     source ${NIXPKGS_DIR}
