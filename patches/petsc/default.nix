@@ -1,20 +1,26 @@
-{ stdenv, 
-fetchgit, 
+{ stdenv,
+fetchgit,
 mpiRuntime,
 blas,
 blasLibName ? "openblas",
+pkgs,
 liblapack,
 liblapackLibName ? "lapack",
 pkgconfig,
 python,
 withDebug ? true,
-with64bits ? true
+with64bits ? true,
+withHypre ? false
 }:
 
-
-let 
-	optFlags = "-fPIC -g -O2 -ftree-vectorize";
-    
+let
+  optFlags = "-fPIC -g -O2 -ftree-vectorize";
+  hypre =
+    if withHypre then pkgs.hypre.override {
+      mpi = mpiRuntime;
+      with64bits = with64bits;
+    }
+    else null;
 in
 
 stdenv.mkDerivation rec {
@@ -27,37 +33,37 @@ stdenv.mkDerivation rec {
     sha256 = "1bkrvxjmhqs6ssq998x23lw7dqq6fb8kn9k1bifikcmqzk0gx8kx";
   };
 
-
-  preConfigure = ''
-        # petsc python configure script want an existing HOME directory
-        # we provide him a fake one
-        export HOME=$(mktemp -d)
-
-        # like petsc non-standard cflags system does anyway NOT work
-        # force the usage of CFLAGS through nix variables 
-        export NIX_CFLAGS_COMPILE=" ${optFlags} ''${NIX_CFLAGS_COMPILE} "
-  '';
-
- 
-
-  configureOpts = [
-                         "--with-fc=0"
-                         "--with-shared-libraries=false"
-                  ];
-
-
-  configureFlags = configureOpts  
-		   ++ [ "--with-mpi-dir=${mpiRuntime}" ]
-		   ++ [  "--with-blas-lib=${blas}/lib/lib${blasLibName}.so" ]
-		   ++ stdenv.lib.optional (liblapack != null) [	 "--with-lapack-lib=${liblapack}/lib/lib${liblapackLibName}.so" ]
-		   ++ stdenv.lib.optional (with64bits) [ "--with-64-bit-indices" ]
-       ++ stdenv.lib.optional (withDebug == false) [ "--with-debugging=0" ];
-
-
-  nativeBuildInputs = [ pkgconfig python ];
+  nativeBuildInputs = [ pkgconfig python hypre ];
 
   buildInputs = [ blas liblapack mpiRuntime];
-   
+
+  preConfigure = ''
+    # petsc python configure script want an existing HOME directory
+    # we provide him a fake one
+    export HOME=$(mktemp -d)
+
+    # like petsc non-standard cflags system does anyway NOT work
+    # force the usage of CFLAGS through nix variables
+    export NIX_CFLAGS_COMPILE=" ${optFlags} ''${NIX_CFLAGS_COMPILE} "
+  '';
+
+  configureOpts = [
+    "--with-fc=0"
+    "--with-shared-libraries=false"
+  ];
+
+  configureFlags = with stdenv.lib; configureOpts
+    ++ [ "--with-mpi-dir=${mpiRuntime}" ]
+    ++ [  "--with-blas-lib=${blas}/lib/lib${blasLibName}.so" ]
+    ++ optional withHypre [
+      "--with-hypre"
+      "--with-hypre-dir=${hypre}"
+    ]
+    ++ optional (liblapack != null) [
+      "--with-lapack-lib=${liblapack}/lib/lib${liblapackLibName}.so"
+    ]
+    ++ optional (with64bits) [ "--with-64-bit-indices" ]
+    ++ optional (withDebug == false) [ "--with-debugging=0" ];
 
   buildFlags = [ "V=1"  ];
 
@@ -85,7 +91,7 @@ stdenv.mkDerivation rec {
                         --replace "@liblapackLibName@" "${liblapackLibName}" \
                         --replace "@blas_path@" "${blas.crossDrv}" \
                         --replace "@blasLibName@" "${blasLibName}" \
-						--replace "@python_interpreter@" "${python}/bin/python"
+            --replace "@python_interpreter@" "${python}/bin/python"
 
                         chmod a+x ./reconfigure-arch-linux2-c-debug.py
                        '';
@@ -93,7 +99,7 @@ stdenv.mkDerivation rec {
         configureScript = "${python}/bin/python ./reconfigure-arch-linux2-c-debug.py";
 
         configureFlags = "";
-                         
+
 
        dontSetConfigureCross = true;
   };
@@ -106,11 +112,15 @@ stdenv.mkDerivation rec {
     description = "Portable, Extensible Toolkit for Scientific Computation";
 
     longDescription = ''
-    PETSc, pronounced PET-see (the S is silent), is a suite of data structures and routines for the scalable (parallel) solution of scientific applications modeled by partial differential equations. It supports MPI, and GPUs through CUDA or OpenCL, as well as hybrid MPI-GPU parallelism.  
+    PETSc, pronounced PET-see (the S is silent), is a suite of data structures and routines for the scalable (parallel) solution of scientific applications modeled by partial differential equations. It supports MPI, and GPUs through CUDA or OpenCL, as well as hybrid MPI-GPU parallelism.
         '';
 
     homepage = https://www.mcs.anl.gov/petsc/index.html;
     license = licenses.bsd2;
-    platforms = platforms.unix; 
+    platforms = platforms.unix;
   };
+
+  passthru = {
+    src = src;
+  } // (if withHypre then { hypre = hypre; } else {});
 }

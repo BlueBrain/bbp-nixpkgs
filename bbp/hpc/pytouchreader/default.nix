@@ -8,7 +8,7 @@
 let
   pytouchreader = pythonPackages.buildPythonPackage rec {
     name = "pytouchreader-${version}";
-    version = "1.0.0";
+    version = "1.1.1";
 
     meta = {
       description = "A Python utility to read raw binary touches efficiently";
@@ -30,8 +30,8 @@ let
 
     src = fetchgitPrivate {
       url = config.bbp_git_ssh + "/hpc/PyModules";
-      rev = "44ebe4235d520b42a594b7388f7478eb49152b74";
-      sha256 = "1c4m0slk908c8nn1l1al2sc9mrbvmb3vz4ckk7min6snw6yxmwmi";
+      rev = "016f617a832129f680178eef8c0228bebfec4e30";
+      sha256 = "04gxazwmh3lla1s21119k322f359r8ymxaid437y7nlll6iyk4h8";
     };
 
     propagatedBuildInputs = [

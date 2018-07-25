@@ -618,13 +618,13 @@ in
     ];
   };
 
-  py4j_0_10_4 = pythonPackages.buildPythonPackage rec {
-    version = "0.10.4";
+  py4j_0_10_7 = pythonPackages.buildPythonPackage rec {
+    version = "0.10.7";
     name = "py4j-${version}";
 
     src = pkgs.fetchurl {
       url = "mirror://pypi/p/py4j/${name}.zip";
-      sha256 = "1bkaw3fflcnq44bqrc4fcrd402k74ibx5bqzyqwqffdvrgdvyvs0";
+      sha256 = "199zhq7csaj3y9zw67sz201pn56m3mm7qbpv5lhjhz9sddhqj4bj";
     };
   };
 
@@ -646,17 +646,23 @@ in
     doCheck = false;
   };
 
+  pyarrow = callPackage ./pyarrow {
+    arrow = pkgs.arrow;
+    parquet-cpp = pkgs.parquet-cpp;
+  };
+
   pyspark = pythonPackages.buildPythonPackage rec {
-    version = "2.2.1";
+    version = "2.3.2-rc2";
     name = "pyspark-${version}";
 
     src = pkgs.fetchurl {
-      url = "mirror://pypi/p/pyspark/${name}.tar.gz";
-      sha256 = "1l26rmqn49kw1pk1hm2bxqqp9larv8imd0jbhw4vmwi54ca7z2kb";
+      url = "https://github.com/matz-e/bbp-spark/releases/download/v2.3.2-rc2/pyspark-2.3.2-rc2-patched.tgz";
+      sha256 = "0ngszlrbx3iz4qbc28pf62qvfdmr21jyawsb2cy8829haj3vmij5";
     };
 
     propagatedBuildInputs = with self; [
-      py4j_0_10_4
+      py4j_0_10_7
+      pyarrow
       pypandoc
       setuptools
       simplegeneric
@@ -960,12 +966,12 @@ in
 
   numpy-quaternion = pythonPackages.buildPythonPackage rec {
     pname = "numpy-quaternion";
-    version = "2018.5.17.10.19.59";
+    version = "2018.7.5.21.55.13";
     name = "${pname}-${version}";
 
     src = pythonPackages.fetchPypi {
       inherit pname version;
-      sha256 = "09my5qshkvwfjwghp8pqx59qccn298xs3y6fs6c0lhwhnn648kf1";
+      sha256 = "1rqwcd1dhfgld2p2z9r5g1764pcdafljj7my42wj6gs3k04bf226";
     };
 
     buildInputs = with pythonPackages; [
