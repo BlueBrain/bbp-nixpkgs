@@ -1442,8 +1442,7 @@ let
                             pkgs.morphology-synthesis
                        ];
             conflicts = conflicts-modules;
-
-
+            ignoreCollisions = true;
             dependencies = [ python27-full gcc ];
         };
 
