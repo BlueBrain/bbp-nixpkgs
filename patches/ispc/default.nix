@@ -38,7 +38,7 @@ let
                     owner = "ispc";
                     repo = "ispc";
                     rev = "417b33ee4ab6ef7874ba125d390574c3facc48ee";
-                    sha256 = "1wwsyvn44hd5iyi5779l5378x096307slpyl29wrsmfp66796693";
+                    sha256 = "0zaw7mwvly1csbdcbz9j8ry89n0r1fag1m1f579l4mgg1x6ksqry";
             };
 
             configurePhase = ''

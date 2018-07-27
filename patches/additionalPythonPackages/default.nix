@@ -813,7 +813,7 @@ in
       owner = "cwacek";
       repo = "python-jsonschema-objects";
       rev = "5b059f5c4138b4fd55e65ea45ffd142a49d04f9d";
-      sha256 = "0rdjhld51ani9x8y0jzn4lzlkdp8kzjs3njlz6wlkkg6qfs04r02";
+      sha256 = "0ap6h6cw92sf89dhvvy4vibk8qg9kps1pxcz243daa4ihnivsdnx";
     };
 
     preConfigure = ''
