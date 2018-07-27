@@ -1419,8 +1419,6 @@ let
             moduleFilePrefix = "BBP/viz";
             packages = [
                             pkgs.servus
-                            pkgs.zerobuf
-                            pkgs.zeroeq
                             pkgs.rockets
                             pkgs.lunchbox
                             pkgs.pression
@@ -1432,7 +1430,6 @@ let
                             pkgs.ospray
                             pkgs.equalizer
                             pkgs.keyv
-                            pkgs.lexis
                             pkgs.osgtransparency
                             pkgs.brion
                             pkgs.rtneuron
@@ -3043,32 +3040,34 @@ let
             ];
 
             viz = [
-                lunchbox
-                brion
-                brion-py3
-                rockets
-                vmmlib
                 bbpsdk
-                rtneuron
-                rtneuron2
-                pyqt5 # dependency of rtneuron
-                equalizer
                 bbpsdk-legacy
-                embree
-                emsim
-                ospray
-                ospray-devel
-                topology-viewer
-                membraneless-organelles
-                molecular-systems
-                morphology-synthesis
-                meshball
                 brain-atlas
-                deflect
                 brayns
                 brayns-devel
                 brayns-latest
+                brion
+                brion-py3
+                deflect
+                embree
+                emsim
+                equalizer
+                lunchbox
+                membraneless-organelles
+                meshball
+                molecular-systems
+                morphology-synthesis
+                ospray
+                ospray-devel
+                pyopengl # dependency of rtneuron
+                pyqt5 # dependency of rtneuron
+                rockets
+                rtneuron
+                rtneuron2
+                topology-viewer
+                virtualgl # dependency of rtneuron
                 viztools
+                vmmlib
             ];
 
             hpc_base = [

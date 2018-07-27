@@ -18,7 +18,7 @@ let
 	devel-info = {
 		version = "1.5-devel";
 		rev = "67a827eef56136aa49acae013889a1050d6c27de";
-		sha256 = "1ap3n1444j3b70sv16l5hc62nn3mxiisz00gdlxql8yc43d533bx";
+		sha256 = "1ncjf84yvmmm5nw38dl5aqy1qbzhddnfwsn1mqvdh12v29lwp8gv";
 	};
 
 	release-info = {
