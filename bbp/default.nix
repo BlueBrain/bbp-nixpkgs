@@ -507,7 +507,7 @@ let
             mpiRuntime = bbp-mpi;
             nrnEnv = mergePkgs.neuron;
             # synapse-tool is disabled on BlueGene because it requires C++-11
-            withSyntool = !pkg.isBlueGene;
+            withSyntool = !pkgs.isBlueGene;
         };
 
         neurodamus-coreneuron = neurodamus.override {
