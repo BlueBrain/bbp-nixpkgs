@@ -506,6 +506,8 @@ let
         neurodamus = enableBGQ callPackage ./hpc/neurodamus {
             mpiRuntime = bbp-mpi;
             nrnEnv = mergePkgs.neuron;
+            # synapse-tool is disabled on BlueGene because it requires C++-11
+            withSyntool = !pkg.isBlueGene;
         };
 
         neurodamus-coreneuron = neurodamus.override {
@@ -531,13 +533,6 @@ let
         neurodamus-bare = neurodamus.override {
             branchName = "bare";
         };
-
-        neurodamus-syntool = callPackage ./hpc/neurodamus {
-            mpiRuntime = bbp-mpi;
-            nrnEnv = mergePkgs.neuron;
-            withSyntool = true;
-        };
-
 
         neuromapp = enableBGQ callPackage ./hpc/neuromapp {
             mpiRuntime = bbp-mpi;
