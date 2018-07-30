@@ -60,6 +60,8 @@ let
             mpi = bbp-mpi;
         };
 
+        pandoc = if (config.buildDocumentation or true) then pkgs.pandoc else null;
+
         ## parallel hdf5
         phdf5 = pkgs.phdf5.override {
             mpi = bbp-mpi;
