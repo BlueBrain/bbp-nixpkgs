@@ -1433,6 +1433,8 @@ let
                             pkgs.osgtransparency
                             pkgs.brion
                             pkgs.rtneuron
+                            pkgs.virtualgl
+                            pkgs.mesa
                             pkgs.brayns
                             pkgs.topology-viewer
                             pkgs.membraneless-organelles
