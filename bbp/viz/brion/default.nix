@@ -39,7 +39,8 @@ stdenv.mkDerivation rec {
     version = brion-info.version;
 
     buildInputs = [ stdenv pkgconfig mvdtool boost pythonPackages.python
-                    pythonPackages.numpy pythonPackages.lxml cmake vmmlib servus
+                    pythonPackages.numpy pythonPackages.lxml
+                    pythonPackages.sphinx_1_3 cmake vmmlib servus
                     lunchbox keyv hdf5-cpp highfive zlib doxygen ];
 
     src = fetchgit {

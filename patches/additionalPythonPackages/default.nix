@@ -671,6 +671,18 @@ in
     doCheck = false;
   };
 
+  sphinx_1_3 = self.sphinx.overridePythonAttrs rec {
+    pname = "Sphinx";
+    name = "${pname}${version}";
+    version = "1.3.6";
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/s/sphinx/Sphinx-1.3.6.tar.gz";
+      sha256 = "0b3be9221220af36090d139192347bb5f42b13401e4c53a4de8f5329a7a3ff8a";
+    };
+
+    buildInputs = with pythonPackages; [ sphinx_rtd_theme ];
+  };
+
   sparkmanager = pythonPackages.buildPythonPackage rec {
     version = "0.5.8";
     pname = "sparkmanager";
