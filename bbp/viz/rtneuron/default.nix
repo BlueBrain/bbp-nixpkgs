@@ -43,13 +43,9 @@ let
   version-info = if (legacyVersion) then version2-info else version3-info;
 
   pythonEnv-rtneuron = pythonPackages.python.buildEnv.override {
-  	extraLibs = [ pythonPackages.pyopengl
-                  pythonPackages.pyqt5
-                  pythonPackages.h5py
-                  pythonPackages.decorator
-                  pythonPackages.numpy
-                  pythonPackages.ipython
-                  brion virtualgl ];
+    extraLibs = [ pythonPackages.pyopengl pythonPackages.pyqt5
+                  pythonPackages.h5py pythonPackages.decorator
+                  pythonPackages.numpy pythonPackages.ipython brion virtualgl ];
   };
 
 in
@@ -58,8 +54,8 @@ stdenv.mkDerivation rec {
   version = version-info.version;
 
   buildInputs = [ stdenv pkgconfig boost cmake openscenegraph lunchbox brion
-                  collage osgtransparency equalizer qt.qtbase
-                  qt.qtsvg ] ++ version-info.buildInputs;
+                  collage osgtransparency equalizer pythonPackages.sphinx_1_3
+                  qt.qtbase qt.qtsvg ] ++ version-info.buildInputs;
 
   preConfigure = ''
 	export PATH="${pythonEnv-rtneuron}/bin:$PATH"
