@@ -367,7 +367,7 @@ let
                 pkgs.reportinglib
                 pkgs.readline
                 pkgs.ncurses
-            ] ++ stdenv.lib.optional (!pkgs.isBlueGene) [ pkgs.synapsetool ];
+            ] ++ pkgs.stdenv.lib.optional (!pkgs.isBlueGene) [ pkgs.synapsetool ];
 
             extraContent = ''
                 setenv BBP_HOME $targetEnv/
