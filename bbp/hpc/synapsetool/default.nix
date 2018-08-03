@@ -12,30 +12,30 @@
 
 stdenv.mkDerivation rec {
     name = "synapsetool-${version}";
-    version = "0.2";
-
+    version = "0.2.2";
 
     src = fetchgitPrivate {
         url = "ssh://bbpcode.epfl.ch/hpc/synapse-tool";
-        rev = "a384860cd3d3382017230a58f41601f72e3cc2a3";
-        sha256 = "01giysxyjnclj2r5i39ysfvkx8ljnbqhlsq2bwa3n1cs3m7iy8fd";
-  };
-  cmakeFlags =  [
-    "-DSYNAPSE_TOOL_DOCUMENTATION:BOOL=ON"
-  ] ++ stdenv.lib.optional useMPI [
-    "-DSYNTOOL_WITH_MPI=ON"
-  ];
+        rev = "9d8b8f96e8e19fafe9bbaf8190547ac994dcff73";
+        sha256 = "0xkfq688brafsc4k4w40cbwzq5k4s8hb12awxsrzpq9m6cb07k6r";
+    };
 
-  buildInputs = [
-    boost
-    hdf5
-    highfive
-    pandoc
-  ];
+    cmakeFlags =  [
+        "-DSYNAPSE_TOOL_DOCUMENTATION:BOOL=ON"
+    ] ++ stdenv.lib.optional useMPI [
+        "-DSYNTOOL_WITH_MPI=ON"
+    ];
 
-  nativeBuildInputs = [
-    cmake
-    python
-  ];
+    buildInputs = [
+        boost
+        hdf5
+        highfive
+        pandoc
+    ];
+
+    nativeBuildInputs = [
+        cmake
+        python
+    ];
 
 }
