@@ -1,4 +1,5 @@
 { bbpsdk,
+bbptestdata,
 boost,
 brion,
 cmake,
@@ -7,7 +8,6 @@ doxygen,
 fetchgitPrivate,
 hdf5,
 lunchbox,
-mpiRuntime,
 numpy,
 pandoc,
 pkgconfig,
@@ -41,6 +41,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     bbpsdk
+    bbptestdata
     boost
     brion
     cmake

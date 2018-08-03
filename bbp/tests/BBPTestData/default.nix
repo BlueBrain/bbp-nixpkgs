@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   src = fetchgitExternal {
     url = config.bbp_git_ssh + "/common/TestData";
     rev = "5a14259bccca27529f6d9439808c09693bf4a095";
-    sha256 = "152xk32zvn3g62qhg2ay6cjfmpd9hk2bgwh95gnvmb2fcb0cbdls";
+    sha256 = "03i4fih6ipq6zlawgxj1dbpxc7w112i2w8mv1g1299xlsjqdvrlp";
   };
 
   patchPhase = ''
