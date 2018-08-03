@@ -3116,7 +3116,6 @@ let
                 nest
                 mod2c
                 coreneuron
-                learningengine
                 neuron-nomultisend
             ];
 
