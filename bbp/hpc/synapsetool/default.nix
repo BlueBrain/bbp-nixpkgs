@@ -38,4 +38,8 @@ stdenv.mkDerivation rec {
         python
     ];
 
+    preConfigure = ''
+        local v=$(sed -r 's/.*\.([0-9])+$/\1/' <<< ${version})
+        sed "s/set(SYNTOOL_VERSION_PATCH.*/set(SYNTOOL_VERSION_PATCH \"$v\")/" -i CMakeLists.txt
+    '';
 }
