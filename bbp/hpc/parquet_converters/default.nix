@@ -9,7 +9,7 @@
 , parquet-cpp
 , phdf5
 , snappy
-, syntool-phdf5
+, synapsetool-phdf5
 , thrift
 , zstd }:
 
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
   name = "parquet-converters-${version}";
   version = "0.1.1";
 
-  buildInputs = [ arrow boost highfive-phdf5 mpiRuntime parquet-cpp phdf5 snappy syntool-phdf5 thrift zstd ];
+  buildInputs = [ arrow boost highfive-phdf5 mpiRuntime parquet-cpp phdf5 snappy synapsetool-phdf5 thrift zstd ];
 
   nativeBuildInputs = [
     cmake

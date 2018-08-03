@@ -8,7 +8,7 @@
 , pkgconfig
 , pythonPackages
 , stdenv
-, syntool ? null
+, synapse-tool ? null
 , tbb
 , zlib
 }:
@@ -65,7 +65,7 @@ stdenv.mkDerivation rec {
     python-env
     pythonPackages.cython
     pythonPackages.numpy
-    syntool
+    synapse-tool
     tbb
     zlib
   ];
