@@ -3,8 +3,8 @@
 , pythonPackages
 , config
 , version ? "0.1.3"
-, rev ? "7258958e53eb8e7ebea9781000c6e588b6247e00"
-, sha256 ? "0nn1grjl46zsyy9xl0siba720asz38l7vsrw6y4rrmy99lhldgh9"
+, rev ? "2816558f25f258b81e883febb7caae1cdd8444d2"
+, sha256 ? "0kw79xhzcx3kkjg9k7qasshfb64jnvag80n6ckfqnmy0wbz7wbl2"
 }:
 
 pythonPackages.buildPythonPackage rec {
