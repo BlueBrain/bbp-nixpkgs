@@ -235,6 +235,10 @@ let
             stdenv = stdenvIntelIfSupportedElseClang;
         };
 
+        brayns-latest = callPackage ./viz/brayns/latest.nix {
+            stdenv = stdenvIntelIfSupportedElseClang;
+        };
+
         brayns-devel = callPackage ./viz/brayns {
             stdenv = stdenvIntelIfSupportedElseClang;
             ospray = ospray-devel;
