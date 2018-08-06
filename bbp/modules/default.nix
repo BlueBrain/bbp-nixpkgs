@@ -3092,6 +3092,7 @@ let
                 deflect
                 brayns
                 brayns-devel
+                brayns-latest
                 viztools
             ];
 
