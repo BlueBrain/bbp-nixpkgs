@@ -13,15 +13,15 @@
 
 stdenv.mkDerivation rec {
   name = "nest-${version}";
-  version = "2.12.0-201706";
+  version = "2.14.0";
   buildInputs = [ stdenv cmake libtool pkgconfig mpiRuntime python cython ]
                ++ stdenv.lib.optional (isBGQ == false) [ gsl readline];
 
   src = fetchFromGitHub {
     owner = "nest";
     repo = "nest-simulator";
-    rev = "5003e2b32f409bd13ad570df6093532c993466a2";
-    sha256 = "0zl2nw9nhps1swyiyasnb9fspffm71c45ayqn5grqrxs3qv4xh7m";
+    rev = "de83e9e61b6d54160ca4ab89cf9d81990acd56f5";
+    sha256 = "1cl0rhni4mjgk4qcsmlrbaz3l7bzm33pm99fhq42ydvjdhjmg8x2";
   };
 
   meta = {
