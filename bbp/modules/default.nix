@@ -1518,6 +1518,7 @@ let
                pythonPkgs.docopt
                pythonPkgs.enum34
                pythonPkgs.freezegun
+               pythonPkgs.futures
                pythonPkgs.h5py
                pythonPkgs.idna
                pythonPkgs.jinja2
