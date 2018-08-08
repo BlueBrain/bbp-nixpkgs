@@ -57,7 +57,7 @@ stdenv.mkDerivation rec {
 					     "-Dstatic-libraries=OFF" "-DCMAKE_VERBOSE_MAKEFILE=ON"];
 
 
-  enableParallelBuilding = false;
+  enableParallelBuilding = true;
 
   outputs = [ "out" "doc" ];
 
