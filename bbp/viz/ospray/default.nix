@@ -23,8 +23,8 @@ let
 
 	release-info = {
 		version = "1.5.0";
-		rev = "67a827eef56136aa49acae013889a1050d6c27de";
-		sha256 = "1ncjf84yvmmm5nw38dl5aqy1qbzhddnfwsn1mqvdh12v29lwp8gv";
+		rev = "41559ef427e20fe6d169ea1fb8b43569f9b9be98";
+		sha256 = "01fbsbfajy36lkv82r1xj1iwfiizva08gs1852vwij29sd6cq4sn";
 	};
 
 	ospray-info = if (devel) then devel-info else release-info;
@@ -39,8 +39,8 @@ stdenv.mkDerivation rec {
 	nativeBuildInputs = [ doxygen cmake ];
 
 	src = fetchFromGitHub {
-		owner = "ospray";
-		repo  = "ospray";
+		owner = "Bluebrain";
+		repo  = "OSPRay";
 		rev = ospray-info.rev;
 		sha256 = ospray-info.sha256;
 	};
