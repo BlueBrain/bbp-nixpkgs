@@ -39,6 +39,10 @@ stdenv.mkDerivation rec {
     ];
   };
 
+  patches = [
+    ./fix-python-install-prefix.patch
+  ];
+
   isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
            then builtins.getAttr "isBlueGene" stdenv else false;
 
@@ -50,15 +54,16 @@ stdenv.mkDerivation rec {
 					     "-Dwith-gsl=OFF"
 					     "-Dwith-readline=OFF"
 					     "-Dwith-python=ON"
-					     "-Dstatic-libraries=OFF" ];
+					     "-Dstatic-libraries=OFF" "-DCMAKE_VERBOSE_MAKEFILE=ON"];
 
 
-  enableParallelBuilding = true;
+  enableParallelBuilding = false;
 
   outputs = [ "out" "doc" ];
 
   postInstall = ''
     mkdir -p $out/share/doc/nest/html
     echo '<html><head><meta http-equiv="refresh" content="0; URL=${meta.homepage}"/></head></html>' >$out/share/doc/nest/html/index.html
+    sed -e "s@export NEST_DOC_DIR=.*@export NEST_DOC_DIR=$doc/share/doc/nest@" -i $out/bin/nest_vars.sh
   '';
 }
