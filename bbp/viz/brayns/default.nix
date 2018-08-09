@@ -1,4 +1,5 @@
 { stdenv
+, bbptestdata
 , fetchgit
 , cmake
 , pkgconfig
@@ -33,7 +34,7 @@ stdenv.mkDerivation rec {
 	version = "0.6.0-201807";
 
 	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb libuv
-					glew mesa vmmlib lunchbox brion hdf5-cpp freeimage deflect libarchive libjpeg_turbo]
+					glew mesa vmmlib lunchbox brion hdf5-cpp freeimage deflect libarchive libjpeg_turbo bbptestdata]
 				  ++ (stdenv.lib.optional) (restInterface) [ rockets ];
 
 	src = fetchgit {
@@ -47,6 +48,8 @@ stdenv.mkDerivation rec {
 			"-DCOMMON_DISABLE_WERROR=TRUE"
 			"-DOSPRAY_ROOT=${ospray}"
 			"-DBRAYNS_OPENDECK_ENABLED=TRUE"
+			"-DCMAKE_C_FLAGS=-fsanitize=leak"
+			"-DCMAKE_CXX_FLAGS=-fsanitize=leak"
 		    ];
 
 	# verbose mode for debugging
@@ -57,7 +60,7 @@ stdenv.mkDerivation rec {
 	make Brayns-tests
 	'';
 
-
+	checkTarget="Brayns-tests";
   enableParallelBuilding = true;
 	
 
