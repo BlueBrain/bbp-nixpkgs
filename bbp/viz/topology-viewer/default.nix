@@ -20,6 +20,6 @@ stdenv.mkDerivation rec {
         rev = "e1ff6383ff0a3051cb3b596a1082debf37945225";
         sha256 = "054hcbmbw0077f7y121an2q49mj3wm68v91qpssxbbc7kzm733am";
     };
-
     enableParallelBuilding = true;
+
 }
