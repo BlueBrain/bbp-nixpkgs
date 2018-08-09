@@ -15,6 +15,7 @@
 , pythonPackages
 , doxygen
 , legacyVersion ? false
+, bbptestdata
 }:
 
 
@@ -27,8 +28,8 @@ let
 
     last-info = {
         version = "3.0-dev201806";
-        rev = "d1b160679b2362de814a9bf2fda88b264d88b8db";
-        sha256 = "0n8vn2lkqnmic4jgnszcscrmgwg0bdfgycxxih214gs054x8vdd3";
+        rev = "517131d06b9a9c5c04b5999347b9ca6ab9636bf2";
+        sha256 = "114aa3hdhv9l7w2qs66cvmjycwq9zjd7m94msvxghzqnh9whzyx6";
     };
 
     brion-info = if (legacyVersion) then legacy-info else last-info;
@@ -41,7 +42,7 @@ stdenv.mkDerivation rec {
     buildInputs = [ stdenv pkgconfig mvdtool boost pythonPackages.python
                     pythonPackages.numpy pythonPackages.lxml
                     pythonPackages.sphinx_1_3 cmake vmmlib servus
-                    lunchbox keyv hdf5-cpp highfive zlib doxygen ];
+                    lunchbox keyv hdf5-cpp highfive zlib doxygen bbptestdata ];
 
     src = fetchgit {
         url = "https://github.com/BlueBrain/Brion.git";
