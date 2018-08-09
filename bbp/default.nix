@@ -213,11 +213,12 @@ let
         };
 
         embree = callPackage ./viz/embree {
-            stdenv = stdenvIntelIfSupportedElseClang;
+            stdenv = llvmPackages_5.stdenv;
+
         };
 
         ospray = callPackage ./viz/ospray {
-            stdenv = stdenvIntelIfSupportedElseClang;
+            stdenv = llvmPackages_5.stdenv;
             mpi = bbp-mpi;
         };
 
@@ -232,7 +233,8 @@ let
         };
 
         brayns = callPackage ./viz/brayns {
-            stdenv = stdenvIntelIfSupportedElseClang;
+            stdenv = llvmPackages_5.stdenv;
+
         };
 
         brayns-latest = callPackage ./viz/brayns/latest.nix {

@@ -51,6 +51,12 @@ stdenv.mkDerivation rec {
 
 	# verbose mode for debugging
 	makeFlags = [ "VERBOSE=1" ];
+	doCheck = true;
+	checkPhase = ''
+	export LD_LIBRARY_PATH=''${PWD}/lib/:''${LD_LIBRARY_PATH}
+	make Brayns-tests
+	'';
+
 
   enableParallelBuilding = true;
 	
