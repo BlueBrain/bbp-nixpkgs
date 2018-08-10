@@ -39,9 +39,18 @@ stdenv.mkDerivation rec {
     ];
   };
 
-  patches = [
-    ./fix-python-install-prefix.patch
-  ];
+  postPatch = ''
+    echo fixing python install prefix
+    CMAKE_FILES=(CMakeLists.txt cmake/ConfigureSummary.cmake
+                 extras/ConnPlotter/CMakeLists.txt pynest/CMakeLists.txt
+                 topology/CMakeLists.txt)
+    for cmakefile in ''${CMAKE_FILES[@]} ; do
+        echo patching ''$cmakefile
+        substituteInPlace ''$cmakefile --replace "\''${CMAKE_INSTALL_PREFIX}/\''${PYEXECDIR}" "\''${PYEXECDIR}"
+    done
+    substituteInPlace extras/nest_vars.sh.in --replace 'NEST_PYTHON_PREFIX=''$NEST_INSTALL_DIR/' 'NEST_PYTHON_PREFIX='
+    substituteInPlace testsuite/do_tests.sh.in --replace '@CMAKE_INSTALL_PREFIX@/@PYEXECDIR@' '@PYEXECDIR@'
+  '';
 
   isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
            then builtins.getAttr "isBlueGene" stdenv else false;
