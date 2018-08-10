@@ -1,9 +1,13 @@
 #!/bin/bash
 
-
-export NIXPKG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
-
-
+case $SHELL in
+    */zsh)
+        sourced="${(%):-%N}" ;;
+    *)
+        sourced="${BASH_SOURCE[0]}" ;;
+esac
+export NIXPKG_DIR="$( cd "$( dirname "$sourced" )" && pwd -P )"
+unset sourced
 
 function LocalMachineSSHSetup {
 
