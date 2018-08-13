@@ -10,16 +10,16 @@ let
     neuron-info = {
         versionMajor = "7";
         versionMinor = "5";
-        versionDate = "2018-05-01";
-        rev = "6819979820ecb26394f2c1930eeb5fdd43cb7856";
-        sha256 = "1bzssvafm7zdmvp7gkglcl0k487wwmvlfk4lfvs8xqqd9rmr57dq";
+        versionDate = "2018-08-13";
+        rev = "0993b3effd49929c19080ac404ac5619ce2c820a";
+        sha256 = "00g742s1mpbc6pzcpfnvlkwss9cs5jfxnm833pjyr98002k9wb2d";
     };
 
     neuron-src = rec {
         info = neuron-info;
 
         srcs = fetchFromGitHub {
-            owner = "nrnhines";
+            owner = "neuronsimulator";
             repo = "nrn";
             rev = info.rev;
             sha256 = info.sha256;
@@ -52,7 +52,3 @@ let
 
 in
     if (isBlueGene) then bgq-neuron-nrn else neuron-generic
-
-
-
-
