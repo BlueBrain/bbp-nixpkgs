@@ -29,7 +29,6 @@ stdenv.mkDerivation rec {
 
     cmakeFlags = [
             "-DCMAKE_INSTALL_INCLUDEDIR=include/"
-            "-DEMBREE_MAX_ISA=AVX512SKX"
             "-DCMAKE_INSTALL_LIBDIR=lib/"
 		];
 
