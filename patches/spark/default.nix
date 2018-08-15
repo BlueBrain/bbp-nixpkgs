@@ -1,6 +1,6 @@
 { fetchzip
 , jre
-, pythonPackages
+, python3Packages
 , sparkOrigin
 , stdenv
 }:
@@ -32,7 +32,7 @@ with stdenv.lib;
     cat > $out/conf/spark-env.sh <<- EOF
     export JAVA_HOME="${jre}"
     export SPARK_HOME="$out"
-    export PYSPARK_PYTHON="${pythonPackages.python}/bin/${pythonPackages.python.executable}"
+    export PYSPARK_PYTHON="${python3Packages.python}/bin/${python3Packages.python.executable}"
     EOF
   '';
 })
