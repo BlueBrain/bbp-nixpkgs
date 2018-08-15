@@ -3,13 +3,13 @@
 , fetchgitPrivate
 , hdf5
 , highfive
-, pythonPackages
+, python3Packages
 , spark-bbp
 , stdenv
 }:
 
 with stdenv.lib; let
-  all_deps = with pythonPackages; [
+  all_deps = with python3Packages; [
       bb5
       docopt
       future
@@ -31,10 +31,10 @@ with stdenv.lib; let
     ++ optionals pathlib2Required [ pathlib2 ]
     ;
 
-  python-env = pythonPackages.python.buildEnv.override {
+  python-env = python3Packages.python.buildEnv.override {
     extraLibs = all_deps;
   };
-  python = pythonPackages.python;
+  python = python3Packages.python;
   enum34Required = !versionAtLeast python.pythonVersion "3.4";
   pathlib2Required = !versionAtLeast python.pythonVersion "3.6";
 in
@@ -83,7 +83,7 @@ in
       runHook preBuild
 
       mkdir -p $out
-      export PYTHONPATH=${pythonPackages.setuptools}/${python.sitePackages}:$PYTHONPATH}
+      export PYTHONPATH=${python3Packages.setuptools}/${python.sitePackages}:$PYTHONPATH}
       for target in build docs; do
         echo "buildPhase: executing target $target"
         ${python-env.interpreter} setup.py $target
@@ -113,7 +113,7 @@ in
     '';
 
     passthru = {
-      pythonModule = pythonPackages.python;
-      pythonPackages = pythonPackages;
+      pythonModule = python3Packages.python;
+      python3Packages = python3Packages;
     };
   }

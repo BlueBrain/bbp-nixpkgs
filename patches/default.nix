@@ -420,10 +420,6 @@ let
           sparkOrigin = spark;
         };
 
-        spark-bbp-py3 = spark-bbp.override {
-          pythonPackages = python3Packages;
-        };
-
         hadoop-bbp = callPackage ./hadoop {
         };
 
