@@ -2,6 +2,7 @@
   cmake,
   fetchFromGitHub,
   gmodel,
+  gmsh,
   libmeshb,
   stdenv,
   trilinos,
@@ -48,6 +49,7 @@ stdenv.mkDerivation rec {
   buildInputs = [
     cmake
     gmodel
+    gmsh
   ];
 
   propagatedBuildInputs = [
@@ -63,6 +65,7 @@ stdenv.mkDerivation rec {
   cmakeFlags = [
     "-DBUILD_TESTING:BOOL=ON"
     "-DOmega_h_DATA=${omega_h-data}"
+    "-DOmega_h_EXAMPLES:BOOL=ON"
     "-DOmega_h_USE_DOLFIN:BOOL=FALSE"
     "-DOmega_h_USE_Gmodel:BOOL=ON"
     "-DOmega_h_USE_libMeshb:BOOL=ON"
