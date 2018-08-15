@@ -114,6 +114,6 @@ in
 
     passthru = {
       pythonModule = python3Packages.python;
-      python3Packages = python3Packages;
+      pythonPackages = python3Packages;
     };
   }
