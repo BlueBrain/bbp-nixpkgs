@@ -684,12 +684,12 @@ in
   };
 
   sparkmanager = pythonPackages.buildPythonPackage rec {
-    version = "0.5.8";
+    version = "0.6.0";
     pname = "sparkmanager";
 
     src = pythonPackages.fetchPypi {
       inherit pname version;
-      sha256 = "0ib98xrjppvyhy1x45f96hpdpzlsfyqp99r7hvhlbwd020d65m53";
+      sha256 = "0m6vf637bx8jbyv1cgpfyk28kqdb8iaipavz10zm62v988lm9alq";
     };
 
     preConfigure = ''
