@@ -12,13 +12,13 @@
 
 stdenv.mkDerivation rec {
   name = "omega_h-${version}";
-  version = "9.13.14";
+  version = "9.13.14-dev";
 
   src = fetchFromGitHub {
-    owner = "ibaned";
+    owner = "BlueBrain";
     repo = "omega_h";
-    rev = "v${version}";
-    sha256 = "1yjiznbp6xw7d0qjp00kzn4dsrb3nnbas549cmvqk9rwiy3yapac";
+    rev = "d6ea7a3b18edb883395bf8347973b568ea16f920";
+    sha256 = "14zdq8hmwys5c314adrvkn48s850mpay1pmdk4ml86fqvjr4ffca";
   };
 
   omega_h-data = fetchFromGitHub {
