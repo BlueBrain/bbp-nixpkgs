@@ -45,7 +45,6 @@ stdenv.mkDerivation rec {
 
 
 	cmakeFlags = [
-			"-DCMAKE_BUILD_TYPE=Debug" 
 			"-DCOMMON_DISABLE_WERROR=TRUE"
 			"-DOSPRAY_ROOT=${ospray}"
 			"-DBRAYNS_OPENDECK_ENABLED=TRUE"
@@ -53,8 +52,6 @@ stdenv.mkDerivation rec {
 			"-DCMAKE_CXX_FLAGS=-fsanitize=leak"
 		    ];
 
-	# verbose mode for debugging
-	makeFlags = [ "VERBOSE=1" ];
 	doCheck = true;
 	checkPhase = ''
 	export LD_LIBRARY_PATH=''${PWD}/lib/:''${LD_LIBRARY_PATH}
