@@ -1,6 +1,6 @@
 { stdenv
 , config
-, fetchgitPrivate
+, fetchgit
 , pkgconfig
 , boost
 , cmake
@@ -13,10 +13,10 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ stdenv pkgconfig boost cmake openscenegraph ];
 
-  src = fetchgitPrivate {
-    url = config.bbp_git_ssh + "/viz/osgTransparency";
-    rev = "e7763676d2844c18eab13607679d2a999f57a3f0";
-    sha256 = "0939ifn1fwxd83kf7iqc9xd2vcj6gcdkm1gpy396bk0fjw4cd6fb";
+  src = fetchgit {
+          url  = "https://github.com/BlueBrain/osgTransparency.git";
+          rev = "cfbf3369bf67eb556ebeb834b9794b9c9f7ad4e0";
+          sha256 = "18z3hah8r9bzp9l1j696a5niwf27bpvva86wldqkmv0f5c1x5l1x";
   };
 
 
