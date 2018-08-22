@@ -21,8 +21,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/Keyv.git";
-    rev = "12d7806a7d82c924a47c48a24abd917ade16bc3e";
-    sha256 = "1040idg0f9vh58531vblwbb41i4afcskg9ymi9kapjcibbykmrmi";
+    rev = "8340fa2be4c1844a49714ec1f3166d6cbfd3692b";
+    sha256 = "0an3fz29ka80w26fs38lfnidnr1qs7b8d71q8zxzz1jmgzxg9c5k";
   };
   
   enableParallelBuilding = true;
