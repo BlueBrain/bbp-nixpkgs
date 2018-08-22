@@ -18,8 +18,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/MeshBall";
-        rev = "4475d7e2b9e459f21e4270ea6d9d5ce91f0a1194";
-        sha256 = "0hw8lwkj3a54p7m8m7y2mpknk34wmr976kdka2ssxswqnzfnipdf";
+        rev = "22baaaf308873b7df0a014c667f3d34e3f9407a1";
+        sha256 = "1pbp9k7620yir1sdjzjchcbcissn39yi4wvrwxhvimcs8pgcipgw";
     };
 	cmakeFlags = [
 	"-DGLM_INSTALL_ENABLE=OFF"
