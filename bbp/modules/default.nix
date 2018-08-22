@@ -1445,8 +1445,6 @@ let
             moduleFilePrefix = "BBP/viz";
             packages = [
                             pkgs.servus
-                            pkgs.zerobuf
-                            pkgs.zeroeq
                             pkgs.rockets
                             pkgs.lunchbox
                             pkgs.pression
@@ -1458,7 +1456,6 @@ let
                             pkgs.ospray
                             pkgs.equalizer
                             pkgs.keyv
-                            pkgs.lexis
                             pkgs.osgtransparency
                             pkgs.brion
                             pkgs.rtneuron
