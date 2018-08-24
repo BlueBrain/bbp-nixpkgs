@@ -250,6 +250,8 @@ let
 
         topology-viewer = callPackage ./viz/topology-viewer {};
 
+        circuit-viewer = callPackage ./viz/circuit-viewer {};
+
         emsim = callPackage ./viz/emsim {};
 
         membraneless-organelles = callPackage ./viz/membraneless-organelles {};
