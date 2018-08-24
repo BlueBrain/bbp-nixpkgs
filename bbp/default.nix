@@ -250,6 +250,8 @@ let
 
         topology-viewer = callPackage ./viz/topology-viewer {};
 
+        dti = callPackage ./viz/dti {};
+
         circuit-viewer = callPackage ./viz/circuit-viewer {};
 
         emsim = callPackage ./viz/emsim {};
