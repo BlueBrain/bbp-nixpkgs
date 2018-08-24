@@ -16,8 +16,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/Brayns-UC-CircuitViewer";
-        rev = "de9098271230d56f1ef2d65879eaca07a1cd32e6";
-        sha256 = "1p70q7isrj32q9w0xnrw2f30f72irrn63apb89b35qcn9p3f4093";
+        rev = "0039a529633232748428b16133bf0cda502d4306";
+        sha256 = "0sc47h324kripzrwxy6xz7bwiwpfc770zh2qs7267vpqikhr6sns";
     };
 
     enableParallelBuilding = true;
