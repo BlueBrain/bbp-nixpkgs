@@ -38,8 +38,8 @@ stdenv.mkDerivation rec {
 
 	src = fetchgit {
 		url  = "https://github.com/BlueBrain/Brayns.git";
-		rev = "3e1d2610d44dc22644ef7e0682ee9fcc56c8720f";
-		sha256 = "12wi5wd6dr6lfa9i03nyx2ibq7n2sp32kjr0m03sb9hzazinvga8";
+		rev = "690edc8a8ee90f7e1c750417e52081290e7ec5c6";
+		sha256 = "1w4pgxfgp330a60s4ihfrv4la1yyk2i3yvgjiran74gkrlm6w2v7";
 	};
 
 
