@@ -348,6 +348,12 @@ let
         entity-management = callPackage ./nse/entity-management {
         };
 
+        entity-management_0_1_3 = callPackage ./nse/entity-management {
+            version = "0.1.3";
+            rev = "bc41a7fd5eee241459a379372f8d3a15ce303bdf";
+            sha256 = "1w56cr1lrx41w19yqg2h2fmljkhgir8ybli3nargw4wp1rnh66gf";
+        };
+
         entity-management_0_1_2 = callPackage ./nse/entity-management {
             version = "0.1.2";
             rev = "8ad173a6feedab22101c8b3288654a2214c38257";
