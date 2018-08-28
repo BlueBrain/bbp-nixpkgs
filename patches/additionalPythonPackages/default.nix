@@ -462,11 +462,11 @@ in
 
     efel = pythonPackages.buildPythonPackage rec {
         name = "efel-${version}";
-        version = "2.13.1";
+        version = "3.0.22";
 
         src = pkgs.fetchurl {
             url = "mirror://pypi/e/efel/${name}.tar.gz";
-            sha256 = "0kwkb3j91f9yrx3c5z0s9ip35s005v8ssbzp1spq160ga1ggknig";
+            sha256 = "18k4014m91gkh5zxvl7mjd74rrkcjcgbnfc5kr0ws4jv8ahc3clp";
         };
 
 
