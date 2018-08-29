@@ -31,6 +31,7 @@ stdenv.mkDerivation rec {
   passthru = {
     src = src;
     trilinos = trilinos;
+    gmsh = gmsh;
   };
 
   meta = {

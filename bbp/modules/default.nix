@@ -549,6 +549,13 @@ let
             conflicts = conflicts-modules;
         };
 
+        zee = pkgs.envModuleGen rec {
+            name = "zee";
+            moduleFilePrefix = "nix/hpc";
+            description = pkgs.zee.meta.description;
+            packages = [ pkgs.zee ];
+        };
+
         nest = pkgs.envModuleGen rec {
             name = "nest";
             moduleFilePrefix = "nix/hpc";
@@ -3723,6 +3730,7 @@ with generic-modules; rec {
 
             # hpc team
             mvdtool hpctools functionalizer touchdetector steps helloworld
+            zee zee-hpe-mpi
             bgq-coreneuron
             bgq-neurodamus bgq-neurodamus-savestate bgq-neurodamus-hippocampus bgq-mod2c
             bgq-neuron

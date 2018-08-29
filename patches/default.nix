@@ -39,6 +39,9 @@ let
 
         };
 
+        gmsh-3 = callPackage ./gmsh-3 {
+        };
+
         grpc = callPackage ./grpc {
             gtest = gtest1_8;
             c-ares = c-ares1_3;
@@ -388,6 +391,7 @@ let
         };
 
         omega_h = callPackage ./omega_h {
+            gmsh = gmsh-3;
             gmodel = patches-pkgs.gmodel;
             libmeshb = patches-pkgs.libmeshb;
             trilinos = trilinos.override {
@@ -398,6 +402,11 @@ let
                 withZoltan = true;
                 yaml-cpp = yaml-cpp;
             };
+            extra_cmake_flags = [
+              "-DOmega_h_CXX_OPTIMIZE:BOOL=TRUE"
+              "-DOmega_h_CXX_SYMBOLS:BOOL=TRUE"
+              "-DOmega_h_CXX_WARNINGS:BOOL=TRUE"
+            ];
         };
 
         libmeshb = callPackage ./libmeshb {
