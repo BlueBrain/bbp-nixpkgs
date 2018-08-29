@@ -7,7 +7,8 @@
 , cudatoolkit8
 , doxygen
 , equalizer
-, fetchgit
+, fetchgitPrivate
+, legacyVersion ? false
 , lunchbox
 , openscenegraph
 , osgtransparency
@@ -28,20 +29,20 @@ let
 in
 stdenv.mkDerivation rec {
   name = "rtneuron-${version}";
-  version = "3.0.0";
+  version = "2.13.0";
 
   buildInputs = [ stdenv pkgconfig boost cmake openscenegraph lunchbox brion
                   collage osgtransparency equalizer pythonPackages.sphinx_1_3
-                  qt.qtbase qt.qtsvg ];
+                  qt.qtbase qt.qtsvg bbpsdk ];
 
   preConfigure = ''
 	export PATH="${pythonEnv-rtneuron}/bin:$PATH"
   '';
 
-  src = fetchgit {
-    url = "https://github.com/BlueBrain/RTNeuron.git";
-    rev = "a08934911a4af4ae3e2ee7d92e52cb7bd9aab3ce";
-    sha256 = "015y4a838wzw4bxk2qchl4li2vxj6xjmj3da1r6cjqay4vzxp4sm";
+  src = fetchgitPrivate {
+    url = config.bbp_git_ssh + "/viz/RTNeuron";
+    rev = "0916a3ac0ff855ec5820e52514c61ba3955004ca";
+    sha256 = "0bdiqkbqpvc1x3hb8lj0zcxyykbdpprrkvyqxc3p99czzx1qk27y";
   };
 
   cmakeFlags = [ "-DDISABLE_SUBPROJECTS=TRUE" ];

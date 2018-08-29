@@ -208,8 +208,7 @@ let
 
         rtneuron = callPackage ./viz/rtneuron {};
 
-        rtneuron2 = callPackage ./viz/rtneuron {
-            legacyVersion = true;
+        rtneuron2 = callPackage ./viz/rtneuron/legacy.nix {
         };
 
         embree = callPackage ./viz/embree {
