@@ -578,6 +578,13 @@ let
 
         steps-mpi = steps; # enable mpi by default
 
+        zee = callPackage ./hpc/zee {
+            petsc = petsc.override {
+                withHypre = true;
+                withDebug = false;
+            };
+        };
+
         steps-mpi-py3 = steps.override {
             python = python3;
             pythonPackages = python3Packages;
