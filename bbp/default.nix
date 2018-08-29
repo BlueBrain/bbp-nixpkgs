@@ -345,6 +345,10 @@ let
         voxcell = callPackage ./nse/voxcell {
         };
 
+        voxcell-py3 = callPackage ./nse/voxcell {
+            pythonPackages = python3Packages;
+        };
+
         entity-management = callPackage ./nse/entity-management {
         };
 
