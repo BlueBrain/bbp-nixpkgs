@@ -17,11 +17,9 @@ pythonPackages.buildPythonPackage rec {
 
     buildInputs = with pythonPackages; [
         nose
-        mock
     ];
 
     propagatedBuildInputs = with pythonPackages; [
-        setuptools
         future
         h5py
         numba
@@ -33,8 +31,4 @@ pythonPackages.buildPythonPackage rec {
         scipy
         six
     ];
-
-    checkPhase = ''
-        nosetests tests
-    '';
 }
