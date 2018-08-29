@@ -237,10 +237,6 @@ let
             stdenv = stdenvIntelIfSupportedElseClang;
         };
 
-        brayns-latest = callPackage ./viz/brayns/latest.nix {
-            stdenv = stdenvIntelIfSupportedElseClang;
-        };
-
         brayns-devel = callPackage ./viz/brayns {
             stdenv = stdenvIntelIfSupportedElseClang;
             ospray = ospray-devel;
@@ -250,15 +246,15 @@ let
 
         topology-viewer = callPackage ./viz/topology-viewer {};
 
-        emsim = callPackage ./viz/emsim {};
-
         membraneless-organelles = callPackage ./viz/membraneless-organelles {};
-
-        meshball = callPackage ./viz/meshball {};
 
         brain-atlas = callPackage ./viz/brain-atlas {};
 
         molecular-systems = callPackage ./viz/molecular-systems {};
+
+        brayns-research-modules = callPackage ./viz/brayns-research-modules {
+            stdenv = stdenvIntelIfSupportedElseClang;
+        };
 
         morphology-synthesis = callPackage ./viz/morphology-synthesis {
 
@@ -339,11 +335,19 @@ let
         placement-algorithm = callPackage ./nse/placement-algorithm {
         };
 
+        projectionizer = callPackage ./nse/projectionizer {
+        };
+
         psp-validation = callPackage ./nse/psp-validation {
         };
 
         voxcell = callPackage ./nse/voxcell {
         };
+
+        voxcell-py3 = callPackage ./nse/voxcell {
+            pythonPackages = python36Packages;
+        };
+
 
         entity-management = callPackage ./nse/entity-management {
         };
@@ -417,6 +421,11 @@ let
         spykfunc = callPackage ./hpc/spykfunc {
         };
 
+        spykfunc-py3 = spykfunc.override {
+            spark-bbp = spark-bbp-py3;
+            pythonPackages = python3Packages;
+        };
+
         touchdetector = enableBGQ callPackage ./hpc/touchdetector {
             mpiRuntime = bbp-mpi;
             hpctools = hpctools-xlc; # impossible to use MPI 3.2 for now on BGQ
@@ -428,10 +437,6 @@ let
         };
 
         pytouchreader = callPackage ./hpc/pytouchreader {};
-
-        pytouchreader-py3 = pytouchreader.override {
-            pythonPackages = python3Packages;
-        };
 
         mdtest = callPackage ./benchmark/mdtest {
             mpi = bbp-mpi;
@@ -448,9 +453,9 @@ let
             stdenv = clangStdenv;
         };
 
-        synapsetool = callPackage ./hpc/synapsetool {};
+        syntool = callPackage ./hpc/syntool {};
 
-        synapsetool-phdf5 = callPackage ./hpc/synapsetool {
+        syntool-phdf5 = callPackage ./hpc/syntool {
             hdf5 = phdf5;
             useMPI = true;
         };
@@ -513,8 +518,6 @@ let
         neurodamus = enableBGQ callPackage ./hpc/neurodamus {
             mpiRuntime = bbp-mpi;
             nrnEnv = mergePkgs.neuron;
-            # synapse-tool is disabled on BlueGene because it requires C++-11
-            withSyntool = !pkgs.isBlueGene;
         };
 
         neurodamus-coreneuron = neurodamus.override {
