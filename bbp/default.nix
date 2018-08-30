@@ -274,7 +274,7 @@ let
         neurom = callPackage ./nse/neurom {
         };
 
-       neurom-py3 = neurom.override {
+        neurom-py3 = neurom.override {
             pythonPackages = python3Packages;
         };
 
@@ -304,7 +304,21 @@ let
         bluepy = callPackage ./nse/bluepy {
         };
 
+        bluepy-py3 = bluepy.override {
+            bluepy-configfile = bluepy-configfile-py3;
+            brion = brion-py3;
+            entity-management = entity-management-py3;
+            flatindexer = flatindexer-py3;
+            neurom = neurom-py3;
+            voxcell = voxcell-py3;
+            pythonPackages = python3Packages;
+        };
+
         bluepy-configfile = callPackage ./nse/bluepy-configfile {
+        };
+
+        bluepy-configfile-py3 = bluepy-configfile.override {
+            pythonPackages = python3Packages;
         };
 
         pybinreports = callPackages ./nse/pybinreports {
@@ -356,11 +370,15 @@ let
         voxcell = callPackage ./nse/voxcell {
         };
 
-        voxcell-py3 = callPackage ./nse/voxcell {
+        voxcell-py3 = voxcell.override {
             pythonPackages = python3Packages;
         };
 
         entity-management = callPackage ./nse/entity-management {
+        };
+
+        entity-management-py3 = entity-management.override {
+            pythonPackages = python3Packages;
         };
 
         entity-management_0_1_3 = callPackage ./nse/entity-management {
