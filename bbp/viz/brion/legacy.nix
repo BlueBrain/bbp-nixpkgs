@@ -19,7 +19,7 @@
 
 stdenv.mkDerivation rec {
     name = "brion-${version}";
-    version = "3.0-dev201808";
+    version = "2.0-legacy";
 
     buildInputs = [ stdenv pkgconfig mvdtool boost pythonPackages.python
                     pythonPackages.numpy pythonPackages.lxml
@@ -28,10 +28,10 @@ stdenv.mkDerivation rec {
 
     src = fetchgit {
         url = "https://github.com/BlueBrain/Brion.git";
-        rev = "5d08797c2af48a414277cf0caf756e2bd83e4e41";
-        sha256 = "1z5kp1rfblk0x027r8cpcfsqfan3l6kk66pz65n5hdi0cidy17ak";
+        rev = "bea8f838bc6d4c9b40bf90d1cdacaa625bbabe7b";
+        sha256 = "1qhs9dzq8j8bdssqhmnxm5hm7bl2h8zipavzqx2va1jwg5f2mnr6";
     };
-
+    patches = (stdenv.lib.optionals) (true) [ ./brion-legacy-higfive.patch ];
     enableParallelBuilding = false; # memory consumption too high for python bindings generation
 
     cmakeFlags = [ "-DDISABLE_SUBPROJECTS=TRUE" ];

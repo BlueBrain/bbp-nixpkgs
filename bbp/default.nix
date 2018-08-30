@@ -129,9 +129,7 @@ let
 
         lunchbox = callPackage ./viz/lunchbox {};
 
-        lunchbox-legacy = callPackage ./viz/lunchbox {
-            legacyVersion = true;
-        };
+        lunchbox-legacy = callPackage ./viz/lunchbox/legacy.nix {};
 
         keyv = callPackage ./viz/keyv {};
 
@@ -151,8 +149,7 @@ let
             boost = boost-py3;
         };
 
-        brion-legacy = callPackage ./viz/brion {
-            legacyVersion = true;
+        brion-legacy = callPackage ./viz/brion/legacy.nix {
             lunchbox = lunchbox-legacy;
             keyv = keyv-legacy;
         };
