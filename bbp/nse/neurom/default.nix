@@ -1,6 +1,4 @@
 { stdenv
-, fetchFromGitHub
-, fetchurl
 , pythonPackages
 }:
 
@@ -9,33 +7,28 @@ let
 in
 pythonPackages.buildPythonPackage rec {
   pname = "neurom";
+  version = "1.4.9";
   name = "${pname}-${version}";
-  version = "1.4.8";
 
-  src = fetchFromGitHub {
-  owner = "BlueBrain";
-  repo = "NeuroM";
-  rev = "04f48747785265aa7a4f7b0750c1447cae408468";
-  sha256 = "1qi8d2r4nzp41mddng2qxpkz20zvx6khw7g9ly3nkpg6v9anby9z";
+  src = pythonPackages.fetchPypi {
+    inherit pname version;
+    sha256 = "1vrjap7l89r7ik50p2hr9dvm17cd4q1gcpf5xlhb3qfa31jwkgsm";
+  };
 
- };
+  propagatedBuildInputs = with pythonPackages; [
+    enum34
+    future
+    scipy
+    numpy
+    pyyaml
+    tqdm
+    matplotlib
+    h5py
+    pylru
+    plotly
+  ];
 
-
-
- propagatedBuildInputs = [
-         pythonPackages.enum34
-         pythonPackages.future
-         pythonPackages.scipy
-         pythonPackages.numpy
-         pythonPackages.pyyaml
-         pythonPackages.tqdm
-         pythonPackages.matplotlib
-         pythonPackages.h5py
-         pythonPackages.pylru
-       ];
-
-    passthru = {
-        pythonDeps = propagatedBuildInputs;
-    };
-
+  passthru = {
+    pythonDeps = propagatedBuildInputs;
+  };
 }
