@@ -258,7 +258,9 @@ let
 
         meshball = callPackage ./viz/meshball {};
 
-        brain-atlas = callPackage ./viz/brain-atlas {};
+        brain-atlas = callPackage ./viz/brain-atlas {
+	    brayns = brayns-latest;
+        };
 
         molecular-systems = callPackage ./viz/molecular-systems {};
 
