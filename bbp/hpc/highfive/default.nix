@@ -11,13 +11,13 @@
 
 stdenv.mkDerivation rec {
   name = "highfive-${version}";
-  version = "2.0-dev201806";
+  version = "2.0-dev201809";
 
   src = fetchFromGitHub {
     owner = "BlueBrain";
     repo = "HighFive";
-    rev = "3194c819690e884e35990e9f2d4f02bc403ca270";
-    sha256 = "1x818jam6886qg56xchp3m93kc9mwh088lrjrbxlja7fq6byzzkg";
+    rev = "8db7f3c094b97002e177b610c98262fc1c5c78f8";
+    sha256 = "0ibn04klyim31ksmmfvdiiirqzngkmpl7cnjr4z7mmcy3d1yglqc";
   };
 
   buildInputs = [
