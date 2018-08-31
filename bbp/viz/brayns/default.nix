@@ -45,7 +45,7 @@ stdenv.mkDerivation rec {
 
 
 	cmakeFlags = [
-			"-DGIT_REVISION=321312er"
+			"-DGIT_REVISION=8bef0909"
 			"-DOSPRAY_ROOT=${ospray}"
 			"-DBRAYNS_OPENDECK_ENABLED=TRUE"
 			"-DCMAKE_C_FLAGS=-fsanitize=leak"
