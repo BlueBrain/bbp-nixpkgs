@@ -206,6 +206,8 @@ let
 
         osgtransparency = callPackage ./viz/osgtransparency {};
 
+        regiodesics = callPackage ./viz/regiodesics {};
+
         equalizer = callPackage ./viz/equalizer {};
 
         rtneuron = callPackage ./viz/rtneuron {};
