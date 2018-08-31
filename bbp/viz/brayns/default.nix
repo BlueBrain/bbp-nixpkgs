@@ -51,6 +51,8 @@ stdenv.mkDerivation rec {
 
 	# verbose mode for debugging
 	makeFlags = [ "VERBOSE=1" ];
+	doCheck = true;
+	checkTarget = "Brayns-tests";
 
   enableParallelBuilding = true;
 	
