@@ -24,10 +24,6 @@ stdenv.mkDerivation rec {
   
   enableParallelBuilding = true;
 
-  cmakeFlags = [ 
-    "-DCOMMON_DISABLE_WERROR=TRUE"
-  ];
-  
 }
 
 

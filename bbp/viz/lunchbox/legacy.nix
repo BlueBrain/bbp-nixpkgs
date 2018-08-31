@@ -18,11 +18,7 @@ stdenv.mkDerivation rec {
     sha256 = "0yrdmggcncxahd47m8jvl59c0zcwyydkmdc17rn7npjs369w1y75";
   };
 
-
-  cmakeFlags = [ "-DCOMMON_DISABLE_WERROR=TRUE" ];
-
   propagatedBuildInputs = [ boost servus ];
-
 
   enableParallelBuilding = true;
 

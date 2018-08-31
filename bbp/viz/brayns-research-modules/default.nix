@@ -19,7 +19,6 @@ stdenv.mkDerivation rec {
     };
 
 	cmakeFlags = [ 
-			"-DCOMMON_DISABLE_WERROR=TRUE"
 			"-DOSPRAY_ROOT=${ospray}"
 		    ];
 

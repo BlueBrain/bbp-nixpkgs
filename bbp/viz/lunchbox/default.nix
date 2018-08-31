@@ -19,8 +19,6 @@ stdenv.mkDerivation rec {
   };
 
 
-  cmakeFlags = [ "-DCOMMON_DISABLE_WERROR=TRUE" ];
-
   propagatedBuildInputs = [ boost servus ];
 
   enableParallelBuilding = true;
