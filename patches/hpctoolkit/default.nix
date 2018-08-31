@@ -52,21 +52,15 @@ let
           src = fetchFromGitHub {
             owner = "HPCToolkit";
             repo = "hpctoolkit-externals";
-            rev = "0787e3221af1594b1b1f06204b00b16f91738c8f";
-            sha256 = "15iadk4gcbdjl872vy3mvmqm9yckdlak25i114dwp57y9b855d7p";
+            rev = "ab50b065ada2545938abae2c6359c62303fe1588";
+            sha256 = "11mykp1pwyvkp9ma00vzvrkv2g8dd5b5n6rx648sni88dcqp6p1k";
          };
          
           nativeBuildInputs = [ cmake file ];
           
           buildInputs = [ stdenv pkgconfig libbfd libxml2 boost xercesc libelf xed ];
           
-          configureFlags = [ "--with-xerces=${xercesc}"
-                 "--with-libxml2=${libxml2}"
-                 "--with-boost=${boost.dev}"
-                 "--with-libunwind-libdir=${libunwind}"
-                 "--with-libunwind-include-dir=${libunwind.dev}"
-                 "--with-libelf=${libelf}"
-                 "--with-xed2=${xed}"  ];
+          configureFlags = [ "--with-xerces=${xercesc}" "--with-xed2=${xed}" ];
           
           dontUseCmakeConfigure = true;
 
@@ -77,14 +71,14 @@ let
 in
 
 stdenv.mkDerivation rec {
-  name = "hpctolkit-${version}";
+  name = "hpctoolkit-${version}";
   version = "5.0.1-trunk";  
   
   src = fetchFromGitHub {
     owner = "HPCToolkit";
     repo = "hpctoolkit";
-    rev = "c779ab073d7959a94cfe6735a62be341158047b3";
-    sha256 = "15iadk4gcbdjl872vy3mvmqm9yckdlak25i114dwp57y9b855d7p";
+    rev = "09dd2a1be1ab5cbdf5b2b49bab1bc7289229971b";
+    sha256 = "1x7nifkyslxfpqspbpkkrdryr44xw1aphw3zjvh9ilf1dxfcdkq3";
  };
  
   nativeBuildInputs = [ perl file ]; 
@@ -94,8 +88,10 @@ stdenv.mkDerivation rec {
   configureFlags = [ "--with-externals=${hpc-externals}"
                      "--with-papi=${papi}" ];
 
-  enableParallelBuilding = true;  
+  enableParallelBuilding = false;
   
+  hardeningDisable = [ "format" ];
+
   meta = {
     description = "HPCToolkit: profiling toolkit for HPC applications";
     longDescription = ''

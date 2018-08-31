@@ -3333,7 +3333,7 @@ let
         set.hpc_larges
          ++ [
             papi
-            # hpctoolkit
+            hpctoolkit
             dev-env-clang dev-env-icc
 
             gmsh
