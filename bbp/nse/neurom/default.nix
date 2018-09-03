@@ -1,6 +1,5 @@
 { stdenv
-, fetchFromGitHub
-, fetchurl
+, python
 , pythonPackages
 }:
 
@@ -9,33 +8,37 @@ let
 in
 pythonPackages.buildPythonPackage rec {
   pname = "neurom";
-  name = "${pname}-${version}";
   version = "1.4.8";
+  name = "${pname}-${version}";
 
-  src = fetchFromGitHub {
-  owner = "BlueBrain";
-  repo = "NeuroM";
-  rev = "04f48747785265aa7a4f7b0750c1447cae408468";
-  sha256 = "1qi8d2r4nzp41mddng2qxpkz20zvx6khw7g9ly3nkpg6v9anby9z";
+  src = pythonPackages.fetchPypi {
+    inherit pname version;
+    sha256 = "128zr45hvlq2c2db93wbjfbi0xp9bs6p6zjydazarwnwkv7fhi5c";
+  };
 
- };
+  propagatedBuildInputs = with pythonPackages; [
+    enum34
+    future
+    scipy
+    numpy
+    pyyaml
+    tqdm
+    matplotlib
+    h5py
+    pylru
+    plotly
+  ];
 
+  passthru = {
+    pythonDeps = propagatedBuildInputs;
+  };
 
+  enum34Required = !stdenv.lib.versionAtLeast python.pythonVersion "3.4";
 
- propagatedBuildInputs = [
-         pythonPackages.enum34
-         pythonPackages.future
-         pythonPackages.scipy
-         pythonPackages.numpy
-         pythonPackages.pyyaml
-         pythonPackages.tqdm
-         pythonPackages.matplotlib
-         pythonPackages.h5py
-         pythonPackages.pylru
-       ];
+  postPatch = (stdenv.lib.optionalString enum34Required ''
+            echo "Removing enum34 dependency for python >= 3.4"
+            sed -i -e "s/['\"]enum34.*$//" setup.py
+  '');
 
-    passthru = {
-        pythonDeps = propagatedBuildInputs;
-    };
-
+  doCheck = false;
 }

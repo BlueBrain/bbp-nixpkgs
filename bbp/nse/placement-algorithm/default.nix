@@ -18,6 +18,7 @@ let
       brainbuilder
       voxcell
     ];
+    ignoreCollisions = true;
   };
 
 in

@@ -274,6 +274,10 @@ let
         neurom = callPackage ./nse/neurom {
         };
 
+       neurom-py3 = neurom.override {
+            pythonPackages = python3Packages;
+        };
+
         morphio-python = callPackage ./nse/morphio-python {
         };
 
