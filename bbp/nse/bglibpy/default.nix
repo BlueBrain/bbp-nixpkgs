@@ -9,13 +9,13 @@
 
 pythonPackages.buildPythonPackage rec {
     pname = "bglibpy";
-    version = "3.2.47";
+    version = "3.2.51";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/sim/BGLibPy";
-        rev = "97526161995fbc73f8517b3e9445d10f7f8a6a6b";
-        sha256 = "0nppymkpq337ipfiy5dlhs1bsr1ahy0c4rj14qjwrwqjlqrnvwar";
+        rev = "0d098440734185f4ab6fa36910556446895fe9f9 ";
+        sha256 = "1fv4hnnhgls1hwkvz77115j4rm3gqpv38ljyfwgnmb1i219iad0s";
     };
 
     patches = [
