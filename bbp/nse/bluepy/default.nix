@@ -7,6 +7,7 @@
   entity-management,
   flatindexer,
   neurom,
+  stdenv,
   voxcell
 }:
 
@@ -55,6 +56,9 @@ pythonPackages.buildPythonPackage rec {
         neurom
         voxcell
     ];
+
+    # TEMPORARILY disable tests on Python 3
+    doCheck = !stdenv.lib.versionAtLeast pythonPackages.python.pythonVersion "3";
 
     checkPhase = ''
         nosetests tests/v2
