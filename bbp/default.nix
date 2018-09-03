@@ -347,6 +347,9 @@ let
         placement-algorithm = callPackage ./nse/placement-algorithm {
         };
 
+        projectionizer = callPackage ./nse/projectionizer {
+        };
+
         psp-validation = callPackage ./nse/psp-validation {
         };
 
