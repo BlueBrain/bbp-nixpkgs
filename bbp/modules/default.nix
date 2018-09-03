@@ -687,7 +687,7 @@ let
             );
 
             conflicts = conflicts-modules;
-            dependencies = [ python27-full ];
+            dependencies = [ python27-light ];
         };
 
         neurom-py3 = pkgs.envModuleGen rec {
@@ -698,7 +698,7 @@ let
                 getPyModRec [ pkgs.neurom-py3 ]
             );
             conflicts = conflicts-modules;
-            dependencies = [ python36-full ];
+            dependencies = [ python36-light ];
         };
 
         bluepy = pkgs.envModuleGen rec {
@@ -710,7 +710,7 @@ let
                 getPyModRec [ pkgs.bluepy ]
             );
             conflicts = conflicts-modules ++ [ bluepy_0_6_1 bluepy_0_9_6 ];
-            dependencies = [ python27-full ];
+            dependencies = [ python27-light ];
         };
 
         bluepy-py3 = pkgs.envModuleGen rec {
@@ -722,7 +722,7 @@ let
                 getPyModRec [ pkgs.bluepy-py3 ]
             );
             conflicts = conflicts-modules;
-            dependencies = [ python36-full ];
+            dependencies = [ python36-light ];
         };
 
         bluepy_0_6_1 = pkgs.envModuleGen rec {
@@ -903,7 +903,7 @@ let
               pkgs.voxcell
             ];
             conflicts = conflicts-modules;
-            dependencies = [ python27-full ];
+            dependencies = [ python27-light ];
         };
 
         voxcell-py3 = pkgs.envModuleGen rec {
@@ -915,7 +915,7 @@ let
                 getPyModRec [ pkgs.voxcell-py3 ]
             );
             conflicts = conflicts-modules;
-            dependencies = [ python36-full ];
+            dependencies = [ python36-light ];
         };
 
         bbp-morphology-workflow = pkgs.envModuleGen rec {
