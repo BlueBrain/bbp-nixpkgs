@@ -9,7 +9,7 @@
 
 stdenv.mkDerivation rec {
   name = "osgTransparency-${version}";
-  version = "0.8.0-dev201708";
+  version = "latest";
 
   buildInputs = [ stdenv pkgconfig boost cmake openscenegraph ];
 
