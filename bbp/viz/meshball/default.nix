@@ -12,7 +12,7 @@
 
 stdenv.mkDerivation rec {
     name = "meshball-${version}";
-    version = "1.0.0-201807";
+    version = "latest";
 
     buildInputs = [ stdenv pkgconfig cmake boost brion cgal gmp mpfr ];
 
