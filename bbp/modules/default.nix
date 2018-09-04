@@ -1528,7 +1528,7 @@ let
                pkgs.bbp-virtualenv
                pythonPkgs.pip
             ];
-            conflicts = [ python27-full python36-full python36-light ] ++ conflicts-modules;
+            conflicts = [ python36-light python36-full ] ++ conflicts-modules;
             dependencies = [ nss-wrapper manylinux1-python ];
         };
 
@@ -1597,8 +1597,8 @@ let
                pythonPkgs.six
                pythonPkgs.tables
             ];
-            conflicts = [ python27-light python36-full python36-light ] ++ conflicts-modules;
-            dependencies = [ nss-wrapper gcc manylinux1-python ];
+            conflicts = [ python36-light python36-full ] ++ conflicts-modules;
+            dependencies = [ python27-light gcc ];
         };
 
         python36-light = with pkgs; pkgs.envModuleGen rec {
@@ -1670,8 +1670,8 @@ let
                pythonPkgs.six
                pythonPkgs.tables
             ];
-            conflicts = [ python27-light python27-full python36-light ] ++ conflicts-modules;
-            dependencies = [ nss-wrapper gcc manylinux1-python ];
+            conflicts = [ python27-light python27-full ] ++ conflicts-modules;
+            dependencies = [ python36-light gcc ];
         };
 
         cython = pkgs.envModuleGen rec {
