@@ -10,7 +10,7 @@
 
 stdenv.mkDerivation rec {
     name = "regiodesics";
-    version = "1.0.0-201808";
+    version = "latest";
 
     buildInputs = [ stdenv pkgconfig cmake boost openscenegraph opengl ];
 
