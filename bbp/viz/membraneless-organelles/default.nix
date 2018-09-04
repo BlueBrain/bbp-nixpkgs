@@ -11,7 +11,7 @@
 
 stdenv.mkDerivation rec {
     name = "membraneless-organelles-${version}";
-    version = "0.1.0-201806";
+    version = "latest";
 
     buildInputs = [ stdenv pkgconfig cmake boost highfive vmmlib brayns ];
 
