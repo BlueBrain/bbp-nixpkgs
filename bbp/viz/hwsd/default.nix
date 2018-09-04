@@ -10,7 +10,7 @@ x11
 
 stdenv.mkDerivation rec {
   name = "hwsd-${version}";
-  version = "2.0.1-dev201708";
+  version = "latest";
 
   buildInputs = [ stdenv pkgconfig boost cmake lunchbox opengl x11 ];
 
