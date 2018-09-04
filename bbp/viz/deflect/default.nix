@@ -12,7 +12,7 @@
 
 stdenv.mkDerivation rec {
   name = "deflect-${version}";
-  version = "0.14.1";
+  version = "latest";
 
   buildInputs = [ stdenv cmake boost freeglut mesa libjpeg_turbo libXi libXmu qt.qtbase ];
 
