@@ -3164,9 +3164,7 @@ let
         name = "bbpviz-latest-modules";
 
         paths =
-            set.vcs
-            ++ set.dev_viz
-            ++ set.viz
+             set.viz
             ;
         };
         all = pkgs.buildEnv {
