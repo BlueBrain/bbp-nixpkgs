@@ -10,7 +10,7 @@
 
 stdenv.mkDerivation rec {
     name = "molecular-systems-${version}";
-    version = "0.1.0-201806";
+    version = "latest";
 
     buildInputs = [ stdenv pkgconfig cmake boost vmmlib brayns ];
 
