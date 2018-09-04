@@ -9,7 +9,7 @@
 
 stdenv.mkDerivation rec {
   name = "lunchbox";
-  version = "1.16.0-dev201806";
+  version = "latest";
   buildInputs = [ stdenv boost pkgconfig servus cmake doxygen];
 
   src = fetchgit {
