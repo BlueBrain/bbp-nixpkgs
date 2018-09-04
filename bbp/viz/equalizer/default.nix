@@ -18,7 +18,7 @@ qt
 
 stdenv.mkDerivation rec {
   name = "equalizer-${version}";
-  version = "2.1.0-dev201710";
+  version = "latest";
 
   buildInputs = [ stdenv pkgconfig boost bison flex hwloc x11 cmake lunchbox pression collage opengl hwsd vmmlib qt.qtbase ];
 
