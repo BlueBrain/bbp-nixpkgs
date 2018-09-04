@@ -250,7 +250,9 @@ let
 
         viztools = callPackage ./viz/viztools {};
 
-        topology-viewer = callPackage ./viz/topology-viewer {};
+        topology-viewer = callPackage ./viz/topology-viewer {
+	    brayns = brayns-latest;
+        };
 
         emsim = callPackage ./viz/emsim {};
 
