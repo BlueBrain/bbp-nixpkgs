@@ -28,7 +28,7 @@ let
 in
 stdenv.mkDerivation rec {
   name = "rtneuron-${version}";
-  version = "3.0.0";
+  version = "latest";
 
   buildInputs = [ stdenv pkgconfig boost cmake openscenegraph lunchbox brion
                   collage osgtransparency equalizer pythonPackages.sphinx_1_3
