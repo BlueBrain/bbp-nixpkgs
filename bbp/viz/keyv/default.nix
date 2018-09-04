@@ -15,7 +15,7 @@ let
 in
 stdenv.mkDerivation rec {
   name = "keyv-${version}";
-  version = "1.1.0-dev201803";
+  version = "latest";
 
   buildInputs = [ stdenv boost cmake libceph leveldb libmemcached lunchbox pression ];
 
