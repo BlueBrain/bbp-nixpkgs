@@ -19,7 +19,7 @@
 
 stdenv.mkDerivation rec {
     name = "brion-${version}";
-    version = "3.0-dev201808";
+    version = "latest";
 
     buildInputs = [ stdenv pkgconfig mvdtool boost pythonPackages.python
                     pythonPackages.numpy pythonPackages.lxml
