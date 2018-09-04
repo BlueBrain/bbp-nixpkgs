@@ -225,12 +225,6 @@ let
             mpi = bbp-mpi;
         };
 
-        ospray-devel = callPackage ./viz/ospray {
-            stdenv = stdenvIntelIfSupportedElseClang;
-            mpi = bbp-mpi;
-            devel = true;
-        };
-
         ospray-modules = callPackage ./viz/ospray-modules {
             stdenv = stdenvIntelIfSupportedElseClang;
         };
@@ -241,11 +235,6 @@ let
 
         brayns-latest = callPackage ./viz/brayns/latest.nix {
             stdenv = stdenvIntelIfSupportedElseClang;
-        };
-
-        brayns-devel = callPackage ./viz/brayns {
-            stdenv = stdenvIntelIfSupportedElseClang;
-            ospray = ospray-devel;
         };
 
         viztools = callPackage ./viz/viztools {};
