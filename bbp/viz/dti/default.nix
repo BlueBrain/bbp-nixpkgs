@@ -10,7 +10,7 @@
 
 stdenv.mkDerivation rec {
     name = "diffusion-tensor-imaging-${version}";
-    version = "0.1.0-201808";
+    version = "latest";
 
     buildInputs = [ stdenv pkgconfig cmake boost vmmlib brayns ];
 
