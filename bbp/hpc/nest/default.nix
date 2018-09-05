@@ -13,15 +13,15 @@
 
 stdenv.mkDerivation rec {
   name = "nest-${version}";
-  version = "2.12.0-201706";
+  version = "2.14.0";
   buildInputs = [ stdenv cmake libtool pkgconfig mpiRuntime python cython ]
                ++ stdenv.lib.optional (isBGQ == false) [ gsl readline];
 
   src = fetchFromGitHub {
     owner = "nest";
     repo = "nest-simulator";
-    rev = "5003e2b32f409bd13ad570df6093532c993466a2";
-    sha256 = "0zl2nw9nhps1swyiyasnb9fspffm71c45ayqn5grqrxs3qv4xh7m";
+    rev = "de83e9e61b6d54160ca4ab89cf9d81990acd56f5";
+    sha256 = "1cl0rhni4mjgk4qcsmlrbaz3l7bzm33pm99fhq42ydvjdhjmg8x2";
   };
 
   meta = {
@@ -39,6 +39,19 @@ stdenv.mkDerivation rec {
     ];
   };
 
+  postPatch = ''
+    echo fixing python install prefix
+    CMAKE_FILES=(CMakeLists.txt cmake/ConfigureSummary.cmake
+                 extras/ConnPlotter/CMakeLists.txt pynest/CMakeLists.txt
+                 topology/CMakeLists.txt)
+    for cmakefile in ''${CMAKE_FILES[@]} ; do
+        echo patching ''$cmakefile
+        substituteInPlace ''$cmakefile --replace "\''${CMAKE_INSTALL_PREFIX}/\''${PYEXECDIR}" "\''${PYEXECDIR}"
+    done
+    substituteInPlace extras/nest_vars.sh.in --replace 'NEST_PYTHON_PREFIX=''$NEST_INSTALL_DIR/' 'NEST_PYTHON_PREFIX='
+    substituteInPlace testsuite/do_tests.sh.in --replace '@CMAKE_INSTALL_PREFIX@/@PYEXECDIR@' '@PYEXECDIR@'
+  '';
+
   isBGQ = if builtins.hasAttr "isBlueGene" stdenv == true
            then builtins.getAttr "isBlueGene" stdenv else false;
 
@@ -50,7 +63,7 @@ stdenv.mkDerivation rec {
 					     "-Dwith-gsl=OFF"
 					     "-Dwith-readline=OFF"
 					     "-Dwith-python=ON"
-					     "-Dstatic-libraries=OFF" ];
+					     "-Dstatic-libraries=OFF" "-DCMAKE_VERBOSE_MAKEFILE=ON"];
 
 
   enableParallelBuilding = true;
@@ -60,5 +73,6 @@ stdenv.mkDerivation rec {
   postInstall = ''
     mkdir -p $out/share/doc/nest/html
     echo '<html><head><meta http-equiv="refresh" content="0; URL=${meta.homepage}"/></head></html>' >$out/share/doc/nest/html/index.html
+    sed -e "s@export NEST_DOC_DIR=.*@export NEST_DOC_DIR=$doc/share/doc/nest@" -i $out/bin/nest_vars.sh
   '';
 }

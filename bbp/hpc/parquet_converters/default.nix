@@ -15,7 +15,7 @@
 
 stdenv.mkDerivation rec {
   name = "parquet-converters-${version}";
-  version = "0.1.1";
+  version = "0.1.2";
 
   buildInputs = [ arrow boost highfive-phdf5 mpiRuntime parquet-cpp phdf5 snappy synapsetool-phdf5 thrift zstd ];
 
@@ -25,8 +25,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/ParquetConverters";
-    rev = "f37f628cf91e3cb9cbf322cab369c5a80b965796";
-    sha256 = "1qq4l0lf8chk04pasmmzyqaivx2n94yaxq2bb5sdnj1yswr6j5lh";
+    rev = "281b620f4bd70e017d1b00b513c0a9393ca381d8";
+    sha256 = "115i5swmy2577b9fkzc29qr5dxwprhnbwsk210dyp73cnzzxnavh";
   };
 
   cmakeFlags = [

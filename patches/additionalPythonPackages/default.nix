@@ -60,8 +60,8 @@ in
     version = "0.2";
     src = pkgs.fetchgitPrivate {
         url = "git@github.com:BlueBrain/pybb5.git";
-        rev = "v" + version;
-        sha256 = "11knn9g05ijmh7x33q7ihackfs8gapff2fjs9r01r7awz6v2q7z5";
+        rev = "aa26310a3a12db2b583d2e0d614a1e67e9b2a84a";
+        sha256 = "1q5gq9xwqkm1j82nvy199vdiw2cd63h5xvyacf7ags4cqcq4n21z";
         leaveDotGit = true;
     };
 
@@ -462,11 +462,11 @@ in
 
     efel = pythonPackages.buildPythonPackage rec {
         name = "efel-${version}";
-        version = "2.13.1";
+        version = "3.0.22";
 
         src = pkgs.fetchurl {
             url = "mirror://pypi/e/efel/${name}.tar.gz";
-            sha256 = "0kwkb3j91f9yrx3c5z0s9ip35s005v8ssbzp1spq160ga1ggknig";
+            sha256 = "18k4014m91gkh5zxvl7mjd74rrkcjcgbnfc5kr0ws4jv8ahc3clp";
         };
 
 
@@ -684,12 +684,12 @@ in
   };
 
   sparkmanager = pythonPackages.buildPythonPackage rec {
-    version = "0.5.8";
+    version = "0.6.0";
     pname = "sparkmanager";
 
     src = pythonPackages.fetchPypi {
       inherit pname version;
-      sha256 = "0ib98xrjppvyhy1x45f96hpdpzlsfyqp99r7hvhlbwd020d65m53";
+      sha256 = "0m6vf637bx8jbyv1cgpfyk28kqdb8iaipavz10zm62v988lm9alq";
     };
 
     preConfigure = ''
@@ -813,7 +813,7 @@ in
       owner = "cwacek";
       repo = "python-jsonschema-objects";
       rev = "5b059f5c4138b4fd55e65ea45ffd142a49d04f9d";
-      sha256 = "0rdjhld51ani9x8y0jzn4lzlkdp8kzjs3njlz6wlkkg6qfs04r02";
+      sha256 = "0ap6h6cw92sf89dhvvy4vibk8qg9kps1pxcz243daa4ihnivsdnx";
     };
 
     preConfigure = ''

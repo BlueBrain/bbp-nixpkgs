@@ -12,14 +12,15 @@ pythonPackages.buildPythonPackage rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/analysis/BluePyEfe";
-        rev = "c2d89bbc8882103f1d9227778dfa6df9e489585a";
-        sha256 = "1gdq41a80ywxpd1is4nvq27pnl91vx6rgsl5w2hkrii4bvy7nxj5";
+        rev = "91ea6c4a8ac4d8dc6247241d458c94ceace30ace";
+        sha256 = "1xw39l261yw6rpfwvg3ly7mcgq6n7aaxi19wfskzc7918a7lq0zq";
     };
 
     propagatedBuildInputs = with pythonPackages; [
         matplotlib
         efel
         sh
+        neo
         igorpy
     ];
 }

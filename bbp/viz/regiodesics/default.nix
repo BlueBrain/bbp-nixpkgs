@@ -19,9 +19,6 @@ stdenv.mkDerivation rec {
         rev = "d969ca2d67c60e9de223adef82127901c69a4e8c";
         sha256 = "0pfjvyam5n7ykjizx29a5a9h6z4x7dfn6gly8hlnry6ziv00lm7b";
     };
-    cmakeFlags = [
-        "-DGLM_INSTALL_ENABLE=OFF"
-    ];
 
     enableParallelBuilding = true;
 }

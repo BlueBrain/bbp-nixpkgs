@@ -2,6 +2,7 @@
   cmake,
   fetchFromGitHub,
   gmodel,
+  gmsh,
   libmeshb,
   stdenv,
   trilinos,
@@ -11,13 +12,13 @@
 
 stdenv.mkDerivation rec {
   name = "omega_h-${version}";
-  version = "9.13.11";
+  version = "9.15.0";
 
   src = fetchFromGitHub {
-    owner = "ibaned";
+    owner = "BlueBrain";
     repo = "omega_h";
     rev = "v${version}";
-    sha256 = "099cizpx3zszyi88p6r3plir501mf1jv05d103fxfcpp2b9a521r";
+    sha256 = "0daphxy3jw1bmm9p59z8lrbdscx2xk5q3snirzh8rhc0xzvanjp5";
   };
 
   omega_h-data = fetchFromGitHub {
@@ -30,6 +31,7 @@ stdenv.mkDerivation rec {
   passthru = {
     src = src;
     trilinos = trilinos;
+    gmsh = gmsh;
   };
 
   meta = {
@@ -48,6 +50,7 @@ stdenv.mkDerivation rec {
   buildInputs = [
     cmake
     gmodel
+    gmsh
   ];
 
   propagatedBuildInputs = [
@@ -63,6 +66,7 @@ stdenv.mkDerivation rec {
   cmakeFlags = [
     "-DBUILD_TESTING:BOOL=ON"
     "-DOmega_h_DATA=${omega_h-data}"
+    "-DOmega_h_EXAMPLES:BOOL=ON"
     "-DOmega_h_USE_DOLFIN:BOOL=FALSE"
     "-DOmega_h_USE_Gmodel:BOOL=ON"
     "-DOmega_h_USE_libMeshb:BOOL=ON"

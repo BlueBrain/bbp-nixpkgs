@@ -20,7 +20,7 @@ zlib }:
 
 stdenv.mkDerivation rec {
   name = "flatindexer-${version}";
-  version = "1.8.7";
+  version = "1.8.9";
   meta = {
     description = "Spatial index";
     homepage = "https://bbpcode.epfl.ch/code/#/admin/projects/building/FLATIndex";
@@ -35,8 +35,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgitPrivate {
     url = config.bbp_git_ssh + "/building/FLATIndex";
-    rev = "a31336af3d3c90cffb6ed2686b99626bfa247be8";
-    sha256 = "073vxabbl8w0i7mca750ry69r1b269n8h3ldvy4gjv9qgjg96g92";
+    rev = "${version}";
+    sha256 = "10w1id2lz2zl7qm45l38c9qvm4gwjh0yc2nzlpvp94hyk0xmvx2v";
   };
 
   buildInputs = [

@@ -60,6 +60,8 @@ let
             mpi = bbp-mpi;
         };
 
+        pandoc = if (config.buildDocumentation or true) then pkgs.pandoc else null;
+
         ## parallel hdf5
         phdf5 = pkgs.phdf5.override {
             mpi = bbp-mpi;
@@ -220,12 +222,6 @@ let
             mpi = bbp-mpi;
         };
 
-        ospray-devel = callPackage ./viz/ospray {
-            stdenv = stdenvIntelIfSupportedElseClang;
-            mpi = bbp-mpi;
-            devel = true;
-        };
-
         ospray-modules = callPackage ./viz/ospray-modules {
             stdenv = stdenvIntelIfSupportedElseClang;
         };
@@ -237,11 +233,6 @@ let
 
         brayns-latest = callPackage ./viz/brayns/latest.nix {
             stdenv = stdenvIntelIfSupportedElseClang;
-        };
-
-        brayns-devel = callPackage ./viz/brayns {
-            stdenv = stdenvIntelIfSupportedElseClang;
-            ospray = ospray-devel;
         };
 
         viztools = callPackage ./viz/viztools {};
@@ -272,6 +263,10 @@ let
         neurom = callPackage ./nse/neurom {
         };
 
+        neurom-py3 = neurom.override {
+            pythonPackages = python3Packages;
+        };
+
         morphio-python = callPackage ./nse/morphio-python {
         };
 
@@ -298,7 +293,21 @@ let
         bluepy = callPackage ./nse/bluepy {
         };
 
+        bluepy-py3 = bluepy.override {
+            bluepy-configfile = bluepy-configfile-py3;
+            brion = brion-py3;
+            entity-management = entity-management-py3;
+            flatindexer = flatindexer-py3;
+            neurom = neurom-py3;
+            voxcell = voxcell-py3;
+            pythonPackages = python3Packages;
+        };
+
         bluepy-configfile = callPackage ./nse/bluepy-configfile {
+        };
+
+        bluepy-configfile-py3 = bluepy-configfile.override {
+            pythonPackages = python3Packages;
         };
 
         pybinreports = callPackages ./nse/pybinreports {
@@ -341,13 +350,30 @@ let
         placement-algorithm = callPackage ./nse/placement-algorithm {
         };
 
+        projectionizer = callPackage ./nse/projectionizer {
+        };
+
         psp-validation = callPackage ./nse/psp-validation {
         };
 
         voxcell = callPackage ./nse/voxcell {
         };
 
+        voxcell-py3 = voxcell.override {
+            pythonPackages = python3Packages;
+        };
+
         entity-management = callPackage ./nse/entity-management {
+        };
+
+        entity-management-py3 = entity-management.override {
+            pythonPackages = python3Packages;
+        };
+
+        entity-management_0_1_3 = callPackage ./nse/entity-management {
+            version = "0.1.3";
+            rev = "bc41a7fd5eee241459a379372f8d3a15ce303bdf";
+            sha256 = "1w56cr1lrx41w19yqg2h2fmljkhgir8ybli3nargw4wp1rnh66gf";
         };
 
         entity-management_0_1_2 = callPackage ./nse/entity-management {
@@ -411,11 +437,6 @@ let
         };
 
         spykfunc = callPackage ./hpc/spykfunc {
-        };
-
-        spykfunc-py3 = spykfunc.override {
-            spark-bbp = spark-bbp-py3;
-            pythonPackages = python3Packages;
         };
 
         touchdetector = enableBGQ callPackage ./hpc/touchdetector {
@@ -578,6 +599,13 @@ let
         };
 
         steps-mpi = steps; # enable mpi by default
+
+        zee = callPackage ./hpc/zee {
+            petsc = petsc.override {
+                withHypre = true;
+                withDebug = false;
+            };
+        };
 
         steps-mpi-py3 = steps.override {
             python = python3;

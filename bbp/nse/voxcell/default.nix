@@ -17,6 +17,7 @@ pythonPackages.buildPythonPackage rec {
 
     buildInputs = with pythonPackages; [
         nose
+        mock
     ];
 
     propagatedBuildInputs = with pythonPackages; [
@@ -31,4 +32,8 @@ pythonPackages.buildPythonPackage rec {
         scipy
         six
     ];
+
+    checkPhase = ''
+        nosetests tests
+    '';
 }
