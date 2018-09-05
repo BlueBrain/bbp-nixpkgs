@@ -227,7 +227,7 @@ let
         };
 
         brayns = callPackage ./viz/brayns {
-            stdenv = llvmPackages_5.stdenv;
+	    stdenv = llvmPackages_3_9.stdenv;
 
         };
 
@@ -236,6 +236,8 @@ let
         };
 
         viztools = callPackage ./viz/viztools {};
+
+        optix = callPackage ./viz/optix {};
 
         topology-viewer = callPackage ./viz/topology-viewer {};
 
