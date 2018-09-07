@@ -233,15 +233,9 @@ let
             stdenv = stdenvIntelIfSupportedElseClang;
         };
 
-        brayns-latest = callPackage ./viz/brayns/latest.nix {
-            stdenv = stdenvIntelIfSupportedElseClang;
-        };
-
         viztools = callPackage ./viz/viztools {};
 
-        topology-viewer = callPackage ./viz/topology-viewer {
-	    brayns = brayns-latest;
-        };
+        topology-viewer = callPackage ./viz/topology-viewer {};
 
         emsim = callPackage ./viz/emsim {};
 
@@ -249,9 +243,7 @@ let
 
         meshball = callPackage ./viz/meshball {};
 
-        brain-atlas = callPackage ./viz/brain-atlas {
-	    brayns = brayns-latest;
-        };
+        brain-atlas = callPackage ./viz/brain-atlas {};
 
         molecular-systems = callPackage ./viz/molecular-systems {};
 
