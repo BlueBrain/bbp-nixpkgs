@@ -15,8 +15,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
           url  = "https://github.com/BlueBrain/osgTransparency.git";
-          rev = "b2d9377d6a8d5b7d521d1afb0a6bae6e941f8e23";
-          sha256 = "055vb7kn9hll2pwq93mdghv7wy1dxwwa3acvq0fszbswckks1w0d";
+          rev = "09f1a656b11802244936a1275d7e55dd7fc2dc7a";
+          sha256 = "130j26gqcw7agl3li0sm0slfjs2mwxbv6d9prmlm7plnq365phqy";
   };
 
 
