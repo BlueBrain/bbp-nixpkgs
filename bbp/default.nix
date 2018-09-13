@@ -247,6 +247,8 @@ let
 
         emsim = callPackage ./viz/emsim {};
 
+        neuromorphovis = callPackage ./viz/neuromorphovis {};
+
         membraneless-organelles = callPackage ./viz/membraneless-organelles {};
 
         meshball = callPackage ./viz/meshball {};
