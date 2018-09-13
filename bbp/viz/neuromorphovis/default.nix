@@ -1,7 +1,7 @@
 { stdenv
 , config
 , fetchurl
-, fetchgitPrivate
+, fetchgit
 }:
 
 stdenv.mkDerivation rec {
@@ -13,31 +13,21 @@ stdenv.mkDerivation rec {
       sha256 = "0g0q0ibw1laq4n63qvszm4k9zk618kn4w8pz6kxfcv8c1d74m0j3";
     };
 
-   src-nvm = fetchgitPrivate {
-	url =   config.bbp_git_ssh + "/user/abdellah/NeuroMorphoVis";
-        sha256 = "083vy2mw7rwiwbr7ybcv637s0hk648pv8qj1ydch3bkafhldjw3n";
-        rev = "474dd9caa322d0d59116c8922ba911ad34e58055";
-  };
+   src-nvm = fetchgit {
+     url =  "https://github.com/BlueBrain/NeuroMorphoVis.git";
+     sha256 = "1p3cw5rk2vd5gkqspqljh15z7qfgk0r27l86paydwd3iinsswdc3";
+   };
 
-  #unpackPhase = ''
-  #  ls -lah ${src}
-  #'';
+   deps = fetchurl {
+     url = "file:///gpfs/bbp.cscs.ch/home/podhajsk/neuromorphovis-deps2.tar.gz";
+     sha256 = "1126wiis918sf68czbdlx99df7as0xf2414pya8b2inhwjxc2m14";
+  };
 
   installPhase = ''
     mkdir -p $out
-#    ls ${src-nvm}
-    ls .
-    ls ${src}
+    rm -rf 2.79/python/lib/python3.5/site-packages/numpy/
+    tar xf ${deps} -C 2.79/python/lib/python3.5/site-packages
     cp -rf ${src-nvm}/ 2.79/scripts/addons/NeuroMorphoVis
-    echo "after copy:"
-    ls -lah  2.79/scripts/addons/
-
     cp -rf * $out
-    echo "after mv 2:"
-    ls $out
   '';
-
-
-
-
 }

@@ -1251,7 +1251,9 @@ let
             packages = [
                             pkgs.neuromorphovis
                        ];
-            extraContent = "prepend-path LD_LIBRARY_PATH $targetEnv/lib/";
+            extraContent = ''
+		prepend-path LD_LIBRARY_PATH $targetEnv/lib/";
+                prepend-path PATH $targetEnv'';
             dependencies = [ brion virtualgl pyqt5 pyopengl ];
             conflicts = conflicts-modules;
         };
@@ -3080,7 +3082,7 @@ let
                 bbpsdk
                 bbpsdk-legacy
                 brain-atlas
-                brayns
+                neuromorphovis
                 brion
                 brion-py3
                 deflect
@@ -3088,7 +3090,6 @@ let
                 emsim
                 ospray
                 topology-viewer
-                circuit-viewer
                 dti
                 membraneless-organelles
                 meshball
