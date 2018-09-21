@@ -364,22 +364,10 @@ let
             pythonPackages = python3Packages;
         };
 
-        entity-management_0_1_3 = callPackage ./nse/entity-management {
-            version = "0.1.3";
-            rev = "bc41a7fd5eee241459a379372f8d3a15ce303bdf";
-            sha256 = "1w56cr1lrx41w19yqg2h2fmljkhgir8ybli3nargw4wp1rnh66gf";
-        };
-
-        entity-management_0_1_2 = callPackage ./nse/entity-management {
-            version = "0.1.2";
-            rev = "8ad173a6feedab22101c8b3288654a2214c38257";
-            sha256 = "1583vys4b9j2vrk3vaycdkrj2gb5j90fpf102mg1c2vfzi4cfz8g";
-        };
-
-        entity-management_0_1_1 = callPackage ./nse/entity-management {
-            version = "0.1.1";
-            rev = "04a007f97e9889b278bbb0cddaac79dd907faaba";
-            sha256 = "0c0kl682fsw41s80g0h25adcwaf7rd3zp2y4nss3fbi8dxqby7m4";
+        entity-management_0_1_5 = callPackage ./nse/entity-management {
+            version = "0.1.5";
+            rev = "5854aca3ca0b4aa76faccb9f6b928082aa2d58ca";
+            sha256 = "0sddzwlv7vpj3c2vjvd3sahfwg7b7a6vf8d6v4ay7yh78yzcy749";
         };
 
         nse-allpkgs = noBGQ (pkgs.buildEnv {
