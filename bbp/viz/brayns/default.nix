@@ -55,15 +55,17 @@ stdenv.mkDerivation rec {
 			"-DBRAYNS_OPENDECK_ENABLED=TRUE"
 			"-DBRAYNS_OPTIX_ENABLED=ON"
 			"-DBRAYNS_VRPN_ENABLED=TRUE"
+			"-DCMAKE_CXX_FLAGS=-fsanitize=leak"
+			"-DCMAKE_C_FLAGS=-fsanitize=leak"
 		    ];
 
 	doCheck = true;
 	checkPhase = ''
 		export LD_LIBRARY_PATH=''${PWD}/lib/:${nvidia-drivers}/lib:''${LD_LIBRARY_PATH}
+		export LSAN_OPTIONS="suppressions=./.lsan_suppressions.txt"
 		export CUDA_VISIBLE_DEVICES=0
 		make Brayns-tests
 	'';
-	#checkTarget="Brayns";
 	enableParallelBuilding = true;
 
 }

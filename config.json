@@ -1,0 +1,6 @@
+{
+    nvidia = {
+        driverVersion = "396.54";
+    };
+}
+
