@@ -227,7 +227,7 @@ let
         };
 
         brayns = callPackage ./viz/brayns {
-	    stdenv = llvmPackages_3_9.stdenv;
+	    stdenv = llvmPackages_5.stdenv;
 
         };
 

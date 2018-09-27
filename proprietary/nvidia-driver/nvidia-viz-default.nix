@@ -56,7 +56,12 @@ let
                {
                    versionNumber = "387.26";
                    sha256 = "0llxlbnbi260g1pq4gf5j9y6xwhazls37vzp1ca7fh2hx8bldi09";
-               } else throw "nvidia-x11 version ${driverVersion} is not supported for ${stdenv.system}";
+               }
+	       else if (driverVersion == "396.54") then
+               {
+                   versionNumber = "396.54";
+                   sha256 = "1hzfx4g63h6wbbjq9w4qnrhmvn8h8mmcpy9yc791m8xflsf3qgkw";
+               }  else throw "nvidia-x11 version ${driverVersion} is not supported for ${stdenv.system}";
 
   # Policy: use the highest stable version as the default (on our master).
   inherit (stdenv.lib) makeLibraryPath;

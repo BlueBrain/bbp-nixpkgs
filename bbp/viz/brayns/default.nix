@@ -24,7 +24,7 @@
 , hdf5-cpp
 , restInterface ? true
 , libarchive
-, cudatoolkit9
+, cudatoolkit92
 , optix
 , nvidia-drivers
 }:
@@ -38,7 +38,7 @@ stdenv.mkDerivation rec {
 	version = "latest";
 
 	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb libuv vrpn
-					glew mesa vmmlib lunchbox brion hdf5-cpp freeimage deflect libarchive libjpeg_turbo bbptestdata cudatoolkit9 optix nvidia-drivers ]
+					glew mesa vmmlib lunchbox brion hdf5-cpp freeimage deflect libarchive libjpeg_turbo bbptestdata cudatoolkit92 optix nvidia-drivers ]
 				  ++ (stdenv.lib.optional) (restInterface) [ rockets ];
 
 	src = fetchgit {
@@ -55,16 +55,18 @@ stdenv.mkDerivation rec {
 			"-DBRAYNS_OPENDECK_ENABLED=TRUE"
 			"-DBRAYNS_OPTIX_ENABLED=ON"
 			"-DBRAYNS_VRPN_ENABLED=TRUE"
-			"-DCOMMON_DISABLE_WERROR=TRUE"
 		    ];
 
 	doCheck = true;
 	checkPhase = ''
-		export LD_LIBRARY_PATH=''${PWD}/lib/:${nvidia-drivers}/lib:''${LD_LIBRARY_PATH}
+		
+		export LD_LIBRARY_PATH=''${PWD}/lib/:${nvidia-drivers}/lib:${cudatoolkit92}/lib/:${optix}/lib:''${LD_LIBRARY_PATH}
+		export LSAN_OPTIONS="suppressions=../../.lsan_suppressions.txt"
 		export CUDA_VISIBLE_DEVICES=0
-		make Brayns-tests
+		make -j Brayns-tests
 	'';
-	checkTarget="Brayns-tests";
 	enableParallelBuilding = true;
+	 checkTarget="Brayns-tests";
+
 
 }
