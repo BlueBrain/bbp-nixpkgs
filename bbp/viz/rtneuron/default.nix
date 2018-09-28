@@ -34,8 +34,8 @@ let
   version3-info = {
     version = "3.0.0";
     url = "https://github.com/BlueBrain/RTNeuron.git";
-    rev = "a08934911a4af4ae3e2ee7d92e52cb7bd9aab3ce";
-    sha256 = "015y4a838wzw4bxk2qchl4li2vxj6xjmj3da1r6cjqay4vzxp4sm";
+    rev = "d6b466a8a8eed60c765fae56fd01cd1a49e4222f";
+    sha256 = "15ji7jxk91bard1ynr4fkkj9ky01h37fb2dg6m59242q4dkxklmy";
     buildInputs = [];
     fetchFunction = fetchgit;
   };
@@ -55,7 +55,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ stdenv pkgconfig boost cmake openscenegraph lunchbox brion
                   collage osgtransparency equalizer pythonPackages.sphinx_1_3
-                  pythonPackages.lxml qt.qtbase qt.qtsvg ] ++
+                  pythonPackages.lxml qt.qtbase qt.qtsvg doxygen ] ++
                 version-info.buildInputs;
 
   preConfigure = ''
