@@ -59,16 +59,17 @@ stdenv.mkDerivation rec {
 
 	doCheck = true;
 	checkPhase = ''
-		echo '### hostname ' $(hostname)
 	
 		export LD_LIBRARY_PATH=''${PWD}/lib/:${nvidia-drivers}/lib:${cudatoolkit92}/lib/:${optix}/lib:''${LD_LIBRARY_PATH}
 		export PATH=''${cudatoolkit92}/bin/:''${PATH}
 		export LSAN_OPTIONS="suppressions=../../.lsan_suppressions.txt"
 		export CUDA_VISIBLE_DEVICES=0
+		echo "CUDA " $CUDA_VISIBLE_DEVICES
+		/usr/sbin/lspci | grep -i nvidia
 		nvcc --version
-    		CUDA_VISIBLE_DEVICES=0 /nix/store/lhsynfsy979a6k933hqw3x12qmr02zqj-generated-env-module-cuda9/extras/demo_suite/deviceQuery
+		echo "LD "  $LD_LIBRARY_PATH
+    		CUDA_VISIBLE_DEVICES=0  /nix/store/0dkjbfbd90p8qxffs63z90ydk4klw7ny-cudatoolkit-9.2.148/extras/demo_suite/deviceQuery
                 ls ${nvidia-drivers}/lib
-		echo $LD_LIBRARY_PATH
 		make -j Brayns-tests
 	'';
 	enableParallelBuilding = true;
