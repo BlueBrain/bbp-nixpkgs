@@ -12,6 +12,7 @@
 , libXmu
 , libXi
 , libuv
+, vrpn
 , glew
 , mesa
 , vmmlib 
@@ -32,7 +33,7 @@ stdenv.mkDerivation rec {
 	name = "brayns-${version}";
 	version = "0.7.0-201809";
 
-	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb libuv
+	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb libuv vrpn
 					glew mesa vmmlib lunchbox brion hdf5-cpp freeimage deflect libarchive libjpeg_turbo]
 				  ++ (stdenv.lib.optional) (restInterface) [ rockets ];
 
@@ -46,7 +47,9 @@ stdenv.mkDerivation rec {
 	cmakeFlags = [ 
 			"-DCOMMON_DISABLE_WERROR=TRUE"
 			"-DOSPRAY_ROOT=${ospray}"
+			"-DBRAYNS_STEREOSCOPY_ENABLE=TRUE"
 			"-DBRAYNS_OPENDECK_ENABLED=TRUE"
+			"-DBRAYNS_VRPN_ENABLED=TRUE"
 		    ];
 
 	# verbose mode for debugging
