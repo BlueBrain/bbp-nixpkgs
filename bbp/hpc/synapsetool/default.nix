@@ -12,12 +12,12 @@
 
 stdenv.mkDerivation rec {
     name = "synapsetool-${version}";
-    version = "0.2.2";
+    version = "0.2.5";
 
     src = fetchgitPrivate {
         url = "ssh://bbpcode.epfl.ch/hpc/synapse-tool";
-        rev = "9d8b8f96e8e19fafe9bbaf8190547ac994dcff73";
-        sha256 = "0xkfq688brafsc4k4w40cbwzq5k4s8hb12awxsrzpq9m6cb07k6r";
+        rev = "27e90878171588f49ab1b13e15e94c3e2e9a5fed";
+        sha256 = "0fc19mlj0g2f1jprw8c1hx6539pbyv7c6dymxw0jsw4aq06mb29n";
     };
 
     cmakeFlags =  [

@@ -10,14 +10,14 @@
 
 stdenv.mkDerivation rec {
     name = "emsim-${version}";
-    version = "1.0.0-201807";
+    version = "1.0.0-201810";
 
     buildInputs = [ stdenv pkgconfig cmake boost brion ispc ];
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/EMSim";
-        rev = "b77151dd7bfe53437f39fdc8facb58b267208c40";
-        sha256 = "15xkd4lpmhpg7xc4mf4qvgzl36yi553xcikx4hwcqzmqr4pba0vd";
+        rev = "ef86fada07e81139030b4fb534f9580b9c41a325";
+        sha256 = "0cj807xp7irpvxbp1hqbkkdbz8xc43r4pay1jjgkkq7vg1c9dkyy";
     };
     cmakeFlags = [
         "-DGLM_INSTALL_ENABLE=OFF"

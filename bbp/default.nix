@@ -366,8 +366,8 @@ let
 
         entity-management_0_1_5 = callPackage ./nse/entity-management {
             version = "0.1.5";
-            rev = "5854aca3ca0b4aa76faccb9f6b928082aa2d58ca";
-            sha256 = "0sddzwlv7vpj3c2vjvd3sahfwg7b7a6vf8d6v4ay7yh78yzcy749";
+            rev = "7230d6cb662700cd62f7cd4d3a51397be443097d";
+            sha256 = "09ya1mqyw2imnhr7636cai4b2v7k6p8akmkxz2nv8madlcq3r5xm";
         };
 
         nse-allpkgs = noBGQ (pkgs.buildEnv {
