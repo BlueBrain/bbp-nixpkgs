@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ stdenv pkgconfig boost cmake openscenegraph lunchbox brion
                   collage osgtransparency equalizer pythonPackages.sphinx_1_3
-                  qt.qtbase qt.qtsvg ];
+                  pythonPackages.lxml qt.qtbase qt.qtsvg doxygen ];
 
   preConfigure = ''
 	export PATH="${pythonEnv-rtneuron}/bin:$PATH"

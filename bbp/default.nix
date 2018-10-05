@@ -231,10 +231,6 @@ let
 
         };
 
-        brayns-latest = callPackage ./viz/brayns/latest.nix {
-            stdenv = stdenvIntelIfSupportedElseClang;
-        };
-
         viztools = callPackage ./viz/viztools {};
 
         optix = callPackage ./viz/optix {};
@@ -374,22 +370,10 @@ let
             pythonPackages = python3Packages;
         };
 
-        entity-management_0_1_3 = callPackage ./nse/entity-management {
-            version = "0.1.3";
-            rev = "bc41a7fd5eee241459a379372f8d3a15ce303bdf";
-            sha256 = "1w56cr1lrx41w19yqg2h2fmljkhgir8ybli3nargw4wp1rnh66gf";
-        };
-
-        entity-management_0_1_2 = callPackage ./nse/entity-management {
-            version = "0.1.2";
-            rev = "8ad173a6feedab22101c8b3288654a2214c38257";
-            sha256 = "1583vys4b9j2vrk3vaycdkrj2gb5j90fpf102mg1c2vfzi4cfz8g";
-        };
-
-        entity-management_0_1_1 = callPackage ./nse/entity-management {
-            version = "0.1.1";
-            rev = "04a007f97e9889b278bbb0cddaac79dd907faaba";
-            sha256 = "0c0kl682fsw41s80g0h25adcwaf7rd3zp2y4nss3fbi8dxqby7m4";
+        entity-management_0_1_5 = callPackage ./nse/entity-management {
+            version = "0.1.5";
+            rev = "7230d6cb662700cd62f7cd4d3a51397be443097d";
+            sha256 = "09ya1mqyw2imnhr7636cai4b2v7k6p8akmkxz2nv8madlcq3r5xm";
         };
 
         nse-allpkgs = noBGQ (pkgs.buildEnv {

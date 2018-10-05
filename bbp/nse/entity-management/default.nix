@@ -2,9 +2,9 @@
   fetchgitPrivate
 , pythonPackages
 , config
-, version ? "0.1.4"
-, rev ? "7247abdfd2a39fde7fa15a398049a707b5791d15"
-, sha256 ? "0msxqlhi45xk4h2lbljrfnhrvjw46ykdyfnip3x4h841khkn2jk6"
+, version ? "0.1.6.dev"
+, rev ? "7230d6cb662700cd62f7cd4d3a51397be443097d"
+, sha256 ? "09ya1mqyw2imnhr7636cai4b2v7k6p8akmkxz2nv8madlcq3r5xm"
 }:
 
 pythonPackages.buildPythonPackage rec {
@@ -12,11 +12,9 @@ pythonPackages.buildPythonPackage rec {
     name = "entity-management-${version}";
 
 	src = fetchgitPrivate {
-        url = config.bbp_git_ssh + "/nse/ProductionEntities";
+        url = config.bbp_git_ssh + "/nse/entity-management";
         inherit rev sha256;
     };
-
-    preBuild = "cd entity_management";
 
     propagatedBuildInputs = with pythonPackages; [ six attrs python-dateutil requests typing ];
 
