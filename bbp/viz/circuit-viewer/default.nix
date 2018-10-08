@@ -6,13 +6,14 @@
 , cmake
 , vmmlib
 , brayns
+, brion
 }:
 
 stdenv.mkDerivation rec {
     name = "circuit-viewer-${version}";
     version = "latest";
 
-    buildInputs = [ stdenv pkgconfig cmake boost vmmlib brayns ];
+    buildInputs = [ stdenv pkgconfig cmake boost vmmlib brayns brion ];
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/Brayns-UC-CircuitViewer";
