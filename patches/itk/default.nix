@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, cmake, libX11, libuuid, xz, vtk, zlib, libjpeg, expat, vxl, gdcm }:
+{ stdenv, fetchurl, cmake, libX11, libuuid, xz, vtk, zlib, libjpeg, expat, vxl, gdcm, hdf5-cpp }:
 
 stdenv.mkDerivation rec {
   name = "itk-4.10.0";
@@ -13,14 +13,8 @@ stdenv.mkDerivation rec {
     "-DBUILD_EXAMPLES=OFF"
     "-DBUILD_SHARED_LIBS=ON"
 
-    # disable default modules
-    "-DITK_BUILD_DEFAULT_MODULES=OFF"
-     "-DModule_ITKImageGrid=ON"
-#    "-DModule_ITKIOMINC=ON"
-#    "-DModule_ITKVtkGlue=ON"
-#    "-DModule_ITKReview=ON"
-
-
+    # enable default modules
+    "-DITK_BUILD_DEFAULT_MODULES=ON"
 
     # disable bundling
     "-DITK_USE_SYSTEM_HDF5=ON"
@@ -35,7 +29,7 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   nativeBuildInputs = [ cmake xz ];
-  buildInputs = [ libX11 libuuid vtk zlib expat libjpeg ];
+  buildInputs = [ libX11 libuuid vtk zlib expat libjpeg hdf5-cpp];
 
   meta = {
     description = "Insight Segmentation and Registration Toolkit";
