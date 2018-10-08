@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, cmake, libX11, libuuid, xz, vtk, zlib, libjpeg, expat, vxl, gdcm }:
+{ stdenv, fetchurl, cmake, libX11, libuuid, xz, vtk, zlib, libjpeg, expat, vxl, gdcm, hdf5 }:
 
 stdenv.mkDerivation rec {
   name = "itk-4.10.0";
@@ -13,17 +13,20 @@ stdenv.mkDerivation rec {
     "-DBUILD_EXAMPLES=OFF"
     "-DBUILD_SHARED_LIBS=ON"
 
-    # disable default modules
-    "-DITK_BUILD_DEFAULT_MODULES=OFF"
-     "-DModule_ITKImageGrid=ON"
-#    "-DModule_ITKIOMINC=ON"
-#    "-DModule_ITKVtkGlue=ON"
-#    "-DModule_ITKReview=ON"
+    # enable default modules
+    "-DITK_BUILD_DEFAULT_MODULES=ON"
 
 
+#"-DITK_MODULE_ITK_IOHDF5_EXCLUDE_FROM_DEFAULT:BOOL=ON"
+#
+#"-DITK_MODULE_ITK_IOTransformInsightLegacy_EXCLUDE_FROM_DEFAULT:BOOL=ON"
+#"-DITK_MODULE_ITK_IOTransformBase_EXCLUDE_FROM_DEFAULT:BOOL=ON"
+#"-DITK_MODULE_ITK_IOTransformHDF5_EXCLUDE_FROM_DEFAULT:BOOL=ON"
+#"-DITK_MODULE_ITK_IOTransformInsightLegacy_EXCLUDE_FROM_DEFAULT:BOOL=ON"
+#"-DITK_MODULE_ITK_IOTransformMatlab_EXCLUDE_FROM_DEFAULT:BOOL=ON"
 
     # disable bundling
-    "-DITK_USE_SYSTEM_HDF5=ON"
+    "-DITK_USE_SYSTEM_HDF5=OFF"
     "-DITK_USE_SYSTEM_ZLIB=ON"
     "-DITK_USE_SYSTEM_JPEG=ON"
     "-DITK_USE_SYSTEM_EXPAT=ON"
@@ -35,7 +38,7 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   nativeBuildInputs = [ cmake xz ];
-  buildInputs = [ libX11 libuuid vtk zlib expat libjpeg ];
+  buildInputs = [ libX11 libuuid vtk zlib expat libjpeg hdf5];
 
   meta = {
     description = "Insight Segmentation and Registration Toolkit";
