@@ -49,6 +49,7 @@ stdenv.mkDerivation rec {
 
 
 	cmakeFlags = [
+			"-DBRAYNS_OPTIX_TESTS_ENABLED=OFF"
 			"-DGIT_REVISION=a7f9215f"
 			"-DOSPRAY_ROOT=${ospray}"
 			"-DBRAYNS_STEREOSCOPY_ENABLED=TRUE"
@@ -59,10 +60,8 @@ stdenv.mkDerivation rec {
 
 	doCheck = true;
 	checkPhase = ''
-		
 		export LD_LIBRARY_PATH=''${PWD}/lib/:${nvidia-drivers}/lib:${cudatoolkit92}/lib/:${optix}/lib:''${LD_LIBRARY_PATH}
 		export LSAN_OPTIONS="suppressions=../../.lsan_suppressions.txt"
-		export CUDA_VISIBLE_DEVICES=0
 		make -j Brayns-tests
 	'';
 	enableParallelBuilding = true;
