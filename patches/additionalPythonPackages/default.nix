@@ -684,12 +684,12 @@ in
   };
 
   sparkmanager = pythonPackages.buildPythonPackage rec {
-    version = "0.6.0";
+    version = "0.7.0";
     pname = "sparkmanager";
 
     src = pythonPackages.fetchPypi {
       inherit pname version;
-      sha256 = "0m6vf637bx8jbyv1cgpfyk28kqdb8iaipavz10zm62v988lm9alq";
+      sha256 = "1nf7iv9fdx46ffd0yq554xal66hn2kqv49iw55q7jnciij5p4n2q";
     };
 
     preConfigure = ''
@@ -698,6 +698,8 @@ in
 
     propagatedBuildInputs = with self; [
       pyspark
+      setuptools
+      setuptools_scm
       six
     ];
 
