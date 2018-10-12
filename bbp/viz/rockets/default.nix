@@ -14,8 +14,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url  = "https://github.com/BlueBrain/Rockets.git";
-    rev = "cb66acbac2680dac5adfd65e067a3a2701fca342";
-    sha256 = "01lz6dsi8yw40cp7cfpyc7g37lkbyh2n5gl7f4xrnm04h3r757z6";
+    rev = "8100fefa19c7e8339b0549e3b39ea25c3f83a597";
+    sha256 = "0jikbvvgfrm8kyizr6wnnmi6073i6k1vh6n20k5i50idr23d251p";
   };
 
   enableParallelBuilding = true;
