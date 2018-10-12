@@ -118,6 +118,9 @@ let
             lunchbox = lunchbox-legacy;
         };
 
+        libsonata = callPackage ./common/libsonata {
+        };
+
         vmmlib = callPackage ./common/vmmlib {};
 
         ##
