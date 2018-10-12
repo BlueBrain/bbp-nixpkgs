@@ -1,6 +1,7 @@
 { boost
 , config
 , fetchgitPrivate
+, git
 , hdf5
 , highfive
 , python3Packages
@@ -68,7 +69,7 @@ in
       rev = "e2c587f0aa51a89bf68eb7c1bae2afd5d372cbdb";
       sha256 = "1j9xyhyvahiiz713w4pvffv66fi50s4lps72r4rxc5h1p8mmn39r";
     };
-    buildInputs = [ boost hdf5 highfive ];
+    buildInputs = [ boost git hdf5 highfive ];
     nativeBuildInputs = [
       python-env
     ];
