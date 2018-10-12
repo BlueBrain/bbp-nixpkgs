@@ -1254,7 +1254,7 @@ let
             extraContent = ''
 		prepend-path LD_LIBRARY_PATH $targetEnv/lib/";
                 prepend-path PATH $targetEnv'';
-            dependencies = [ brion virtualgl pyqt5 pyopengl ];
+            dependencies = [ virtualgl pyqt5 pyopengl ];
             conflicts = conflicts-modules;
         };
 
