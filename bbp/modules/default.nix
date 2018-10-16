@@ -3093,10 +3093,6 @@ let
                 dti
                 membraneless-organelles
                 meshball
-                molecular-systems
-                morphology-synthesis
-                meshball
-                brain-atlas
                 deflect
                 brayns
                 viztools
