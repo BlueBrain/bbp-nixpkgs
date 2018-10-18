@@ -1001,6 +1001,29 @@ in
     '';
   };
 
+  transforms3d = pythonPackages.buildPythonPackage rec {
+    pname = "transforms3d";
+    version = "0.3.1";
+    name = "${pname}-${version}";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "0y4dm1xrd9vlrnz5dzym8brww5smzh0ij223h35n394aqybpfk20";
+    };
+
+    buildInputs = with pythonPackages; [
+      nose
+    ];
+
+    propagatedBuildInputs = with pythonPackages; [
+      numpy
+    ];
+
+    checkPhase = ''
+      nosetests transforms3d
+    '';
+  };
+
   add-site-dir = stdenv.mkDerivation rec {
     name = "register-site-packages";
     site-packages = pythonPackages.python.sitePackages;
