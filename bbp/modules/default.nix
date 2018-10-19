@@ -3089,7 +3089,6 @@ let
                 embree
                 emsim
                 ospray
-                topology-viewer
                 dti
                 membraneless-organelles
                 meshball
