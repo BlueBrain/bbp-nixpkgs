@@ -19,6 +19,7 @@ pythonPackages.buildPythonPackage rec {
     propagatedBuildInputs = with pythonPackages; [
         sh
         matplotlib
+        numpy
         bluepyopt
     ];
 }
