@@ -3083,8 +3083,6 @@ let
                 bbpsdk-legacy
                 brain-atlas
                 neuromorphovis
-                brion
-                brion-py3
                 deflect
                 embree
                 emsim
@@ -3095,7 +3093,7 @@ let
                 deflect
                 brayns
                 viztools
-                vmmlib
+                topology-viewer
             ];
 
             hpc_base = [
