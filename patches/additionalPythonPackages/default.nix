@@ -1098,11 +1098,11 @@ EOF
   attrs = pythonPackages.buildPythonPackage rec {
     name = "${pname}-${version}";
     pname = "attrs";
-    version = "18.1.0";
+    version = "18.2.0";
 
     src = pythonPackages.fetchPypi {
       inherit pname version;
-      sha256 = "0yzqz8wv3w1srav5683a55v49i0szkm47dyrnkd56fqs8j8ypl70";
+      sha256 = "0s9ydh058wmmf5v391pym877x4ahxg45dw6a0w4c7s5wgpigdjqh";
     };
 
     # macOS needs clang for testing
@@ -1121,4 +1121,80 @@ EOF
     };
   };
 
+  rpy2 = pythonPackages.buildPythonPackage rec {
+    version = if pythonPackages.isPy27 then
+      "2.8.6" # python2 support dropped in 2.9.x
+    else
+      "2.9.4";
+    pname = "rpy2";
+    disabled = pythonPackages.isPyPy;
+    src = pythonPackages.fetchPypi {
+      inherit version pname;
+      sha256 = if self.isPy27 then
+        "162zki5c1apgv6qbafi7n66y4hgpgp43xag7q75qb6kv99ri6k80" # 2.8.x
+      else
+        "0bl1d2qhavmlrvalir9hmkjh74w21vzkvc2sg3cbb162s10zfmxy"; # 2.9.x
+    };
+    buildInputs = with pkgs; [
+      readline
+      R
+      pcre
+      lzma
+      bzip2
+      zlib
+      icu
+    ];
+    propagatedBuildInputs = with pythonPackages; [
+      singledispatch
+      six
+      jinja2
+    ];
+    checkInputs = [ pythonPackages.pytest ];
+    # Tests fail with `assert not _relpath.startswith('..'), "Path must be within the project"`
+    # in the unittest `loader.py`. I don't know what causes this.
+    doCheck = false;
+    # without this tests fail when looking for libreadline.so
+    LD_LIBRARY_PATH = stdenv.lib.makeLibraryPath buildInputs;
+
+    meta = {
+      homepage = http://rpy.sourceforge.net/rpy2;
+      description = "Python interface to R";
+      license = stdenv.lib.licenses.gpl2Plus;
+      platforms = stdenv.lib.platforms.linux;
+      maintainers = with stdenv.lib.maintainers; [ joelmo ];
+    };
+  };
+
+  neurotools = pythonPackages.buildPythonPackage rec {
+    pname = "NeuroTools";
+    version = "0.3.1";
+    disabled = pythonPackages.isPy3k;
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "0ly6qa87l3afhksab06vp1iimlbm1kdnsw98mxcnpzz9q07l4nd4";
+    };
+
+    # Tests are not automatically run
+    # Many tests fail (using py.test), and some need R
+    doCheck = false;
+
+    propagatedBuildInputs = with pythonPackages; [
+      scipy
+      numpy
+      matplotlib
+      tables
+      pyaml
+      urllib3
+      rpy2
+      mpi4py
+    ];
+
+    meta = with stdenv.lib; {
+      description = "Collection of tools to support analysis of neural activity";
+      homepage = https://pypi.python.org/pypi/NeuroTools;
+      license = licenses.gpl2;
+      maintainers = with maintainers; [ nico202 ];
+    };
+  };
 }
