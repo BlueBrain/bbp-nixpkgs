@@ -362,6 +362,9 @@ let
             pythonPackages = python3Packages;
         };
 
+        simwriter = callPackage ./nse/simwriter {
+        };
+
         entity-management = callPackage ./nse/entity-management {
         };
 
