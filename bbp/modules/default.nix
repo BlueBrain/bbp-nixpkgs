@@ -3080,7 +3080,6 @@ let
                 rockets
                 vmmlib
                 bbpsdk
-                bbpsdk-legacy
                 brain-atlas
                 neuromorphovis
                 deflect

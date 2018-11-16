@@ -112,12 +112,6 @@ let
         ##
         bbpsdk = callPackage ./common/bbpsdk {};
 
-        bbpsdk-legacy = bbpsdk.override {
-            legacyVersion = true;
-            brion = brion-legacy;
-            lunchbox = lunchbox-legacy;
-        };
-
         vmmlib = callPackage ./common/vmmlib {};
 
         ##
