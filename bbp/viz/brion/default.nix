@@ -28,8 +28,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgit {
         url = "https://github.com/BlueBrain/Brion.git";
-        rev = "e05ce68fd774f5f569d51f649fabde6d4da54abc";
-        sha256 = "072d2096c5428zyjwm78i6c58csxhlsk0922awk3cng5hg6wyq30";
+        rev = "60809ca17cd128061a788272dd4ef411d2b17334";
+        sha256 = "04rg49k6hr5qsqzw22af873haspgv9y70k660rsr7cll7ljnqhi0";
     };
 
     enableParallelBuilding = false; # memory consumption too high for python bindings generation
