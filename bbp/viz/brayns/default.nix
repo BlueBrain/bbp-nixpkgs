@@ -43,14 +43,14 @@ stdenv.mkDerivation rec {
 
 	src = fetchgit {
 		url  = "https://github.com/BlueBrain/Brayns.git";
-		rev = "801396e74c8b590d946b6ca1cc3a73effcf93261";
-		sha256 = "04hqmmffk0svvq94cjp2lqisw2ps0awxv0izin042nfqdz4qaiga";
+		rev = "be24f390f0c997a211c8a48929be64ca43ca3a71";
+		sha256 = "19rdy7fl2y5276qv5837xz0w29fbj5wky8iv0hkgy18ql8ryqldv";
 	};
 
 
 	cmakeFlags = [
 			"-DBRAYNS_OPTIX_TESTS_ENABLED=OFF"
-			"-DGIT_REVISION=801396e7"
+			"-DGIT_REVISION=be24f390"
 			"-DOSPRAY_ROOT=${ospray}"
 			"-DBRAYNS_STEREOSCOPY_ENABLED=TRUE"
 			"-DBRAYNS_OPENDECK_ENABLED=TRUE"
