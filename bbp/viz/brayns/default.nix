@@ -22,6 +22,7 @@
 , rockets ? null
 , brion
 , hdf5-cpp
+, highfive
 , restInterface ? true
 , libarchive
 , cudatoolkit92
@@ -37,7 +38,7 @@ stdenv.mkDerivation rec {
 	name = "brayns-${version}";
 	version = "latest";
 
-	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb libuv vrpn
+	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb libuv vrpn highfive
 					glew mesa vmmlib lunchbox brion hdf5-cpp freeimage deflect libarchive libjpeg_turbo bbptestdata cudatoolkit92 optix nvidia-drivers ]
 				  ++ (stdenv.lib.optional) (restInterface) [ rockets ];
 
