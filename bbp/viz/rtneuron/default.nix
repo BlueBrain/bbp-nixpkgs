@@ -40,8 +40,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/BlueBrain/RTNeuron.git";
-    rev = "ddc22c2ae53dc20c4fbaa34517db4305f8aae1c1";
-    sha256 = "1hdbxqnqdh1k3460lsxcdvg7cc82phwbm7yp7hczx8flq6mlw0x7";
+    rev = "c3be9a8baf7f86f80f48b971626082bba9e82feb";
+    sha256 = "0w87ya04r3wawv76k7530sg94xd0yj66jlgckbzlc9qpx0ccja1a";
   };
 
   cmakeFlags = [ "-DDISABLE_SUBPROJECTS=TRUE" ];
