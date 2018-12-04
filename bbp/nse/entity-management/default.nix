@@ -1,10 +1,9 @@
-{
-  fetchgitPrivate
+{ fetchgitPrivate
 , pythonPackages
 , config
-, version ? "0.1.7"
-, rev ? "fc1cfc3348bfea2d9de1fccf848d47aca935d093"
-, sha256 ? "1q4spxfczyy7swx00lsj8jir4x6w01mbxpnv0mgv6dr5vqzvh4l4"
+, version ? "0.1.8"
+, rev ? "675610459076fef05430577370a1d4f1b095e5bc"
+, sha256 ? "1zafmph1r8m91i40zvz0lyl1myqzscx8bjgp09bg989z69mv0hxl"
 }:
 
 pythonPackages.buildPythonPackage rec {

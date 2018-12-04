@@ -861,9 +861,6 @@ in
     };
 
     propagatedBuildInputs = with pythonPackages; [ numpy ];
-
-    # TODO: enable tests
-    doCheck = false;
   };
 
   luigi = pythonPackages.buildPythonPackage rec {
@@ -1174,6 +1171,10 @@ EOF
       inherit pname version;
       sha256 = "0ly6qa87l3afhksab06vp1iimlbm1kdnsw98mxcnpzz9q07l4nd4";
     };
+
+    patches = [
+      ./neurotools.patch
+    ];
 
     # Tests are not automatically run
     # Many tests fail (using py.test), and some need R
