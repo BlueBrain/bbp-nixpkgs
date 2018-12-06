@@ -92,6 +92,22 @@ in
     ];
   });
 
+  basalt = self.buildPythonPackage rec {
+    name = "basalt-${version}";
+    version = "0.0.1";
+    src = pkgs.fetchgitPrivate {
+      url = "git@github.com:tristan0x/basalt.git";
+      rev = "a3ba1d5420f2156f8969f59c62cba5cdfe50e79e";
+      sha256 = "12ws14sm3zcrbiyn07gqrgvy6idqj08b91i02l54qqvip2wl54kn";
+    };
+
+    buildInputs = [
+      pkgs.cmake
+      pkgs.rocksdb
+      pythonPackages.numpy
+    ];
+  };
+
   pyscaffold = self.buildPythonPackage rec {
     name = "PyScaffold-${version}";
     version = "2.5.11";
