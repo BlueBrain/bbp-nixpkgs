@@ -15,7 +15,7 @@
 
 stdenv.mkDerivation rec {
 	name = "ospray-${version}";
-	version = "1.7.1";
+	version = "latest";
 
 	buildInputs = [ pkgconfig glfw embree tbb ispc mesa freeglut readline mpi ];
 
