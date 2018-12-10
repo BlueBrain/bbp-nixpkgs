@@ -357,6 +357,15 @@ in
         doCheck = false;
     };
 
+    python-libsbml = pythonPackages.buildPythonPackage rec {
+        name = "python-libsbml-${version}";
+        version = "5.17.0";
+        src = pkgs.fetchurl {
+            url = "mirror://pypi/p/python-libsbml/${name}.tar.gz";
+            sha256 = "1zpcbka3r7zfrhrizhhbk0jkan1dd4cwp6zzbwvfk5d3i22vcx1i";
+        };
+    };
+
     python_magic = pythonPackages.buildPythonPackage rec {
       name = "python-magic-0.4.15";
 
