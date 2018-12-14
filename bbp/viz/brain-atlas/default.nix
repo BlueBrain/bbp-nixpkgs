@@ -16,8 +16,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/Brayns-UC-BrainAtlas";
-        rev = "0d052a3de12bebc75f09551d95802cbcdf10d150";
-        sha256 = "038aa4fkc7f1cjwz5v5zcvdzcjg0gzii19blpyv2khh8wdlmbqhg";
+        rev = "60d1630d3f6c0004a8ed9de44c852c3dc0991694";
+        sha256 = "0gvg6g8ih7qivgyzmixj4wbnx8b7qyb201d0bchwfhb51mm9fpmn";
     };
 
     enableParallelBuilding = true;
