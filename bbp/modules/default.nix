@@ -3086,7 +3086,6 @@ let
                 embree
                 emsim
                 ospray
-                dti
                 membraneless-organelles
                 meshball
                 deflect
