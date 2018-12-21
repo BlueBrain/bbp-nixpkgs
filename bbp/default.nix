@@ -346,6 +346,9 @@ let
         connectome-tools = callPackage ./nse/connectome-tools {
         };
 
+        morph-tool = callPackage ./nse/morph-tool {
+        };
+
         placement-algorithm = callPackage ./nse/placement-algorithm {
         };
 
