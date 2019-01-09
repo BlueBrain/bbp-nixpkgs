@@ -1003,7 +1003,7 @@ let
                             pkgs.xorg.libXi
                             pkgs.mesa
                             pkgs.glxinfo
-                            pkgs.freeglut
+                            pkgs.freeglut.dev
                             pkgs.glew
                             pkgs.cairo
                        ];
