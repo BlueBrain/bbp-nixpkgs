@@ -219,6 +219,9 @@ let
             legacyVersion = true;
         };
 
+        dcmtk = callPackage ./viz/dcmtk {
+        };
+
         embree = callPackage ./viz/embree {
             stdenv = stdenvIntelIfSupportedElseClang;
         };
