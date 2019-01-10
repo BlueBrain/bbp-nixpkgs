@@ -206,6 +206,9 @@ let
         rtneuron2 = callPackage ./viz/rtneuron/legacy.nix {
         };
 
+        dcmtk = callPackage ./viz/dcmtk {
+        };
+
         embree = callPackage ./viz/embree {
             stdenv = llvmPackages_5.stdenv;
 
