@@ -16,8 +16,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/Brayns-UC-MorphologySynthesis";
-        rev = "509e2e9bc5dd4d19b559cce4b6d99fa9b823fbe2";
-        sha256 = "0wpa3pl0f5mnwb180r55jkiy8wqdajlqivx11p9dgf6p737jzanr";
+        rev = "ae307a48e836d17eb6c591d9f92e2875f2e7b04e";
+        sha256 = "0d2qimjk7xhz9q3frn03p12580jcjc7j2ijdws9vxd97kq9h2x9s";
     };
 
     enableParallelBuilding = true;
