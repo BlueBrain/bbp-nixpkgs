@@ -2,22 +2,22 @@
 , fetchgitPrivate
 , pkgconfig
 , stdenv
-, boost
 , cmake
+, boost
 , vmmlib
 , brayns
 }:
 
 stdenv.mkDerivation rec {
-    name = "brain-atlas-${version}";
+    name = "brayns-morphology-synthesis-${version}";
     version = "latest";
 
     buildInputs = [ stdenv pkgconfig cmake boost vmmlib brayns ];
 
     src = fetchgitPrivate {
-        url = config.bbp_git_ssh + "/viz/Brayns-UC-BrainAtlas";
-        rev = "5faa5147e31d33f4ae6bb31d0c1f9e7f4792ae69";
-        sha256 = "19xv5xckx423hj082jvczif5bvmbldlckc3nqr6gjw233nx1q2ls";
+        url = config.bbp_git_ssh + "/viz/Brayns-UC-MorphologySynthesis";
+        rev = "509e2e9bc5dd4d19b559cce4b6d99fa9b823fbe2";
+        sha256 = "0wpa3pl0f5mnwb180r55jkiy8wqdajlqivx11p9dgf6p737jzanr";
     };
 
     enableParallelBuilding = true;

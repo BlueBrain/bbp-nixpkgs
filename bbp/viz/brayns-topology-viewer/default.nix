@@ -10,16 +10,16 @@
 }:
 
 stdenv.mkDerivation rec {
-    name = "diffusion-tensor-imaging-${version}";
-    version = "0.1.0-201807";
+    name = "topology-viewer-${version}";
+    version = "latest";
 
     buildInputs = [ stdenv pkgconfig cmake boost highfive vmmlib brayns ];
 
     src = fetchgitPrivate {
-        url = config.bbp_git_ssh + "/viz/Brayns-UC-DTI";
-        rev = "db06fa1c213864efd1219fad79dca63f6dcf357c";
-        sha256 = "00qyhg57a893diiyszwhdqavqhpxa60bbjv65q4j73c5zp6b7ivs";
+        url = config.bbp_git_ssh + "/viz/Brayns-UC-TopologyViewer";
+        rev = "a1986ac44873fa52e6c4c982282f2022462f5e0c";
+        sha256 = "0pbmy32b7zzgdyifpm2n945kv8ahg9433rkd30z7rk8d1prvzvkb";
     };
-
     enableParallelBuilding = true;
+
 }

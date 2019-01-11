@@ -231,29 +231,39 @@ let
 
         optix = callPackage ./viz/optix {};
 
-        topology-viewer = callPackage ./viz/topology-viewer {};
-
-        dti = callPackage ./viz/dti {};
-
-        circuit-viewer = callPackage ./viz/circuit-viewer {};
-
         emsim = callPackage ./viz/emsim {};
 
         fivox = callPackage ./viz/fivox {};
 
         neuromorphovis = callPackage ./viz/neuromorphovis {};
 
-        membraneless-organelles = callPackage ./viz/membraneless-organelles {};
-
         meshball = callPackage ./viz/meshball {};
 
-        brain-atlas = callPackage ./viz/brain-atlas {};
+        dcmtk = callPackage ./viz/dcmtk {};
 
-        molecular-systems = callPackage ./viz/molecular-systems {};
+        brayns-membraneless-organelles = callPackage ./viz/brayns-membraneless-organelles {};
 
-        morphology-synthesis = callPackage ./viz/morphology-synthesis {
+        brayns-brain-atlas = callPackage ./viz/brayns-brain-atlas {};
 
-        };
+        brayns-topology-viewer = callPackage ./viz/brayns-topology-viewer {};
+
+        brayns-molecular-systems = callPackage ./viz/brayns-molecular-systems {};
+
+        brayns-morphology-synthesis = callPackage ./viz/brayns-morphology-synthesis {};
+
+        brayns-steps = callPackage ./viz/brayns-steps {};
+
+        brayns-circuit-explorer = callPackage ./viz/brayns-circuit-explorer {};
+
+        brayns-atomic-volumes = callPackage ./viz/brayns-atomic-volumes {};
+
+        brayns-graphs = callPackage ./viz/brayns-graphs {};
+
+        brayns-dicom = callPackage ./viz/brayns-dicom {};
+
+        brayns-diffusion-tensor-imaging = callPackage ./viz/brayns-diffusion-tensor-imaging {};
+
+        brayns-fractals = callPackage ./viz/brayns-fractals {};
 
         ##
         ## BBP NSE components

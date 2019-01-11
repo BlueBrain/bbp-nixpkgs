@@ -9,15 +9,15 @@
 }:
 
 stdenv.mkDerivation rec {
-    name = "morphology-synthesis-${version}";
+    name = "brayns-molecular-systems-${version}";
     version = "latest";
 
     buildInputs = [ stdenv pkgconfig cmake boost vmmlib brayns ];
 
     src = fetchgitPrivate {
-        url = config.bbp_git_ssh + "/viz/Brayns-UC-MorphologySynthesis";
-        rev = "ae307a48e836d17eb6c591d9f92e2875f2e7b04e";
-        sha256 = "0d2qimjk7xhz9q3frn03p12580jcjc7j2ijdws9vxd97kq9h2x9s";
+        url = config.bbp_git_ssh + "/viz/Brayns-UC-MolecularSystems";
+        rev = "c71821758c430cd13c29eaaa5957a1beb4ee9fc2";
+        sha256 = "13iwp0n4cg7qmyrabmdhp24ivpl3phx2q8cyw1z44x3npr2z36kh";
     };
 
     enableParallelBuilding = true;
