@@ -1223,4 +1223,30 @@ EOF
       maintainers = with maintainers; [ nico202 ];
     };
   };
+
+  colorspacious = self.buildPythonPackage rec {
+    name = "colorspacious-${version}";
+    version = "1.1.2";
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/c/colorspacious/${name}.tar.gz";
+      sha256 = "065n24zbm9ymy2gvf03vx5cggk1258vcjdaw8jn9v26arpl7542y";
+    };
+    buildInputs = with pythonPackages; [
+      numpy
+    ];
+  };
+
+  plottools = self.buildPythonPackage rec {
+    name = "plottools-${version}";
+    version = "0.2.0";
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/p/plottools/${name}.zip";
+      sha256 = "10h4mmdjymh34spr6h4zzv4d449w9rccgw2k95lg372sf8fzfyqj";
+    };
+    buildInputs = with pythonPackages; [
+      numpy
+      matplotlib
+      colorspacious
+    ];
+  };
 }
