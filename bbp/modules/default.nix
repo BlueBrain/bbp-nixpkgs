@@ -929,6 +929,21 @@ let
             conflicts = conflicts-modules;
         };
 
+        phony-python-libs = with pkgs; envModuleGen rec {
+              name = "phony-python-libs";
+              version = "0.0.0";
+              moduleFilePrefix = "nix/py27";
+              description = "collection of python libs to trigger CI build";
+              packages =
+              let pythonPkgs = python27Packages;
+                  in
+                  [
+                      pythonPkgs.neurotools
+                      pythonPkgs.colorspacious
+                      pythonPkgs.plottools
+                ];
+        };
+
         ## viz components
 
         gmsh = pkgs.envModuleGen rec {
@@ -3035,6 +3050,7 @@ let
                 bluepyefe
                 bluepymm
                 bbp-morphology-workflow
+                phony-python-libs
             ];
 
             nse_legacy = [
