@@ -10,8 +10,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "CNS-OIST";
     repo = "STEPS_Validation";
-    rev = "be1a1d6bc86da111a39dfed4642fcba6088d06d1";
-    sha256 = "0qm289cxfbg488s7cqds4mg6v0sagm742f154s4j9p8xyqyxg0md";
+    rev = "0c34b81eb9dd0ddff3864b1dcb7cad887d0da6b1";
+    sha256 = "16ybinfn1ykm3z8xs08fmbnkq7mmh9lf8x41p6k7pyfq0fcyldwx";
   };
 
   passthru = {
