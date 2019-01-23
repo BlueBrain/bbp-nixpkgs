@@ -77,6 +77,11 @@ let
             stdpkgs = std-pkgs;
         };
 
+        blender_2_8 = callPackage ./blender/2_8.nix {
+            pythonPackages = python3Packages;
+            stdpkgs = std-pkgs;
+        };
+
         blender-python = blender.override {
             pythonModule = true;
             opencollada = opencollada-shared;
