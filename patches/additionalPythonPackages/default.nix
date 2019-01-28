@@ -102,9 +102,21 @@ in
     };
 
     buildInputs = [
+      cached-property
       pkgs.cmake
       pkgs.rocksdb
+      pythonPackages.docopt
+      pythonPackages.h5py
       pythonPackages.numpy
+      progress
+    ];
+
+    propagatedBuildInputs = [
+      cached-property
+      pythonPackages.docopt
+      pythonPackages.h5py
+      pythonPackages.numpy
+      progress
     ];
   };
 
@@ -164,10 +176,10 @@ in
 
     cached-property = pythonPackages.buildPythonPackage rec {
       name = "cached-property-${version}";
-      version = "1.4.2";
+      version = "1.5.1";
       src = pkgs.fetchurl {
         url = "mirror://pypi/c/cached-property/${name}.tar.gz";
-        sha256 = "0fd1c3w9wp4rcls947bc8780fyhby0935fn7ghy3153j1dj3w2dz";
+        sha256 = "010m1bl380l2r3vwq24r5v14l6gwvgm9v0mqqjkjss552jgsa5wj";
       };
       buildInputs = with pythonPackages; [
         freezegun
@@ -339,10 +351,10 @@ in
 
     progress = pythonPackages.buildPythonPackage rec {
       name = "progress-${version}";
-      version = "1.3";
+      version = "1.4";
       src = pkgs.fetchurl {
         url = "mirror://pypi/p/progress/${name}.tar.gz";
-        sha256 = "02pnlh96ixf53mzxr5lgp451qg6b7ff4sl5mp2h1cryh7gp8k3f8";
+        sha256 = "12p5za4j243p53n2rg6z8b7qk595zpp3rvpvzxv6l8yqisl9sbsy";
       };
     };
 
