@@ -94,28 +94,30 @@ in
 
   basalt = self.buildPythonPackage rec {
     name = "basalt-${version}";
-    version = "0.0.1";
+    version = "0.1.0";
     src = pkgs.fetchgitPrivate {
       url = "git@github.com:tristan0x/basalt.git";
-      rev = "a3ba1d5420f2156f8969f59c62cba5cdfe50e79e";
-      sha256 = "12ws14sm3zcrbiyn07gqrgvy6idqj08b91i02l54qqvip2wl54kn";
+      rev = "v${version}";
+      sha256 = "1kr95ldbj04999fhz9ia31igd9a3637zls3j828n43cpnqyxx69g";
     };
 
-    buildInputs = [
+    buildInputs = with self; [
       cached-property
       pkgs.cmake
       pkgs.rocksdb
-      pythonPackages.docopt
-      pythonPackages.h5py
-      pythonPackages.numpy
+      self.docopt
+      self.h5py
+      self.humanize
+      self.numpy
       progress
     ];
 
     propagatedBuildInputs = [
       cached-property
-      pythonPackages.docopt
-      pythonPackages.h5py
-      pythonPackages.numpy
+      self.docopt
+      self.h5py
+      self.humanize
+      self.numpy
       progress
     ];
   };
