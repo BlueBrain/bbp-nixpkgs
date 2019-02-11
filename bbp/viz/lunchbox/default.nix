@@ -14,8 +14,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/Eyescale/Lunchbox.git";
-    rev = "cd4e724d98a71bfa101b4c8088c856f3e4072b2b";
-    sha256 = "104mvn9grxh9y7qrzd0jpgdlfbhffv9vppwix9wpbsmywlvfibbv";
+    rev = "8c890c83f9f87c9b32c35ede3bcdc3a8281f55b5";
+    sha256 = "0i1mw4a887jwlkqyx33izlvx7s2qwm2piqvxj2hq71j4c0k2hmv4";
   };
 
 
