@@ -18,9 +18,9 @@
 
 let
    bbpsdk-info  = {
-        version = "0.26-dev201708";
-        rev = "9ff8bea92a74075399b0824931043c30a78f452f";
-        sha256 = "1i6glp79qy9k9cqbqr971dv9kyx7hw1rnzjmx5jwfwd4i3xy5rvm";
+        version = "latest";
+        rev = "d2874569e95246dc5c9751e401d7bb4d9859e7f7";
+        sha256 = "1whxwc2pdg17dqh5vmkypzg1ddlv6y7siq9x57612lsh1hzhq31z";
     };
 in
 
