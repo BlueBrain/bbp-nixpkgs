@@ -94,16 +94,17 @@ in
 
   basalt = self.buildPythonPackage rec {
     name = "basalt-${version}";
-    version = "0.1.0";
+    version = "0.1.1";
     src = pkgs.fetchgitPrivate {
       url = "git@github.com:tristan0x/basalt.git";
       rev = "v${version}";
-      sha256 = "1kr95ldbj04999fhz9ia31igd9a3637zls3j828n43cpnqyxx69g";
+      sha256 = "1pw50bq0iz79i4a3rs0rbkx2ka1viiv77q52yj14jzq65f9hrj72";
     };
 
     buildInputs = with self; [
       cached-property
       pkgs.cmake
+      pkgs.gbenchmark
       pkgs.rocksdb
       self.docopt
       self.h5py
