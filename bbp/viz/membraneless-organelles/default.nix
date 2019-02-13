@@ -17,8 +17,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/Brayns-UC-MembranelessOrganelles";
-        rev = "5f1e4dc9e4ea59b25189a5481d212f40e2f3f967";
-        sha256 = "1j52g05fpsr0k4x6s8m37kmym0822zl3025vrqkq2xy345nr486k";
+        rev = "6d2dc28072110e2e1ad38fe4ff4fa8c501d07388";
+        sha256 = "1vhhfn0cxr4yrcrb62cwxlksdpgg1ka23nbd2r297215mfd4kq5q";
     };
 
     enableParallelBuilding = true;
