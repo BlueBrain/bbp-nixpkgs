@@ -3119,6 +3119,7 @@ let
                 meshball
                 deflect
                 brayns
+		blender_2_8
                 brayns-staging
                 viztools
                 topology-viewer
