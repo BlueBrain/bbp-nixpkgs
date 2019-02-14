@@ -28,6 +28,8 @@
 , cudatoolkit92
 , optix
 , nvidia-drivers
+, xorg
+, libxkbcommon
 }:
 
 
@@ -39,7 +41,7 @@ stdenv.mkDerivation rec {
 	version = "latest";
 
 	buildInputs = [ cmake pkgconfig boost assimp ospray freeglut libXmu libXi tbb libuv vrpn highfive
-					glew mesa vmmlib lunchbox brion hdf5-cpp freeimage deflect libarchive libjpeg_turbo bbptestdata cudatoolkit92 optix nvidia-drivers ]
+					glew mesa vmmlib lunchbox brion hdf5-cpp freeimage deflect libarchive libjpeg_turbo bbptestdata cudatoolkit92 optix nvidia-drivers xorg.libXrandr.dev xorg.libXrandr xorg.libXinerama.dev xorg.libXcursor.dev libxkbcommon.dev ]
 				  ++ (stdenv.lib.optional) (restInterface) [ rockets ];
 
 	src = fetchgit {
