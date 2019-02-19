@@ -123,6 +123,19 @@ in
     ];
   };
 
+  cmake_format = self.buildPythonPackage rec {
+    name = "cmake_format-${version}";
+    version = "0.4.5";
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/c/cmake_format/${name}.tar.gz";
+      sha256 = "0nl78yb6zdxawidp62w9wcvwkfid9kg86n52ryg9ikblqw428q0n";
+    };
+    buildInputs = with pythonPackages; [
+      pyyaml
+    ];
+    doCheck = false;
+  };
+
   pyscaffold = self.buildPythonPackage rec {
     name = "PyScaffold-${version}";
     version = "2.5.11";

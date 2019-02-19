@@ -8,10 +8,10 @@ fetchgitPrivate,
 hdf5,
 lunchbox,
 mpiRuntime,
-numpy,
 pandoc,
 pkgconfig,
 python,
+pythonPackages,
 servus,
 sparsehash,
 stdenv,
@@ -47,9 +47,11 @@ stdenv.mkDerivation rec {
     doxygen
     hdf5
     lunchbox
-    numpy
     pkgconfig
     python
+    pythonPackages.cmake_format
+    pythonPackages.numpy
+    pythonPackages.pyyaml
     servus
     sparsehash
     stdenv
