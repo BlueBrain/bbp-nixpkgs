@@ -8,8 +8,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/HBPVIS/Servus.git";  
-    rev = "059f391a0d97ec14330ffd786457f333c0bd66da";
-    sha256 = "0rqadw2y9rn6yaldfcm6jv0qk53xrh9mi2nr5n4p9z4fssqy3ssj";
+    rev = "25b7f39126dbe5036606ef431658bc6691a7de61";
+    sha256 = "07c53v7m57dycwm7wiixbmyqv8ndxahw7jlzw1707n4h8fdjbwba";
   };
   
 
