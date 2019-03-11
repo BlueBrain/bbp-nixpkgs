@@ -20,7 +20,7 @@ in
 
 stdenv.mkDerivation rec {
   name = "mvd-tool-${version}";
-  version = "1.4";
+  version = "1.5";
   meta = {
     description = "MVD3 neuroscience file format parser and tool";
     homepage = "https://github.com/BlueBrain/MVDTool";
@@ -34,8 +34,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "BlueBrain";
     repo = "MVDTool";
-    rev = "d9261270974f4f25bf278fa19f963600d849ec99";
-    sha256 = "1d0dmvznimsg43b4x6fms5wbw5pb3kz0igl51j36nk3pkw998lim";
+    rev = "1fd68194406465d631ce2ad3af9538410fe23a0c";
+    sha256 = "1a806x8730p11m1ddnr5nzij1k7sk4dls1scndk4i47d88v5wysa";
   };
 
   buildInputs = [
@@ -64,7 +64,7 @@ stdenv.mkDerivation rec {
   '';
 
   docCss = ../../common/vizDoc/github-pandoc.css;
-  postInstall = [ 
+  postInstall = [
 	"mkdir -p $doc/share"
     ] ++ ((stdenv.lib.optional) (pandoc != null) [''
     mkdir -p $out/share/doc/morpho-mesher/html
