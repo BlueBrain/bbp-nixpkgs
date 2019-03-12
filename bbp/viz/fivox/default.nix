@@ -18,8 +18,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgitPrivate {
         url = "https://github.com/BlueBrain/Fivox.git";
-        rev = "23347a81aff406db47727e7c16123ccbefa08388";
-        sha256 = "1iwfqd90zzgnyhns3pnbbpv561rxdpg2q9shiinj64j7qx9p36yi";
+        rev = "7c4fc75eaf0ed0cf0183894c753fd9f2b6a9db36";
+        sha256 = "19zpvdzqa1viy4wvmncl9gh16w1yqyhlwjr60s0jp7m5ah9s86jr";
     };
 
     cmakeFlags = [ "-DCOMMON_DISABLE_WERROR=TRUE"];
