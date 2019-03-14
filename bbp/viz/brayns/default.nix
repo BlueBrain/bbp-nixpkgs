@@ -65,14 +65,8 @@ stdenv.mkDerivation rec {
 			"-DBRAYNS_DEFLECT_ENABLED=ON"
 		    ];
 
-	doCheck = true;
-	checkPhase = ''
-		export LD_LIBRARY_PATH=''${PWD}/lib/:${nvidia-drivers}/lib:${cudatoolkit92}/lib/:${optix}/lib:''${LD_LIBRARY_PATH}
-		export LSAN_OPTIONS="suppressions=../../.lsan_suppressions.txt"
-		make -j Brayns-tests
-	'';
 	enableParallelBuilding = true;
-	 checkTarget="Brayns-tests";
+	checkTarget="Brayns-tests";
 
 
 }
