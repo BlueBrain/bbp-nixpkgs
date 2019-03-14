@@ -236,6 +236,8 @@ let
 
         topology-viewer = callPackage ./viz/topology-viewer {};
 
+        circuit-explorer = callPackage ./viz/circuit-explorer {};
+
         dti = callPackage ./viz/dti {};
 
         circuit-viewer = callPackage ./viz/circuit-viewer {};
