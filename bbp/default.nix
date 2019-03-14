@@ -235,8 +235,10 @@ let
             stdenv = stdenvIntelIfSupportedElseClang;
         };
 
+        optix = callPackage ./viz/optix {};
+
         brayns = callPackage ./viz/brayns {
-            stdenv = stdenvIntelIfSupportedElseClang;
+            stdenv = llvmPackages_5.stdenv;
         };
 
         viztools = callPackage ./viz/viztools {};
