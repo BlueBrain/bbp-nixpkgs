@@ -19,8 +19,8 @@
 let
    last = {
         version = "0.26-dev201708";
-        rev = "d3ba7b165c3fafdf8fd438be9248d80c8fc3ab8b";
-        sha256 = "0s1d6nanlyl47jg0dbmhwpwrgrgfmnf46hj5bvdjn6s58dyrhg1y";
+        rev = "9ff8bea92a74075399b0824931043c30a78f452f";
+        sha256 = "1i6glp79qy9k9cqbqr971dv9kyx7hw1rnzjmx5jwfwd4i3xy5rvm";
     };
 
     legacy-repair = {
@@ -46,7 +46,7 @@ stdenv.mkDerivation rec {
 
 
   # will be restricted only to legacy version in future 
-  patches = (stdenv.lib.optionals) (true) [ ./bbpsdk-highfive-legacy.patch ]; 
+  patches = if (legacyVersion) then (stdenv.lib.optionals) (true) [ ./bbpsdk-highfive-legacy.patch ] else[]; 
 
   # BBPSDK boost.python bindings take more than 1G mem per core to compile
   # with recent GCC, disable parallel buildings or GCC SIGBUS
