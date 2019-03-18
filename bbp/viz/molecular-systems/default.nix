@@ -16,8 +16,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/Brayns-UC-MolecularSystems";
-        rev = "c71821758c430cd13c29eaaa5957a1beb4ee9fc2";
-        sha256 = "13iwp0n4cg7qmyrabmdhp24ivpl3phx2q8cyw1z44x3npr2z36kh";
+        rev = "66448477d13b31705ea26be367627fef4b2e1193";
+        sha256 = "1xr9smm5lkd8asbiacrr9hzbkrmv180pbs46ya9x2f0zr4s9nb2b";
     };
 
     enableParallelBuilding = true;
