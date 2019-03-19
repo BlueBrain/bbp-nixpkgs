@@ -235,8 +235,10 @@ let
             stdenv = stdenvIntelIfSupportedElseClang;
         };
 
+        optix = callPackage ./viz/optix {};
+
         brayns = callPackage ./viz/brayns {
-            stdenv = stdenvIntelIfSupportedElseClang;
+            stdenv = llvmPackages_5.stdenv;
         };
 
         viztools = callPackage ./viz/viztools {};
@@ -244,8 +246,6 @@ let
         topology-viewer = callPackage ./viz/topology-viewer {};
 
         emsim = callPackage ./viz/emsim {};
-
-        fivox = callPackage ./viz/fivox {};
 
         membraneless-organelles = callPackage ./viz/membraneless-organelles {};
 
