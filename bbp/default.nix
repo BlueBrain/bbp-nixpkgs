@@ -227,7 +227,7 @@ let
         };
 
         ospray = callPackage ./viz/ospray {
-            stdenv = stdenvIntelIfSupportedElseClang;
+            stdenv = llvmPackages_5.stdenv;
             mpi = bbp-mpi;
         };
 

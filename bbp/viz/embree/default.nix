@@ -4,12 +4,6 @@
 , pkgconfig
 , ispc
 , tbb
-, freeglut
-, mesa
-, libpng
-, libXmu
-, libXi
-, imagemagick
 }:
 
 
@@ -25,8 +19,7 @@ stdenv.mkDerivation rec {
     };
 
 
-    buildInputs = [ cmake pkgconfig ispc tbb freeglut
-                    mesa libpng libXmu libXi imagemagick ];
+    buildInputs = [ cmake pkgconfig ispc tbb ];
 
     cmakeFlags = [
             "-DCMAKE_INSTALL_INCLUDEDIR=include/"
