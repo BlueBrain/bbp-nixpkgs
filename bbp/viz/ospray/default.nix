@@ -15,7 +15,7 @@
 
 stdenv.mkDerivation rec {
 	name = "ospray-${version}";
-	version = "1.5.0";
+	version = "1.7.1";
 
 	buildInputs = [ pkgconfig glfw embree tbb ispc mesa freeglut readline mpi ];
 
@@ -24,8 +24,8 @@ stdenv.mkDerivation rec {
 	src = fetchFromGitHub {
 		owner = "Bluebrain";
 		repo  = "OSPRay";
-		rev = "41559ef427e20fe6d169ea1fb8b43569f9b9be98";
-		sha256 = "01fbsbfajy36lkv82r1xj1iwfiizva08gs1852vwij29sd6cq4sn";
+                rev = "5a0e7f99fe810c563ba7f105da584e2c23eb4c6b";
+                sha256 = "1qigdwf3s8ii0iwawmrm6ma1galhwf3z6ds4fi27mx80fypxlv87";
 	};
 
     cmakeFlags = [ "-DOSPRAY_ZIP_MODE=OFF"                   #disable bundle dependencies
