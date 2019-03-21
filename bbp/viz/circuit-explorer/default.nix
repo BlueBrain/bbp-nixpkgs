@@ -1,5 +1,5 @@
 { config
-, fetchgit
+, fetchgitPrivate
 , pkgconfig
 , stdenv
 , boost
@@ -19,10 +19,10 @@ stdenv.mkDerivation rec {
 
     buildInputs = [ stdenv pkgconfig cmake boost freeimage highfive vmmlib ospray libpqxx brion brayns ];
 
-    src = fetchgit {
-        url = "https://github.com/favreau/Brayns-UC-CircuitExplorer";
-        rev = "48bdf7cbfa2aa9e8afbcacfe649a35877f7a18fa";
-        sha256 = "0spnkbzkd514ql3mangwv8vd0k6zp54n0wv55pb8sjcpm0r40a5i";
+    src = fetchgitPrivate {
+        url = config.bbp_git_ssh + "/viz/Brayns-UC-CircuitExplorer";
+        rev = "9d9723aeff16bd6c4327adabb1710af66735b879";
+        sha256 = "0281q3sr0ad59csxfrrvdl2cy6c6jf4ab0j2ka0yk1ygmg083rl4";
     };
 
 	cmakeFlags = [
