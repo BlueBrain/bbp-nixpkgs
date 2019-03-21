@@ -235,31 +235,29 @@ let
 
         optix = callPackage ./viz/optix {};
 
-        topology-viewer = callPackage ./viz/topology-viewer {};
-
-        circuit-explorer = callPackage ./viz/circuit-explorer {};
-
-        dti = callPackage ./viz/dti {};
-
-        circuit-viewer = callPackage ./viz/circuit-viewer {};
-
         emsim = callPackage ./viz/emsim {};
 
         fivox = callPackage ./viz/fivox {};
 
         neuromorphovis = callPackage ./viz/neuromorphovis {};
 
-        membraneless-organelles = callPackage ./viz/membraneless-organelles {};
-
         meshball = callPackage ./viz/meshball {};
+
+        ## BBP VIZ plugins
+
+        dti = callPackage ./viz/dti {};
 
         brain-atlas = callPackage ./viz/brain-atlas {};
 
+        circuit-explorer = callPackage ./viz/circuit-explorer {};
+
+        membraneless-organelles = callPackage ./viz/membraneless-organelles {};
+
         molecular-systems = callPackage ./viz/molecular-systems {};
 
-        morphology-synthesis = callPackage ./viz/morphology-synthesis {
+        morphology-synthesis = callPackage ./viz/morphology-synthesis {};
 
-        };
+        topology-viewer = callPackage ./viz/topology-viewer {};
 
         ##
         ## BBP NSE components
