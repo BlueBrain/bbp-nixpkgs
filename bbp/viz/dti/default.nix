@@ -6,18 +6,19 @@
 , cmake
 , vmmlib
 , brayns
+, libpqxx
 }:
 
 stdenv.mkDerivation rec {
     name = "diffusion-tensor-imaging-${version}";
     version = "latest";
 
-    buildInputs = [ stdenv pkgconfig cmake boost vmmlib brayns ];
+    buildInputs = [ stdenv pkgconfig cmake boost vmmlib brayns libpqxx ];
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/Brayns-UC-DTI";
-        rev = "09be10d86eaa65105e14a0f85debd10c58e2edc0";
-        sha256 = "1c9a4kdkb0a3nr3nfpkcgva4wb7g2dqpmscg3dswni0ryx3kliil";
+        rev = "df7e5217a98299ae0701b376a3dc07d38d8966fe";
+        sha256 = "08p3bv16pyvgrpaczdi2gg5gvnkbb7krcrsbnr74rd25r097bmh2";
     };
 
     enableParallelBuilding = true;
