@@ -206,8 +206,6 @@ let
         rtneuron2 = callPackage ./viz/rtneuron/legacy.nix {
         };
 
-        dcmtk = callPackage ./viz/dcmtk {
-        };
 
         dcmtk = callPackage ./viz/dcmtk {
         };
@@ -225,8 +223,6 @@ let
         ospray-modules = callPackage ./viz/ospray-modules {
             stdenv = stdenvIntelIfSupportedElseClang;
         };
-
-        optix = callPackage ./viz/optix {};
 
         brayns = callPackage ./viz/brayns {
 	    stdenv = llvmPackages_5.stdenv;
