@@ -36,7 +36,6 @@ stdenv.mkDerivation rec {
   };
 
   enableParallelBuilding = false;
-
   propagatedBuildInputs = [ brion lunchbox ];
 
 }

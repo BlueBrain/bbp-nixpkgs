@@ -19,12 +19,12 @@ let
 in
   stdenv.mkDerivation rec {
     name = "morphio-${version}";
-    version = "0.9.1";
+    version = "2.0.3";
 
     src = fetchgitPrivate {
       url = "git@github.com:BlueBrain/morphio.git";
-      rev = "c557a06e0867b4e9befb2095d802cc42d99a8ded";
-      sha256 = "0bx97kbfaysgxn7caf8vagyyfwyrldaybgvsd3d68spyldk6wmqd";
+      rev = "b598701c8e7b0dc8380815a7b857995504f1c2e3";
+      sha256 = "0wakp4i2pjpf93wlkzd46x4p1l9kagg95g9xc3g3xvk7xbn5qkq2";
     };
 
     buildInputs = [

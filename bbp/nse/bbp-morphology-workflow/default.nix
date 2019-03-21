@@ -5,6 +5,7 @@
   config,
   fetchgitPrivate,
   morphscale,
+  morph-tool,
   muk,
   neurodamus,
   neurom,
@@ -35,6 +36,7 @@ pythonPackages.buildPythonPackage rec {
         bluejittersdk
         bluerepairsdk
         morphscale
+        morph-tool
         muk
         neurodamus
         neurom

@@ -7,7 +7,7 @@ stdenv.mkDerivation rec {
   version = "5.0.1";
 
   src = fetchurl {
-    url = "file:///gpfs/bbp.cscs.ch/home/podhajsk/bbp-nixpkgs-vis/optix.sh";
+    url = "file:///gpfs/bbp.cscs.ch/project/proj3/development/deployment/optix.sh";
     sha256 = "0m9wxwgzjx6sxfariwwvsmj2jny8853hq2xdni6va3sm2pfxq0rg";
   };
 

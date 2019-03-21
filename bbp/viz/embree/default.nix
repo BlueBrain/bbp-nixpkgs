@@ -4,12 +4,6 @@
 , pkgconfig
 , ispc
 , tbb
-, freeglut
-, mesa
-, libpng
-, libXmu
-, libXi
-, imagemagick
 }:
 
 
@@ -25,16 +19,14 @@ stdenv.mkDerivation rec {
     };
 
 
-    buildInputs = [ cmake pkgconfig ispc tbb freeglut
-                    mesa libpng libXmu libXi imagemagick ];
+    buildInputs = [ cmake pkgconfig ispc tbb ];
 
     cmakeFlags = [
             "-DCMAKE_INSTALL_INCLUDEDIR=include/"
             "-DEMBREE_MAX_ISA=AVX512SKX"
             "-DEMBREE_TUTORIALS=OFF"
             "-DCMAKE_INSTALL_LIBDIR=lib/"
-		];
+                ];
 
 }
-
 

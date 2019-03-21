@@ -209,6 +209,9 @@ let
         dcmtk = callPackage ./viz/dcmtk {
         };
 
+        dcmtk = callPackage ./viz/dcmtk {
+        };
+
         embree = callPackage ./viz/embree {
             stdenv = llvmPackages_5.stdenv;
 
@@ -222,6 +225,8 @@ let
         ospray-modules = callPackage ./viz/ospray-modules {
             stdenv = stdenvIntelIfSupportedElseClang;
         };
+
+        optix = callPackage ./viz/optix {};
 
         brayns = callPackage ./viz/brayns {
 	    stdenv = llvmPackages_5.stdenv;
@@ -350,6 +355,9 @@ let
         connectome-tools = callPackage ./nse/connectome-tools {
         };
 
+        morph-tool = callPackage ./nse/morph-tool {
+        };
+
         placement-algorithm = callPackage ./nse/placement-algorithm {
         };
 
@@ -364,6 +372,9 @@ let
 
         voxcell-py3 = voxcell.override {
             pythonPackages = python3Packages;
+        };
+
+        simwriter = callPackage ./nse/simwriter {
         };
 
         entity-management = callPackage ./nse/entity-management {
@@ -476,14 +487,13 @@ let
 
         flatindexer = callPackage ./hpc/FLATIndexer {
             mpiRuntime = bbp-mpi;
-            numpy = pythonPackages.numpy;
         };
 
         flatindexer-py3 = flatindexer.override {
             mpiRuntime = bbp-mpi;
             boost = boost-py3;
             python = python3;
-            numpy = python3Packages.numpy;
+            pythonPackages = python3Packages;
         };
 
         bbptestdata = callPackage ./tests/BBPTestData {};

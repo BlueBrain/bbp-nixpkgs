@@ -8,13 +8,13 @@
 
 pythonPackages.buildPythonPackage rec {
     pname = "brainbuilder";
-    version = "0.7.3";
+    version = "0.8.1";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/nse/brainbuilder";
-        rev = "324cb378fb460cf1a181487d7579c7974237ab20";
-        sha256 = "1ivqq84080qjvhf13syc7qhs9zsl5acqlzcxvk4mw6nvmvdlfisr";
+        rev = "394ae764d68f32c89bb28143b3dc014d9197a826";
+        sha256 = "1gijn1cfvvyl775gk1wic9q7nwc024jmfqb6myqz3k03xx54bm96";
     };
 
     buildInputs = with pythonPackages; [
@@ -35,6 +35,7 @@ pythonPackages.buildPythonPackage rec {
         scipy
         tess
         tqdm
+        transforms3d
     ] ++ [
         bluepy
         voxcell
