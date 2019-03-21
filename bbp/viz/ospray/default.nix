@@ -16,7 +16,6 @@
 stdenv.mkDerivation rec {
 	name = "ospray-${version}";
 	version = "latest";
-
 	buildInputs = [ pkgconfig glfw embree tbb ispc mesa freeglut readline mpi ];
 
 	nativeBuildInputs = [ doxygen cmake ];

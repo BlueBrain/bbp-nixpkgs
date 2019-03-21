@@ -1,14 +1,13 @@
-{
-  config,
-  fetchgitPrivate,
-  pythonPackages,
-  bluepy-configfile,
-  brion,
-  entity-management,
-  flatindexer,
-  neurom,
-  stdenv,
-  voxcell
+{ config
+, fetchgitPrivate
+, pythonPackages
+, bluepy-configfile
+, brion
+, entity-management
+, flatindexer
+, neurom
+, stdenv
+, voxcell
 }:
 
 

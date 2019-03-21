@@ -1,7 +1,6 @@
-{
-  config,
-  fetchgitPrivate,
-  pythonPackages
+{ config
+, fetchgitPrivate
+, pythonPackages
 }:
 
 pythonPackages.buildPythonPackage rec {

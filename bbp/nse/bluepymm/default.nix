@@ -1,24 +1,26 @@
 {
   config,
-  fetchgitPrivate,
+  fetchFromGitHub,
   pythonPackages,
   bluepyopt
 }:
 
 pythonPackages.buildPythonPackage rec {
     pname = "BluePyMM";
-    version = "0.2-${builtins.substring 0 6 src.rev}";
+    version = "0.6-${builtins.substring 0 6 src.rev}";
     name = "${pname}-${version}";
 
-    src = fetchgitPrivate {
-        url = config.bbp_git_ssh + "/platform/BluePyMM";
-        rev = "55c38881c848e546676b11a19edac07319fc1e9e";
-        sha256 = "1p2ssiwksi889vdbxx9nibm1rcs8ydvfjwk30mi9k411ik6m1wxz";
+    src = fetchFromGitHub {
+        owner = "BlueBrain";
+        repo = "BluePyMM";
+        rev = "44ddb23a5ecf93c7aff2d095745e684629fc2a1a";
+        sha256 = "1ki91yfdbyi0kynaqzqwdk02jndynxvl3id3gh4zafwmzz4cjvli";
     };
 
     propagatedBuildInputs = with pythonPackages; [
         sh
         matplotlib
+        numpy
         bluepyopt
     ];
 }

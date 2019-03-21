@@ -58,6 +58,7 @@ stdenv.mkDerivation rec {
 			"-DBRAYNS_STEREOSCOPY_ENABLED=TRUE"
 			"-DBRAYNS_OPENDECK_ENABLED=TRUE"
 			"-DBRAYNS_OPTIX_ENABLED=ON"
+			"-DBRAYNS_OSPRAY_ENABLED=ON"
 			"-DBRAYNS_ASSIMP_ENABLED=ON"
 			"-DBRAYNS_CIRCUITVIEWER_ENABLED=ON"
 			"-DBRAYNS_VRPN_ENABLED=TRUE"
@@ -72,7 +73,7 @@ stdenv.mkDerivation rec {
 		make -j Brayns-tests
 	'';
 	enableParallelBuilding = true;
-	 checkTarget="Brayns-tests";
+	checkTarget="Brayns-tests";
 
 
 }

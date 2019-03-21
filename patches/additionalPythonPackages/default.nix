@@ -92,6 +92,50 @@ in
     ];
   });
 
+  basalt = self.buildPythonPackage rec {
+    name = "basalt-${version}";
+    version = "0.1.1";
+    src = pkgs.fetchgitPrivate {
+      url = "git@github.com:tristan0x/basalt.git";
+      rev = "v${version}";
+      sha256 = "1pw50bq0iz79i4a3rs0rbkx2ka1viiv77q52yj14jzq65f9hrj72";
+    };
+
+    buildInputs = with self; [
+      cached-property
+      pkgs.cmake
+      pkgs.gbenchmark
+      pkgs.rocksdb
+      self.docopt
+      self.h5py
+      self.humanize
+      self.numpy
+      progress
+    ];
+
+    propagatedBuildInputs = [
+      cached-property
+      self.docopt
+      self.h5py
+      self.humanize
+      self.numpy
+      progress
+    ];
+  };
+
+  cmake_format = self.buildPythonPackage rec {
+    name = "cmake_format-${version}";
+    version = "0.4.5";
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/c/cmake_format/${name}.tar.gz";
+      sha256 = "0nl78yb6zdxawidp62w9wcvwkfid9kg86n52ryg9ikblqw428q0n";
+    };
+    buildInputs = with pythonPackages; [
+      pyyaml
+    ];
+    doCheck = false;
+  };
+
   pyscaffold = self.buildPythonPackage rec {
     name = "PyScaffold-${version}";
     version = "2.5.11";
@@ -148,10 +192,10 @@ in
 
     cached-property = pythonPackages.buildPythonPackage rec {
       name = "cached-property-${version}";
-      version = "1.4.2";
+      version = "1.5.1";
       src = pkgs.fetchurl {
         url = "mirror://pypi/c/cached-property/${name}.tar.gz";
-        sha256 = "0fd1c3w9wp4rcls947bc8780fyhby0935fn7ghy3153j1dj3w2dz";
+        sha256 = "010m1bl380l2r3vwq24r5v14l6gwvgm9v0mqqjkjss552jgsa5wj";
       };
       buildInputs = with pythonPackages; [
         freezegun
@@ -202,10 +246,10 @@ in
 
     hpcbench = pythonPackages.buildPythonPackage rec {
       name = "hpcbench-${version}";
-      version = "0.8";
+      version = "0.10";
       src = pkgs.fetchurl {
        url = "mirror://pypi/h/hpcbench/${name}.tar.gz";
-       sha256 = "15s635j2zi66iw5mbkv0dklm03sbkc4z64596i5r8nphdwg5n3qj";
+       sha256 = "1kzsjdchzad73djgzm4jgm1jrpbg1cnrq0q7mplamc12g0bmgvwm";
       };
       # # For development purpose, and add "pkgs.git" dependency
       # src = pkgs.fetchgit {
@@ -323,10 +367,10 @@ in
 
     progress = pythonPackages.buildPythonPackage rec {
       name = "progress-${version}";
-      version = "1.3";
+      version = "1.4";
       src = pkgs.fetchurl {
         url = "mirror://pypi/p/progress/${name}.tar.gz";
-        sha256 = "02pnlh96ixf53mzxr5lgp451qg6b7ff4sl5mp2h1cryh7gp8k3f8";
+        sha256 = "12p5za4j243p53n2rg6z8b7qk595zpp3rvpvzxv6l8yqisl9sbsy";
       };
     };
 
@@ -339,6 +383,15 @@ in
         };
         propagatedBuildInputs = with self; [ urllib3 ];
         doCheck = false;
+    };
+
+    python-libsbml = pythonPackages.buildPythonPackage rec {
+        name = "python-libsbml-${version}";
+        version = "5.17.0";
+        src = pkgs.fetchurl {
+            url = "mirror://pypi/p/python-libsbml/${name}.tar.gz";
+            sha256 = "1zpcbka3r7zfrhrizhhbk0jkan1dd4cwp6zzbwvfk5d3i22vcx1i";
+        };
     };
 
     python_magic = pythonPackages.buildPythonPackage rec {
@@ -684,12 +737,12 @@ in
   };
 
   sparkmanager = pythonPackages.buildPythonPackage rec {
-    version = "0.6.0";
+    version = "0.7.0";
     pname = "sparkmanager";
 
     src = pythonPackages.fetchPypi {
       inherit pname version;
-      sha256 = "0m6vf637bx8jbyv1cgpfyk28kqdb8iaipavz10zm62v988lm9alq";
+      sha256 = "1nf7iv9fdx46ffd0yq554xal66hn2kqv49iw55q7jnciij5p4n2q";
     };
 
     preConfigure = ''
@@ -698,6 +751,8 @@ in
 
     propagatedBuildInputs = with self; [
       pyspark
+      setuptools
+      setuptools_scm
       six
     ];
 
@@ -859,9 +914,6 @@ in
     };
 
     propagatedBuildInputs = with pythonPackages; [ numpy ];
-
-    # TODO: enable tests
-    doCheck = false;
   };
 
   luigi = pythonPackages.buildPythonPackage rec {
@@ -999,6 +1051,29 @@ in
     '';
   };
 
+  transforms3d = pythonPackages.buildPythonPackage rec {
+    pname = "transforms3d";
+    version = "0.3.1";
+    name = "${pname}-${version}";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "0y4dm1xrd9vlrnz5dzym8brww5smzh0ij223h35n394aqybpfk20";
+    };
+
+    buildInputs = with pythonPackages; [
+      nose
+    ];
+
+    propagatedBuildInputs = with pythonPackages; [
+      numpy
+    ];
+
+    checkPhase = ''
+      nosetests transforms3d
+    '';
+  };
+
   add-site-dir = stdenv.mkDerivation rec {
     name = "register-site-packages";
     site-packages = pythonPackages.python.sitePackages;
@@ -1073,11 +1148,11 @@ EOF
   attrs = pythonPackages.buildPythonPackage rec {
     name = "${pname}-${version}";
     pname = "attrs";
-    version = "18.1.0";
+    version = "18.2.0";
 
     src = pythonPackages.fetchPypi {
       inherit pname version;
-      sha256 = "0yzqz8wv3w1srav5683a55v49i0szkm47dyrnkd56fqs8j8ypl70";
+      sha256 = "0s9ydh058wmmf5v391pym877x4ahxg45dw6a0w4c7s5wgpigdjqh";
     };
 
     # macOS needs clang for testing
@@ -1096,4 +1171,110 @@ EOF
     };
   };
 
+  rpy2 = pythonPackages.buildPythonPackage rec {
+    version = if pythonPackages.isPy27 then
+      "2.8.6" # python2 support dropped in 2.9.x
+    else
+      "2.9.4";
+    pname = "rpy2";
+    disabled = pythonPackages.isPyPy;
+    src = pythonPackages.fetchPypi {
+      inherit version pname;
+      sha256 = if self.isPy27 then
+        "162zki5c1apgv6qbafi7n66y4hgpgp43xag7q75qb6kv99ri6k80" # 2.8.x
+      else
+        "0bl1d2qhavmlrvalir9hmkjh74w21vzkvc2sg3cbb162s10zfmxy"; # 2.9.x
+    };
+    buildInputs = with pkgs; [
+      readline
+      R
+      pcre
+      lzma
+      bzip2
+      zlib
+      icu
+    ];
+    propagatedBuildInputs = with pythonPackages; [
+      singledispatch
+      six
+      jinja2
+    ];
+    checkInputs = [ pythonPackages.pytest ];
+    # Tests fail with `assert not _relpath.startswith('..'), "Path must be within the project"`
+    # in the unittest `loader.py`. I don't know what causes this.
+    doCheck = false;
+    # without this tests fail when looking for libreadline.so
+    LD_LIBRARY_PATH = stdenv.lib.makeLibraryPath buildInputs;
+
+    meta = {
+      homepage = http://rpy.sourceforge.net/rpy2;
+      description = "Python interface to R";
+      license = stdenv.lib.licenses.gpl2Plus;
+      platforms = stdenv.lib.platforms.linux;
+      maintainers = with stdenv.lib.maintainers; [ joelmo ];
+    };
+  };
+
+  neurotools = pythonPackages.buildPythonPackage rec {
+    pname = "NeuroTools";
+    version = "0.3.1";
+    disabled = pythonPackages.isPy3k;
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "0ly6qa87l3afhksab06vp1iimlbm1kdnsw98mxcnpzz9q07l4nd4";
+    };
+
+    patches = [
+      ./neurotools.patch
+    ];
+
+    # Tests are not automatically run
+    # Many tests fail (using py.test), and some need R
+    doCheck = false;
+
+    propagatedBuildInputs = with pythonPackages; [
+      scipy
+      numpy
+      matplotlib
+      tables
+      pyaml
+      urllib3
+      rpy2
+      mpi4py
+    ];
+
+    meta = with stdenv.lib; {
+      description = "Collection of tools to support analysis of neural activity";
+      homepage = https://pypi.python.org/pypi/NeuroTools;
+      license = licenses.gpl2;
+      maintainers = with maintainers; [ nico202 ];
+    };
+  };
+
+  colorspacious = self.buildPythonPackage rec {
+    name = "colorspacious-${version}";
+    version = "1.1.2";
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/c/colorspacious/${name}.tar.gz";
+      sha256 = "065n24zbm9ymy2gvf03vx5cggk1258vcjdaw8jn9v26arpl7542y";
+    };
+    buildInputs = with pythonPackages; [
+      numpy
+    ];
+  };
+
+  plottools = self.buildPythonPackage rec {
+    name = "plottools-${version}";
+    version = "0.2.0";
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/p/plottools/${name}.zip";
+      sha256 = "10h4mmdjymh34spr6h4zzv4d449w9rccgw2k95lg372sf8fzfyqj";
+    };
+    buildInputs = with pythonPackages; [
+      numpy
+      matplotlib
+      colorspacious
+    ];
+  };
 }

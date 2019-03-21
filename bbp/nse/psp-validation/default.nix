@@ -9,13 +9,13 @@
 
 pythonPackages.buildPythonPackage rec {
     pname = "psp-validation";
-    version = "0.1.6";
+    version = "0.1.10";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/nse/psp-validation";
-        rev = "50af9daa49f25f9ec4a47cf7141f838cbaa3001c";
-        sha256 = "1jz185dklcjrzr5s1d8fn9bq65aim1f5435xi98a7l17k51vm9bv";
+        rev = "b132e4138411a0a4a9a87960cb9c7ae2c83e70e7";
+        sha256 = "1c76z09h617fwf1y88i3gxpmjas9qrzdy9g2s8gqxqjl4r3x15cq";
     };
 
     buildInputs = with pythonPackages; [
