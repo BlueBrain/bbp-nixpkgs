@@ -17,8 +17,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/Brayns-UC-DTI";
-        rev = "df7e5217a98299ae0701b376a3dc07d38d8966fe";
-        sha256 = "08p3bv16pyvgrpaczdi2gg5gvnkbb7krcrsbnr74rd25r097bmh2";
+        rev = "8295be1fc63bf9f978f63a3ebe73565765ef077b";
+        sha256 = "0rcc6xgl1h6z6az04n407ifl90d8gahz5n7ibsd9xaya6ln2asnk";
     };
 
     enableParallelBuilding = true;
