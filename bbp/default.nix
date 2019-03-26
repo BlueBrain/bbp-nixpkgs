@@ -375,6 +375,9 @@ let
         simwriter = callPackage ./nse/simwriter {
         };
 
+        bbp-analysis-framework = callPackage ./nse/bbp-analysis-framework {
+        };
+
         entity-management = callPackage ./nse/entity-management {
         };
 
