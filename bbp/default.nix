@@ -243,6 +243,8 @@ let
 
         meshball = callPackage ./viz/meshball {};
 
+        ultraliser = callPackage ./viz/ultraliser {};
+
         ## BBP VIZ plugins
 
         dti = callPackage ./viz/dti {};
