@@ -243,21 +243,25 @@ let
 
         viztools = callPackage ./viz/viztools {};
 
-        topology-viewer = callPackage ./viz/topology-viewer {};
-
         emsim = callPackage ./viz/emsim {};
-
-        membraneless-organelles = callPackage ./viz/membraneless-organelles {};
 
         meshball = callPackage ./viz/meshball {};
 
+        ## BBP VIZ plugins
+
+        dti = callPackage ./viz/dti {};
+
         brain-atlas = callPackage ./viz/brain-atlas {};
+
+        circuit-explorer = callPackage ./viz/circuit-explorer {};
+
+        membraneless-organelles = callPackage ./viz/membraneless-organelles {};
 
         molecular-systems = callPackage ./viz/molecular-systems {};
 
-        morphology-synthesis = callPackage ./viz/morphology-synthesis {
+        morphology-synthesis = callPackage ./viz/morphology-synthesis {};
 
-        };
+        topology-viewer = callPackage ./viz/topology-viewer {};
 
         ##
         ## BBP NSE components
