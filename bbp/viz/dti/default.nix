@@ -4,7 +4,6 @@
 , stdenv
 , boost
 , cmake
-, vmmlib
 , brayns
 , libpqxx
 }:
@@ -13,7 +12,7 @@ stdenv.mkDerivation rec {
     name = "diffusion-tensor-imaging-${version}";
     version = "latest";
 
-    buildInputs = [ stdenv pkgconfig cmake boost vmmlib brayns libpqxx ];
+    buildInputs = [ stdenv pkgconfig cmake boost brayns libpqxx ];
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/Brayns-UC-DTI";

@@ -5,7 +5,6 @@
 , boost
 , cmake
 , highfive
-, vmmlib
 , brayns
 }:
 
@@ -13,7 +12,7 @@ stdenv.mkDerivation rec {
     name = "topology-viewer-${version}";
     version = "0.1.0-201806";
 
-    buildInputs = [ stdenv pkgconfig cmake boost highfive vmmlib brayns ];
+    buildInputs = [ stdenv pkgconfig cmake boost highfive brayns ];
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/Brayns-UC-TopologyViewer";
