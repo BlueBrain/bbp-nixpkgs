@@ -2,9 +2,9 @@
 , pythonPackages
 , bluepy
 , config
-, version ? "0.4.0"
-, rev ? "3ae38a5b82c33bfeeac6e292dd3026f0a993ff1e"
-, sha256 ? "116hc3a6hczv494x2rxiaqwi5454jni4fs471f3n6riqrxfy3x0c"
+, version ? "0.4.3"
+, rev ? "b86265dd9acd8b3fdeb380fa9fb82d416f0e4c87"
+, sha256 ? "191yprmh7x0g9n43cm6kf0qqi4zn6vka4ma8q0n737h171r6nn7f"
 }:
 
 pythonPackages.buildPythonPackage rec {
