@@ -220,14 +220,7 @@ let
             mpi = bbp-mpi;
         };
 
-        ospray-modules = callPackage ./viz/ospray-modules {
-            stdenv = stdenvIntelIfSupportedElseClang;
-        };
-
         brayns = callPackage ./viz/brayns {
-	    stdenv = llvmPackages_5.stdenv;
-        };
-        brayns-staging = callPackage ./viz/brayns/staging.nix {
 	    stdenv = llvmPackages_5.stdenv;
         };
 
