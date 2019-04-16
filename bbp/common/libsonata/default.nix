@@ -10,13 +10,13 @@
 
 stdenv.mkDerivation rec {
     pname = "libsonata";
-    version = "0.0.0";
+    version = "0.0.1";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/common/libsonata";
-        rev = "5c02ec2f931cf0a15bfa3b70f113d8cece86495f";
-        sha256 = "13g73lngxb1crkxzsqcvpi9na34yss1qwk4wk3qk38wy6lffkmmb";
+        rev = "6d1d1efc18b52068df60414b599cc25897ffc118";
+        sha256 = "0p7nxqqb3l5cc81wmj96lm9avc0icbdcp7z31jnyfx4png23f3f9";
     };
 
     buildInputs = [
@@ -31,14 +31,16 @@ stdenv.mkDerivation rec {
     ];
 
     cmakeFlags= [
-        "-DSONATA_PYTHON=1"
+        "-DCMAKE_BUILD_TYPE=Release"
+        "-DSONATA_PYTHON=ON"
+        "-DEXTLIB_FROM_SUBMODULES=ON"
         "-DPYTHON_EXECUTABLE=${python.interpreter}"
         "-DPYTHON_INSTALL_SUFFIX=${python.sitePackages}"
     ];
 
     enableParallelBuilding = true;
 
-    doCheck = true;
+    doCheck = false;
     checkPhase = ''
         ctest --output-on-failure
     '';

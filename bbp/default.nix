@@ -121,6 +121,11 @@ let
         libsonata = callPackage ./common/libsonata {
         };
 
+        libsonata-py3 = callPackage ./common/libsonata {
+            python = python3;
+            pythonPackages = python3Packages;
+        };
+
         vmmlib = callPackage ./common/vmmlib {};
 
         ##
@@ -307,6 +312,7 @@ let
             neurom = neurom-py3;
             voxcell = voxcell-py3;
             pythonPackages = python3Packages;
+            libsonata = libsonata-py3;
         };
 
         bluepy-configfile = callPackage ./nse/bluepy-configfile {

@@ -8,18 +8,19 @@
 , neurom
 , stdenv
 , voxcell
+, libsonata
 }:
 
 
 pythonPackages.buildPythonPackage rec {
     pname = "bluepy";
-    version = "0.12.6";
+    version = "0.13.4";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/nse/bluepy";
-        rev = "afc3101a18ee46c269da8a03dd257946af54d117";
-        sha256 = "0j3r7xcwkpn9mmm3fpxar4s3nd83h1qbv66d2aayf90sy4lf1hri";
+        rev = "1700d7f4e0f7b4fee606f2ac97fd12d416f8c76c";
+        sha256 = "1nipgzdv188cdylwxnmjdq7x3lprh0hjmyjfndvzzf1fmwndjpiv";
     };
 
     # TODO: remove once `bluepy` dependencies are revised
@@ -54,6 +55,7 @@ pythonPackages.buildPythonPackage rec {
         flatindexer
         neurom
         voxcell
+        libsonata
     ];
 
     # TEMPORARILY disable tests on Python 3
