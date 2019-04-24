@@ -20,19 +20,21 @@ stdenv.mkDerivation rec {
 	src = fetchFromGitHub {
 		owner = "ospray";
 		repo  = "ospray";
-		rev = "bcfaf3e4f80e4655475a065942bc9828e6c9a4ee";
-		sha256 = "0x591023qqxisx568d4sph2mkzgq708ir2r425wyli2z5yzw4pas";
+		rev = "afca4d6ef536c04081626f2dce0834d76b9a282c";
+		sha256 = "0kgzbv4x1db9aaifd5sjir6vg7k0n7vzj2l9q3nglqw7bgq2ycjg";
 	};
 
     cmakeFlags = [ "-DOSPRAY_ZIP_MODE=OFF"                   #disable bundle dependencies
                    "-Dembree_DIR=${embree}" 
-                   "-DOSPRAY_APPS_EXAMPLEVIEWER=OFF"
-                   "-DOSPRAY_ENABLE_APPS=OFF"
-                   "-DOSPRAY_ENABLE_TUTORIALS=OFF"
                    "-DTBB_ROOT=${tbb}"
                    "-DOSPRAY_MODULE_MPI=ON"
                    "-DCMAKE_INSTALL_INCLUDEDIR=include/"
                    "-DCMAKE_INSTALL_LIBDIR=lib/"
+                   "-DOSPRAY_ENABLE_APPS=FALSE"
+                   "-DOSPRAY_APPS_EXAMPLEVIEWER=OFF"
+                   "-DOSPRAY_MODULE_MPI_APPS=FALSE"
+                   "-DOSPRAY_ENABLE_APPS=OFF"
+                   "-DOSPRAY_ENABLE_TUTORIALS=OFF"
                    ];
 
     outputs = [ "out" "doc" ];
