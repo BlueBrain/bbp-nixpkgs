@@ -289,12 +289,12 @@ in
 
     jinja2 = pythonPackages.buildPythonPackage rec {
       pname = "Jinja2";
-      version = "2.10";
+      version = "2.10.1";
       name = "${pname}-${version}";
 
       src = pythonPackages.fetchPypi {
         inherit pname version;
-        sha256 = "190l36hfw3wb2n3n68yacjabxyb1pnxwn7vjx96cmjj002xy2jzq";
+        sha256 = "04shqrs56aj04ipyqykj512rw2l0zfammvj9krawzxz7xc14yp06";
       };
 
       buildInputs = with pythonPackages; [
