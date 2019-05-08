@@ -3134,7 +3134,7 @@ let
 
             viz_plugins = [
                 brain-atlas
-                #circuit-explorer
+                circuit-explorer
                 #dti
                 #membraneless-organelles
                 #molecular-systems
