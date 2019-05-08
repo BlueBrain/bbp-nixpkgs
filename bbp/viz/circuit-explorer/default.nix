@@ -14,7 +14,7 @@
 
 stdenv.mkDerivation rec {
     name = "brayns-circuit-explorer-${version}";
-    version = "latest";
+    version = "0.1.0";
 
     buildInputs = [ stdenv pkgconfig cmake boost freeimage highfive ospray libpqxx brion brayns ];
 
