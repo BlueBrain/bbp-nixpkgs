@@ -40,6 +40,7 @@ pythonPackages.buildPythonPackage rec {
         muk
         neurodamus
         neurom
+        six
     ];
 
     checkPhase = ''
