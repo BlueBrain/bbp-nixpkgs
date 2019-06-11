@@ -5,7 +5,6 @@
   morphio-python
 }:
 
-
 pythonPackages.buildPythonPackage rec {
     pname = "morph-tool";
     version = "0.1.4";
