@@ -1181,6 +1181,8 @@ let
                             pkgs.brion-py3
                        ];
             conflicts = conflicts-modules ++ [ brion ];
+            dependencies = [ python36-full ];
+
         };
 
         viztools = pkgs.envModuleGen rec {
