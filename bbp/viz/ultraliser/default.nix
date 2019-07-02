@@ -16,8 +16,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/Ultraliser";
-        rev = "0ed3cdd9179e9d8aad8b1ea5ab05fcb6e4392ed1";
-        sha256 = "0n787zqfg501nik3zql4l50nvlcc6px8iw30hdciafv2n5zvdnzg";
+        rev = "68f9a4da14da96855798e995c5cf79d2ab3442e9";
+        sha256 = "1bjpzg9msd7xk5j9ckbgj4njynz9qhm67jn2vkjmy4kizrba594i";
     };
     cmakeFlags = [
       "-DILMBASE_PACKAGE_PREFIX=${ilmbase.dev}"
