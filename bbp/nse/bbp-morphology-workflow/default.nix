@@ -32,6 +32,7 @@ pythonPackages.buildPythonPackage rec {
     ];
 
     propagatedBuildInputs = with pythonPackages; [
+        pathlib
         bbpsdk-legacy
         bluejittersdk
         bluerepairsdk
