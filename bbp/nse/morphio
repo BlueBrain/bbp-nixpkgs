@@ -18,13 +18,14 @@ let
     };
 in
   stdenv.mkDerivation rec {
-    name = "morphio-${version}";
-    version = "2.0.3";
+    pname = "MorphIO";
 
-    src = fetchgitPrivate {
-      url = "git@github.com:BlueBrain/morphio.git";
-      rev = "b598701c8e7b0dc8380815a7b857995504f1c2e3";
-      sha256 = "0wakp4i2pjpf93wlkzd46x4p1l9kagg95g9xc3g3xvk7xbn5qkq2";
+    name = "morphio-python-${version}";
+    version = "2.1.3";
+
+    src = pythonPackages.fetchPypi {
+      inherit pname version;
+      sha256 = "1lr9dvbx0f1aih1xnz9dwisxvf6nc5biks0kcv72cv8c47f4dfdk";
     };
 
     buildInputs = [
@@ -40,6 +41,7 @@ in
 	# add setuptools to the path
 	# and fix the date issue with setuptools (https://github.com/NixOS/nixpkgs/issues/270 )
 	export PYTHONPATH=${pythonPackages.bootstrapped-pip}/lib/${pythonPackages.python.libPrefix}/site-packages:$PYTHONPATH
+      cmakeFlags="$cmakeFlags -DMorphIO_CXX_WARNINGS=OFF -DBUILD_BINDINGS=OFF"
    '';
 
     enableParallelBuilding = true;
