@@ -14,13 +14,13 @@
 
 pythonPackages.buildPythonPackage rec {
     pname = "bbp-morphology-workflow";
-    version = "0.0.4";
+    version = "0.1.2";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/platform/bbp-morphology-workflow";
-        rev = "43548cbcb87da71c8185f0ef7b948f4f84c475e8";
-        sha256 = "0f5p7y2g8gqqvgnf83h0lvrlh1a2hpj0v99kirc8fxgf2x4vpsvd";
+        rev = "68b1f17fa24e1d7304db6a9e10f3bd03a18bcf02";
+        sha256 = "02fgbv82hwcgwl9s7xkf999xwn6ngiv5qw710vfv9ph1mjasgb44";
     };
 
     checkInputs = with pythonPackages; [
@@ -46,7 +46,8 @@ pythonPackages.buildPythonPackage rec {
 
     checkPhase = ''
         runHook preCheck
-        nosetests morphology_repair_workflow/tests
+        nosetests tests
+        nosetests functional_tests
         runHook postCheck
     '';
 }
