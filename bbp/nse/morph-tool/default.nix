@@ -7,13 +7,13 @@
 
 pythonPackages.buildPythonPackage rec {
     pname = "morph-tool";
-    version = "0.1.4";
+    version = "0.1.5";
     name = "${pname}-${version}";
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/nse/morph-tool";
-        rev = "78f9ee0e547279b5b5d8cc8f1afcbd53c5174a14";
-        sha256 = "002745sx4bcy3vqlbxjrfssjja6mhjsgigklxdxfw9f0kkywxry0";
+        rev = "b5b4dc5b1ba66d420cfaeaa7035b1d032c29c5f3";
+        sha256 = "0fm3xdnwlq4ikdmp5dcpn1x5liyrq75az66inis05n67yb4qxz4m";
     };
 
     buildInputs = with pythonPackages; [
