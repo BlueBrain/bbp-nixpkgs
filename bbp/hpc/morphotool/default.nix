@@ -17,7 +17,7 @@ let
     # create a python environment with numpy for numpy bindings tests
     python_test_env = pythonPackages.python.buildEnv.override {
       extraLibs = [
-        pythonPackages.cython
+        pythonPackages.cython-0-27
         pythonPackages.numpy
       ];
 

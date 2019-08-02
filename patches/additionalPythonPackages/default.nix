@@ -245,6 +245,7 @@ in
     };
 
     cython = callPackage ./Cython { };
+    cython-0-27 = self.cython;
 
     hpcbench = pythonPackages.buildPythonPackage rec {
       name = "hpcbench-${version}";
