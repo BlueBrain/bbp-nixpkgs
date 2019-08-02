@@ -244,6 +244,8 @@ in
       ];
     };
 
+    cython = callPackage ./Cython { };
+
     hpcbench = pythonPackages.buildPythonPackage rec {
       name = "hpcbench-${version}";
       version = "0.10";
