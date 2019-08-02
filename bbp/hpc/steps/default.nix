@@ -2,7 +2,6 @@
   blas
 , config
 , cmake
-, cython
 , fetchFromGitHub
 , fetchgitPrivate
 , gtest
@@ -38,7 +37,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     blas
-    cython
+    pythonPackages.cython
     gtest
     liblapack
     mpiRuntime
