@@ -21,8 +21,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/Brayns-UC-CircuitExplorer";
-        rev = "1c6a70e634d07530c1f6299d38064e582cea71ac";
-        sha256 = "0dinqryih8837pv84bwfxl77pjlw1lyw4hzj2w8q8hsdrgz0mzwd";
+        rev = "4cb970f4a84638d165e83c8de57fadaafb80428a";
+        sha256 = "0pdfbb96cv9jxwidq51rd7ak4n357bajkcx7s8syp842hcflhx4b";
     };
 
 	cmakeFlags = [
