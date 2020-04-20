@@ -16,8 +16,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/Regiodesics";
-        rev = "27263dc541b02494a0693f7af79cc36614cd548e";
-        sha256 = "0x8d21a5ksrgi7k9zyix24lq6lrpnrxmsjhkjpl5lmsaxzawivk9";
+        rev = "22ee7f37f3f47fa0b98f71b703f6f711e0dc0c14";
+        sha256 = "17c1a729v8gkr8gx6qpw3852x5y07hsb73lnnlzw50skz2dy4qz2";
     };
 
     enableParallelBuilding = true;
