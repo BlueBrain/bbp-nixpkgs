@@ -16,8 +16,8 @@ stdenv.mkDerivation rec {
 
     src = fetchgitPrivate {
         url = config.bbp_git_ssh + "/viz/EMSim";
-        rev = "4350dcbd1c7c5054d306841221bf716d1ef782d5";
-        sha256 = "0v1868d8fmkl4d4k46m4d5jqjgmkjlz26gm9s0h7av426293aq97";
+        rev = "6edd121049dde88f9821ce8d0a6859c9b71df258";
+        sha256 = "0gg65rcp2ivp0jj2b6fm7qi17g6m881z4srqrsb7kvi30iknz5kw";
     };
     cmakeFlags = [
         "-DGLM_INSTALL_ENABLE=OFF"
