@@ -1,0 +1,21 @@
+Adrien Devresse
+Aleksandr Ovcharenko
+Arseny V. Povolotsky
+Benoit Coste
+Cyrille Favreau
+Daniel Nachbaur
+Fernando Pereira
+Genrich Ivaska
+James Gonzalo King (maintainer)
+Jeremy Fouriaux
+Juan Hernando Vieites
+Mathieu Velten
+Matthias Wolf
+Mike Gevaert
+Omar Awile
+Pawel Podhajski
+Pramod Kumbhar
+Tim Ewart
+Tristan Carel
+Werner Van Geit
+
